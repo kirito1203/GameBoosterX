@@ -19,6 +19,9 @@ import com.gamebooster.x.R
 import com.gamebooster.x.core.GameSessionRecord
 import com.gamebooster.x.core.GameSpaceSettings
 import com.gamebooster.x.core.InstalledGame
+import com.gamebooster.x.core.PerformanceMode
+import com.gamebooster.x.core.TurboCommands
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -198,6 +201,7 @@ class GameSpaceService : Service(), OverlayActions {
     }
 
     private suspend fun updateSession(game: InstalledGame) {
+        val turbo = container.settings.turboSettings(game.packageName).first()
         val snap = container.hardware.snapshot()
         snap.thermal.batteryCelsius?.let { t -> maxTemp = maxOf(maxTemp ?: t, t) }
         lastFps = if (settings.fpsCounter) fpsSampler?.sample(game.packageName) else null
@@ -217,6 +221,10 @@ class GameSpaceService : Service(), OverlayActions {
                 recording = capture.recording.value,
                 captureAvailable = container.shizuku.isReady,
                 showFps = settings.fpsCounter,
+                turboAvailable = container.shizuku.isReady,
+                turboScale = turbo.resolutionScale,
+                turboFps = turbo.fpsCap,
+                alertMode = container.settings.performanceMode.first(),
             ),
         )
     }
@@ -294,6 +302,74 @@ class GameSpaceService : Service(), OverlayActions {
             }
             runCatching { startActivity(intent) }
                 .onFailure { overlay.showNotification("Não foi possível abrir o app") }
+        }
+    }
+
+    // ---------- Turbo, modos e RAM pela barra ----------
+
+    override fun onTurboScale(scale: Float) {
+        val pkg = sessionGame?.packageName ?: return
+        scope.launch {
+            val cur = container.settings.turboSettings(pkg).first()
+            container.settings.setTurboSettings(pkg, cur.copy(resolutionScale = scale))
+        }
+    }
+
+    override fun onTurboFps(fps: Int) {
+        val pkg = sessionGame?.packageName ?: return
+        scope.launch {
+            val cur = container.settings.turboSettings(pkg).first()
+            container.settings.setTurboSettings(pkg, cur.copy(fpsCap = fps))
+        }
+    }
+
+    override fun onTurboApply() {
+        val game = sessionGame ?: return
+        if (!container.shizuku.isReady) {
+            overlay.showNotification("Inicie o Shizuku para usar o Turbo")
+            return
+        }
+        scope.launch {
+            val settings = container.settings.turboSettings(game.packageName).first()
+            val results = TurboCommands.apply(game.packageName, settings).map { container.shizuku.run(it) }
+            val setOk = results.filter { it.command.startsWith("cmd game") && !it.command.contains("list-configs") }
+                .any { it.ok }
+            // A resolução do Game Mode só vale quando o jogo abre de novo.
+            container.shizuku.run("am force-stop ${game.packageName}")
+            delay(900)
+            container.games.launchIntent(game.packageName)?.let { runCatching { startActivity(it) } }
+            delay(2_500)
+            overlay.showNotification(
+                if (setOk) "Turbo aplicado: ${TurboCommands.formatScale(settings.resolutionScale)}x, " +
+                    (if (settings.fpsCap == 0) "FPS livre" else "${settings.fpsCap} FPS")
+                else "O sistema recusou o Turbo neste jogo (veja o Registro no Painel)",
+            )
+        }
+    }
+
+    override fun onTurboRestore() {
+        val pkg = sessionGame?.packageName ?: return
+        scope.launch {
+            val results = TurboCommands.restore(pkg).map { container.shizuku.run(it) }
+            overlay.showNotification(
+                if (results.any { it.ok }) "Padrão restaurado (vale na próxima abertura do jogo)"
+                else "Não foi possível restaurar",
+            )
+        }
+    }
+
+    override fun onAlertMode(mode: PerformanceMode) {
+        scope.launch {
+            container.settings.setPerformanceMode(mode)
+            overlay.showNotification("Alertas: ${mode.label}")
+        }
+    }
+
+    override fun onCleanRam() {
+        val keep = setOfNotNull(sessionGame?.packageName)
+        scope.launch {
+            val report = container.cleaner.boost(keep)
+            overlay.showNotification(report.summary())
         }
     }
 

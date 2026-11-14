@@ -14,6 +14,7 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.MeasureSpec
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.GridLayout
@@ -21,6 +22,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import com.gamebooster.x.core.PerformanceMode
+import com.gamebooster.x.core.TurboSettings
 import kotlin.math.abs
 
 /** Valores mostrados na barra; nulos aparecem como "—" (sem dado inventado). */
@@ -36,6 +39,10 @@ data class OverlayData(
     val recording: Boolean,
     val captureAvailable: Boolean,
     val showFps: Boolean,
+    val turboAvailable: Boolean = false,
+    val turboScale: Float? = null,
+    val turboFps: Int? = null,
+    val alertMode: PerformanceMode = PerformanceMode.DEFAULT,
 )
 
 /** Atalho de app na barra lateral. */
@@ -49,6 +56,22 @@ interface OverlayActions {
 
     /** [floating] = tentar abrir em janela flutuante; false = tela cheia. */
     fun onLaunchShortcut(packageName: String, floating: Boolean)
+
+    fun onTurboScale(scale: Float)
+    fun onTurboFps(fps: Int)
+
+    /** Aplica o Turbo e reinicia o jogo (necessário para a resolução valer). */
+    fun onTurboApply()
+    fun onTurboRestore()
+    fun onAlertMode(mode: PerformanceMode)
+    fun onCleanRam()
+}
+
+/** ScrollView com altura máxima (o painel não passa da tela, inclusive na horizontal). */
+private class MaxHeightScrollView(context: Context, private val maxHeight: () -> Int) : ScrollView(context) {
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(maxHeight(), MeasureSpec.AT_MOST))
+    }
 }
 
 /**
@@ -75,6 +98,14 @@ class OverlayController(context: Context, private val actions: OverlayActions) {
     private var btnBrightness: Button? = null
     private var btnShot: Button? = null
     private var shortcuts: List<SidebarShortcut> = emptyList()
+    private val scaleButtons = HashMap<Float, Button>()
+    private val fpsButtons = HashMap<Int, Button>()
+    private val modeButtons = HashMap<PerformanceMode, Button>()
+    private var btnApply: Button? = null
+    private var btnRestore: Button? = null
+    private var turboNote: TextView? = null
+    private var applyArmedUntil = 0L
+    private var handleY = 0
 
     val isShowing: Boolean get() = root != null
 
@@ -112,7 +143,28 @@ class OverlayController(context: Context, private val actions: OverlayActions) {
         }
     }
 
+    private fun chip(text: String, widthDp: Int, onClick: () -> Unit) = toolButton(text, onClick).apply {
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f)
+        setPadding(dp(2), dp(6), dp(2), dp(6))
+        layoutParams = GridLayout.LayoutParams().apply {
+            width = dp(widthDp)
+            setMargins(dp(2), dp(2), dp(2), dp(2))
+        }
+    }
+
+    private fun styleSelected(b: Button?, selected: Boolean) {
+        b?.background = if (selected) rounded(0xFF2F7BFF.toInt(), 10, 0xFF00B8FF.toInt())
+        else rounded(0xFF161B22.toInt(), 10, 0xFF243040.toInt())
+    }
+
     private fun setPanelOpen(open: Boolean) {
+        val lp = params
+        val r = root
+        if (lp != null && r != null) {
+            // Ao abrir, sobe o painel para caber na tela; ao fechar, a alça volta para onde estava.
+            if (open) { handleY = lp.y; lp.y = dp(8) } else lp.y = handleY
+            runCatching { wm.updateViewLayout(r, lp) }
+        }
         panel?.visibility = if (open) View.VISIBLE else View.GONE
         handle?.visibility = if (open) View.GONE else View.VISIBLE
     }
@@ -157,6 +209,52 @@ class OverlayController(context: Context, private val actions: OverlayActions) {
         btnBrightness = toolButton("☀ Brilho") { actions.onToggleBrightness() }.also { tools.addView(it) }
         content.addView(tools)
 
+        content.addView(label("TURBO DO JOGO", 10f, 0xFF00B8FF.toInt()).apply { setPadding(0, dp(8), 0, dp(2)) })
+        content.addView(label("Resolução", 9f, 0xFF8B98A9.toInt()))
+        val scales = GridLayout(ctx).apply { columnCount = 4 }
+        TurboSettings.SCALE_OPTIONS.forEach { sc ->
+            val text = if (sc >= 1f) "100%" else "${(sc * 100).toInt()}%"
+            scaleButtons[sc] = chip(text, 46) { actions.onTurboScale(sc) }.also { scales.addView(it) }
+        }
+        content.addView(scales)
+        content.addView(label("Limite de FPS", 9f, 0xFF8B98A9.toInt()))
+        val fpsGrid = GridLayout(ctx).apply { columnCount = 4 }
+        TurboSettings.FPS_OPTIONS.forEach { f ->
+            fpsButtons[f] = chip(if (f == 0) "Livre" else "$f", 46) { actions.onTurboFps(f) }.also { fpsGrid.addView(it) }
+        }
+        content.addView(fpsGrid)
+        val turboActions = GridLayout(ctx).apply { columnCount = 2 }
+        btnApply = toolButton("🚀 Aplicar") {
+            val now = SystemClock.uptimeMillis()
+            if (now < applyArmedUntil) {
+                applyArmedUntil = 0L
+                btnApply?.text = "🚀 Aplicar"
+                setPanelOpen(false)
+                actions.onTurboApply()
+            } else {
+                applyArmedUntil = now + 4_000
+                btnApply?.text = "Toque de novo"
+                turboNote?.text = "O jogo vai fechar e reabrir para aplicar. Salve o progresso antes!"
+                main.postDelayed({
+                    if (SystemClock.uptimeMillis() >= applyArmedUntil) btnApply?.text = "🚀 Aplicar"
+                }, 4_100)
+            }
+        }.also { turboActions.addView(it) }
+        btnRestore = toolButton("↺ Restaurar") { actions.onTurboRestore() }.also { turboActions.addView(it) }
+        content.addView(turboActions)
+        turboNote = label("", 9f, 0xFF8B98A9.toInt()).also { content.addView(it) }
+
+        content.addView(label("ALERTAS · MEMÓRIA", 10f, 0xFF00B8FF.toInt()).apply { setPadding(0, dp(8), 0, dp(2)) })
+        val modes = GridLayout(ctx).apply { columnCount = 3 }
+        PerformanceMode.entries.forEach { m ->
+            modeButtons[m] = chip(m.label, 62) { actions.onAlertMode(m) }.also { modes.addView(it) }
+        }
+        content.addView(modes)
+        content.addView(toolButton("🧹 Limpar RAM") { actions.onCleanRam() }.apply {
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                .apply { topMargin = dp(4) }
+        })
+
         content.addView(label("APPS · toque = janela · segurar = tela cheia", 9f, 0xFF00B8FF.toInt()).apply {
             setPadding(0, dp(8), 0, dp(2))
         })
@@ -168,7 +266,7 @@ class OverlayController(context: Context, private val actions: OverlayActions) {
                 .apply { topMargin = dp(8) }
         })
 
-        val panelView = ScrollView(ctx).apply {
+        val panelView = MaxHeightScrollView(ctx) { (ctx.resources.displayMetrics.heightPixels * 0.85f).toInt() }.apply {
             background = rounded(0xF00B1220.toInt(), 16, 0xFF243040.toInt())
             addView(content)
             visibility = View.GONE
@@ -297,6 +395,14 @@ class OverlayController(context: Context, private val actions: OverlayActions) {
         btnShot?.isEnabled = d.captureAvailable
         btnDnd?.text = if (d.dndActive) "🔕 Silencioso ✔" else "🔔 Não perturbe"
         btnBrightness?.text = if (d.brightnessLocked) "☀ Brilho ✔" else "☀ Brilho auto"
+
+        scaleButtons.forEach { (sc, b) -> styleSelected(b, d.turboScale == sc); b.isEnabled = d.turboAvailable }
+        fpsButtons.forEach { (f, b) -> styleSelected(b, d.turboFps == f); b.isEnabled = d.turboAvailable }
+        btnApply?.isEnabled = d.turboAvailable
+        btnRestore?.isEnabled = d.turboAvailable
+        modeButtons.forEach { (m, b) -> styleSelected(b, d.alertMode == m) }
+        if (!d.turboAvailable) turboNote?.text = "Turbo precisa do Shizuku iniciado."
+        else if (SystemClock.uptimeMillis() >= applyArmedUntil) turboNote?.text = "Escolha e toque em Aplicar (reabre o jogo)."
     }
 
     fun showNotification(text: String) = main.post {
@@ -316,7 +422,8 @@ class OverlayController(context: Context, private val actions: OverlayActions) {
     fun hide() = main.post {
         root?.let { runCatching { wm.removeView(it) } }
         root = null; handle = null; panel = null; ticker = null; shortcutsBox = null; params = null
-        statsText.clear()
+        statsText.clear(); scaleButtons.clear(); fpsButtons.clear(); modeButtons.clear()
+        btnApply = null; btnRestore = null; turboNote = null
     }
 
     private companion object {
