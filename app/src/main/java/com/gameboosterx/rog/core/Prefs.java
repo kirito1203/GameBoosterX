@@ -22,7 +22,7 @@ public final class Prefs {
     public static void setTempWarn(Context c, float v) { sp(c).edit().putFloat("temp_warn", v).apply(); }
 
     /** Intervalo de amostragem do monitor, em segundos. */
-    public static int sampleSeconds(Context c) { return sp(c).getInt("sample_s", 2); }
+    public static int sampleSeconds(Context c) { return sp(c).getInt("sample_s", 3); }
     public static void setSampleSeconds(Context c, int v) { sp(c).edit().putInt("sample_s", v).apply(); }
 
     public static boolean autoDetect(Context c) { return sp(c).getBoolean("auto_detect", true); }

@@ -94,9 +94,8 @@ public final class Perms {
     }
 
     public static void openAppDetails(Context c, String pkg) {
-        Intent i = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + pkg));
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        open(c, i);
+        // Sem NEW_TASK quando chamado de uma tela: o "voltar" retorna ao Game Booster X
+        open(c, new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + pkg)));
     }
 
     /** Abre uma tela do sistema com tratamento de erro (fabricantes às vezes removem telas). */

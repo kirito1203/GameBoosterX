@@ -37,6 +37,7 @@ Abra **Configurações (PERMISSÕES)** no app e conceda:
 | Acesso ao Não Perturbe | Silenciar notificações nos jogos | Opcional |
 | Acesso a todos os arquivos | Achar arquivos grandes/temporários | Opcional |
 | DUMP (via ADB/LADB) | **Medição real de FPS** | Opcional |
+| WRITE_SECURE_SETTINGS (via ADB/LADB) | Turbo avançado: tela no máximo + animações rápidas | Opcional |
 | Sem restrição de bateria | Evitar que o realme UI feche a barra | Recomendada |
 
 ### Habilitar o FPS real (uma vez só)
@@ -58,7 +59,7 @@ Sem isso, o FPS aparece como **N/D** — o app nunca inventa valores.
 | Módulo | Funciona de verdade | Limitação e alternativa adotada |
 |---|---|---|
 | **Dashboard** | RAM, bateria, temperatura da bateria, FPS (com fonte), status, lista de jogos | — |
-| **Turbo X** | Liga o monitor, Não Perturbe automático nos jogos, alerta térmico antecipado, detecta limitações (economia de bateria, térmico, RAM, armazenamento, taxa de tela, restrição de bateria), atalhos ao Espaço de Jogos da realme | Não altera CPU/GPU (exige root/sistema) |
+| **Turbo X** | Checklist "Pronto para jogar" com verificação real; **Fechamento assistido** de apps em segundo plano (mede a RAM liberada); Não Perturbe; monitor; com WRITE_SECURE_SETTINGS via LADB: tela fixa na taxa máxima e animações 0,5x (restaurado ao desligar) | Não altera CPU/GPU (exige root/sistema) |
 | **Otimização** | Lista apps que mais usaram recursos (24 h), limpa cache do próprio app, mede RAM antes/depois, leva ao "Forçar parada/Restringir" de cada app | Desde o Android 14 apps não podem encerrar processos de outros apps; processos do sistema são ocultados |
 | **Game Sidebar** | Aba arrastável sobre o jogo: FPS, temperatura, RAM, bateria, estado térmico, brilho, atalhos de jogos, Turbo, Otimizar, Ajustes, Não Perturbe, recolher/ocultar/desligar | Usa sobreposição autorizada + serviço com notificação visível |
 | **FPS Stabilizer** | FPS real via SurfaceFlinger, gráfico de 2 min, desvio, quedas bruscas, relação com temperatura, comparação de sessões | Requer permissão DUMP |

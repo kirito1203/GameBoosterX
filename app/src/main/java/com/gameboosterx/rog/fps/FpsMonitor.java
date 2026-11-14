@@ -112,7 +112,7 @@ public class FpsMonitor {
 
     private String resolveLayer(String pkg) throws Exception {
         long now = System.currentTimeMillis();
-        if (cachedLayer != null && pkg.equals(cachedPkg) && now - layerResolvedAt < 15000) {
+        if (cachedLayer != null && pkg.equals(cachedPkg) && now - layerResolvedAt < 60000) {
             return cachedLayer;
         }
         List<String> layers = run(new String[]{"dumpsys", "SurfaceFlinger", "--list"}, 1500);

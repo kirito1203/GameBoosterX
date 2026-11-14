@@ -20,6 +20,11 @@
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
 
+    <!-- Opcional: só é concedida via ADB/LADB. Turbo avançado (tela no máximo, animações). -->
+    <uses-permission
+        android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
     <!-- Ativar "Não perturbe" durante o jogo (autorização manual) -->
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
