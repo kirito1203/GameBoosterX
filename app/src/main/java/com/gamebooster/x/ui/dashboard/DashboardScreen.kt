@@ -156,7 +156,7 @@ private fun Header(state: DashboardUiState) {
 @OptIn(ExperimentalMaterial3Api::class) // FilterChip foi experimental em versões anteriores do Material 3
 @Composable
 private fun ModePanel(state: DashboardUiState, onModeSelected: (PerformanceMode) -> Unit) {
-    GbxPanel(title = "Modo de desempenho", trailing = state.mode.label.uppercase()) {
+    GbxPanel(title = "Alertas e monitoramento", trailing = state.mode.label.uppercase()) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             PerformanceMode.entries.forEach { mode ->
                 FilterChip(
@@ -172,6 +172,10 @@ private fun ModePanel(state: DashboardUiState, onModeSelected: (PerformanceMode)
             }
         }
         Text(state.mode.tagline, style = MaterialTheme.typography.bodyMedium, color = GbxColors.TextPrimary)
+        Text(
+            "Estes modos ajustam só o Game Booster X (leituras e alertas). Para o jogo rodar melhor, use o Turbo.",
+            style = MaterialTheme.typography.bodySmall, color = GbxColors.Warn,
+        )
         Text(state.policy.description, style = MaterialTheme.typography.bodySmall, color = GbxColors.TextSecondary)
     }
 }

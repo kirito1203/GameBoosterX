@@ -18,11 +18,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -34,6 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gamebooster.x.core.GameStatsAggregator
 import com.gamebooster.x.core.InstalledGame
+import com.gamebooster.x.data.SettingsRepository
 import com.gamebooster.x.gamespace.GameSpaceService
 import com.gamebooster.x.gamespace.GsPermission
 import com.gamebooster.x.ui.components.GbxPanel
@@ -114,7 +119,7 @@ fun GameSpaceRoute(
 
         item {
             GbxPanel(title = "Durante o jogo") {
-                ToggleRow("Painel flutuante", "Bolinha com FPS, temperatura, RAM, captura e gravação", state.settings.overlay) { v ->
+                ToggleRow("Barra lateral", "Alça na borda com FPS; abre status, captura, gravação e atalhos", state.settings.overlay) { v ->
                     viewModel.update { it.copy(overlay = v) }
                 }
                 ToggleRow("Contador de FPS", "FPS real via Shizuku (sem Shizuku: \"—\")", state.settings.fpsCounter) { v ->
@@ -133,6 +138,46 @@ fun GameSpaceRoute(
                     "Captura e gravação de tela usam o Shizuku. Tudo é desfeito ao sair do jogo.",
                     style = MaterialTheme.typography.bodySmall, color = GbxColors.TextSecondary,
                 )
+            }
+        }
+
+        item {
+            var expanded by remember { mutableStateOf(false) }
+            GbxPanel(
+                title = "Barra lateral · atalhos de apps",
+                trailing = "${state.sidebarApps.size}/${SettingsRepository.MAX_SIDEBAR_APPS}",
+            ) {
+                Text(
+                    "Na partida, toque na alça da borda direita (ou deslize para dentro) para abrir a barra. " +
+                        "Toque num app para tentar abrir em janela flutuante; segure para abrir em tela cheia.",
+                    style = MaterialTheme.typography.bodySmall, color = GbxColors.TextSecondary,
+                )
+                Text(
+                    "Janela flutuante usa o Shizuku e depende do realme UI aceitar. Se abrir em tela cheia, " +
+                        "use a Barra lateral inteligente da realme para janelas.",
+                    style = MaterialTheme.typography.bodySmall, color = GbxColors.TextSecondary,
+                )
+                val selected = state.launchableApps.filter { it.first in state.sidebarApps }
+                if (selected.isNotEmpty()) {
+                    Text(selected.joinToString(" · ") { it.second }, color = GbxColors.Neon)
+                }
+                TextButton(onClick = { expanded = !expanded }) {
+                    Text(if (expanded) "Fechar lista" else "Escolher apps", color = GbxColors.ElectricBlue)
+                }
+                if (expanded) {
+                    val full = state.sidebarApps.size >= SettingsRepository.MAX_SIDEBAR_APPS
+                    state.launchableApps.forEach { (pkg, label) ->
+                        val checked = pkg in state.sidebarApps
+                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            Checkbox(
+                                checked = checked,
+                                onCheckedChange = { viewModel.toggleSidebarApp(pkg) },
+                                enabled = checked || !full,
+                            )
+                            Text(label, color = GbxColors.TextPrimary)
+                        }
+                    }
+                }
             }
         }
 

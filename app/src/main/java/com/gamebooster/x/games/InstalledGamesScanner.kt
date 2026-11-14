@@ -41,6 +41,23 @@ class InstalledGamesScanner(context: Context) {
             .sortedWith(compareByDescending<InstalledGame> { it.isKnown }.thenBy { it.name.lowercase() })
     }
 
+    /** Apps com ícone no launcher (para atalhos da barra lateral), em ordem alfabética. */
+    @Suppress("DEPRECATION")
+    suspend fun launchableApps(): List<Pair<String, String>> = withContext(Dispatchers.IO) {
+        val intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+        pm.queryIntentActivities(intent, 0)
+            .mapNotNull { it.activityInfo?.applicationInfo }
+            .distinctBy { it.packageName }
+            .filter { it.packageName != appContext.packageName }
+            .map { it.packageName to pm.getApplicationLabel(it).toString() }
+            .sortedBy { it.second.lowercase() }
+    }
+
+    fun label(packageName: String): String = runCatching {
+        @Suppress("DEPRECATION")
+        pm.getApplicationLabel(pm.getApplicationInfo(packageName, 0)).toString()
+    }.getOrDefault(packageName)
+
     fun launchIntent(packageName: String): Intent? =
         pm.getLaunchIntentForPackage(packageName)?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 }

@@ -28,25 +28,34 @@ data class GameSpaceUiState(
     val permissions: Map<GsPermission, Boolean> = emptyMap(),
     val stats: Map<String, GameStats> = emptyMap(),
     val recent: List<GameSessionRecord> = emptyList(),
+    val sidebarApps: Set<String> = emptySet(),
+    val launchableApps: List<Pair<String, String>> = emptyList(),
 )
 
 class GameSpaceViewModel(private val container: AppContainer) : ViewModel() {
 
     private val permissions = MutableStateFlow(readPermissions())
+    private val launchable = MutableStateFlow<List<Pair<String, String>>>(emptyList())
 
-    val state: StateFlow<GameSpaceUiState> = combine(
+    private val base = combine(
         GameSpaceService.running,
         container.settings.gameSpaceSettings,
         permissions,
         container.sessions.sessions,
-    ) { running, settings, perms, sessions ->
+        container.settings.sidebarApps,
+    ) { running, settings, perms, sessions, sidebar ->
         GameSpaceUiState(
             serviceRunning = running,
             settings = settings,
             permissions = perms,
             stats = GameStatsAggregator.aggregate(sessions),
             recent = sessions.sortedByDescending { it.startMs }.take(10),
+            sidebarApps = sidebar,
         )
+    }
+
+    val state: StateFlow<GameSpaceUiState> = combine(base, launchable) { s, apps ->
+        s.copy(launchableApps = apps)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), GameSpaceUiState(permissions = permissions.value))
 
     private fun readPermissions(): Map<GsPermission, Boolean> =
@@ -64,6 +73,14 @@ class GameSpaceViewModel(private val container: AppContainer) : ViewModel() {
 
     fun update(transform: (GameSpaceSettings) -> GameSpaceSettings) {
         viewModelScope.launch { container.settings.setGameSpaceSettings(transform(state.value.settings)) }
+    }
+
+    init {
+        viewModelScope.launch { launchable.value = container.games.launchableApps() }
+    }
+
+    fun toggleSidebarApp(packageName: String) {
+        viewModelScope.launch { container.settings.toggleSidebarApp(packageName) }
     }
 
     fun clearHistory() {

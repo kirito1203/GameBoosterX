@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.gamebooster.x.core.GameSpaceSettings
 import com.gamebooster.x.core.PerformanceMode
@@ -69,12 +70,30 @@ class SettingsRepository(context: Context) {
         }
     }
 
-    private companion object {
-        val GS_DND = booleanPreferencesKey("gs_dnd")
-        val GS_BRIGHTNESS = booleanPreferencesKey("gs_brightness")
-        val GS_OVERLAY = booleanPreferencesKey("gs_overlay")
-        val GS_FPS = booleanPreferencesKey("gs_fps")
-        val GS_TICKER = booleanPreferencesKey("gs_ticker")
-        val KEY_MODE = stringPreferencesKey("performance_mode")
+    /** Apps escolhidos para a barra lateral (máximo [MAX_SIDEBAR_APPS]). */
+    val sidebarApps: Flow<Set<String>> = store.data.map { it[SIDEBAR_APPS] ?: emptySet() }
+
+    suspend fun sidebarAppsNow(): Set<String> = sidebarApps.first()
+
+    suspend fun toggleSidebarApp(packageName: String) {
+        store.edit {
+            val current = it[SIDEBAR_APPS] ?: emptySet()
+            it[SIDEBAR_APPS] = when {
+                packageName in current -> current - packageName
+                current.size >= MAX_SIDEBAR_APPS -> current
+                else -> current + packageName
+            }
+        }
+    }
+
+    companion object {
+        const val MAX_SIDEBAR_APPS = 6
+        private val SIDEBAR_APPS = stringSetPreferencesKey("sidebar_apps")
+        private val GS_DND = booleanPreferencesKey("gs_dnd")
+        private val GS_BRIGHTNESS = booleanPreferencesKey("gs_brightness")
+        private val GS_OVERLAY = booleanPreferencesKey("gs_overlay")
+        private val GS_FPS = booleanPreferencesKey("gs_fps")
+        private val GS_TICKER = booleanPreferencesKey("gs_ticker")
+        private val KEY_MODE = stringPreferencesKey("performance_mode")
     }
 }

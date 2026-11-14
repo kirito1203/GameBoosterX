@@ -62,6 +62,7 @@ class GameSpaceService : Service(), OverlayActions {
     private var fpsSampler: FpsSampler? = null
     private var lastFps: Int? = null
     private var settings = GameSpaceSettings()
+    private var sidebarApps: Set<String> = emptySet()
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -111,6 +112,11 @@ class GameSpaceService : Service(), OverlayActions {
             gamesScannedAt = now
         }
         settings = container.settings.gameSpaceSettingsNow()
+        val apps = container.settings.sidebarAppsNow()
+        if (apps != sidebarApps) {
+            sidebarApps = apps
+            overlay.setShortcuts(apps.map { SidebarShortcut(it, container.games.label(it)) }.sortedBy { it.label.lowercase() })
+        }
         container.shizuku.refresh()
 
         val fg = detector.foregroundPackage()
@@ -123,6 +129,9 @@ class GameSpaceService : Service(), OverlayActions {
             else if (current.packageName != fgGame.packageName) {
                 endSession(); startSession(fgGame)
             }
+        } else if (current != null && fg != null && fg in sidebarApps) {
+            // App aberto pela barra lateral (janela flutuante ou tela cheia): a partida continua.
+            lastSeenInForeground = now
         } else if (current != null && now - lastSeenInForeground > END_GRACE_MS) {
             endSession()
         }
@@ -218,6 +227,29 @@ class GameSpaceService : Service(), OverlayActions {
                 val ok = capture.startRecording()
                 overlay.showNotification(if (ok) "Gravando (até 3 min, sem áudio)" else "Falha ao gravar (Shizuku ativo?)")
             }
+        }
+    }
+
+    override fun onLaunchShortcut(packageName: String, floating: Boolean) {
+        scope.launch {
+            val intent = container.games.launchIntent(packageName) ?: run {
+                overlay.showNotification("App não encontrado")
+                return@launch
+            }
+            val component = intent.component?.flattenToShortString()
+            if (floating && component != null && container.shizuku.isReady) {
+                // Janela flutuante (windowingMode 5 = freeform). O sistema pode ignorar o pedido.
+                val r = container.shizuku.run("am start --windowingMode 5 -n $component")
+                if (r.ok) {
+                    overlay.showNotification("Se abriu em tela cheia, o sistema não permitiu janela flutuante")
+                    return@launch
+                }
+            }
+            if (floating && !container.shizuku.isReady) {
+                overlay.showNotification("Janela flutuante precisa do Shizuku; abrindo em tela cheia")
+            }
+            runCatching { startActivity(intent) }
+                .onFailure { overlay.showNotification("Não foi possível abrir o app") }
         }
     }
 

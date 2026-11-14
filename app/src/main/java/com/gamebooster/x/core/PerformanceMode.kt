@@ -6,9 +6,9 @@ package com.gamebooster.x.core
  * Código puro em Kotlin (sem dependências Android) para ser testável na JVM.
  */
 enum class PerformanceMode(val label: String, val tagline: String) {
-    EXTREME("Extreme", "Prioriza estabilidade e desempenho"),
-    BALANCED("Balanced", "Equilibra qualidade gráfica e desempenho"),
-    COOL("Cool", "Prioriza controle térmico e sessões longas");
+    EXTREME("Extreme", "Leituras mais rápidas, alertas de calor mais tolerantes"),
+    BALANCED("Balanced", "Equilíbrio entre precisão das leituras e economia"),
+    COOL("Cool", "Avisa mais cedo sobre aquecimento; ideal para partidas longas");
 
     companion object {
         val DEFAULT = BALANCED
