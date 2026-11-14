@@ -123,6 +123,9 @@ fun GameSpaceRoute(
                     StatRow("Partida em andamento", status.sessionGame ?: "não")
                     StatRow("Jogos reconhecidos", status.gamesKnown.toString())
                     StatRow("Barra na tela", if (status.barVisible) "sim" else "não")
+                    StatRow("FPS lido", status.lastFps?.toString() ?: "—")
+                    StatRow("Fonte de FPS", status.fpsSource ?: "—")
+                    status.fpsProblem?.let { StatRow("Problema do FPS", it) }
                     Text(
                         "Dica: com o Game Space ligado, abra um jogo, volte aqui pela tela de recentes e veja se " +
                             "\"App em primeiro plano\" mostrou o jogo.",

@@ -52,6 +52,9 @@ data class GsServiceStatus(
     val usagePermission: Boolean = false,
     val gamesKnown: Int = 0,
     val barVisible: Boolean = false,
+    val fpsSource: String? = null,
+    val fpsProblem: String? = null,
+    val lastFps: Int? = null,
 )
 
 class GameSpaceService : Service(), OverlayActions {
@@ -185,6 +188,9 @@ class GameSpaceService : Service(), OverlayActions {
             usagePermission = controls.isGranted(GsPermission.USAGE),
             gamesKnown = games.size,
             barVisible = overlay.isShowing,
+            fpsSource = fpsSampler?.source?.label,
+            fpsProblem = fpsSampler?.lastProblem,
+            lastFps = lastFps,
         )
     }
 
@@ -243,19 +249,20 @@ class GameSpaceService : Service(), OverlayActions {
 
         val duration = lastSeenInForeground - sessionStart
         if (duration >= MIN_SESSION_MS) {
-            val acc = fpsSampler?.accumulator
+            val sampler = fpsSampler
             container.sessions.add(
                 GameSessionRecord(
                     packageName = game.packageName,
                     startMs = sessionStart,
                     durationMs = duration,
                     maxBatteryCelsius = maxTemp,
-                    averageFps = acc?.averageFps(),
-                    onePercentLowFps = acc?.onePercentLowFps(),
+                    averageFps = sampler?.sessionAverageFps(),
+                    onePercentLowFps = sampler?.sessionOnePercentLow(),
                 ),
             )
         }
         sessionGame = null
+        fpsSampler?.release()
         fpsSampler = null
         notify("Aguardando um jogo abrir…")
     }

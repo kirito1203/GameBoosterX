@@ -91,3 +91,36 @@ class FrameAccumulator {
         const val MIN_FRAMES = 100
     }
 }
+
+/**
+ * Leitura de `dumpsys SurfaceFlinger --timestats -dump`: contagem total de quadros por camada.
+ * Usada quando `--latency` não devolve dados (comum em Android 14/15).
+ */
+object TimeStatsParser {
+
+    /** Maior `totalFrames` entre as camadas do pacote; nulo se o pacote não aparece. */
+    fun totalFrames(output: String, packageName: String): Long? {
+        var best: Long? = null
+        var inPackageLayer = false
+        for (raw in output.lineSequence()) {
+            val line = raw.trim()
+            when {
+                line.startsWith("layerName") -> inPackageLayer = line.contains(packageName)
+                line.startsWith("packageName") -> if (line.substringAfter("=").trim() == packageName) inPackageLayer = true
+                line.startsWith("totalFrames") && inPackageLayer -> {
+                    val n = line.substringAfter("=").trim().toLongOrNull()
+                    if (n != null && (best == null || n > best)) best = n
+                }
+            }
+        }
+        return best
+    }
+
+    /** FPS entre duas leituras; nulo se o intervalo é inválido ou o contador reiniciou. */
+    fun fpsBetween(prevFrames: Long, prevTimeMs: Long, frames: Long, timeMs: Long): Int? {
+        val dt = timeMs - prevTimeMs
+        val df = frames - prevFrames
+        if (dt < 300 || df < 0) return null
+        return Math.round(df * 1000.0 / dt).toInt()
+    }
+}

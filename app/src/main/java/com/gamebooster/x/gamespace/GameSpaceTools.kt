@@ -9,6 +9,7 @@ import com.gamebooster.x.core.FrameAccumulator
 import com.gamebooster.x.core.GameSessionRecord
 import com.gamebooster.x.core.LatencyParser
 import com.gamebooster.x.core.SessionCodec
+import com.gamebooster.x.core.TimeStatsParser
 import com.gamebooster.x.performance.ShizukuManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -62,31 +63,118 @@ class ForegroundDetector(context: Context) {
     }
 }
 
+enum class FpsSource(val label: String) {
+    NONE("nenhuma"),
+    LATENCY("SurfaceFlinger --latency"),
+    TIMESTATS("SurfaceFlinger --timestats"),
+}
+
 /**
- * FPS real do jogo via `dumpsys SurfaceFlinger --latency` (precisa do Shizuku).
+ * FPS real do jogo (precisa do Shizuku). Tenta `--latency` (dá também o 1% low); se o sistema
+ * não devolver dados, usa `--timestats` (contagem de quadros por segundo).
  * Retorna nulo quando não há fonte de medição — nunca estima.
  */
 class FpsSampler(private val shizuku: ShizukuManager) {
     private var layer: String? = null
     private var layerPackage: String? = null
+    private var latencyFailures = 0
+    private var timestatsEnabled = false
+    private var prevFrames: Long? = null
+    private var prevTime = 0L
+    private var firstFrames: Long? = null
+    private var firstTime = 0L
+    private var lastFrames: Long? = null
+    private var lastTime = 0L
+
     val accumulator = FrameAccumulator()
+    var source: FpsSource = FpsSource.NONE
+        private set
+    var lastProblem: String? = null
+        private set
 
     suspend fun sample(packageName: String): Int? {
-        if (!shizuku.isReady) return null
+        if (!shizuku.isReady) {
+            source = FpsSource.NONE
+            lastProblem = "Shizuku parado"
+            return null
+        }
+        if (latencyFailures < 3) {
+            val fps = sampleLatency(packageName)
+            if (fps != null) {
+                latencyFailures = 0
+                source = FpsSource.LATENCY
+                lastProblem = null
+                return fps
+            }
+            latencyFailures++
+        }
+        val fps = sampleTimeStats(packageName)
+        source = if (fps != null) FpsSource.TIMESTATS else FpsSource.NONE
+        return fps
+    }
+
+    private suspend fun sampleLatency(packageName: String): Int? {
         if (layer == null || layerPackage != packageName) {
             val list = shizuku.run("dumpsys SurfaceFlinger --list")
             layer = LatencyParser.pickLayer(list.output, packageName)
             layerPackage = packageName
         }
-        val name = layer ?: return null
+        val name = layer ?: run {
+            lastProblem = "Camada do jogo não encontrada"
+            return null
+        }
         val out = shizuku.run("dumpsys SurfaceFlinger --latency '${name.replace("'", "")}'")
         val times = LatencyParser.presentTimes(out.output)
         if (times.isEmpty()) {
-            layer = null // a camada pode ter mudado (troca de tela no jogo); procura de novo na próxima
+            layer = null
+            lastProblem = "--latency sem dados"
             return null
         }
         accumulator.add(times)
         return FpsCalculator.instantFps(times)
+    }
+
+    private suspend fun sampleTimeStats(packageName: String): Int? {
+        if (!timestatsEnabled) {
+            shizuku.run("dumpsys SurfaceFlinger --timestats -enable")
+            timestatsEnabled = true
+        }
+        val out = shizuku.run("dumpsys SurfaceFlinger --timestats -dump")
+        val now = System.currentTimeMillis()
+        val frames = TimeStatsParser.totalFrames(out.output, packageName) ?: run {
+            lastProblem = "--timestats sem dados do jogo"
+            return null
+        }
+        if (firstFrames == null) { firstFrames = frames; firstTime = now }
+        lastFrames = frames; lastTime = now
+        val pf = prevFrames
+        val pt = prevTime
+        prevFrames = frames; prevTime = now
+        if (pf == null) return null
+        val fps = TimeStatsParser.fpsBetween(pf, pt, frames, now)
+        if (fps == null) {
+            // Contador reiniciou (jogo reaberto): recomeça a média.
+            firstFrames = frames; firstTime = now
+        } else {
+            lastProblem = null
+        }
+        return fps
+    }
+
+    /** FPS médio da sessão pela fonte que funcionou. */
+    fun sessionAverageFps(): Float? = accumulator.averageFps() ?: run {
+        val f0 = firstFrames ?: return null
+        val f1 = lastFrames ?: return null
+        val seconds = (lastTime - firstTime) / 1000.0
+        if (seconds < 10) null else ((f1 - f0) / seconds).toFloat()
+    }
+
+    /** 1% low só existe com --latency (precisa dos tempos de cada quadro). */
+    fun sessionOnePercentLow(): Float? = accumulator.onePercentLowFps()
+
+    suspend fun release() {
+        if (timestatsEnabled) shizuku.run("dumpsys SurfaceFlinger --timestats -disable")
+        timestatsEnabled = false
     }
 }
 

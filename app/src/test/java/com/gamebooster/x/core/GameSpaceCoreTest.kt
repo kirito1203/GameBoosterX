@@ -126,3 +126,37 @@ class SessionsTest {
         assertEquals("< 1 min", GameStatsAggregator.formatDuration(10_000L))
     }
 }
+
+class TimeStatsParserTest {
+    private val dump = """
+        SurfaceFlinger TimeStats:
+        statsStart = 100
+        totalFrames = 99999
+        layerName = com.android.systemui.ImageWallpaper#0
+        packageName =
+        totalFrames = 50
+        layerName = SurfaceView[com.roblox.client/com.roblox.client.ActivityNativeMain](BLAST)#88
+        packageName = com.roblox.client
+        totalFrames = 1800
+        averageFPS = 59.9
+        layerName = com.roblox.client/com.roblox.client.ActivityNativeMain#87
+        packageName = com.roblox.client
+        totalFrames = 40
+    """.trimIndent()
+
+    @Test fun picksBiggestLayerOfPackage() {
+        assertEquals(1800L, TimeStatsParser.totalFrames(dump, "com.roblox.client"))
+        assertNull(TimeStatsParser.totalFrames(dump, "com.mojang.minecraftpe"))
+    }
+
+    @Test fun ignoresGlobalTotal() {
+        assertNull(TimeStatsParser.totalFrames("totalFrames = 500", "com.roblox.client"))
+    }
+
+    @Test fun fpsBetweenReads() {
+        assertEquals(60, TimeStatsParser.fpsBetween(1000, 0, 1060, 1000))
+        assertEquals(30, TimeStatsParser.fpsBetween(1000, 0, 1060, 2000))
+        assertNull(TimeStatsParser.fpsBetween(1000, 0, 900, 1000))
+        assertNull(TimeStatsParser.fpsBetween(1000, 0, 1010, 100))
+    }
+}
