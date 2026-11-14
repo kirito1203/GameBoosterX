@@ -1,0 +1,92 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Configurar Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      # Mantém a mesma chave de debug entre builds (permite instalar por cima da versão anterior).
+      # A chave fica só no cache privado do Actions, nunca no repositório.
+      - name: Reutilizar chave de debug
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: gbx-debug-keystore-v1
+
+      # Opcional: se os Secrets GBX_* existirem, usa uma chave própria.
+      - name: Chave de assinatura própria (opcional)
+        env:
+          KS_B64: ${{ secrets.GBX_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$KS_B64" ]; then
+            echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/gbx.jks"
+            echo "GBX_KEYSTORE_PATH=$RUNNER_TEMP/gbx.jks" >> "$GITHUB_ENV"
+            echo "Usando chave própria."
+          else
+            echo "Sem Secrets de assinatura: usando chave de debug."
+          fi
+
+      - name: Permissão do gradlew
+        run: chmod +x gradlew
+
+      - name: Testes unitários
+        run: ./gradlew --no-daemon testDebugUnitTest
+
+      - name: Compilar APKs e rodar lint
+        env:
+          GBX_KEYSTORE_PASSWORD: ${{ secrets.GBX_KEYSTORE_PASSWORD }}
+          GBX_KEY_ALIAS: ${{ secrets.GBX_KEY_ALIAS }}
+          GBX_KEY_PASSWORD: ${{ secrets.GBX_KEY_PASSWORD }}
+        run: ./gradlew --no-daemon assembleDebug assembleRelease lintDebug
+
+      - name: Preparar arquivos
+        run: |
+          mkdir -p out
+          cp app/build/outputs/apk/release/app-release.apk "out/GameBoosterX-v${{ github.run_number }}.apk"
+          cp app/build/outputs/apk/debug/app-debug.apk "out/GameBoosterX-v${{ github.run_number }}-debug.apk"
+
+      - name: Guardar APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: GameBoosterX-apk
+          path: out/*.apk
+
+      - name: Guardar relatórios de teste e lint
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorios
+          path: |
+            app/build/reports/
+            app/build/test-results/
+
+      - name: Publicar release (link direto para baixar no celular)
+        continue-on-error: true
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Game Booster X — build ${{ github.run_number }}
+          body: |
+            APK gerado automaticamente a partir do commit ${{ github.sha }}.
+            Instale **GameBoosterX-v${{ github.run_number }}.apk** (versão otimizada).
+            A versão `-debug` serve apenas para diagnóstico.
+          files: out/*.apk

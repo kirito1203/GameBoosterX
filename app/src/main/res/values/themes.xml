@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="gbx_black">#FF05070A</color>
+
+    <style name="Theme.GameBoosterX" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/gbx_black</item>
+        <item name="android:statusBarColor">@color/gbx_black</item>
+        <item name="android:navigationBarColor">@color/gbx_black</item>
+    </style>
+</resources>
