@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -41,6 +43,8 @@ import com.gamebooster.x.core.AdviceSeverity
 import com.gamebooster.x.core.Formatters
 import com.gamebooster.x.core.MemoryPressure
 import com.gamebooster.x.core.PerformanceMode
+import com.gamebooster.x.core.ShizukuStatus
+import com.gamebooster.x.core.TurboSettings
 import com.gamebooster.x.core.ThermalLevel
 import com.gamebooster.x.ui.components.GbxPanel
 import com.gamebooster.x.ui.components.NeonBar
@@ -77,8 +81,25 @@ fun DashboardRoute(viewModel: DashboardViewModel = viewModel(factory = Dashboard
         onBoost = { viewModel.boost() },
         onBoostAndPlay = { pkg -> viewModel.boost(launchPackage = pkg) },
         onRefreshGames = viewModel::refreshGames,
+        turboActions = TurboActions(
+            onSelectGame = viewModel::selectTurboGame,
+            onSettings = viewModel::setTurboSettings,
+            onApplyAndPlay = viewModel::applyTurboAndPlay,
+            onRestore = viewModel::restoreTurbo,
+            onRequestPermission = viewModel::requestShizukuPermission,
+            onOpenShizuku = viewModel::openShizuku,
+        ),
     )
 }
+
+class TurboActions(
+    val onSelectGame: (String) -> Unit,
+    val onSettings: (TurboSettings) -> Unit,
+    val onApplyAndPlay: () -> Unit,
+    val onRestore: () -> Unit,
+    val onRequestPermission: () -> Unit,
+    val onOpenShizuku: () -> Unit,
+)
 
 @Composable
 fun DashboardScreen(
@@ -87,6 +108,7 @@ fun DashboardScreen(
     onBoost: () -> Unit,
     onBoostAndPlay: (String) -> Unit,
     onRefreshGames: () -> Unit,
+    turboActions: TurboActions,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -98,6 +120,7 @@ fun DashboardScreen(
     ) {
         item { Header(state) }
         item { ModePanel(state, onModeSelected) }
+        item { TurboPanel(state, turboActions) }
         item { BoostPanel(state, onBoost) }
         item { MemoryPanel(state) }
         item { ThermalPanel(state) }
@@ -146,6 +169,127 @@ private fun ModePanel(state: DashboardUiState, onModeSelected: (PerformanceMode)
         }
         Text(state.mode.tagline, style = MaterialTheme.typography.bodyMedium, color = GbxColors.TextPrimary)
         Text(state.policy.description, style = MaterialTheme.typography.bodySmall, color = GbxColors.TextSecondary)
+    }
+}
+
+private fun scaleLabel(scale: Float): String = if (scale >= 1f) "100%" else "${(scale * 100).toInt()}%"
+
+private fun fpsLabel(fps: Int): String = if (fps == 0) "Livre" else "$fps"
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Composable
+private fun TurboPanel(state: DashboardUiState, actions: TurboActions) {
+    val turbo = state.turbo
+    val ready = turbo.status == ShizukuStatus.READY
+    GbxPanel(
+        title = "Modo Turbo · Shizuku",
+        trailing = turbo.status.label.uppercase(),
+        trailingColor = if (ready) GbxColors.Ok else GbxColors.Warn,
+    ) {
+        when (turbo.status) {
+            ShizukuStatus.NOT_INSTALLED -> {
+                Text(
+                    "O Turbo precisa do app Shizuku (gratuito, sem root) para pedir ao Android que rode o jogo " +
+                        "em resolução menor e com FPS estável.",
+                    style = MaterialTheme.typography.bodySmall, color = GbxColors.TextSecondary,
+                )
+                Button(onClick = actions.onOpenShizuku, modifier = Modifier.fillMaxWidth()) { Text("Instalar Shizuku") }
+            }
+            ShizukuStatus.NOT_RUNNING -> {
+                Text(
+                    "Inicie o Shizuku: abra o app Shizuku → Depuração sem fio → Parear (só na primeira vez) → Iniciar. " +
+                        "Depois de reiniciar o celular é preciso tocar em Iniciar de novo.",
+                    style = MaterialTheme.typography.bodySmall, color = GbxColors.TextSecondary,
+                )
+                Button(onClick = actions.onOpenShizuku, modifier = Modifier.fillMaxWidth()) { Text("Abrir Shizuku") }
+            }
+            ShizukuStatus.OUTDATED -> {
+                Text("Atualize o Shizuku pela Play Store.", style = MaterialTheme.typography.bodySmall, color = GbxColors.Warn)
+                Button(onClick = actions.onOpenShizuku, modifier = Modifier.fillMaxWidth()) { Text("Abrir Shizuku") }
+            }
+            ShizukuStatus.NO_PERMISSION -> {
+                Text(
+                    "O Shizuku está rodando. Falta permitir que o Game Booster X o use.",
+                    style = MaterialTheme.typography.bodySmall, color = GbxColors.TextSecondary,
+                )
+                Button(onClick = actions.onRequestPermission, modifier = Modifier.fillMaxWidth()) { Text("Permitir acesso") }
+            }
+            ShizukuStatus.READY -> Unit
+        }
+
+        if (state.games.isEmpty()) {
+            Text("Nenhum jogo detectado para o Turbo.", style = MaterialTheme.typography.bodySmall, color = GbxColors.TextSecondary)
+        } else {
+            Text("Jogo", style = MaterialTheme.typography.labelSmall, color = GbxColors.TextSecondary)
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                state.games.forEach { game ->
+                    FilterChip(
+                        selected = turbo.selectedPackage == game.packageName,
+                        onClick = { actions.onSelectGame(game.packageName) },
+                        label = { Text(game.name) },
+                    )
+                }
+            }
+            Text("Resolução do jogo", style = MaterialTheme.typography.labelSmall, color = GbxColors.TextSecondary)
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                TurboSettings.SCALE_OPTIONS.forEach { scale ->
+                    FilterChip(
+                        selected = turbo.settings.resolutionScale == scale,
+                        onClick = { actions.onSettings(turbo.settings.copy(resolutionScale = scale)) },
+                        label = { Text(scaleLabel(scale)) },
+                    )
+                }
+            }
+            Text("Limite de FPS", style = MaterialTheme.typography.labelSmall, color = GbxColors.TextSecondary)
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                TurboSettings.FPS_OPTIONS.forEach { fps ->
+                    FilterChip(
+                        selected = turbo.settings.fpsCap == fps,
+                        onClick = { actions.onSettings(turbo.settings.copy(fpsCap = fps)) },
+                        label = { Text(fpsLabel(fps)) },
+                    )
+                }
+            }
+            Text(
+                "Menos resolução = mais FPS (imagem um pouco menos nítida). FPS limitado a 60 costuma travar menos " +
+                    "que FPS oscilando. O jogo precisa ser fechado e aberto de novo para aplicar.",
+                style = MaterialTheme.typography.bodySmall, color = GbxColors.TextSecondary,
+            )
+            Button(
+                onClick = actions.onApplyAndPlay,
+                enabled = ready && !turbo.running && turbo.selectedPackage != null,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = GbxColors.ElectricBlue),
+            ) {
+                if (turbo.running) {
+                    CircularProgressIndicator(Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
+                    Spacer(Modifier.width(10.dp))
+                    Text("Aplicando…")
+                } else {
+                    Text("🚀 TURBO E JOGAR", fontWeight = FontWeight.Bold)
+                }
+            }
+            OutlinedButton(
+                onClick = actions.onRestore,
+                enabled = ready && !turbo.running && turbo.selectedPackage != null,
+                modifier = Modifier.fillMaxWidth(),
+            ) { Text("Restaurar padrão do jogo", color = GbxColors.Neon) }
+        }
+
+        turbo.message?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = GbxColors.TextPrimary) }
+        if (turbo.log.isNotEmpty()) {
+            Text("Registro (respostas reais do sistema)", style = MaterialTheme.typography.labelSmall, color = GbxColors.TextSecondary)
+            turbo.log.forEach { r ->
+                Text(
+                    (if (r.ok) "✔ " else "✖ ") + r.command,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = if (r.ok) GbxColors.Ok else GbxColors.Danger,
+                )
+                if (r.output.isNotBlank()) {
+                    Text(r.output.take(400), style = MaterialTheme.typography.bodySmall, color = GbxColors.TextSecondary)
+                }
+            }
+        }
     }
 }
 

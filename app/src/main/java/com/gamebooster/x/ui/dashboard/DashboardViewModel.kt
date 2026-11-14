@@ -23,6 +23,10 @@ import com.gamebooster.x.core.ModePolicies
 import com.gamebooster.x.core.ModePolicy
 import com.gamebooster.x.core.PerformanceMode
 import com.gamebooster.x.core.SampleHistory
+import com.gamebooster.x.core.ShellResult
+import com.gamebooster.x.core.ShizukuStatus
+import com.gamebooster.x.core.TurboCommands
+import com.gamebooster.x.core.TurboSettings
 import com.gamebooster.x.core.ThermalAnalyzer
 import com.gamebooster.x.core.ThermalAssessment
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +40,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
@@ -60,6 +67,23 @@ data class MonitorState(
     }
 }
 
+/** Estado do Modo Turbo (Shizuku + Game Mode). */
+data class TurboUiState(
+    val status: ShizukuStatus = ShizukuStatus.NOT_INSTALLED,
+    val selectedPackage: String? = null,
+    val settings: TurboSettings = TurboSettings.DEFAULT,
+    val running: Boolean = false,
+    val log: List<ShellResult> = emptyList(),
+    val message: String? = null,
+)
+
+private data class TurboLocal(
+    val selectedPackage: String? = null,
+    val running: Boolean = false,
+    val log: List<ShellResult> = emptyList(),
+    val message: String? = null,
+)
+
 data class DashboardUiState(
     val identity: DeviceIdentity? = null,
     val profile: DeviceProfile? = null,
@@ -72,6 +96,7 @@ data class DashboardUiState(
     val games: List<InstalledGame> = emptyList(),
     val gamesLoaded: Boolean = false,
     val boost: BoostState = BoostState(),
+    val turbo: TurboUiState = TurboUiState(),
 )
 
 class DashboardViewModel(private val container: AppContainer) : ViewModel() {
@@ -80,6 +105,7 @@ class DashboardViewModel(private val container: AppContainer) : ViewModel() {
     private val games = MutableStateFlow<List<InstalledGame>?>(null)
     private val boost = MutableStateFlow(BoostState())
     private val launches = Channel<Intent>(Channel.BUFFERED)
+    private val turboLocal = MutableStateFlow(TurboLocal())
 
     /** Intents de jogos a abrir; a tela as consome e chama startActivity. */
     val launchRequests: Flow<Intent> = launches.receiveAsFlow()
@@ -102,9 +128,17 @@ class DashboardViewModel(private val container: AppContainer) : ViewModel() {
                 error = null,
             )
         }
+        // Aproveita o ritmo do monitor para notar quando o Shizuku é iniciado/parado.
+        .onEach { container.shizuku.refresh() }
         .catch { e -> emit(MonitorState(error = "Falha ao ler hardware: ${e.message}")) }
 
-    val state: StateFlow<DashboardUiState> =
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val turboSettings: Flow<TurboSettings> = turboLocal
+        .map { it.selectedPackage }
+        .distinctUntilChanged()
+        .flatMapLatest { pkg -> if (pkg == null) flowOf(TurboSettings.DEFAULT) else container.settings.turboSettings(pkg) }
+
+    private val baseState: Flow<DashboardUiState> =
         combine(device, games, boost, monitor, mode) { dev, gameList, boostState, mon, m ->
             val policy = ModePolicies.of(m)
             val snap = mon.snapshot
@@ -127,6 +161,20 @@ class DashboardViewModel(private val container: AppContainer) : ViewModel() {
                 gamesLoaded = gameList != null,
                 boost = boostState,
             )
+        }
+
+    val state: StateFlow<DashboardUiState> =
+        combine(baseState, container.shizuku.status, turboLocal, turboSettings) { base, status, local, settings ->
+            base.copy(
+                turbo = TurboUiState(
+                    status = status,
+                    selectedPackage = local.selectedPackage,
+                    settings = settings,
+                    running = local.running,
+                    log = local.log,
+                    message = local.message,
+                ),
+            )
         }.stateIn(
             scope = viewModelScope,
             // Para de ler o hardware 5 s depois que a tela sai de vista (economia de bateria).
@@ -144,7 +192,12 @@ class DashboardViewModel(private val container: AppContainer) : ViewModel() {
 
     fun refreshGames() {
         viewModelScope.launch {
-            games.value = runCatching { container.games.scan() }.getOrDefault(emptyList())
+            val found = runCatching { container.games.scan() }.getOrDefault(emptyList())
+            games.value = found
+            turboLocal.update { local ->
+                if (local.selectedPackage != null && found.any { it.packageName == local.selectedPackage }) local
+                else local.copy(selectedPackage = found.firstOrNull()?.packageName)
+            }
         }
     }
 
@@ -172,6 +225,58 @@ class DashboardViewModel(private val container: AppContainer) : ViewModel() {
             } catch (e: Exception) {
                 boost.update { it.copy(running = false, error = "Falha na otimização: ${e.message}") }
             }
+        }
+    }
+
+    // ---------------- Modo Turbo ----------------
+
+    fun selectTurboGame(packageName: String) {
+        turboLocal.update { it.copy(selectedPackage = packageName, message = null) }
+    }
+
+    fun setTurboSettings(settings: TurboSettings) {
+        val pkg = turboLocal.value.selectedPackage ?: return
+        viewModelScope.launch { container.settings.setTurboSettings(pkg, settings) }
+    }
+
+    fun requestShizukuPermission() = container.shizuku.requestPermission()
+
+    fun openShizuku() {
+        viewModelScope.launch { launches.send(container.shizuku.openShizukuIntent()) }
+    }
+
+    /** Aplica o Turbo (Game Mode via Shizuku) ao jogo selecionado e abre o jogo. */
+    fun applyTurboAndPlay() {
+        val pkg = turboLocal.value.selectedPackage ?: return
+        if (turboLocal.value.running) return
+        viewModelScope.launch {
+            turboLocal.update { it.copy(running = true, message = null) }
+            val settings = state.value.turbo.settings
+            val results = TurboCommands.apply(pkg, settings).map { container.shizuku.run(it) }
+            val essential = results.filter { it.command.startsWith("cmd game set") || it.command.startsWith("cmd game mode") }
+            val message = when {
+                essential.isNotEmpty() && essential.all { it.ok } ->
+                    "Turbo aplicado. Abrindo o jogo… Compare o desempenho e use Restaurar se quiser desfazer."
+                essential.any { it.ok } ->
+                    "Turbo aplicado em parte: o sistema recusou alguns ajustes (veja o registro). Abrindo o jogo…"
+                else ->
+                    "O sistema recusou os ajustes do Game Mode para este jogo (veja o registro). " +
+                        "Apps em segundo plano foram fechados; abrindo o jogo…"
+            }
+            turboLocal.update { it.copy(running = false, log = results, message = message) }
+            container.games.launchIntent(pkg)?.let { launches.send(it) }
+        }
+    }
+
+    fun restoreTurbo() {
+        val pkg = turboLocal.value.selectedPackage ?: return
+        if (turboLocal.value.running) return
+        viewModelScope.launch {
+            turboLocal.update { it.copy(running = true, message = null) }
+            val results = TurboCommands.restore(pkg).map { container.shizuku.run(it) }
+            val message = if (results.any { it.ok }) "Configuração original do jogo restaurada."
+            else "Não foi possível restaurar (veja o registro)."
+            turboLocal.update { it.copy(running = false, log = results, message = message) }
         }
     }
 

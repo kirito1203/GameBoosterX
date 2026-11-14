@@ -12,8 +12,8 @@ android {
         applicationId = "com.gamebooster.x"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
-        versionName = "0.1.1-fase1"
+        versionCode = 3
+        versionName = "0.2.0-turbo"
     }
 
     // Assinatura opcional por variáveis de ambiente (GitHub Secrets). Nenhuma chave ou senha
@@ -77,6 +77,8 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.shizuku.api)
+    implementation(libs.shizuku.provider)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 

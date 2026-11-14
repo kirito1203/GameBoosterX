@@ -4,9 +4,12 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.floatPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.gamebooster.x.core.PerformanceMode
+import com.gamebooster.x.core.TurboSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -22,6 +25,22 @@ class SettingsRepository(context: Context) {
 
     suspend fun setPerformanceMode(mode: PerformanceMode) {
         store.edit { it[KEY_MODE] = mode.name }
+    }
+
+    /** Configuração do Modo Turbo salva por jogo. */
+    fun turboSettings(packageName: String): Flow<TurboSettings> = store.data.map { prefs ->
+        TurboSettings(
+            resolutionScale = prefs[floatPreferencesKey("turbo_scale_$packageName")]
+                ?: TurboSettings.DEFAULT.resolutionScale,
+            fpsCap = prefs[intPreferencesKey("turbo_fps_$packageName")] ?: TurboSettings.DEFAULT.fpsCap,
+        )
+    }
+
+    suspend fun setTurboSettings(packageName: String, settings: TurboSettings) {
+        store.edit {
+            it[floatPreferencesKey("turbo_scale_$packageName")] = settings.resolutionScale
+            it[intPreferencesKey("turbo_fps_$packageName")] = settings.fpsCap
+        }
     }
 
     private companion object {
