@@ -39,6 +39,16 @@ import java.util.Locale
  * ativa Não perturbe, trava o brilho, mostra o painel flutuante e registra FPS/temperatura.
  * Ao sair do jogo, tudo é restaurado e a sessão é salva.
  */
+/** O que o serviço está vendo agora (mostrado na tela para diagnóstico). */
+data class GsServiceStatus(
+    val foregroundPackage: String? = null,
+    val sessionGame: String? = null,
+    val overlayPermission: Boolean = false,
+    val usagePermission: Boolean = false,
+    val gamesKnown: Int = 0,
+    val barVisible: Boolean = false,
+)
+
 class GameSpaceService : Service(), OverlayActions {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -63,6 +73,7 @@ class GameSpaceService : Service(), OverlayActions {
     private var lastFps: Int? = null
     private var settings = GameSpaceSettings()
     private var sidebarApps: Set<String> = emptySet()
+    private var previewUntil = 0L
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -89,6 +100,9 @@ class GameSpaceService : Service(), OverlayActions {
         if (intent?.action == ACTION_STOP) {
             stopSelf()
             return START_NOT_STICKY
+        }
+        if (intent?.action == ACTION_PREVIEW) {
+            previewUntil = System.currentTimeMillis() + PREVIEW_MS
         }
         if (loopJob?.isActive != true) loopJob = scope.launch { loop() }
         return START_STICKY
@@ -137,6 +151,36 @@ class GameSpaceService : Service(), OverlayActions {
         }
 
         sessionGame?.let { updateSession(it) }
+
+        // Prévia: mostra a barra fora do jogo por alguns segundos para testar a permissão.
+        if (sessionGame == null) {
+            if (now < previewUntil) {
+                if (!overlay.isShowing) overlay.show()
+                overlay.setShortcuts(sidebarApps.map { SidebarShortcut(it, container.games.label(it)) })
+                val snap = container.hardware.snapshot()
+                overlay.update(
+                    OverlayData(
+                        gameName = "Prévia", fps = null, batteryCelsius = snap.thermal.batteryCelsius,
+                        ramPercent = snap.memory.usedPercent, batteryPercent = snap.battery.levelPercent,
+                        clock = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()),
+                        dndActive = false, brightnessLocked = false, recording = false,
+                        captureAvailable = container.shizuku.isReady, showFps = settings.fpsCounter,
+                    ),
+                )
+            } else if (previewUntil != 0L) {
+                previewUntil = 0L
+                overlay.hide()
+            }
+        }
+
+        _status.value = GsServiceStatus(
+            foregroundPackage = fg,
+            sessionGame = sessionGame?.name,
+            overlayPermission = controls.isGranted(GsPermission.OVERLAY),
+            usagePermission = controls.isGranted(GsPermission.USAGE),
+            gamesKnown = games.size,
+            barVisible = overlay.isShowing,
+        )
     }
 
     private fun startSession(game: InstalledGame) {
@@ -320,6 +364,7 @@ class GameSpaceService : Service(), OverlayActions {
         if (capture.recording.value) container.shizuku.startBackground("pkill -INT screenrecord")
         scope.cancel()
         _running.value = false
+        _status.value = GsServiceStatus()
         super.onDestroy()
     }
 
@@ -329,6 +374,19 @@ class GameSpaceService : Service(), OverlayActions {
         private const val ACTION_STOP = "com.gamebooster.x.STOP_GAME_SPACE"
         private const val END_GRACE_MS = 5_000L
         private const val MIN_SESSION_MS = 30_000L
+
+        private const val ACTION_PREVIEW = "com.gamebooster.x.PREVIEW_SIDEBAR"
+        private const val PREVIEW_MS = 15_000L
+
+        private val _status = MutableStateFlow(GsServiceStatus())
+        val status: StateFlow<GsServiceStatus> = _status.asStateFlow()
+
+        /** Liga o serviço (se preciso) e mostra a barra por 15 s fora do jogo. */
+        fun preview(context: Context) {
+            ContextCompat.startForegroundService(
+                context, Intent(context, GameSpaceService::class.java).setAction(ACTION_PREVIEW),
+            )
+        }
 
         private val _running = MutableStateFlow(false)
         val running: StateFlow<Boolean> = _running.asStateFlow()

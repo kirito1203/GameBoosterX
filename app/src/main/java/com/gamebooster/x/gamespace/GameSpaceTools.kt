@@ -20,28 +20,45 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.io.File
 
-/** Descobre qual app está em primeiro plano usando UsageStats (permissão "Acesso ao uso"). */
+/**
+ * Descobre qual app está em primeiro plano usando UsageStats (permissão "Acesso ao uso").
+ *
+ * Relê sempre uma janela recente (com sobreposição) porque o sistema pode gravar eventos com
+ * atraso; ler só "desde a última consulta" perdia a abertura do jogo em alguns aparelhos.
+ */
 class ForegroundDetector(context: Context) {
     private val usm: UsageStatsManager? = context.applicationContext.getSystemService(UsageStatsManager::class.java)
     private var current: String? = null
-    private var lastQuery = System.currentTimeMillis() - 60_000
+    private var firstQuery = true
 
     @Suppress("DEPRECATION")
     fun foregroundPackage(): String? {
         val manager = usm ?: return null
         val now = System.currentTimeMillis()
-        val events = manager.queryEvents(lastQuery, now) ?: return current
-        lastQuery = now
+        // Na primeira leitura olha mais para trás para pegar um jogo que já estava aberto.
+        val from = now - if (firstQuery) 10 * 60_000L else WINDOW_MS
+        firstQuery = false
+        val events = manager.queryEvents(from, now) ?: return current
+        var state: String? = current
+        var sawEvent = false
         val e = UsageEvents.Event()
         while (events.hasNextEvent()) {
             events.getNextEvent(e)
             when (e.eventType) {
-                UsageEvents.Event.MOVE_TO_FOREGROUND -> current = e.packageName
-                UsageEvents.Event.MOVE_TO_BACKGROUND -> if (e.packageName == current) current = null
-                UsageEvents.Event.SCREEN_NON_INTERACTIVE -> current = null
+                UsageEvents.Event.MOVE_TO_FOREGROUND -> { state = e.packageName; sawEvent = true }
+                UsageEvents.Event.MOVE_TO_BACKGROUND -> {
+                    if (e.packageName == state) state = null
+                    sawEvent = true
+                }
+                UsageEvents.Event.SCREEN_NON_INTERACTIVE -> { state = null; sawEvent = true }
             }
         }
+        if (sawEvent) current = state
         return current
+    }
+
+    private companion object {
+        const val WINDOW_MS = 15_000L
     }
 }
 

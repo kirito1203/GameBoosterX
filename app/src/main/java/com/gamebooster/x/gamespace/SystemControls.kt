@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.os.PowerManager
 import android.os.Process
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
@@ -22,6 +23,7 @@ enum class GsPermission(val label: String, val purpose: String) {
     WRITE_SETTINGS("Modificar configurações do sistema", "Travar o brilho durante o jogo"),
     NOTIFICATION_LISTENER("Acesso às notificações", "Mostrar notificações como texto discreto no painel"),
     POST_NOTIFICATIONS("Notificações do app", "Mostrar que o Game Space está ativo"),
+    BATTERY("Bateria sem restrições", "Impede o realme de desligar o Game Space em segundo plano"),
 }
 
 class SystemControls(context: Context) {
@@ -37,6 +39,8 @@ class SystemControls(context: Context) {
         GsPermission.WRITE_SETTINGS -> Settings.System.canWrite(ctx)
         GsPermission.NOTIFICATION_LISTENER ->
             NotificationManagerCompat.getEnabledListenerPackages(ctx).contains(ctx.packageName)
+        GsPermission.BATTERY ->
+            ctx.getSystemService(PowerManager::class.java)?.isIgnoringBatteryOptimizations(ctx.packageName) == true
         GsPermission.POST_NOTIFICATIONS ->
             Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
                 ContextCompat.checkSelfPermission(ctx, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
@@ -62,6 +66,7 @@ class SystemControls(context: Context) {
             GsPermission.DND -> Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
             GsPermission.WRITE_SETTINGS -> Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, pkgUri)
             GsPermission.NOTIFICATION_LISTENER -> Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+            GsPermission.BATTERY -> Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, pkgUri)
             GsPermission.POST_NOTIFICATIONS -> Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                 .putExtra(Settings.EXTRA_APP_PACKAGE, ctx.packageName)
         }

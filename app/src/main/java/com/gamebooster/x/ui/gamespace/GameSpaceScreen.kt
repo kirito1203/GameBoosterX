@@ -54,6 +54,7 @@ fun GameSpaceRoute(
     viewModel: GameSpaceViewModel = viewModel(factory = GameSpaceViewModel.Factory),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val status by GameSpaceService.status.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { viewModel.refreshPermissions() }
@@ -102,7 +103,28 @@ fun GameSpaceRoute(
                         style = MaterialTheme.typography.bodySmall, color = GbxColors.Warn,
                     )
                 }
+                OutlinedButton(
+                    onClick = { GameSpaceService.preview(context) },
+                    enabled = state.permissions[GsPermission.OVERLAY] == true,
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text("👁 Testar barra agora (15 s)", color = GbxColors.Neon) }
+                if (state.permissions[GsPermission.OVERLAY] != true) {
+                    Text(
+                        "Para a barra aparecer, conceda \"Sobrepor a outros apps\" em Permissões.",
+                        style = MaterialTheme.typography.bodySmall, color = GbxColors.Warn,
+                    )
+                }
                 if (state.serviceRunning) {
+                    Text("Diagnóstico (atualiza a cada 2 s)", style = MaterialTheme.typography.labelSmall, color = GbxColors.TextSecondary)
+                    StatRow("App em primeiro plano", status.foregroundPackage ?: "nenhum detectado")
+                    StatRow("Partida em andamento", status.sessionGame ?: "não")
+                    StatRow("Jogos reconhecidos", status.gamesKnown.toString())
+                    StatRow("Barra na tela", if (status.barVisible) "sim" else "não")
+                    Text(
+                        "Dica: com o Game Space ligado, abra um jogo, volte aqui pela tela de recentes e veja se " +
+                            "\"App em primeiro plano\" mostrou o jogo.",
+                        style = MaterialTheme.typography.bodySmall, color = GbxColors.TextSecondary,
+                    )
                     OutlinedButton(onClick = { GameSpaceService.stop(context) }, modifier = Modifier.fillMaxWidth()) {
                         Text("Desligar Game Space", color = GbxColors.Neon)
                     }
