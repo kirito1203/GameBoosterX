@@ -12,8 +12,8 @@ android {
         applicationId = "com.gamebooster.x"
         minSdk = 26
         targetSdk = 35
-        versionCode = 9
-        versionName = "0.6.1-fps"
+        versionCode = 10
+        versionName = "0.6.2-leve"
     }
 
     // Assinatura opcional por variáveis de ambiente (GitHub Secrets). Nenhuma chave ou senha

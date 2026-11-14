@@ -150,7 +150,7 @@ fun GameSpaceRoute(
                 ToggleRow("Barra lateral", "Alça na borda com FPS; abre status, captura, gravação e atalhos", state.settings.overlay) { v ->
                     viewModel.update { it.copy(overlay = v) }
                 }
-                ToggleRow("Contador de FPS", "FPS real via Shizuku (sem Shizuku: \"—\")", state.settings.fpsCounter) { v ->
+                ToggleRow("Contador de FPS", "FPS real via Shizuku. Pode causar leves travadas em celulares mais simples; ligue só para medir.", state.settings.fpsCounter) { v ->
                     viewModel.update { it.copy(fpsCounter = v) }
                 }
                 ToggleRow("Não perturbe", "Silencia notificações e chamadas (alarmes continuam)", state.settings.doNotDisturb) { v ->

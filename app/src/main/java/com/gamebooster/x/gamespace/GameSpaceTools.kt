@@ -92,7 +92,22 @@ class FpsSampler(private val shizuku: ShizukuManager) {
     var lastProblem: String? = null
         private set
 
+    private var lastSampleAt = 0L
+    private var lastValue: Int? = null
+
+    /**
+     * Mede no máximo a cada [MIN_INTERVAL_MS]: cada consulta ao SurfaceFlinger custa um pouco de
+     * tempo de quadro, então menos consultas = menos risco de travadinha no jogo.
+     */
     suspend fun sample(packageName: String): Int? {
+        val now = System.currentTimeMillis()
+        if (now - lastSampleAt < MIN_INTERVAL_MS) return lastValue
+        lastSampleAt = now
+        lastValue = sampleNow(packageName)
+        return lastValue
+    }
+
+    private suspend fun sampleNow(packageName: String): Int? {
         if (!shizuku.isReady) {
             source = FpsSource.NONE
             lastProblem = "Shizuku parado"
@@ -139,7 +154,8 @@ class FpsSampler(private val shizuku: ShizukuManager) {
             shizuku.run("dumpsys SurfaceFlinger --timestats -enable")
             timestatsEnabled = true
         }
-        val out = shizuku.run("dumpsys SurfaceFlinger --timestats -dump")
+        // -maxlayers limita a saída às camadas com mais quadros (o jogo), deixando o comando leve.
+        val out = shizuku.run("dumpsys SurfaceFlinger --timestats -dump -maxlayers 3")
         val now = System.currentTimeMillis()
         val frames = TimeStatsParser.totalFrames(out.output, packageName) ?: run {
             lastProblem = "--timestats sem dados do jogo"
@@ -171,6 +187,10 @@ class FpsSampler(private val shizuku: ShizukuManager) {
 
     /** 1% low só existe com --latency (precisa dos tempos de cada quadro). */
     fun sessionOnePercentLow(): Float? = accumulator.onePercentLowFps()
+
+    companion object {
+        const val MIN_INTERVAL_MS = 3_000L
+    }
 
     suspend fun release() {
         if (timestatsEnabled) shizuku.run("dumpsys SurfaceFlinger --timestats -disable")

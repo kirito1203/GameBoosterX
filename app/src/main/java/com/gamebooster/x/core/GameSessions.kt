@@ -25,7 +25,8 @@ data class GameSpaceSettings(
     val doNotDisturb: Boolean = true,
     val lockBrightness: Boolean = true,
     val overlay: Boolean = true,
-    val fpsCounter: Boolean = true,
+    /** Desligado por padrão: medir FPS consulta o SurfaceFlinger e pode causar pequenas travadas. */
+    val fpsCounter: Boolean = false,
     val notificationTicker: Boolean = true,
 )
 

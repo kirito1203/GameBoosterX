@@ -123,7 +123,7 @@ class GameSpaceService : Service(), OverlayActions {
             } catch (e: Exception) {
                 // Nunca derruba o serviço por uma leitura que falhou; tenta de novo no próximo ciclo.
             }
-            delay(if (sessionGame != null) 1_000L else 2_000L)
+            delay(2_000L)
         }
     }
 
