@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="bg">#FF050505</color>
+    <color name="card">#FF0E0E10</color>
+    <color name="card_border">#55FF1744</color>
+    <color name="red">#FFFF1744</color>
+    <color name="red_dark">#FFB0102E</color>
+    <color name="red_glow">#66FF1744</color>
+    <color name="text">#FFFFFFFF</color>
+    <color name="text_dim">#FF9A9A9A</color>
+    <color name="text_faint">#FF5E5E5E</color>
+    <color name="cyan">#FF18FFFF</color>
+</resources>

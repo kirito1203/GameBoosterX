@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Game Booster X</string>
+    <string name="brand">GAME BOOSTER X</string>
+    <string name="brand_sub">ROG ULTIMATE</string>
+    <string name="back">Voltar</string>
+    <string name="settings">Configurações</string>
+    <string name="turbo">TURBO X</string>
+    <string name="optimize">OTIMIZAR</string>
+    <string name="sidebar">GAME SIDEBAR</string>
+    <string name="my_games">MEUS JOGOS</string>
+    <string name="manage">Gerenciar</string>
+    <string name="modules">MÓDULOS</string>
+    <string name="no_games">Nenhum jogo selecionado. Toque em Gerenciar para escolher seus jogos.</string>
+    <string name="footer">Sem root • sem serviços ocultos • nenhum valor simulado. Dados indisponíveis aparecem como N/D.</string>
+</resources>

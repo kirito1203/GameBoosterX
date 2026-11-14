@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Barra flutuante (o usuário autoriza em Configurações) -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- Serviço visível (com notificação) que mantém a barra e grava sessões -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Detectar o jogo em primeiro plano e listar apps usados (autorização manual) -->
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+
+    <!-- Controle de brilho na barra (autorização manual) -->
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
+    <!-- Ativar "Não perturbe" durante o jogo (autorização manual) -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+
+    <!-- Opcional: localizar arquivos grandes/temporários no armazenamento compartilhado -->
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <!-- Painel de rede -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Opcional: só é concedida via ADB/LADB. Habilita a medição real de FPS. -->
+    <uses-permission
+        android:name="android.permission.DUMP"
+        tools:ignore="ProtectedPermissions" />
+
+    <!-- Visibilidade de pacotes (Android 11+): apenas apps com ícone no launcher -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.GameBoosterX"
+        tools:targetApi="35">
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.TurboActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.OptimizeActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.FpsActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.TouchActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.ThermalActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.NetworkActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.RefreshRateActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.GamesActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.ProfileActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.SessionsActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.SessionDetailActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.BatteryActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.StorageActivity" android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.SettingsActivity" android:exported="false" android:screenOrientation="portrait" />
+
+        <service
+            android:name=".service.BoostService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Barra flutuante de jogos com monitor de desempenho e registro de sessões" />
+        </service>
+    </application>
+</manifest>

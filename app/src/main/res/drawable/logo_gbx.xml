@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="56dp"
+    android:height="56dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    <!-- Hexágono externo -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFF1744"
+        android:strokeWidth="2.5"
+        android:pathData="M32,3L57,17.5L57,46.5L32,61L7,46.5L7,17.5Z" />
+    <!-- Hexágono interno (brilho) -->
+    <path
+        android:fillColor="#22FF1744"
+        android:strokeColor="#66FF1744"
+        android:strokeWidth="1"
+        android:pathData="M32,10L51,21L51,43L32,54L13,43L13,21Z" />
+    <!-- X angular -->
+    <path
+        android:fillColor="#FFFF1744"
+        android:pathData="M19,19L27,19L32,27L37,19L45,19L36,32L45,45L37,45L32,37L27,45L19,45L28,32Z" />
+    <!-- Detalhe central -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M32,29L35,32L32,35L29,32Z" />
+</vector>

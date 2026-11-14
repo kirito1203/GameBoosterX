@@ -1,0 +1,53 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.gameboosterx.rog'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.gameboosterx.rog'
+        minSdk 30
+        targetSdk 35
+        versionCode 1
+        versionName '1.0.0'
+    }
+
+    // Assinatura fixa: cada APK gerado no GitHub tem a mesma assinatura,
+    // então as novas versões instalam POR CIMA da anterior (sem desinstalar).
+    signingConfigs {
+        fixed {
+            storeFile file('gbx-release.jks')
+            storePassword 'gbxrog2026'
+            keyAlias 'gbx'
+            keyPassword 'gbxrog2026'
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.fixed
+        }
+        release {
+            signingConfig signingConfigs.fixed
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+// Sem dependências externas: o app usa somente o framework Android,
+// o que reduz o tamanho do APK e evita falhas de compilação por versões.
+dependencies {
+}
