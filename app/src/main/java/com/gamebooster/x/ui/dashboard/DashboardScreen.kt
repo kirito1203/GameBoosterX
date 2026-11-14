@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.FlowRow
@@ -52,21 +52,25 @@ import com.gamebooster.x.ui.components.Sparkline
 import com.gamebooster.x.ui.components.StatRow
 import com.gamebooster.x.ui.theme.GbxColors
 
+/** Abre as intents pedidas pelo ViewModel (jogos, Shizuku). Chamado uma vez na atividade. */
 @Composable
-fun DashboardRoute(viewModel: DashboardViewModel = viewModel(factory = DashboardViewModel.Factory)) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+fun LaunchRequestsEffect(viewModel: DashboardViewModel) {
     val context = LocalContext.current
-
     LaunchedEffect(viewModel) {
         viewModel.launchRequests.collect { intent ->
             try {
                 context.startActivity(intent)
             } catch (_: ActivityNotFoundException) {
-                // O jogo foi desinstalado entre a varredura e o toque; atualiza a lista.
+                // O app foi desinstalado entre a varredura e o toque; atualiza a lista.
                 viewModel.refreshGames()
             }
         }
     }
+}
+
+@Composable
+fun DashboardRoute(viewModel: DashboardViewModel = viewModel(factory = DashboardViewModel.Factory)) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     // Comportamento real do modo: manter a tela ligada enquanto o app estiver aberto.
     val view = LocalView.current
@@ -84,7 +88,7 @@ fun DashboardRoute(viewModel: DashboardViewModel = viewModel(factory = Dashboard
         turboActions = TurboActions(
             onSelectGame = viewModel::selectTurboGame,
             onSettings = viewModel::setTurboSettings,
-            onApplyAndPlay = viewModel::applyTurboAndPlay,
+            onApplyAndPlay = { viewModel.applyTurboAndPlay() },
             onRestore = viewModel::restoreTurbo,
             onRequestPermission = viewModel::requestShizukuPermission,
             onOpenShizuku = viewModel::openShizuku,
@@ -114,7 +118,7 @@ fun DashboardScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(GbxColors.Black)
-            .safeDrawingPadding(),
+            .statusBarsPadding(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {

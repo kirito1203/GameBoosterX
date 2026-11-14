@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -245,13 +246,21 @@ class DashboardViewModel(private val container: AppContainer) : ViewModel() {
         viewModelScope.launch { launches.send(container.shizuku.openShizukuIntent()) }
     }
 
-    /** Aplica o Turbo (Game Mode via Shizuku) ao jogo selecionado e abre o jogo. */
-    fun applyTurboAndPlay() {
+    /** Abre o jogo sem alterações. */
+    fun launchGame(packageName: String) {
+        viewModelScope.launch {
+            container.games.launchIntent(packageName)?.let { launches.send(it) }
+        }
+    }
+
+    /** Aplica o Turbo (Game Mode via Shizuku) ao jogo indicado (ou ao selecionado) e abre o jogo. */
+    fun applyTurboAndPlay(packageName: String? = null) {
+        if (packageName != null) turboLocal.update { it.copy(selectedPackage = packageName) }
         val pkg = turboLocal.value.selectedPackage ?: return
         if (turboLocal.value.running) return
         viewModelScope.launch {
             turboLocal.update { it.copy(running = true, message = null) }
-            val settings = state.value.turbo.settings
+            val settings = container.settings.turboSettings(pkg).first()
             val results = TurboCommands.apply(pkg, settings).map { container.shizuku.run(it) }
             val essential = results.filter { it.command.startsWith("cmd game set") || it.command.startsWith("cmd game mode") }
             val message = when {

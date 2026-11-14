@@ -100,6 +100,19 @@ class ShizukuManager(context: Context) {
         }
     }
 
+    val isReady: Boolean get() = status.value == ShizukuStatus.READY
+
+    /** Inicia um comando longo (ex.: screenrecord) sem esperar terminar. */
+    fun startBackground(command: String): Boolean {
+        if (!isReady) return false
+        return try {
+            newProcess.invoke(null, arrayOf("sh", "-c", command), null, null)
+            true
+        } catch (_: Exception) {
+            false
+        }
+    }
+
     companion object {
         const val SHIZUKU_PACKAGE = "moe.shizuku.privileged.api"
         private const val PERMISSION_REQUEST_CODE = 4210
