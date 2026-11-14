@@ -92,18 +92,14 @@ public class FpsActivity extends BaseActivity {
             addNote(content, "✓ Medição real habilitada (permissão DUMP concedida). O FPS é calculado a partir dos "
                     + "quadros efetivamente exibidos pelo compositor do Android.");
         } else {
-            addNote(content, "O Android 16 não oferece API pública para ler o FPS de outro app. A única fonte confiável sem root "
-                    + "é o compositor do sistema, que exige a permissão DUMP — você mesmo pode concedê-la UMA vez:\n\n"
-                    + "1. Ative as Opções do desenvolvedor (Sobre o telefone ▸ toque 7x em Versão).\n"
-                    + "2. Ative a Depuração por Wi-Fi.\n"
-                    + "3. Instale o app LADB (ou use um PC com ADB) e execute o comando abaixo.\n"
-                    + "4. Volte aqui: o status muda para habilitado.\n\n"
-                    + "Sem isso, o restante do app funciona normalmente e o FPS aparece como N/D.");
-            addRow(content, "Comando", GRANT_CMD, "Copiar", v -> {
-                ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                if (cm != null) cm.setPrimaryClip(ClipData.newPlainText("cmd", GRANT_CMD));
-                Toast.makeText(this, "Comando copiado", Toast.LENGTH_SHORT).show();
-            });
+            addNote(content, "O Android não libera o FPS de outros apps. A fonte confiável sem root é o compositor do "
+                    + "sistema, que exige uma permissão especial. O Game Booster X a obtém sozinho pelo Shizuku (grátis):\n\n"
+                    + "1. Instale o Shizuku (Play Store).\n"
+                    + "2. Ative Opções do desenvolvedor (Sobre o dispositivo ▸ Versão ▸ toque 7x em Número da versão) e a Depuração por Wi-Fi.\n"
+                    + "3. No Shizuku, faça o pareamento e toque em Iniciar.\n"
+                    + "4. Toque em \"Liberar\" abaixo e permita o acesso.");
+            addRow(content, "Liberar FPS real e Turbo avançado", "Via Shizuku — um toque, sem digitar comandos.",
+                    "Liberar", v -> com.gameboosterx.rog.core.ShizukuHelper.unlock(this, this::renderStatic));
         }
 
         addSection(content, "ESTABILIDADE (ÚLTIMOS 2 MIN)");

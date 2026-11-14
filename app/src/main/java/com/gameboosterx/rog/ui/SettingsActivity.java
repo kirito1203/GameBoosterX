@@ -55,11 +55,11 @@ public class SettingsActivity extends BaseActivity {
         perm("Acesso a todos os arquivos (opcional)", "Localiza arquivos grandes/temporários.", Perms.allFiles(),
                 () -> Perms.requestAllFiles(this));
         addRow(content, "Medição de FPS (opcional, via ADB) — " + st(Perms.dump(this)),
-                "Permissão DUMP concedida por comando. Veja as instruções no FPS Stabilizer.",
-                "Ver", v -> startActivity(new Intent(this, FpsActivity.class)));
+                "Liberada automaticamente pelo Shizuku (grátis, sem root).",
+                "Liberar", v -> com.gameboosterx.rog.core.ShizukuHelper.unlock(this, this::render));
         addRow(content, "Turbo avançado (opcional, via ADB) — " + st(com.gameboosterx.rog.core.SecureTweaks.available(this)),
                 "Permissão WRITE_SECURE_SETTINGS: fixa a tela no máximo e acelera animações durante o Turbo X.",
-                "Ver", v -> startActivity(new Intent(this, TurboActivity.class)));
+                "Liberar", v -> com.gameboosterx.rog.core.ShizukuHelper.unlock(this, this::render));
         addRow(content, "Atividade em segundo plano",
                 "Recomendado: deixe o Game Booster X sem restrição de bateria para a barra não ser fechada pelo sistema.",
                 "Ajustar", v -> Perms.openSetting(this, Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS));

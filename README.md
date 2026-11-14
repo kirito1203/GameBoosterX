@@ -36,8 +36,8 @@ Abra **Configurações (PERMISSÕES)** no app e conceda:
 | Modificar configurações do sistema | Brilho na barra e nos perfis | Opcional |
 | Acesso ao Não Perturbe | Silenciar notificações nos jogos | Opcional |
 | Acesso a todos os arquivos | Achar arquivos grandes/temporários | Opcional |
-| DUMP (via ADB/LADB) | **Medição real de FPS** | Opcional |
-| WRITE_SECURE_SETTINGS (via ADB/LADB) | Turbo avançado: tela no máximo + animações rápidas | Opcional |
+| DUMP (liberada pelo Shizuku) | **Medição real de FPS** | Opcional |
+| WRITE_SECURE_SETTINGS (liberada pelo Shizuku) | Turbo avançado: tela no máximo + animações rápidas | Opcional |
 | Sem restrição de bateria | Evitar que o realme UI feche a barra | Recomendada |
 
 ### Habilitar o FPS real (uma vez só)

@@ -10,8 +10,8 @@ android {
         applicationId 'com.gameboosterx.rog'
         minSdk 30
         targetSdk 35
-        versionCode 2
-        versionName '1.1.0'
+        versionCode 3
+        versionName '1.2.0'
     }
 
     // Assinatura fixa: cada APK gerado no GitHub tem a mesma assinatura,
@@ -47,7 +47,8 @@ android {
     }
 }
 
-// Sem dependências externas: o app usa somente o framework Android,
-// o que reduz o tamanho do APK e evita falhas de compilação por versões.
+// Única dependência: Shizuku (libera FPS real e Turbo avançado sem root e sem terminal).
 dependencies {
+    implementation 'dev.rikka.shizuku:api:13.1.5'
+    implementation 'dev.rikka.shizuku:provider:13.1.5'
 }

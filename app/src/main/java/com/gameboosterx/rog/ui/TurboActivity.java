@@ -350,13 +350,8 @@ public class TurboActivity extends BaseActivity {
                     })));
         } else {
             l.add(new Item(Item.INFO, "Turbo avançado (opcional, sem root)",
-                    "Libere UMA vez pelo app LADB (Depuração por Wi-Fi) com o comando copiado. "
-                            + "Permite fixar a tela no máximo e acelerar as animações do sistema.",
-                    "Copiar", v -> {
-                        ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                        if (cm != null) cm.setPrimaryClip(ClipData.newPlainText("cmd", SecureTweaks.GRANT_CMD));
-                        Toast.makeText(this, "Comando copiado. Cole no LADB.", Toast.LENGTH_LONG).show();
-                    }));
+                    "Com o Shizuku (grátis) o app libera sozinho: tela travada na taxa máxima, animações rápidas e FPS real.",
+                    "Liberar", v -> com.gameboosterx.rog.core.ShizukuHelper.unlock(this, this::render)));
         }
 
         // 9. Espaço de Jogos da realme (modo de desempenho do fabricante)
