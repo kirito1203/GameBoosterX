@@ -4,6 +4,9 @@ on:
   push:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,3 +32,14 @@ jobs:
         with:
           name: GameBoosterX-apk
           path: app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Publicar link de download (Release)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp app/build/outputs/apk/debug/app-debug.apk GameBoosterX-ROG.apk
+          gh release delete rog-latest -y --cleanup-tag || true
+          gh release create rog-latest GameBoosterX-ROG.apk \
+            --target "${{ github.sha }}" \
+            --title "Game Booster X ROG — build ${{ github.run_number }}" \
+            --notes "APK gerado automaticamente a partir do branch ${{ github.ref_name }}. Instala por cima da versão anterior."
