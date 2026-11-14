@@ -57,7 +57,10 @@ fun GameSpaceRoute(
     val status by GameSpaceService.status.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { viewModel.refreshPermissions() }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        viewModel.refreshPermissions()
+        viewModel.checkFreeform()
+    }
 
     val notificationPermission = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission(),
@@ -200,6 +203,38 @@ fun GameSpaceRoute(
                         }
                     }
                 }
+            }
+        }
+
+        item {
+            GbxPanel(
+                title = "Janelas flutuantes",
+                trailing = when (state.freeformEnabled) {
+                    true -> "ATIVADAS"
+                    false -> "DESATIVADAS"
+                    null -> "SHIZUKU PARADO"
+                },
+                trailingColor = if (state.freeformEnabled == true) GbxColors.Ok else GbxColors.TextSecondary,
+            ) {
+                Text(
+                    "Para os atalhos abrirem num quadro por cima do jogo (ex.: WhatsApp), o Android precisa das " +
+                        "opções do desenvolvedor \"janelas de formato livre\". O realme UI pode ainda assim recusar — " +
+                        "nesse caso use a Barra lateral inteligente da realme, que tem janela flutuante própria.",
+                    style = MaterialTheme.typography.bodySmall, color = GbxColors.TextSecondary,
+                )
+                if (state.freeformEnabled == false) {
+                    Button(
+                        onClick = { viewModel.setFreeform(true) },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(containerColor = GbxColors.ElectricBlue),
+                    ) { Text("Ativar janelas flutuantes") }
+                }
+                if (state.freeformEnabled == true) {
+                    OutlinedButton(onClick = { viewModel.setFreeform(false) }, modifier = Modifier.fillMaxWidth()) {
+                        Text("Desativar (voltar ao normal)", color = GbxColors.Neon)
+                    }
+                }
+                state.freeformMessage?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = GbxColors.TextPrimary) }
             }
         }
 

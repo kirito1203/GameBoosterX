@@ -3,11 +3,13 @@ package com.gamebooster.x.gamespace
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.ActivityOptions
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
+import android.graphics.Rect
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
@@ -289,16 +291,27 @@ class GameSpaceService : Service(), OverlayActions {
                 return@launch
             }
             val component = intent.component?.flattenToShortString()
-            if (floating && component != null && container.shizuku.isReady) {
-                // Janela flutuante (windowingMode 5 = freeform). O sistema pode ignorar o pedido.
-                val r = container.shizuku.run("am start --windowingMode 5 -n $component")
-                if (r.ok) {
-                    overlay.showNotification("Se abriu em tela cheia, o sistema não permitiu janela flutuante")
+            if (floating) {
+                // Quadro no centro: ~55% da largura e 65% da altura da tela atual.
+                val dm = resources.displayMetrics
+                val w = (dm.widthPixels * 0.55f).toInt()
+                val h = (dm.heightPixels * 0.65f).toInt()
+                val left = (dm.widthPixels - w) / 2
+                val top = (dm.heightPixels - h) / 2
+                if (component != null && container.shizuku.isReady) {
+                    // windowingMode 5 = janela livre (freeform). O sistema pode ignorar o pedido.
+                    val r = container.shizuku.run("am start --windowingMode 5 -n $component")
+                    if (r.ok) {
+                        overlay.showNotification("Se abriu em tela cheia: ative \"Janelas flutuantes\" na aba Game Space")
+                        return@launch
+                    }
+                }
+                val options = ActivityOptions.makeBasic().setLaunchBounds(Rect(left, top, left + w, top + h))
+                val ok = runCatching { startActivity(intent, options.toBundle()) }.isSuccess
+                if (ok) {
+                    overlay.showNotification("Se abriu em tela cheia: ative \"Janelas flutuantes\" na aba Game Space")
                     return@launch
                 }
-            }
-            if (floating && !container.shizuku.isReady) {
-                overlay.showNotification("Janela flutuante precisa do Shizuku; abrindo em tela cheia")
             }
             runCatching { startActivity(intent) }
                 .onFailure { overlay.showNotification("Não foi possível abrir o app") }
@@ -370,6 +383,24 @@ class GameSpaceService : Service(), OverlayActions {
         scope.launch {
             val report = container.cleaner.boost(keep)
             overlay.showNotification(report.summary())
+        }
+    }
+
+    override fun onClearCache() {
+        scope.launch {
+            overlay.showNotification("Limpando cache…")
+            overlay.showNotification(container.storage.clearAppCaches().message)
+        }
+    }
+
+    override fun onOptimizeAll() {
+        val keep = setOfNotNull(sessionGame?.packageName)
+        scope.launch {
+            overlay.showNotification("Otimizando…")
+            val ram = container.cleaner.boost(keep)
+            val cache = container.storage.clearAppCaches()
+            val ramText = if (ram.deltaBytes > 0) "RAM +${com.gamebooster.x.core.Formatters.bytes(ram.deltaBytes)}" else "RAM sem variação"
+            overlay.showNotification("$ramText · ${cache.message}")
         }
     }
 

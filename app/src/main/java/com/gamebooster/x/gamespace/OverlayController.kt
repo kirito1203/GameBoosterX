@@ -65,6 +65,10 @@ interface OverlayActions {
     fun onTurboRestore()
     fun onAlertMode(mode: PerformanceMode)
     fun onCleanRam()
+    fun onClearCache()
+
+    /** Limpa RAM e cache em sequência. */
+    fun onOptimizeAll()
 }
 
 /** ScrollView com altura máxima (o painel não passa da tela, inclusive na horizontal). */
@@ -244,16 +248,22 @@ class OverlayController(context: Context, private val actions: OverlayActions) {
         content.addView(turboActions)
         turboNote = label("", 9f, 0xFF8B98A9.toInt()).also { content.addView(it) }
 
-        content.addView(label("ALERTAS · MEMÓRIA", 10f, 0xFF00B8FF.toInt()).apply { setPadding(0, dp(8), 0, dp(2)) })
+        content.addView(label("OTIMIZAÇÃO RÁPIDA", 10f, 0xFF00B8FF.toInt()).apply { setPadding(0, dp(8), 0, dp(2)) })
+        val quick = GridLayout(ctx).apply { columnCount = 2 }
+        toolButton("🧹 Limpar RAM") { actions.onCleanRam() }.also { quick.addView(it) }
+        toolButton("🗑 Limpar cache") { actions.onClearCache() }.also { quick.addView(it) }
+        content.addView(quick)
+        content.addView(toolButton("⚡ Otimizar tudo") { actions.onOptimizeAll() }.apply {
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                .apply { topMargin = dp(4) }
+        })
+
+        content.addView(label("ALERTAS", 10f, 0xFF00B8FF.toInt()).apply { setPadding(0, dp(8), 0, dp(2)) })
         val modes = GridLayout(ctx).apply { columnCount = 3 }
         PerformanceMode.entries.forEach { m ->
             modeButtons[m] = chip(m.label, 62) { actions.onAlertMode(m) }.also { modes.addView(it) }
         }
         content.addView(modes)
-        content.addView(toolButton("🧹 Limpar RAM") { actions.onCleanRam() }.apply {
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                .apply { topMargin = dp(4) }
-        })
 
         content.addView(label("APPS · toque = janela · segurar = tela cheia", 9f, 0xFF00B8FF.toInt()).apply {
             setPadding(0, dp(8), 0, dp(2))

@@ -13,6 +13,7 @@ import com.gamebooster.x.games.InstalledGamesScanner
 import com.gamebooster.x.hardware.HardwareRepository
 import com.gamebooster.x.performance.BackgroundCleaner
 import com.gamebooster.x.performance.ShizukuManager
+import com.gamebooster.x.performance.StorageCleaner
 
 /** Injeção de dependências manual: um único container por processo. */
 class AppContainer(context: Context) {
@@ -22,6 +23,7 @@ class AppContainer(context: Context) {
     val games = InstalledGamesScanner(context)
     val shizuku = ShizukuManager(context)
     val sessions = SessionRepository(context)
+    val storage = StorageCleaner(shizuku)
     val controls = SystemControls(context)
 }
 
