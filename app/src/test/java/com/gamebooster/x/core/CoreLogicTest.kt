@@ -124,6 +124,15 @@ class DeviceProfileResolverTest {
         assertTrue(DeviceProfileResolver.isRealmeC71(id(model = "realme C71")))
     }
 
+    @Test fun detectsC71ByVerifiedModelCode() {
+        // Valores reais lidos no Realme C71 do usuário: fabricante "Realme", modelo "RMX5303", sem nome comercial.
+        val p = DeviceProfileResolver.resolve(id(manufacturer = "Realme", brand = "realme", model = "RMX5303", ram = 8L * GIB))
+        assertTrue(p.isRealmeC71)
+        assertEquals("realme C71 (RMX5303)", p.displayName)
+        assertFalse(DeviceProfileResolver.isRealmeC71(id(manufacturer = "Xiaomi", brand = "xiaomi", model = "RMX5303")))
+        assertFalse(DeviceProfileResolver.isRealmeC71(id(model = "RMX5304")))
+    }
+
     @Test fun doesNotConfuseSimilarModels() {
         assertFalse(DeviceProfileResolver.isRealmeC71(id(marketName = "realme C715")))
         assertFalse(DeviceProfileResolver.isRealmeC71(id(marketName = "realme C61")))

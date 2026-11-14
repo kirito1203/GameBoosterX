@@ -41,11 +41,19 @@ data class DeviceProfile(
 object DeviceProfileResolver {
 
     const val REALME_C71_KEY = "realme_c71"
+
+    /**
+     * Códigos de modelo (Build.MODEL) confirmados em aparelhos Realme C71 reais.
+     * RMX5303: lido no aparelho do usuário em 13/11/2026 (o sistema não expõe o nome comercial).
+     * Novos códigos só devem entrar depois de confirmados em um aparelho.
+     */
+    val REALME_C71_MODEL_CODES: Set<String> = setOf("RMX5303")
     private const val GIB = 1024L * 1024L * 1024L
 
     fun isRealmeC71(id: DeviceIdentity): Boolean {
         val isRealme = listOf(id.manufacturer, id.brand).any { it.equals("realme", ignoreCase = true) }
         if (!isRealme) return false
+        if (REALME_C71_MODEL_CODES.any { it.equals(id.model.trim(), ignoreCase = true) }) return true
         val c71 = Regex("""(^|[^a-z0-9])c71([^a-z0-9]|$)""", RegexOption.IGNORE_CASE)
         return listOfNotNull(id.model, id.marketName, id.device, id.product).any { c71.containsMatchIn(it) }
     }
@@ -66,11 +74,12 @@ object DeviceProfileResolver {
         id.socModel?.let { notes += "Chip informado pelo sistema: ${listOfNotNull(id.socManufacturer, it).joinToString(" ")}." }
 
         return if (isRealmeC71(id)) {
+            val c71Name = if (id.marketName.isNullOrBlank()) "realme C71 (${id.model})" else name
             notes += "Perfil Realme C71 ativo: recomendações priorizam estabilidade de FPS e controle térmico."
             if (tier == DeviceTier.ENTRY) {
                 notes += "RAM/núcleos medidos indicam faixa de entrada: prefira gráficos baixos e 60 FPS estáveis."
             }
-            DeviceProfile(REALME_C71_KEY, name, isRealmeC71 = true, tier = tier, notes = notes)
+            DeviceProfile(REALME_C71_KEY, c71Name, isRealmeC71 = true, tier = tier, notes = notes)
         } else {
             DeviceProfile(
                 key = "generic_${id.manufacturer}_${id.model}".lowercase().replace(Regex("[^a-z0-9_]"), "_"),
