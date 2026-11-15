@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pulse Solar</string>
+    <string name="m_boost">Solar Boost</string>
+    <string name="m_guard">Solar Guard</string>
+    <string name="m_ram">Solar RAM</string>
+    <string name="m_storage">Solar Storage</string>
+    <string name="m_network">Solar Network</string>
+    <string name="m_gaming">Solar Gaming</string>
+    <string name="m_intel">Solar Intelligence</string>
+    <string name="m_fps">Solar FPS Engine</string>
+    <string name="m_fps_report">Relatório da sessão</string>
+    <string name="m_fps_profiles">Perfis de jogos</string>
+</resources>

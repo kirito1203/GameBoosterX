@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout style="@style/Card" android:gravity="center_horizontal">
+            <com.pulsesolar.app.ui.RingGauge
+                android:id="@+id/gauge"
+                android:layout_width="200dp"
+                android:layout_height="200dp" />
+            <TextView
+                android:id="@+id/txtHeadline"
+                style="@style/BodyStrong"
+                android:layout_marginTop="6dp"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Visão geral" />
+            <LinearLayout
+                android:id="@+id/kvBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+            <Button
+                android:id="@+id/btnSystemStorage"
+                style="@style/Btn"
+                android:text="Abrir armazenamento do sistema" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="O que ocupa o espaço" />
+            <TextView
+                android:id="@+id/txtCatMsg"
+                style="@style/Body"
+                android:text="Toque em analisar para ver fotos, vídeos, áudios e apps." />
+            <LinearLayout
+                android:id="@+id/kvCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+            <Button
+                android:id="@+id/btnUsageAccess"
+                style="@style/BtnOutline"
+                android:text="Permitir acesso ao uso (necessário)" />
+            <Button
+                android:id="@+id/btnScan"
+                style="@style/Btn"
+                android:text="Analisar armazenamento" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Apps que mais ocupam espaço" />
+            <TextView
+                android:id="@+id/txtAppsMsg"
+                style="@style/Body"
+                android:text="O ranking aparece após a análise. Toque em um app para limpar cache, dados ou desinstalar pela tela do sistema." />
+            <LinearLayout
+                android:id="@+id/appsBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Cache do Pulse Solar" />
+            <TextView
+                android:id="@+id/txtCache"
+                style="@style/BodyStrong" />
+            <Button
+                android:id="@+id/btnClearCache"
+                style="@style/BtnOutline"
+                android:text="Limpar cache do Pulse Solar" />
+            <TextView
+                style="@style/Body"
+                android:layout_marginTop="6dp"
+                android:text="O Android não permite que um app apague o cache de outros apps; use a lista acima para fazer isso pela tela do sistema."
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="18dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:letterSpacing="0.18"
+            android:shadowColor="@color/solar_orange"
+            android:shadowRadius="20"
+            android:text="PULSE SOLAR"
+            android:textColor="@color/solar_gold"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtDevice"
+            style="@style/Body"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/blue"
+            android:textSize="12sp" />
+
+        <com.pulsesolar.app.ui.SolarCoreView
+            android:id="@+id/solarCore"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:layout_marginTop="4dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Medidores ao vivo -->
+        <LinearLayout
+            style="@style/Card"
+            android:layout_marginTop="0dp"
+            android:orientation="horizontal"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp">
+
+            <com.pulsesolar.app.ui.RingGauge
+                android:id="@+id/gaugeRam"
+                android:layout_width="0dp"
+                android:layout_height="105dp"
+                android:layout_weight="1" />
+
+            <com.pulsesolar.app.ui.RingGauge
+                android:id="@+id/gaugeStorage"
+                android:layout_width="0dp"
+                android:layout_height="105dp"
+                android:layout_weight="1" />
+
+            <com.pulsesolar.app.ui.RingGauge
+                android:id="@+id/gaugeTemp"
+                android:layout_width="0dp"
+                android:layout_height="105dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <!-- Módulos -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:columnCount="2">
+
+            <LinearLayout android:id="@+id/tileBoost" style="@style/Tile">
+                <TextView style="@style/TileTitle" android:text="☀ Solar Boost" />
+                <TextView android:id="@+id/subBoost" style="@style/TileSub" android:text="Recursos e apps ativos" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/tileGuard" style="@style/Tile">
+                <TextView style="@style/TileTitle" android:text="☀ Solar Guard" />
+                <TextView android:id="@+id/subGuard" style="@style/TileSub" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/tileRam" style="@style/Tile">
+                <TextView style="@style/TileTitle" android:text="☀ Solar RAM" />
+                <TextView android:id="@+id/subRam" style="@style/TileSub" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/tileStorage" style="@style/Tile">
+                <TextView style="@style/TileTitle" android:text="☀ Solar Storage" />
+                <TextView android:id="@+id/subStorage" style="@style/TileSub" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/tileNetwork" style="@style/Tile">
+                <TextView style="@style/TileTitle" android:text="☀ Solar Network" />
+                <TextView android:id="@+id/subNetwork" style="@style/TileSub" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/tileGaming" style="@style/Tile">
+                <TextView style="@style/TileTitle" android:text="☀ Solar Gaming" />
+                <TextView android:id="@+id/subGaming" style="@style/TileSub" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tileIntel"
+                style="@style/Tile"
+                android:layout_columnSpan="2">
+                <TextView style="@style/TileTitle" android:text="☀ Solar Intelligence" />
+                <TextView android:id="@+id/subIntel" style="@style/TileSub" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tileFps"
+                style="@style/Tile"
+                android:layout_columnSpan="2">
+                <TextView style="@style/TileTitle" android:text="☀ Solar FPS Engine" />
+                <TextView android:id="@+id/subFps" style="@style/TileSub" android:text="Pulso do sistema, gargalos, perfis e relatórios de sessão" />
+            </LinearLayout>
+        </GridLayout>
+
+        <TextView
+            style="@style/Body"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="center"
+            android:text="Todos os valores são lidos do sistema em tempo real. O Pulse Solar não aumenta FPS nem a potência física do aparelho; ele mostra o que está limitando o desempenho e leva você às configurações certas."
+            android:textSize="11sp" />
+    </LinearLayout>
+</ScrollView>

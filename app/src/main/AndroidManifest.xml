@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissões normais (concedidas na instalação) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
+    <!-- Permissão em tempo de execução (Android 13+): alertas do Solar Guard -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Permissões especiais: o usuário concede em Configurações -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <!-- Painel do Solar FPS Engine sobre o jogo ("Exibir sobre outros apps") -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+
+    <!-- Visibilidade de apps (Android 11+): apenas apps com ícone no launcher -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+        <package android:name="com.oplus.games" />
+        <package android:name="com.coloros.gamespace" />
+        <package android:name="com.oplus.gamespace" />
+        <package android:name="com.coloros.gamespaceui" />
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PulseSolar">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.PulseSolar.NoBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".modules.boost.SolarBoostActivity"
+            android:label="@string/m_boost"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".modules.guard.SolarGuardActivity"
+            android:label="@string/m_guard"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".modules.ram.SolarRamActivity"
+            android:label="@string/m_ram"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".modules.storage.SolarStorageActivity"
+            android:label="@string/m_storage"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".modules.network.SolarNetworkActivity"
+            android:label="@string/m_network"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".modules.gaming.SolarGamingActivity"
+            android:label="@string/m_gaming"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".modules.intelligence.SolarIntelligenceActivity"
+            android:label="@string/m_intel"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".modules.fps.SolarFpsActivity"
+            android:label="@string/m_fps"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".modules.fps.SessionReportActivity"
+            android:label="@string/m_fps_report"
+            android:parentActivityName=".modules.fps.SolarFpsActivity" />
+        <activity
+            android:name=".modules.fps.GameProfileActivity"
+            android:label="@string/m_fps_profiles"
+            android:parentActivityName=".modules.fps.SolarFpsActivity" />
+
+        <!-- Solar FPS Engine: sessão de jogo monitorada -->
+        <service
+            android:name=".modules.fps.SessionService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Monitoramento de sessão de jogo iniciado pelo usuário: temperatura, memória e alertas de aquecimento." />
+        </service>
+
+        <!-- Solar Guard: monitoramento contínuo de bateria e temperatura -->
+        <service
+            android:name=".modules.guard.GuardService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Monitoramento de temperatura e bateria escolhido pelo usuário, com alertas de superaquecimento." />
+        </service>
+    </application>
+</manifest>

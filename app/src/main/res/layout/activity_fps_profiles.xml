@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Editor (aparece ao escolher um jogo) -->
+        <LinearLayout
+            android:id="@+id/editor"
+            style="@style/Card"
+            android:visibility="gone">
+            <TextView style="@style/CardTitle" android:text="Perfil do jogo" />
+            <TextView
+                android:id="@+id/txtGame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <Switch
+                android:id="@+id/swDnd"
+                style="@style/SwitchRow"
+                android:text="Não perturbe (só prioridade)" />
+            <Switch
+                android:id="@+id/swBright"
+                style="@style/SwitchRow"
+                android:text="Brilho fixo" />
+            <SeekBar
+                android:id="@+id/seekBright"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="255" />
+            <Switch
+                android:id="@+id/swTimeout"
+                style="@style/SwitchRow"
+                android:text="Tela apaga só após 10 min" />
+            <Switch
+                android:id="@+id/swMonitor"
+                style="@style/SwitchRow"
+                android:text="Gravar sessão e mostrar painel" />
+            <TextView
+                android:id="@+id/txtLimit"
+                style="@style/Body"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/text" />
+            <SeekBar
+                android:id="@+id/seekLimit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="13" />
+            <Button
+                android:id="@+id/btnPlay"
+                style="@style/Btn"
+                android:text="Salvar e jogar" />
+            <Button
+                android:id="@+id/btnSave"
+                style="@style/BtnOutline"
+                android:text="Salvar perfil" />
+            <Button
+                android:id="@+id/btnDelete"
+                style="@style/BtnOutline"
+                android:text="Excluir perfil" />
+            <TextView
+                style="@style/Body"
+                android:layout_marginTop="8dp"
+                android:text="Perfis usam somente ajustes que o Android permite. Não alteram CPU, GPU nem FPS."
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Escolha o jogo" />
+            <TextView
+                android:id="@+id/txtMsg"
+                style="@style/Body"
+                android:text="Carregando…" />
+            <LinearLayout
+                android:id="@+id/gamesBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="vertical" />
+            <Button
+                android:id="@+id/btnShowAll"
+                style="@style/BtnOutline"
+                android:text="Mostrar todos os apps" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

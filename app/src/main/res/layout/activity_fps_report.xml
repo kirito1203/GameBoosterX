@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Sessão" />
+            <LinearLayout
+                android:id="@+id/kvSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/findingsBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Antes da sessão" />
+            <LinearLayout
+                android:id="@+id/kvBefore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Durante a sessão" />
+            <LinearLayout
+                android:id="@+id/kvDuring"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Temperatura da bateria (20–50 °C)" />
+            <com.pulsesolar.app.ui.LineGraph
+                android:id="@+id/graphTemp"
+                android:layout_width="match_parent"
+                android:layout_height="110dp" />
+            <TextView
+                style="@style/CardTitle"
+                android:layout_marginTop="14dp"
+                android:text="Estabilidade do pulso do sistema (%)" />
+            <com.pulsesolar.app.ui.LineGraph
+                android:id="@+id/graphStability"
+                android:layout_width="match_parent"
+                android:layout_height="110dp" />
+            <TextView
+                style="@style/CardTitle"
+                android:layout_marginTop="14dp"
+                android:text="Teto da CPU (% do máximo)" />
+            <com.pulsesolar.app.ui.LineGraph
+                android:id="@+id/graphCap"
+                android:layout_width="match_parent"
+                android:layout_height="110dp" />
+            <TextView
+                android:id="@+id/txtCapNote"
+                style="@style/Body"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Alertas emitidos" />
+            <TextView
+                android:id="@+id/txtAlerts"
+                style="@style/Body"
+                android:textColor="@color/text" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnDelete"
+            style="@style/BtnOutline"
+            android:layout_marginBottom="16dp"
+            android:text="Apagar este relatório" />
+    </LinearLayout>
+</ScrollView>

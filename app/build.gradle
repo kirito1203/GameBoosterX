@@ -1,0 +1,36 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.pulsesolar.app'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.pulsesolar.app"
+        minSdk 26          // Android 8.0
+        targetSdk 35       // Instala e roda normalmente no Android 16
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // Assinado com a chave de debug para ser instalável sem keystore própria.
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+// Nenhuma dependência externa: somente o Android SDK.

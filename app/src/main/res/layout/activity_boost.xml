@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Recursos agora" />
+            <LinearLayout
+                android:id="@+id/kvBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Apps ativos nas últimas 3 h" />
+            <TextView
+                android:id="@+id/txtAppsMsg"
+                style="@style/Body"
+                android:text="Toque em um app para abrir a tela do sistema e usar &quot;Forçar parada&quot;. Desde o Android 14 nenhum app comum pode fechar outros apps diretamente." />
+            <Button
+                android:id="@+id/btnUsageAccess"
+                style="@style/BtnOutline"
+                android:text="Permitir acesso ao uso (necessário)" />
+            <Button
+                android:id="@+id/btnRefreshApps"
+                style="@style/Btn"
+                android:text="Atualizar lista" />
+            <LinearLayout
+                android:id="@+id/appsBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Gerenciamento seguro" />
+            <TextView
+                android:id="@+id/txtCache"
+                style="@style/BodyStrong" />
+            <Button
+                android:id="@+id/btnClearCache"
+                style="@style/Btn"
+                android:text="Limpar cache do Pulse Solar" />
+            <Button
+                android:id="@+id/btnBatteryOpt"
+                style="@style/BtnOutline"
+                android:text="Otimização de bateria por app" />
+            <Button
+                android:id="@+id/btnRunning"
+                style="@style/BtnOutline"
+                android:text="Serviços em execução (opções do desenvolvedor)" />
+            <Button
+                android:id="@+id/btnAllApps"
+                style="@style/BtnOutline"
+                android:text="Todos os apps instalados" />
+            <TextView
+                style="@style/Body"
+                android:layout_marginTop="8dp"
+                android:text="&quot;Serviços em execução&quot; só aparece se as opções do desenvolvedor estiverem ativadas (Configurações &gt; Sobre o telefone &gt; toque 7 vezes em Versão)."
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

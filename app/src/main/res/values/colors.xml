@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base preta -->
+    <color name="bg">#FF020408</color>
+    <color name="bg_top">#FF06122A</color>
+    <color name="surface">#FF0A1324</color>
+    <color name="track">#FF13223A</color>
+    <!-- Azul -->
+    <color name="blue">#FF2EA8FF</color>
+    <color name="blue_deep">#FF1565FF</color>
+    <color name="blue_glow">#592EA8FF</color>
+    <!-- Detalhes solares -->
+    <color name="solar_gold">#FFFFB300</color>
+    <color name="solar_orange">#FFFF6D00</color>
+    <color name="solar_light">#FFFFE082</color>
+    <!-- Estados -->
+    <color name="ok_green">#FF4CFF9A</color>
+    <color name="warn_amber">#FFFFC400</color>
+    <color name="crit_red">#FFFF4D4D</color>
+    <!-- Texto -->
+    <color name="text">#FFEAF2FF</color>
+    <color name="text_dim">#FF7F93B2</color>
+    <color name="on_button">#FF140A00</color>
+</resources>

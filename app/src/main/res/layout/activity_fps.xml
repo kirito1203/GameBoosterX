@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Sessão -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Sessão de jogo" />
+            <TextView
+                android:id="@+id/txtSession"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtLimit"
+                style="@style/Body"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/text" />
+            <SeekBar
+                android:id="@+id/seekLimit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="13" />
+            <Button
+                android:id="@+id/btnStart"
+                style="@style/Btn"
+                android:text="Iniciar monitor de sessão" />
+            <Button
+                android:id="@+id/btnStop"
+                style="@style/BtnOutline"
+                android:text="Encerrar sessão e gerar relatório" />
+            <Button
+                android:id="@+id/btnOverlay"
+                style="@style/BtnOutline"
+                android:text="Permitir painel sobre o jogo" />
+            <Button
+                android:id="@+id/btnProfiles"
+                style="@style/Btn"
+                android:text="Perfis de jogos" />
+            <TextView
+                style="@style/Body"
+                android:layout_marginTop="8dp"
+                android:text="Inicie o monitor, abra o jogo e jogue normalmente. A cada 2 s o Pulse Solar grava temperatura, estado térmico, teto e frequência da CPU, memória e o pulso do sistema. Ao encerrar (aqui ou pela notificação), o relatório fica salvo abaixo."
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Pulso ao vivo -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Pulso do sistema ao vivo" />
+            <TextView
+                android:id="@+id/txtPulse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:shadowColor="@color/solar_orange"
+                android:shadowRadius="12"
+                android:textColor="@color/solar_gold"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtPulseDetail"
+                style="@style/BodyStrong" />
+            <com.pulsesolar.app.ui.LineGraph
+                android:id="@+id/graphPulse"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_marginTop="6dp" />
+            <TextView
+                style="@style/Body"
+                android:layout_marginTop="6dp"
+                android:text="Quadros por segundo que ESTA tela recebe do Android (Choreographer). Mostra a taxa real da tela e se o sistema está engasgando. Não é o FPS de um jogo: o Android não libera essa leitura para apps comuns."
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Gargalos -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Gargalos de CPU e memória agora" />
+            <LinearLayout
+                android:id="@+id/kvCpu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+            <Button
+                android:id="@+id/btnDiagnose"
+                style="@style/Btn"
+                android:text="Diagnosticar agora" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/findingsBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <!-- Relatórios -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Relatórios de sessão" />
+            <TextView
+                android:id="@+id/txtReports"
+                style="@style/Body" />
+            <LinearLayout
+                android:id="@+id/reportsBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+            <Button
+                android:id="@+id/btnClearReports"
+                style="@style/BtnOutline"
+                android:text="Apagar todos os relatórios" />
+        </LinearLayout>
+
+        <!-- Compatibilidade -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="O que funciona neste aparelho" />
+            <TextView
+                style="@style/Body"
+                android:text="Teste feito agora, no seu aparelho:" />
+            <LinearLayout
+                android:id="@+id/compatBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="vertical" />
+            <Button
+                android:id="@+id/btnCompat"
+                style="@style/BtnOutline"
+                android:text="Testar de novo" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

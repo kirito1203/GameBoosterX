@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Checklist -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Checklist antes de jogar" />
+            <TextView
+                android:id="@+id/txtCheck"
+                style="@style/Body"
+                android:text="Verifica RAM, espaço, bateria, temperatura, economia de energia e latência da internet agora." />
+            <Button
+                android:id="@+id/btnCheck"
+                style="@style/Btn"
+                android:text="Verificar agora" />
+            <LinearLayout
+                android:id="@+id/checkBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+        <!-- Modo Jogos -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Modo Jogos" />
+            <TextView
+                android:id="@+id/txtState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+            <Button
+                android:id="@+id/btnActivate"
+                style="@style/Btn"
+                android:text="Ativar Modo Jogos" />
+            <Button
+                android:id="@+id/btnRestore"
+                style="@style/BtnOutline"
+                android:text="Desativar e restaurar configurações" />
+            <Button
+                android:id="@+id/btnGameSpace"
+                style="@style/BtnOutline"
+                android:text="Abrir Espaço de Jogos da realme"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="O que o Modo Jogos altera" />
+            <Switch
+                android:id="@+id/swDnd"
+                style="@style/SwitchRow"
+                android:text="Não perturbe (só prioridade)" />
+            <Switch
+                android:id="@+id/swBright"
+                style="@style/SwitchRow"
+                android:text="Brilho fixo (desliga o automático)" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <SeekBar
+                    android:id="@+id/seekBright"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:max="255" />
+                <TextView
+                    android:id="@+id/txtBright"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textColor="@color/text_dim" />
+            </LinearLayout>
+            <Switch
+                android:id="@+id/swTimeout"
+                style="@style/SwitchRow"
+                android:text="Tela apaga só após 10 min" />
+            <TextView
+                style="@style/Body"
+                android:layout_marginTop="8dp"
+                android:text="Ao desativar, os valores que estavam antes voltam exatamente como eram."
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Permissões" />
+            <TextView android:id="@+id/txtPermDnd" style="@style/Body" />
+            <Button
+                android:id="@+id/btnPermDnd"
+                style="@style/BtnOutline"
+                android:text="Conceder acesso ao Não Perturbe" />
+            <TextView android:id="@+id/txtPermWrite" style="@style/Body" android:layout_marginTop="10dp" />
+            <Button
+                android:id="@+id/btnPermWrite"
+                style="@style/BtnOutline"
+                android:text="Permitir alterar configurações do sistema" />
+        </LinearLayout>
+
+        <!-- Jogos -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Abrir jogo com Modo Jogos" />
+            <TextView android:id="@+id/txtGamesMsg" style="@style/Body" android:text="Carregando…" />
+            <LinearLayout
+                android:id="@+id/gamesBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="vertical" />
+            <Button
+                android:id="@+id/btnShowAll"
+                style="@style/BtnOutline"
+                android:text="Mostrar todos os apps" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Sem promessas falsas" />
+            <TextView
+                style="@style/Body"
+                android:text="O Pulse Solar não aumenta FPS e não altera CPU/GPU: apps sem root não têm esse acesso no Android. O que ele faz de verdade: remove interrupções, fixa brilho e tempo de tela, mostra o que pode causar travadas antes de você jogar e abre o Espaço de Jogos da realme, que tem os recursos oficiais do fabricante." />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

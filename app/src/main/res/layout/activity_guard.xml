@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            style="@style/Card"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+            <com.pulsesolar.app.ui.RingGauge
+                android:id="@+id/gaugeLevel"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_weight="1" />
+            <com.pulsesolar.app.ui.RingGauge
+                android:id="@+id/gaugeTemp"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Temperatura da bateria (20–50 °C)" />
+            <com.pulsesolar.app.ui.LineGraph
+                android:id="@+id/graph"
+                android:layout_width="match_parent"
+                android:layout_height="120dp" />
+            <TextView
+                style="@style/Body"
+                android:layout_marginTop="4dp"
+                android:text="Uma leitura a cada 2 s enquanto esta tela está aberta."
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Monitoramento contínuo" />
+            <Switch
+                android:id="@+id/swGuard"
+                style="@style/SwitchRow"
+                android:text="Ligar Solar Guard em segundo plano" />
+            <TextView
+                android:id="@+id/txtGuardState"
+                style="@style/Body"
+                android:layout_marginTop="2dp" />
+            <TextView
+                android:id="@+id/txtLimit"
+                style="@style/BodyStrong"
+                android:layout_marginTop="12dp" />
+            <SeekBar
+                android:id="@+id/seekLimit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:max="13" />
+            <TextView
+                android:id="@+id/txtLow"
+                style="@style/BodyStrong"
+                android:layout_marginTop="12dp" />
+            <SeekBar
+                android:id="@+id/seekLow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:max="25" />
+            <TextView
+                style="@style/Body"
+                android:layout_marginTop="8dp"
+                android:text="O monitor fica numa notificação fixa e avisa quando a temperatura passar do limite (no máximo a cada 10 min), quando a bateria ficar baixa e quando o Android começar a limitar o desempenho por calor. Ele não liga sozinho após reiniciar o aparelho."
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Bateria e temperatura" />
+            <LinearLayout
+                android:id="@+id/kvBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+            <TextView
+                style="@style/Body"
+                android:layout_marginTop="8dp"
+                android:text="A corrente é informada pelo próprio aparelho; a unidade e o sinal podem variar entre fabricantes."
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Atalhos do sistema" />
+            <Button
+                android:id="@+id/btnSaver"
+                style="@style/Btn"
+                android:text="Economia de bateria" />
+            <Button
+                android:id="@+id/btnUsage"
+                style="@style/BtnOutline"
+                android:text="Uso de bateria por app" />
+            <Button
+                android:id="@+id/btnNotif"
+                style="@style/BtnOutline"
+                android:text="Notificações do Pulse Solar" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

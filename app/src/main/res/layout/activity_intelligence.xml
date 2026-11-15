@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Diagnóstico de travamentos" />
+            <TextView
+                android:id="@+id/txtSummary"
+                style="@style/BodyStrong"
+                android:text="Analisa RAM, armazenamento, temperatura, economia de bateria, internet, animações, tempo ligado, apps instalados e apps mais usados." />
+            <Button
+                android:id="@+id/btnAnalyze"
+                style="@style/Btn"
+                android:text="Analisar agora" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/findingsBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Teste de aquecimento da CPU" />
+            <TextView
+                style="@style/Body"
+                android:text="Executa cálculos reais em todos os núcleos e mede quantos blocos são concluídos por segundo. O teste de estabilidade repete por cerca de 30 s: uma queda grande mostra que o aparelho reduz a velocidade ao esquentar, a causa mais comum de travadas no meio do jogo." />
+            <TextView
+                android:id="@+id/txtBench"
+                style="@style/BodyStrong"
+                android:layout_marginTop="8dp"
+                android:fontFamily="monospace"
+                android:textSize="13sp" />
+            <Button
+                android:id="@+id/btnQuick"
+                style="@style/Btn"
+                android:text="Teste rápido (≈5 s)" />
+            <Button
+                android:id="@+id/btnStability"
+                style="@style/BtnOutline"
+                android:text="Teste de estabilidade (≈30 s)" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Processador ao vivo" />
+            <LinearLayout
+                android:id="@+id/kvCpu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Tela" />
+            <LinearLayout
+                android:id="@+id/kvDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+            <Button
+                android:id="@+id/btnDisplay"
+                style="@style/BtnOutline"
+                android:text="Abrir configurações de tela" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Aparelho" />
+            <LinearLayout
+                android:id="@+id/kvDevice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

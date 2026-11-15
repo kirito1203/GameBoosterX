@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Conexão agora" />
+            <TextView
+                android:id="@+id/txtNetHeadline"
+                style="@style/BodyStrong"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:id="@+id/kvBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Tráfego do aparelho em tempo real" />
+            <TextView
+                android:id="@+id/txtTraffic"
+                style="@style/BodyStrong" />
+            <com.pulsesolar.app.ui.LineGraph
+                android:id="@+id/graph"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_marginTop="6dp" />
+            <TextView
+                style="@style/Body"
+                android:layout_marginTop="4dp"
+                android:text="Download de todos os apps somados (KB/s), medido pelo Android a cada segundo. Se estiver alto sem você baixar nada, algum app está usando a internet em segundo plano."
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Teste de latência" />
+            <TextView
+                style="@style/Body"
+                android:text="Mede o tempo real para abrir conexão com servidores públicos (10 tentativas cada). Avalia média, variação (jitter) e perdas, que são o que mais afeta jogos online." />
+            <TextView
+                android:id="@+id/txtPing"
+                style="@style/BodyStrong"
+                android:layout_marginTop="8dp"
+                android:fontFamily="monospace"
+                android:textSize="13sp" />
+            <Button
+                android:id="@+id/btnPing"
+                style="@style/Btn"
+                android:text="Testar latência" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Teste de velocidade (download)" />
+            <TextView
+                style="@style/Body"
+                android:text="Baixa um arquivo de teste da Cloudflare por até 10 s. Usa até 25 MB da sua internet; no plano de dados móveis isso conta na franquia." />
+            <TextView
+                android:id="@+id/txtSpeed"
+                style="@style/BodyStrong"
+                android:layout_marginTop="8dp" />
+            <Button
+                android:id="@+id/btnSpeed"
+                style="@style/Btn"
+                android:text="Testar velocidade de download" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Atalhos de rede" />
+            <Button
+                android:id="@+id/btnPanel"
+                style="@style/BtnOutline"
+                android:text="Painel de internet" />
+            <Button
+                android:id="@+id/btnWifi"
+                style="@style/BtnOutline"
+                android:text="Configurações de Wi-Fi" />
+            <Button
+                android:id="@+id/btnDataUsage"
+                style="@style/BtnOutline"
+                android:text="Uso de dados" />
+            <Button
+                android:id="@+id/btnNetSettings"
+                style="@style/BtnOutline"
+                android:text="Rede e internet" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
