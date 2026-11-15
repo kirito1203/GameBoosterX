@@ -47,7 +47,7 @@ public final class OverlayPanel {
     // sessão
     private final long startT = System.currentTimeMillis();
     private final int batStart;
-    private int samples = 0, fpsSecs = 0, smoothSecs = 0, totalJanks = 0, pingN = 0;
+    private int samples = 0, fpsSecs = 0, smoothSecs = 0, totalJanks = 0, pingN = 0, recentJanks = 0;
     private float tempSum = 0, tempMax = 0, ramSum = 0, hzSum = 0, hzMin = 999, pingSum = 0;
 
     private final Choreographer.FrameCallback fpsCb = new Choreographer.FrameCallback() {
@@ -62,6 +62,7 @@ public final class OverlayPanel {
                 janks = janksAcc;
                 fpsSecs++; hzSum += hz; hzMin = Math.min(hzMin, hz); totalJanks += janks;
                 if (janks == 0) smoothSecs++;
+                recentJanks = (recentJanks * 4 + janks * 10) / 5;
                 frames = 0; janksAcc = 0; secStart = t;
             }
             Choreographer.getInstance().postFrameCallback(this);
@@ -114,7 +115,8 @@ public final class OverlayPanel {
             while (running) {
                 ping = NetworkMonitor.tcpPing("8.8.8.8", 53, 1500);
                 if (ping >= 0) { pingSum += ping; pingN++; }
-                if (opt("opt_loop") && SystemClock.elapsedRealtime() - lastClean > 90000) {
+                long every = ProfileManager.prefs(c).getBoolean("fps_boost", false) ? 45000 : 90000;
+                if (opt("opt_loop") && SystemClock.elapsedRealtime() - lastClean > every) {
                     Optimizer.killBackground(c, pkg);
                     lastClean = SystemClock.elapsedRealtime();
                 }
@@ -232,6 +234,11 @@ public final class OverlayPanel {
             String clock = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
             t = String.format(Locale.US, "● REC %s  RAM %d%%\n🌡 %.1f°C   🔋 %d%%\n📶 ping %s", clock, ru, b.temp, b.level, pg);
             if (hz > 0) t += String.format(Locale.US, "\n🎞 %dFPS tela  travadas %d", hz, janks);
+            if (ProfileManager.prefs(c).getBoolean("fps_boost", false)) {
+                t += "\n⚡ FPS BOOST";
+                if (recentJanks >= 8) t += "\n⚠ FPS caindo: abaixe gráficos";
+                else if (b.temp >= 41) t += "\n⚠ esquentando: FPS vai cair";
+            }
             if (DeviceInfo.thermalStatus(c) >= 2) t += "\n⚠ AQUECENDO";
         }
         view.setText(t);

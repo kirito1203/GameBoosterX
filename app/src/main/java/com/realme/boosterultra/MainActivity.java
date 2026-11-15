@@ -214,6 +214,12 @@ public class MainActivity extends Activity {
 
     private void buildDash() {
         if (ProfileManager.isActive(this)) activeBanner();
+        if (!ProfileManager.prefs(this).getBoolean("fps_boost", false)) {
+            LinearLayout fb = card(null);
+            fb.setBackground(round(CARD, 6, ACCENT));
+            fb.addView(tv("▌⚡ FPS BOOST desligado", 13, ACCENT, true));
+            fb.addView(btn("> LIGAR FPS BOOST (aba GAMING)", v -> show(1)));
+        }
         ultraScoreCard();
 
         LinearLayout st = card(null);
@@ -417,11 +423,14 @@ public class MainActivity extends Activity {
 
     private void buildGames() {
         if (ProfileManager.isActive(this)) activeBanner();
+        fpsBoostCard();
 
         LinearLayout gl = card("GAME LAUNCHER");
         gl.addView(tv("Todos os seus jogos numa tela só, abrindo já com Modo Jogo.", 13, SUB, false));
         gl.addView(btn("> ABRIR GAME LAUNCHER_", v -> openLauncher()));
         gl.addView(btn2("> CRIAR ÍCONE NA TELA INICIAL", v -> pinLauncher()));
+
+        fpsGuideCard();
 
         LinearLayout fps = card("MONITOR DE FPS");
         fps.addView(tv(screenInfo(), 14, TXT, false));
@@ -548,6 +557,85 @@ public class MainActivity extends Activity {
         c.addView(tv("● MODO JOGO ATIVO", 14, BAD, true));
         c.addView(tv("Algumas configurações estão alteradas para jogar.", 13, SUB, false));
         c.addView(btn("Encerrar Modo Jogo e restaurar", v -> { ProfileManager.stop(this); show(tab); }));
+    }
+
+    // ------------------------------------------------------------------ FPS BOOST
+
+    private static final String[] OEM_GAME_APPS = {"com.oplus.games", "com.coloros.gamespaceui", "com.heytap.games", "com.realme.games"};
+
+    private String oemGameApp() {
+        for (String p : OEM_GAME_APPS) if (getPackageManager().getLaunchIntentForPackage(p) != null) return p;
+        return null;
+    }
+
+    private void fpsBoostCard() {
+        SharedPreferences p = ProfileManager.prefs(this);
+        boolean on = p.getBoolean("fps_boost", false);
+        LinearLayout c = card("⚡ FPS BOOST");
+        c.setBackground(round(CARD, 6, on ? ACCENT : BAD));
+        c.addView(tv(on ? "● ATIVO" : "○ DESLIGADO", 16, on ? ACCENT : SUB, true));
+        c.addView(tv("Recupera o FPS que o celular perde: limpa a RAM a cada 45s durante o jogo, corta tudo que pesa, "
+                + "vigia calor e travadas e te avisa na hora de abaixar os gráficos. Funciona junto com o Modo Jogo.", 12, SUB, false));
+        final LinearLayout rep = new LinearLayout(this);
+        rep.setOrientation(LinearLayout.VERTICAL);
+        Button b = btn(on ? "> DESLIGAR FPS BOOST" : "> ATIVAR FPS BOOST_", null);
+        if (on) { b.setBackground(round(0x00000000, 4, ACCENT)); b.setTextColor(ACCENT); }
+        b.setOnClickListener(v -> {
+            if (p.getBoolean("fps_boost", false)) { p.edit().putBoolean("fps_boost", false).apply(); show(tab); return; }
+            p.edit().putBoolean("fps_boost", true).putBoolean("opt_loop", true).putBoolean("opt_ram", true)
+                    .putBoolean("opt_fps", true).putBoolean("opt_overlay", true).putBoolean("opt_bright", false).apply();
+            b.setEnabled(false);
+            b.setText("> PREPARANDO..._");
+            new Thread(() -> {
+                final List<String[]> items = TurboManager.run(this);
+                h.post(() -> { show(tab); showFpsReport(items); });
+            }).start();
+        });
+        c.addView(b);
+        c.addView(rep);
+        String oem = oemGameApp();
+        if (oem != null) {
+            c.addView(btn2("> ESPAÇO DE JOGOS DO REALME (modo alto desempenho)", v -> {
+                Intent i = getPackageManager().getLaunchIntentForPackage(oem);
+                if (i != null) open(i);
+            }));
+            c.addView(tv("O próprio realme tem um modo de alto desempenho dentro do Espaço de Jogos. "
+                    + "Ele pode acelerar o chip, coisa que nenhum app comum consegue: ative lá para cada jogo.", 11, SUB, false));
+        }
+        c.addView(btn2("> TELA NA TAXA MÁXIMA (Hz)", v -> open(new Intent(Settings.ACTION_DISPLAY_SETTINGS))));
+    }
+
+    private void showFpsReport(List<String[]> items) {
+        StringBuilder sb = new StringBuilder();
+        int bad = 0;
+        for (String[] it : items) {
+            String mark = "ok".equals(it[0]) ? "[✔] " : "warn".equals(it[0]) ? "[!] " : "[X] ";
+            if (!"ok".equals(it[0])) bad++;
+            sb.append(mark).append(it[1]).append("\n");
+        }
+        try {
+            android.view.Display d = getWindowManager().getDefaultDisplay();
+            float max = 0;
+            for (android.view.Display.Mode m : d.getSupportedModes()) max = Math.max(max, m.getRefreshRate());
+            if (d.getRefreshRate() + 1 < max) { sb.append("[!] Tela em ").append(Math.round(d.getRefreshRate()))
+                    .append("Hz: coloque em ").append(Math.round(max)).append("Hz para o jogo poder rodar mais rápido\n"); bad++; }
+            else sb.append("[✔] Tela na taxa máxima (").append(Math.round(max)).append("Hz)\n");
+        } catch (Exception ignored) {}
+        sb.append(bad == 0 ? "\nTudo pronto: abra o jogo pelo botão JOGAR." : "\nResolva os itens com [!] ou [X] para ganhar mais FPS.");
+        new AlertDialog.Builder(this).setTitle("⚡ FPS BOOST ATIVADO").setMessage(sb.toString().trim())
+                .setPositiveButton("Ok", null).show();
+    }
+
+    private void fpsGuideCard() {
+        LinearLayout c = card("AJUSTES QUE MAIS AUMENTAM O FPS");
+        c.addView(tv("Dentro de cada jogo é onde o FPS sobe de verdade:", 12, SUB, false));
+        c.addView(tv("MINECRAFT\n• Distância de renderização: 8 a 10 chunks\n• Gráficos elegantes, nuvens bonitas e "
+                + "sombras: DESLIGADOS\n• Partículas: mínimo • Shaders/texturas pesadas: tire\n\n"
+                + "ROBLOX\n• Modo gráfico: Manual, qualidade 2 a 4\n• Feche o chat de voz em jogos pesados\n\n"
+                + "FREE FIRE\n• Gráficos: Suave • Taxa de quadros: Alta\n\n"
+                + "FRIDAY NIGHT FUNKIN' (mods)\n• Qualidade baixa / antialiasing desligado\n• Desligue fundos animados e shaders\n\n"
+                + "QUALQUER JOGO\n• FPS travado num valor estável (30 ou 60) trava menos que \"ilimitado\"\n"
+                + "• Resolução menor = mais FPS", 13, TXT, false));
     }
 
     // ------------------------------------------------------------------ ULTRA SCORE / REPORT / RESTORE
