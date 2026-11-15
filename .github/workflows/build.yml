@@ -8,38 +8,51 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - name: Baixar o código
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
+      - name: Instalar Java 17
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - uses: android-actions/setup-android@v3
+      - name: Preparar Android SDK
+        uses: android-actions/setup-android@v3
 
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.10.2'
+      - name: Preparar Gradle (com cache)
+        uses: gradle/actions/setup-gradle@v4
 
-      - name: Compilar APK
-        run: gradle assembleDebug --no-daemon
+      - name: Compilar APK de depuração
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Renomear APK
-        run: cp app/build/outputs/apk/debug/app-debug.apk PulseSolar.apk
+        run: cp app/build/outputs/apk/debug/app-debug.apk PulseSolar-${{ github.run_number }}.apk
 
       - name: Guardar APK (Artifacts)
         uses: actions/upload-artifact@v4
         with:
-          name: PulseSolar-apk
-          path: PulseSolar.apk
+          name: PulseSolar-apk-${{ github.run_number }}
+          path: PulseSolar-${{ github.run_number }}.apk
+          retention-days: 30
 
       - name: Publicar em Releases (link direto)
         uses: softprops/action-gh-release@v2
         with:
           tag_name: build-${{ github.run_number }}
           name: Pulse Solar build ${{ github.run_number }}
-          files: PulseSolar.apk
+          body: |
+            APK de depuração gerado automaticamente pelo GitHub Actions.
+            Commit: ${{ github.sha }}
+          files: PulseSolar-${{ github.run_number }}.apk

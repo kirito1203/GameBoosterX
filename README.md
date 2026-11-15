@@ -70,20 +70,48 @@ Cada tela mostra o botão que leva direto à permissão necessária.
 
 ## Como gerar o APK pelo celular (GitHub Actions)
 
-1. Crie um repositório novo no GitHub, por exemplo `PulseSolar`.
-2. Envie **todos** os arquivos mantendo as pastas exatamente como estão, inclusive `.github/workflows/build.yml`.
-3. Abra a aba **Actions**: o workflow **Build Pulse Solar APK** roda sozinho a cada envio (ou toque em *Run workflow*).
-4. Em cerca de 4 minutos, abra **Releases**: o `PulseSolar.apk` fica com link direto para baixar.
-   (Também fica em Actions → execução → *Artifacts*.)
-5. Abra o APK no celular e permita "instalar apps desconhecidos" para o navegador quando o Android pedir.
+### 1. Criar o repositório
+1. No navegador do celular, entre em **github.com/new** (logado na sua conta).
+2. **Repository name:** `PulseSolar`.
+3. Deixe **Public** (ou Private, se preferir).
+4. **Não** marque "Add a README", ".gitignore" nem "license": o repositório precisa nascer vazio.
+5. Toque em **Create repository**.
+
+### 2. Enviar os arquivos
+Envie todos os arquivos mantendo as pastas exatamente como estão, inclusive:
+`.github/workflows/build.yml`, `gradlew`, `gradle/wrapper/gradle-wrapper.jar` e `app/debug.keystore`.
+(O GitHub pelo navegador do celular não envia pastas inteiras com facilidade; por isso o mais simples é pedir para o Claude enviar, ou usar *Add file → Create new file* digitando o caminho completo no nome.)
+
+### 3. Acompanhar a compilação
+1. Abra o repositório → aba **Actions**.
+2. O workflow **Build Pulse Solar APK** começa sozinho a cada envio (ou toque nele → **Run workflow**).
+3. Bolinha amarela = compilando (≈ 4–6 min na primeira vez). ✔ verde = APK gerado. ✖ vermelho = erro: abra a execução, toque no passo que falhou e copie o erro.
+
+### 4. Baixar e instalar o APK
+- **Pelo Releases (mais fácil no celular):** página do repositório → **Releases** → *Pulse Solar build N* → toque em `PulseSolar-N.apk`.
+- **Pelos Artifacts:** Actions → execução com ✔ → seção **Artifacts** → `PulseSolar-apk-N` (vem dentro de um .zip; é preciso estar logado; fica disponível por 30 dias).
+- Abra o APK baixado e permita **"Instalar apps desconhecidos"** para o navegador quando o Android pedir.
+- Builds novos instalam por cima do anterior (mesma chave de depuração e versão crescente), sem perder dados.
+
+### Sobre o APK
+É um **APK de depuração** (`assembleDebug`), assinado com a chave de depuração incluída no projeto (`app/debug.keystore`, senha `android`). Serve para instalar no seu aparelho; para a Play Store seria preciso uma chave de release própria.
 
 ## Como gerar no computador (opcional)
 
-- **Android Studio:** *File > Open* → pasta `PulseSolar` → *Build > Build App Bundle(s) / APK(s) > Build APK(s)*.
-- **Linha de comando:** com Android SDK e Gradle 8.10+ instalados: `gradle assembleDebug`
+- **Android Studio:** *File > Open* → pasta `PulseSolar` → *Build > Build APK(s)*.
+- **Linha de comando:** `./gradlew assembleDebug` (Linux/macOS) ou `gradlew.bat assembleDebug` (Windows).
   O APK sai em `app/build/outputs/apk/debug/app-debug.apk`.
 
----
+## Dependências de compilação
+
+| Item | Versão |
+|---|---|
+| Android Gradle Plugin | 8.7.3 (repositório google()) |
+| Gradle (wrapper) | 8.10.2 |
+| JDK | 17 |
+| compileSdk / targetSdk | 35 |
+| minSdk | 26 |
+| Bibliotecas externas | nenhuma (só Android SDK; `org.json` já faz parte do Android) |
 
 ## Estrutura
 
