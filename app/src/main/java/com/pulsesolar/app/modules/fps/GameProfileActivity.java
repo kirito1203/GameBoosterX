@@ -30,6 +30,8 @@ import java.util.Set;
 /** Perfis de jogos com configurações seguras e início direto da sessão monitorada. */
 public class GameProfileActivity extends BaseActivity {
 
+    public static final String EXTRA_PKG = "pkg";
+    public static final String EXTRA_LABEL = "label";
     private static final int LIMIT_MIN = 35;
     private static final int REQ_NOTIF = 78;
 
@@ -99,6 +101,13 @@ public class GameProfileActivity extends BaseActivity {
             loadApps();
         });
         loadApps();
+
+        // Aberto a partir de outro módulo (ex.: Solar Game Optimizer) já com o jogo escolhido
+        String prePkg = getIntent().getStringExtra(EXTRA_PKG);
+        if (prePkg != null) {
+            String preLabel = getIntent().getStringExtra(EXTRA_LABEL);
+            openEditor(prePkg, preLabel != null ? preLabel : prePkg);
+        }
     }
 
     private void updateLimit() {

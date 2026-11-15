@@ -11,4 +11,6 @@
     <string name="m_fps">Solar FPS Engine</string>
     <string name="m_fps_report">Relatório da sessão</string>
     <string name="m_fps_profiles">Perfis de jogos</string>
+    <string name="m_optimizer">Solar Game Optimizer</string>
+    <string name="m_rhythm_cal">Calibração de sincronia</string>
 </resources>

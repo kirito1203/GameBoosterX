@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Cabeçalho -->
+        <LinearLayout style="@style/Card">
+            <TextView
+                android:id="@+id/txtProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.1"
+                android:shadowColor="@color/solar_orange"
+                android:shadowRadius="14"
+                android:textColor="@color/solar_gold"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtGame"
+                style="@style/BodyStrong"
+                android:layout_marginTop="2dp" />
+            <TextView
+                android:id="@+id/txtTier"
+                style="@style/Body"
+                android:layout_marginTop="6dp" />
+            <Button
+                android:id="@+id/btnPlay"
+                style="@style/Btn"
+                android:text="Jogar com o perfil Solar" />
+            <Button
+                android:id="@+id/btnEditProfile"
+                style="@style/BtnOutline"
+                android:text="Editar perfil (Não Perturbe, brilho, monitor)" />
+            <Button
+                android:id="@+id/btnChoose"
+                style="@style/BtnOutline"
+                android:text="Escolher o app do jogo" />
+        </LinearLayout>
+
+        <!-- Monitor ao vivo -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Temperatura e RAM ao vivo" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.pulsesolar.app.ui.RingGauge
+                    android:id="@+id/gaugeTemp"
+                    android:layout_width="0dp"
+                    android:layout_height="130dp"
+                    android:layout_weight="1" />
+                <com.pulsesolar.app.ui.RingGauge
+                    android:id="@+id/gaugeRam"
+                    android:layout_width="0dp"
+                    android:layout_height="130dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/txtLive"
+                style="@style/BodyStrong"
+                android:gravity="center" />
+            <com.pulsesolar.app.ui.LineGraph
+                android:id="@+id/graphTemp"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="6dp" />
+            <TextView
+                style="@style/Body"
+                android:layout_marginTop="4dp"
+                android:text="Durante o jogo, o monitor de sessão do perfil continua gravando temperatura e RAM e avisa se passar do limite."
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Diagnóstico -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Diagnóstico de desempenho" />
+            <TextView
+                android:id="@+id/txtDiag"
+                style="@style/Body"
+                android:text="Analisando o aparelho…" />
+            <Button
+                android:id="@+id/btnDiagnose"
+                style="@style/Btn"
+                android:text="Diagnosticar de novo" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/diagBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <!-- Gráficos -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Configurações gráficas recomendadas" />
+            <LinearLayout
+                android:id="@+id/kvGraphics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+            <TextView
+                android:id="@+id/txtGraphicsWhere"
+                style="@style/Body"
+                android:layout_marginTop="8dp"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Ferramenta específica -->
+        <LinearLayout style="@style/Card">
+            <TextView
+                android:id="@+id/txtToolTitle"
+                style="@style/CardTitle" />
+            <TextView
+                android:id="@+id/txtToolBody"
+                style="@style/Body" />
+            <TextView
+                android:id="@+id/txtToolResult"
+                style="@style/BodyStrong"
+                android:layout_marginTop="6dp"
+                android:fontFamily="monospace"
+                android:textSize="13sp" />
+            <Button
+                android:id="@+id/btnTool"
+                style="@style/Btn" />
+        </LinearLayout>
+
+        <!-- Estabilidade -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Relatório de estabilidade" />
+            <TextView
+                android:id="@+id/txtStability"
+                style="@style/Body" />
+            <LinearLayout
+                android:id="@+id/kvStability"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+            <Button
+                android:id="@+id/btnLastReport"
+                style="@style/BtnOutline"
+                android:text="Abrir relatório da última sessão" />
+        </LinearLayout>
+
+        <!-- Espaço do jogo -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Espaço do jogo no aparelho" />
+            <LinearLayout
+                android:id="@+id/kvStorage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+            <Button
+                android:id="@+id/btnUsageAccess"
+                style="@style/BtnOutline"
+                android:text="Permitir acesso ao uso (para medir)" />
+            <Button
+                android:id="@+id/btnAppDetails"
+                style="@style/BtnOutline"
+                android:text="Abrir tela do app (limpar cache)" />
+        </LinearLayout>
+
+        <!-- Travamentos -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Como reduzir travamentos" />
+            <TextView
+                style="@style/Body"
+                android:text="Recomendações calculadas agora, com base no aparelho e na última sessão gravada deste jogo." />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/tipsBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            style="@style/Body"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="O Pulse Solar não altera arquivos do jogo, não usa cheats, não mede o FPS do jogo e não aumenta a potência do hardware. As configurações gráficas são aplicadas por você, no menu do jogo."
+            android:textSize="11sp" />
+    </LinearLayout>
+</ScrollView>

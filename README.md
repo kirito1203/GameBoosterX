@@ -18,6 +18,7 @@ Visual: fundo preto, detalhes em azul e núcleo solar dourado/laranja animado na
 | 5 | **Solar Network** | Tipo de conexão, internet validada, rede tarifada, sinal Wi-Fi (dBm), velocidade do link, banda 2,4/5/6 GHz, sinal celular, DNS e DNS privado; tráfego em tempo real; teste de latência TCP (média, jitter, perda); teste de download real |
 | 6 | **Solar Gaming** | Checklist antes de jogar (RAM, espaço, economia, temperatura, bateria, latência); Modo Jogos com Não Perturbe, brilho fixo e tempo de tela de 10 min, tudo restaurado ao desativar; lista de jogos instalados para abrir com o modo ativo; atalho para o Espaço de Jogos da realme |
 | 8 | **Solar FPS Engine** | Pulso do sistema ao vivo (quadros reais que o Pulse Solar recebe do Android), diagnóstico de gargalos de CPU e memória, sessão de jogo monitorada com painel sobre o jogo e alertas térmicos, perfis por jogo e relatório antes/durante a sessão |
+| 9 | **Solar Game Optimizer** | Três perfis funcionais — **SOLAR ROBLOX**, **SOLAR RHYTHM** (Friday Night Funkin') e **SOLAR CRAFT** (Minecraft) — com diagnóstico, configurações gráficas recomendadas calculadas pelo estado real do aparelho, temperatura e RAM ao vivo, relatório de estabilidade a partir das sessões gravadas, dicas contra travamentos, espaço do jogo e ferramenta própria (teste de conexão, calibração de sincronia musical, teste térmico) |
 | 7 | **Solar Intelligence** | Diagnóstico de possíveis causas de travamentos com botões para a tela certa do sistema; teste de CPU e teste de estabilidade térmica; frequências dos núcleos ao vivo; dados da tela e do aparelho |
 
 ### Solar FPS Engine — o que realmente funciona no realme C71 / Android 16
@@ -37,6 +38,14 @@ Visual: fundo preto, detalhes em azul e núcleo solar dourado/laranja animado na
 | Perfis de jogos | ✔ Funciona | Não Perturbe, brilho, tempo de tela, monitor e limite de temperatura. |
 
 A tela do módulo tem o card **"O que funciona neste aparelho"**, que faz esse teste no próprio celular e mostra ✔ / ◐ / ✖ para cada item.
+
+### Solar Game Optimizer — como funciona
+
+- **Detecção do jogo:** Roblox (`com.roblox.client`) e Minecraft (`com.mojang.minecraftpe`) são detectados pelo pacote; o FNF, que tem versões e ports diferentes no Android, é procurado pelo nome do app ("Funkin"/"FNF"). Em todos dá para escolher o app manualmente.
+- **Classe do aparelho:** estimada a partir da RAM total e da frequência máxima dos núcleos rápidos (quando legível). Se o aparelho estiver quente ou em economia, as recomendações descem um nível. A regra aparece na tela.
+- **Recomendações gráficas:** Roblox (modo manual, barras de qualidade, taxa de quadros), FNF (limite de FPS que prioriza estabilidade, qualidade baixa, antialiasing, offset de áudio) e Minecraft (distância de renderização calculada pela classe e pela RAM livre, simulação, gráficos sofisticados, iluminação suave, céu, nuvens, folhas, visuais vibrantes). **O usuário aplica no menu do jogo; o Pulse Solar não altera arquivos nem configurações dos jogos.**
+- **Calibração de sincronia (SOLAR RHYTHM):** toca 24 batidas geradas pelo app e usa `AudioTrack.getTimestamp()` (relógio de apresentação do áudio) para comparar com seus toques. Mostra o atraso médio e a variação, detecta fone Bluetooth e salva o offset no perfil.
+- **Jogar com o perfil Solar:** aplica Não Perturbe, brilho e tempo de tela, inicia o monitor de sessão (temperatura, RAM e alertas) e abre o jogo. A sessão gravada alimenta o relatório de estabilidade do perfil.
 
 ### O que o app não faz (porque o Android não permite sem root)
 Aumentar FPS, mudar a frequência da CPU/GPU, forçar a taxa de atualização, encerrar processos de outros apps ou apagar o cache de outros apps. Nesses casos o Pulse Solar mostra o problema e abre a tela oficial do sistema.
@@ -106,6 +115,11 @@ PulseSolar/
         │       ├── network/SolarNetworkActivity.java
         │       ├── gaming/SolarGamingActivity.java
         │       ├── intelligence/SolarIntelligenceActivity.java
+        │       ├── optimizer/          (Solar Game Optimizer)
+        │       │   ├── GameOptimizerActivity.java, OptimizerProfileActivity.java
+        │       │   ├── RhythmCalibrationActivity.java (sincronia musical)
+        │       │   ├── GameSpec.java + RobloxSpec, RhythmSpec, CraftSpec
+        │       │   └── DeviceState.java, OptimizerStore.java
         │       └── fps/                (Solar FPS Engine)
         │           ├── SolarFpsActivity.java, SessionReportActivity.java, GameProfileActivity.java
         │           ├── SessionService.java   (sessão, painel sobre o jogo, alertas)

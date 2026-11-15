@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.12"
+            android:shadowColor="@color/solar_orange"
+            android:shadowRadius="16"
+            android:text="SOLAR GAME OPTIMIZER"
+            android:textColor="@color/solar_gold"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtDevice"
+            style="@style/Body"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/blue" />
+
+        <LinearLayout
+            android:id="@+id/profilesBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/CardTitle" android:text="Como os perfis funcionam" />
+            <TextView
+                style="@style/Body"
+                android:text="Cada perfil lê o estado real do aparelho (RAM, temperatura, CPU, tela, áudio e rede), calcula as configurações recomendadas para o jogo, monitora temperatura e RAM, usa as sessões gravadas pelo Solar FPS Engine no relatório de estabilidade e aplica o Modo Jogos ao abrir o jogo. O Pulse Solar não altera arquivos dos jogos, não usa cheats, não mede o FPS dos jogos e não aumenta a potência do hardware." />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

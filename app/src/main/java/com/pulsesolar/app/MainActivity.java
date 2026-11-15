@@ -22,6 +22,7 @@ import com.pulsesolar.app.modules.guard.GuardService;
 import com.pulsesolar.app.modules.guard.SolarGuardActivity;
 import com.pulsesolar.app.modules.intelligence.SolarIntelligenceActivity;
 import com.pulsesolar.app.modules.network.SolarNetworkActivity;
+import com.pulsesolar.app.modules.optimizer.GameOptimizerActivity;
 import com.pulsesolar.app.modules.ram.SolarRamActivity;
 import com.pulsesolar.app.modules.storage.SolarStorageActivity;
 import com.pulsesolar.app.ui.RingGauge;
@@ -80,6 +81,7 @@ public class MainActivity extends Activity {
         bind(R.id.tileGaming, SolarGamingActivity.class);
         bind(R.id.tileIntel, SolarIntelligenceActivity.class);
         bind(R.id.tileFps, SolarFpsActivity.class);
+        bind(R.id.tileOptimizer, GameOptimizerActivity.class);
         bind(R.id.solarCore, SolarIntelligenceActivity.class);
         bind(R.id.gaugeRam, SolarRamActivity.class);
         bind(R.id.gaugeStorage, SolarStorageActivity.class);

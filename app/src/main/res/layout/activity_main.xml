@@ -117,6 +117,14 @@
                 <TextView style="@style/TileTitle" android:text="☀ Solar FPS Engine" />
                 <TextView android:id="@+id/subFps" style="@style/TileSub" android:text="Pulso do sistema, gargalos, perfis e relatórios de sessão" />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tileOptimizer"
+                style="@style/Tile"
+                android:layout_columnSpan="2">
+                <TextView style="@style/TileTitle" android:text="☀ Solar Game Optimizer" />
+                <TextView style="@style/TileSub" android:text="SOLAR ROBLOX • SOLAR RHYTHM (FNF) • SOLAR CRAFT (Minecraft)" />
+            </LinearLayout>
         </GridLayout>
 
         <TextView

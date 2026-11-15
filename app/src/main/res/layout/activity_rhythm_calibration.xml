@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout style="@style/Card" android:layout_marginTop="0dp">
+        <TextView style="@style/CardTitle" android:text="Calibração de sincronia (SOLAR RHYTHM)" />
+        <TextView
+            style="@style/Body"
+            android:text="1. Use a saída de áudio com que você joga (fone com fio, Bluetooth ou alto-falante).\n2. Toque em Iniciar: o app toca 24 batidas a 100 BPM.\n3. Toque no círculo exatamente no ritmo de cada batida.\nO resultado é o atraso real entre o som que você ouve e o seu toque, medido pelo relógio do áudio do Android." />
+        <TextView
+            android:id="@+id/txtStatus"
+            style="@style/BodyStrong"
+            android:layout_marginTop="8dp" />
+        <Button
+            android:id="@+id/btnStart"
+            style="@style/Btn"
+            android:text="Iniciar calibração" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tapPad"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_tap_pad"
+        android:gravity="center"
+        android:text="TOQUE AQUI\nNO RITMO"
+        android:textColor="@color/solar_gold"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <LinearLayout style="@style/Card">
+        <TextView
+            android:id="@+id/txtResult"
+            style="@style/BodyStrong"
+            android:fontFamily="monospace"
+            android:textSize="13sp" />
+        <Button
+            android:id="@+id/btnSave"
+            style="@style/BtnOutline"
+            android:enabled="false"
+            android:text="Salvar este offset no perfil" />
+    </LinearLayout>
+</LinearLayout>
