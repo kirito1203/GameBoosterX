@@ -36,13 +36,16 @@ public final class OptimizerStore {
 
     // ------------------------------------------------------------ Calibração de ritmo
 
+    /** Versão do método de calibração; resultados de versões antigas (com defeito) são ignorados. */
+    private static final int RHYTHM_METHOD_VERSION = 2;
+
     public static void saveRhythmOffset(Context c, int offsetMs, int sdMs, boolean bluetooth) {
-        sp(c).edit().putInt("rhythm_offset", offsetMs).putInt("rhythm_sd", sdMs)
+        sp(c).edit().putInt("rhythm_v", RHYTHM_METHOD_VERSION).putInt("rhythm_offset", offsetMs).putInt("rhythm_sd", sdMs)
                 .putBoolean("rhythm_bt", bluetooth).putLong("rhythm_when", System.currentTimeMillis()).apply();
     }
 
     public static boolean hasRhythmOffset(Context c) {
-        return sp(c).contains("rhythm_offset");
+        return sp(c).contains("rhythm_offset") && sp(c).getInt("rhythm_v", 1) == RHYTHM_METHOD_VERSION;
     }
 
     public static int rhythmOffset(Context c) {
