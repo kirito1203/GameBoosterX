@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
-                    android:text="● ULTIMATE EDITION"
+                    android:text="● REC  CAM-01  TURNO DA NOITE"
                     android:textColor="#FFFF3B3B"
                     android:textSize="10sp"
                     android:textStyle="bold" />
@@ -97,7 +97,7 @@
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#55B57CFF" />
+            android:background="#557CFF4F" />
 
         <ScrollView
             android:id="@+id/scroll"

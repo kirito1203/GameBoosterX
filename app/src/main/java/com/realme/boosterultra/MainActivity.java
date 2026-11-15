@@ -46,23 +46,32 @@ import com.realme.boosterultra.ai.IntelligenceEngine;
 import java.util.Locale;
 
 public class MainActivity extends Activity {
-    public static final int BG = 0xFF0A0612, CARD = 0xFF140C22, TXT = 0xFFEDE3FF,
-            SUB = 0xFF9A88B8, WARN = 0xFFFFB020, BAD = 0xFFFF3B3B, TRACK = 0xFF2A1E3D;
-    public static int ACCENT = 0xFFB57CFF;
+    public static final int WARN = 0xFFFFB020, BAD = 0xFFFF3B3B;
+    /** Cores do tema atual (padrão: TERROR CRT). Mudam pela Ultra Interface. */
+    public static int BG = 0xFF050807, CARD = 0xFF0B120E, TXT = 0xFFD6F5CF, SUB = 0xFF6E8F72,
+            TRACK = 0xFF17261B, BAR = 0xFF08100B;
+    public static int ACCENT = 0xFF7CFF4F;
 
     /** Os 6 módulos na barra de baixo; Configurações & Diagnósticos ficam no ⚙ do topo. */
     private static final String[] TAB_NAMES = {"ENGINE", "GAMING", "IA", "SISTEMA", "ENERGIA", "REDE"};
     private static final int[] TAB_PAGES = {0, 1, 2, 3, 10, 4};
 
     /** Ultra Interface: cores de destaque. */
-    public static final String[] THEME_NAMES = {"ROXO NEON", "VERDE", "ÂMBAR", "CIANO", "BRANCO"};
-    public static final int[] THEME_COLORS = {0xFFB57CFF, 0xFF7CFF4F, 0xFFFFC23D, 0xFF3DE8FF, 0xFFE8E8E8};
+    public static final String[] THEME_NAMES = {"TERROR CRT", "TERROR SANGUE", "ROXO NEON", "VHS ÂMBAR", "CÂMERA CIANO"};
+    /** {destaque, fundo, cartão, texto, texto fraco, trilha, barra} */
+    public static final int[][] THEMES = {
+            {0xFF7CFF4F, 0xFF050807, 0xFF0B120E, 0xFFD6F5CF, 0xFF6E8F72, 0xFF17261B, 0xFF08100B},
+            {0xFFFF4444, 0xFF0A0505, 0xFF160A0A, 0xFFF5DCDC, 0xFF9A6E6E, 0xFF2A1515, 0xFF100707},
+            {0xFFB57CFF, 0xFF0A0612, 0xFF140C22, 0xFFEDE3FF, 0xFF9A88B8, 0xFF2A1E3D, 0xFF0E0818},
+            {0xFFFFC23D, 0xFF0A0804, 0xFF16110A, 0xFFF5ECD6, 0xFF9A8A6A, 0xFF2A2214, 0xFF100C06},
+            {0xFF3DE8FF, 0xFF040A0C, 0xFF0A1518, 0xFFD6F2F5, 0xFF6E8E92, 0xFF15282C, 0xFF060F11}};
 
     public static int a(int alpha) { return (alpha << 24) | (ACCENT & 0xFFFFFF); }
 
     public static void loadTheme(android.content.Context c) {
         int i = ProfileManager.prefs(c).getInt("theme", 0);
-        ACCENT = THEME_COLORS[Math.max(0, Math.min(THEME_COLORS.length - 1, i))];
+        int[] t = THEMES[Math.max(0, Math.min(THEMES.length - 1, i))];
+        ACCENT = t[0]; BG = t[1]; CARD = t[2]; TXT = t[3]; SUB = t[4]; TRACK = t[5]; BAR = t[6];
     }
     private final java.util.Random rnd = new java.util.Random();
     private TextView titleTv, recTv;
@@ -91,6 +100,8 @@ public class MainActivity extends Activity {
         super.onCreate(b);
         setContentView(R.layout.activity_main);
         android.widget.FrameLayout frame = findViewById(R.id.frame);
+        frame.setBackgroundColor(BG);
+        getWindow().getDecorView().setBackgroundColor(BG);
         LinearLayout root = findViewById(R.id.root);
         if (Build.VERSION.SDK_INT >= 35) {
             root.setOnApplyWindowInsetsListener((v, ins) -> {
@@ -106,6 +117,7 @@ public class MainActivity extends Activity {
         titleTv = findViewById(R.id.title);
         titleTv.setTextColor(ACCENT);
         titleTv.setShadowLayer(dp(8), 0, 0, ACCENT);
+        ((TextView) findViewById(R.id.subtitle)).setTextColor(SUB);
         ((TextView) findViewById(R.id.subtitle)).setText(Build.MANUFACTURER.toUpperCase(Locale.ROOT) + " " + Build.MODEL
                 + " • ANDROID " + Build.VERSION.RELEASE + " • NO ROOT");
         Button gear = findViewById(R.id.settingsBtn);
@@ -113,14 +125,19 @@ public class MainActivity extends Activity {
         gear.setBackground(round(0x00000000, 6, a(0x88)));
         gear.setOnClickListener(v -> show(5));
         LinearLayout badges = findViewById(R.id.badges);
+        String[] badgeTxt = {"TURBO\nmanual + auto", "INTELLIGENCE\nanálise", "ROOT\nnão precisa", "VIGILÂNCIA\n24h"};
         for (int k = 0; k < badges.getChildCount(); k++) {
-            badges.getChildAt(k).setBackground(round(CARD, 6, a(0x66)));
+            TextView bv = (TextView) badges.getChildAt(k);
+            bv.setBackground(round(CARD, 4, a(0x66)));
+            bv.setTextColor(TXT);
+            if (k < badgeTxt.length) bv.setText(badgeTxt[k]);
         }
         findViewById(R.id.divider).setBackgroundColor(a(0x55));
         scroll = findViewById(R.id.scroll);
         content = findViewById(R.id.content);
 
         LinearLayout bar = findViewById(R.id.tabBar);
+        bar.setBackgroundColor(BAR);
         for (int i = 0; i < TAB_NAMES.length; i++) {
             final int dest = TAB_PAGES[i];
             Button bt = new Button(this);
@@ -161,6 +178,13 @@ public class MainActivity extends Activity {
 
     private void show(int t) {
         tab = t;
+        if (recTv != null) {
+            String[] cams = {"ENGINE", "GAMING", "IA", "SISTEMA", "REDE", "CONTROLE"};
+            String name = t < cams.length ? cams[t] : t == 10 ? "ENERGIA" : t == 11 ? "SYSTEM PRO" : t == 12 ? "ULTRA ENGINE"
+                    : t == 13 ? "GAME MEMORY" : t == 14 ? "BENCHMARK" : "PRO TOOLS";
+            int cam = t < cams.length ? t + 1 : t - 3;
+            recTv.setText(String.format(Locale.US, "● REC  CAM-%02d  %s", cam, name));
+        }
         content.removeAllViews();
         ramTv = null;
         for (int i = 0; i < TAB_NAMES.length; i++) {
@@ -267,6 +291,10 @@ public class MainActivity extends Activity {
     /** Piscadas de "monitor velho" no título, no REC e no mascote. */
     private void flicker() {
         if (recTv != null) recTv.setAlpha(recTv.getAlpha() > 0.5f ? 0.15f : 1f);
+        if (mascotIv != null && rnd.nextInt(4) == 0) {
+            mascotIv.setImageResource(R.drawable.mascot_blink);
+            h.postDelayed(() -> mascotIv.setImageResource(R.drawable.mascot), 180);
+        }
         if (titleTv == null || rnd.nextInt(3) != 0 || !ProfileManager.prefs(this).getBoolean("flicker_on", true)) return;
         titleTv.setAlpha(0.25f);
         mascotIv.setAlpha(0.3f);
@@ -1507,14 +1535,19 @@ public class MainActivity extends Activity {
 
     private void buildUltraInterface() {
         SharedPreferences p = ProfileManager.prefs(this);
-        LinearLayout c = card("ULTRA INTERFACE");
+        LinearLayout c = card("ULTRA INTERFACE • TEMA DE TERROR");
         c.addView(tv("Cor de destaque:", 13, SUB, false));
-        c.addView(chips(new String[]{"ROXO", "VERDE", "ÂMBAR", "CIANO", "BRANCO"}, new int[]{0, 1, 2, 3, 4},
+        c.addView(tv("Tema:", 12, SUB, false));
+        c.addView(tv(THEME_NAMES[Math.max(0, Math.min(4, p.getInt("theme", 0)))], 15, ACCENT, true));
+        c.addView(chips(new String[]{"CRT", "SANGUE", "ROXO", "VHS", "CIANO"}, new int[]{0, 1, 2, 3, 4},
                 p.getInt("theme", 0), v -> { p.edit().putInt("theme", v).apply(); loadTheme(this); recreate(); }));
         CheckBox scan = check("Linhas de TV antiga (scanlines)", p.getBoolean("scan_on", true));
         scan.setOnCheckedChangeListener((v, on) -> { p.edit().putBoolean("scan_on", on).apply(); recreate(); });
         c.addView(scan);
-        CheckBox fl = check("Efeito de falha no título e no mascote", p.getBoolean("flicker_on", true));
+        CheckBox st = check("Estática de câmera e \"SINAL PERDIDO\"", p.getBoolean("static_on", true));
+        st.setOnCheckedChangeListener((v, on) -> { p.edit().putBoolean("static_on", on).apply(); recreate(); });
+        c.addView(st);
+        CheckBox fl = check("Efeito de falha no título e mascote piscando", p.getBoolean("flicker_on", true));
         fl.setOnCheckedChangeListener((v, on) -> p.edit().putBoolean("flicker_on", on).apply());
         c.addView(fl);
         c.addView(tv("Desligar os efeitos deixa o app ainda mais leve.", 12, SUB, false));
@@ -1849,7 +1882,7 @@ public class MainActivity extends Activity {
         e.setTextSize(14);
         e.setTypeface(Typeface.MONOSPACE);
         e.setPadding(dp(12), dp(10), dp(12), dp(10));
-        e.setBackground(round(0xFF0B0714, 4, a(0x66)));
+        e.setBackground(round(BG, 4, a(0x66)));
         if (secret) {
             e.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         } else if (multi) {
@@ -2332,6 +2365,7 @@ public class MainActivity extends Activity {
         c.setLayoutParams(lp);
         if (title != null) {
             TextView t = tv("▌" + title, 12, ACCENT, true);
+            t.setShadowLayer(dp(4), 0, 0, a(0x99));
             t.setLetterSpacing(0.08f);
             t.setPadding(0, 0, 0, dp(8));
             c.addView(t);

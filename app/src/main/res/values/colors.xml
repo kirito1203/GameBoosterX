@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bg">#0A0612</color>
-    <color name="card">#140C22</color>
-    <color name="bar">#0E0818</color>
-    <color name="accent">#B57CFF</color>
-    <color name="txt">#EDE3FF</color>
-    <color name="sub">#9A88B8</color>
+    <color name="bg">#050807</color>
+    <color name="card">#0B120E</color>
+    <color name="bar">#08100B</color>
+    <color name="accent">#7CFF4F</color>
+    <color name="txt">#D6F5CF</color>
+    <color name="sub">#6E8F72</color>
 </resources>

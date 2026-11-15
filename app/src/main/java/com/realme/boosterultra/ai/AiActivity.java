@@ -104,7 +104,7 @@ public class AiActivity extends Activity {
         ht.setOrientation(LinearLayout.VERTICAL);
         ht.setPadding(dp(10), 0, 0, 0);
         ht.addView(tv(aiName.toUpperCase(Locale.ROOT), 18, ACCENT, true));
-        statusTv = tv("● ONLINE", 10, SUB, false);
+        statusTv = tv("● REC  CAM-07  ONLINE", 10, MainActivity.BAD, false);
         ht.addView(statusTv);
         header.addView(ht, new LinearLayout.LayoutParams(0, -2, 1f));
         Button clear = smallBtn("LIMPAR");
@@ -130,7 +130,7 @@ public class AiActivity extends Activity {
         LinearLayout bar = new LinearLayout(this);
         bar.setGravity(Gravity.CENTER_VERTICAL);
         bar.setPadding(dp(10), dp(8), dp(10), dp(8));
-        bar.setBackgroundColor(0xFF0E0818);
+        bar.setBackgroundColor(MainActivity.BAR);
         mic = smallBtn("MIC");
         mic.setOnClickListener(v -> listen());
         bar.addView(mic, new LinearLayout.LayoutParams(dp(52), dp(48)));
@@ -240,7 +240,7 @@ public class AiActivity extends Activity {
                 h.post(() -> {
                     wait.setText(aiName.toUpperCase(Locale.ROOT) + ": " + shown);
                     wait.setTextColor(ACCENT);
-                    statusTv.setText("● ONLINE // via " + reply.from);
+                    statusTv.setText("● REC  CAM-07  via " + reply.from);
                     remember("assistant", shown);
                     speak(shown);
                     for (String a : actions) bubble("[SISTEMA] " + PhoneControl.run(this, a), false, WARN);
@@ -329,7 +329,7 @@ public class AiActivity extends Activity {
         TextView t = tv(s, 14, color, false);
         t.setTextIsSelectable(true);
         t.setPadding(dp(12), dp(9), dp(12), dp(9));
-        t.setBackground(user ? round(0xFF1A1028, 6, 0x33EDE3FF) : round(CARD, 6, MainActivity.a(0x44)));
+        t.setBackground(user ? round(MainActivity.BAR, 6, 0x33FFFFFF) : round(CARD, 6, MainActivity.a(0x44)));
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, -2);
         lp.topMargin = dp(8);
         lp.gravity = user ? Gravity.END : Gravity.START;
