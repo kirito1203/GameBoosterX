@@ -1,0 +1,29 @@
+name: Realme Booster Ultra APK
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extrair projeto
+        run: if [ -f projeto.zip ]; then unzip -o projeto.zip; fi
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+      - name: Compilar
+        run: gradle assembleDebug --no-daemon
+      - name: Publicar APK
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: realme-booster-ultra-${{ github.run_number }}-${{ github.run_attempt }}
+          name: Realme Booster Ultra (build ${{ github.run_number }})
+          files: app/build/outputs/apk/debug/app-debug.apk

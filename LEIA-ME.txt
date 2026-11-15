@@ -1,0 +1,25 @@
+REALME BOOSTER ULTRA • ULTIMATE EDITION • ANDROID 16 • NO ROOT
+Pacote: com.realme.boosterultra
+
+ESTRUTURA
+app/src/main/java/com/realme/boosterultra/
+  MainActivity.java, App.java
+  engine/   UltraEngine, TurboManager, ProfileManager, Optimizer, PhoneControl, Bench, Cleaner
+  ai/       IntelligenceEngine (Ultra Score), AiClient + AiActivity (Jarvis)
+  gaming/   GameManager, GameMemory, OverlayPanel, OverlayService, GameLauncherActivity
+  monitor/  WatchService (Auto Game Detect, Thermal Guardian), SmartAlerts, History, NetworkMonitor, AppScanner, BootReceiver
+  utils/    PreferencesManager, DeviceInfo
+  ui/       ScanlineView, HistoryView
+app/src/main/res/layout/activity_main.xml  (estrutura da tela principal)
+
+COMO USAR NO CODE ON THE GO
+1. Crie um projeto novo: Java, atividade vazia (Empty/No Activity),
+   nome do pacote EXATAMENTE: com.realme.boosterultra
+2. No build.gradle do módulo app, confira:
+   compileSdk 34 ou maior • minSdk 26 • targetSdk 34 ou 35
+3. Apague a pasta app/src/main do projeto novo e coloque no lugar
+   a pasta app/src/main deste zip (java + res + AndroidManifest.xml).
+   Mantenha os arquivos .gradle do próprio Code on the Go (são as versões que ele tem offline).
+4. Compile e instale.
+
+O app não usa nenhuma biblioteca externa: só Java, XML e APIs oficiais do Android.
