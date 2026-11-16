@@ -1,0 +1,433 @@
+name: Gerar APK
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Criar projeto Android
+        run: |
+          cat > settings.gradle <<'FIM_DO_ARQUIVO'
+          pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+          dependencyResolutionManagement { repositories { google(); mavenCentral() } }
+          rootProject.name = "DadosDoOculto"
+          include ':app'
+          FIM_DO_ARQUIVO
+          cat > build.gradle <<'FIM_DO_ARQUIVO'
+          plugins { id 'com.android.application' version '8.5.2' apply false }
+          FIM_DO_ARQUIVO
+          cat > gradle.properties <<'FIM_DO_ARQUIVO'
+          org.gradle.jvmargs=-Xmx2g
+          android.useAndroidX=true
+          FIM_DO_ARQUIVO
+          mkdir -p app
+          cat > app/build.gradle <<'FIM_DO_ARQUIVO'
+          plugins { id 'com.android.application' }
+          android {
+              namespace 'com.oculto.dados'
+              compileSdk 34
+              defaultConfig {
+                  applicationId 'com.oculto.dados'
+                  minSdk 24
+                  targetSdk 34
+                  versionCode 1
+                  versionName '1.0'
+              }
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+          }
+          FIM_DO_ARQUIVO
+          mkdir -p app/src/main
+          cat > app/src/main/AndroidManifest.xml <<'FIM_DO_ARQUIVO'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-permission android:name="android.permission.INTERNET"/>
+              <uses-permission android:name="android.permission.VIBRATE"/>
+              <application android:label="Dados do Oculto" android:icon="@drawable/ic"
+                  android:theme="@android:style/Theme.Material.NoActionBar">
+                  <activity android:name=".MainActivity" android:exported="true"
+                      android:screenOrientation="portrait"
+                      android:configChanges="orientation|screenSize|keyboardHidden">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN"/>
+                          <category android:name="android.intent.category.LAUNCHER"/>
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          FIM_DO_ARQUIVO
+          mkdir -p app/src/main/res/drawable
+          cat > app/src/main/res/drawable/ic.xml <<'FIM_DO_ARQUIVO'
+          <vector xmlns:android="http://schemas.android.com/apk/res/android"
+              android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+              <path android:fillColor="#15131D" android:pathData="M0,0h108v108h-108z"/>
+              <path android:fillColor="#A678FF" android:pathData="M54,18L84,36L84,72L54,90L24,72L24,36Z"/>
+              <path android:fillColor="#15131D" android:pathData="M54,30L74,42L74,66L54,78L34,66L34,42Z"/>
+              <path android:fillColor="#D6334A" android:pathData="M54,40A14,14 0,1 0,54 68A10,14 0,1 1,54 40Z"/>
+          </vector>
+          FIM_DO_ARQUIVO
+          mkdir -p app/src/main/java/com/oculto/dados
+          cat > app/src/main/java/com/oculto/dados/MainActivity.java <<'FIM_DO_ARQUIVO'
+          package com.oculto.dados;
+
+          import android.app.Activity;
+          import android.graphics.Color;
+          import android.os.Bundle;
+          import android.webkit.WebSettings;
+          import android.webkit.WebView;
+          import android.webkit.WebViewClient;
+
+          public class MainActivity extends Activity {
+              private WebView web;
+
+              @Override
+              protected void onCreate(Bundle b) {
+                  super.onCreate(b);
+                  getWindow().setStatusBarColor(Color.parseColor("#0B0A10"));
+                  getWindow().setNavigationBarColor(Color.parseColor("#0B0A10"));
+                  web = new WebView(this);
+                  web.setBackgroundColor(Color.parseColor("#0B0A10"));
+                  WebSettings s = web.getSettings();
+                  s.setJavaScriptEnabled(true);
+                  s.setDomStorageEnabled(true);
+                  s.setMediaPlaybackRequiresUserGesture(false);
+                  web.setWebViewClient(new WebViewClient());
+                  setContentView(web);
+                  web.loadUrl("file:///android_asset/index.html");
+              }
+
+              @Override
+              public void onBackPressed() {
+                  if (web != null && web.canGoBack()) web.goBack();
+                  else super.onBackPressed();
+              }
+          }
+          FIM_DO_ARQUIVO
+          mkdir -p app/src/main/assets
+          cat > app/src/main/assets/index.html <<'FIM_DO_ARQUIVO'
+          <!DOCTYPE html>
+          <html lang="pt-BR">
+          <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+          <title>Dados do Oculto</title>
+          <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+          <style>
+          :root{
+            --bg:#0b0a10;--panel:#15131d;--panel2:#1d1a28;--line:#2c2740;
+            --txt:#e8e3f2;--dim:#9a92ad;--accent:#a678ff;--blood:#d6334a;--gold:#f0c35a;--ok:#4fd1a1;
+          }
+          *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+          body{
+            background:radial-gradient(ellipse at top,#1f1630 0%,var(--bg) 60%);
+            color:var(--txt);font-family:Inter,system-ui,sans-serif;min-height:100vh;
+            padding:calc(env(safe-area-inset-top) + 14px) 14px calc(env(safe-area-inset-bottom) + 24px);
+          }
+          .wrap{max-width:520px;margin:0 auto}
+          h1{font-family:Cinzel,serif;font-weight:800;text-align:center;font-size:1.6rem;letter-spacing:2px;
+            background:linear-gradient(90deg,var(--accent),var(--blood));-webkit-background-clip:text;background-clip:text;color:transparent}
+          .sub{text-align:center;color:var(--dim);font-size:.8rem;margin:2px 0 14px}
+          .tabs{display:flex;gap:6px;margin-bottom:12px}
+          .tab{flex:1;padding:10px 4px;border-radius:10px;background:var(--panel);border:1px solid var(--line);color:var(--dim);
+            font-weight:600;font-size:.82rem;cursor:pointer}
+          .tab.on{background:var(--panel2);color:var(--txt);border-color:var(--accent)}
+          .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+          .label{font-size:.72rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--dim);margin-bottom:8px}
+          .dice{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+          .die{padding:14px 0;border-radius:10px;background:var(--panel2);border:1px solid var(--line);color:var(--txt);
+            font-family:Cinzel,serif;font-size:1.05rem;cursor:pointer}
+          .die.on{border-color:var(--accent);box-shadow:0 0 12px #a678ff55;color:var(--accent)}
+          .row{display:flex;gap:10px;margin-top:12px}
+          .step{flex:1;display:flex;align-items:center;justify-content:space-between;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:4px}
+          .step button{width:38px;height:38px;border:none;border-radius:8px;background:#2a2539;color:var(--txt);font-size:1.2rem;cursor:pointer}
+          .step span{font-weight:600;font-size:1.05rem}
+          .step small{display:block;font-size:.65rem;color:var(--dim);text-align:center}
+          .roll{width:100%;margin-top:14px;padding:16px;border:none;border-radius:12px;cursor:pointer;
+            background:linear-gradient(135deg,#6b3fd1,#b0223a);color:#fff;font-family:Cinzel,serif;font-size:1.15rem;letter-spacing:2px;font-weight:800}
+          .roll:active{transform:scale(.98)}
+          .result{text-align:center;padding:18px 10px;min-height:150px}
+          .big{font-family:Cinzel,serif;font-size:3.6rem;font-weight:800;line-height:1}
+          .detail{color:var(--dim);font-size:.85rem;margin-top:8px;word-break:break-word}
+          .verdict{margin-top:10px;font-weight:600;font-size:.95rem}
+          .crit{color:var(--gold);text-shadow:0 0 18px #f0c35a88}
+          .fail{color:var(--blood);text-shadow:0 0 18px #d6334a88}
+          .good{color:var(--ok)}
+          .shake{animation:shake .45s}
+          @keyframes shake{0%,100%{transform:none}20%{transform:rotate(-8deg) scale(1.1)}40%{transform:rotate(7deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(3deg)}}
+          .pips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px}
+          .pip{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:600;
+            background:var(--panel2);border:1px solid var(--line);font-size:.9rem}
+          .pip.s{border-color:var(--ok);color:var(--ok)}
+          .pip.x{border-color:var(--gold);color:var(--gold)}
+          .pip.b{border-color:var(--blood);color:var(--blood)}
+          .opt{display:flex;align-items:center;justify-content:space-between;margin-top:12px;font-size:.88rem}
+          .sw{width:46px;height:26px;border-radius:13px;background:#2a2539;position:relative;cursor:pointer;border:1px solid var(--line)}
+          .sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--dim);transition:.2s}
+          .sw.on{background:#4a2f8a}.sw.on::after{left:23px;background:#fff}
+          .stat{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+          .stat .nm{width:96px;font-size:.85rem}
+          .bar{flex:1;height:12px;background:#221e2f;border-radius:6px;overflow:hidden}
+          .bar i{display:block;height:100%;transition:width .3s}
+          .stat button{width:32px;height:32px;border:none;border-radius:8px;background:#2a2539;color:var(--txt);font-size:1.1rem;cursor:pointer}
+          .stat .v{width:52px;text-align:center;font-weight:600;font-size:.85rem}
+          .hist{max-height:220px;overflow:auto}
+          .h{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:.83rem}
+          .h:last-child{border:none}
+          .h b{font-family:Cinzel,serif}
+          .small{background:none;border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:6px 10px;font-size:.75rem;cursor:pointer}
+          .hide{display:none}
+          input[type=text]{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--txt);font-size:1rem}
+          </style>
+          </head>
+          <body>
+          <div class="wrap">
+            <h1>☾ DADOS DO OCULTO ☽</h1>
+            <p class="sub">Role o destino. Encare o desconhecido.</p>
+
+            <div class="tabs">
+              <button class="tab on" data-t="comum">Dados</button>
+              <button class="tab" data-t="pool">Parada</button>
+              <button class="tab" data-t="san">Sanidade</button>
+              <button class="tab" data-t="ficha">Ficha</button>
+            </div>
+
+            <!-- RESULTADO -->
+            <div class="card result" id="res">
+              <div class="big" id="bigN">—</div>
+              <div class="detail" id="det">Escolha um dado e role...</div>
+              <div class="pips" id="pips"></div>
+              <div class="verdict" id="ver"></div>
+            </div>
+
+            <!-- DADOS COMUNS -->
+            <div class="card" id="p-comum">
+              <div class="label">Escolha o dado</div>
+              <div class="dice" id="dice"></div>
+              <div class="row">
+                <div class="step"><button data-a="q-">−</button><div><span id="qv">1</span><small>quantidade</small></div><button data-a="q+">+</button></div>
+                <div class="step"><button data-a="m-">−</button><div><span id="mv">+0</span><small>modificador</small></div><button data-a="m+">+</button></div>
+              </div>
+              <div class="opt"><span>Vantagem (rola 2, fica o maior)</span><div class="sw" id="swAdv"></div></div>
+              <div class="opt"><span>Desvantagem (rola 2, fica o menor)</span><div class="sw" id="swDis"></div></div>
+              <div class="label" style="margin-top:14px">Fórmula livre (ex: 2d6+1d4+3)</div>
+              <input type="text" id="formula" placeholder="Deixe vazio para usar os botões">
+              <button class="roll" id="rollC">ROLAR</button>
+            </div>
+
+            <!-- PARADA DE DADOS -->
+            <div class="card hide" id="p-pool">
+              <div class="label">Parada de d10 (estilo horror gótico)</div>
+              <div class="row" style="margin-top:0">
+                <div class="step"><button data-a="pq-">−</button><div><span id="pqv">5</span><small>dados</small></div><button data-a="pq+">+</button></div>
+                <div class="step"><button data-a="pd-">−</button><div><span id="pdv">6</span><small>dificuldade</small></div><button data-a="pd+">+</button></div>
+              </div>
+              <div class="opt"><span>10 explode (rola de novo)</span><div class="sw on" id="swExp"></div></div>
+              <div class="opt"><span>1 anula um sucesso</span><div class="sw on" id="swOne"></div></div>
+              <button class="roll" id="rollP">INVOCAR</button>
+            </div>
+
+            <!-- SANIDADE -->
+            <div class="card hide" id="p-san">
+              <div class="label">Teste de Sanidade (d100 ≤ sanidade atual)</div>
+              <p class="detail" style="margin:0 0 10px">Usa a Sanidade da aba Ficha. Se falhar, perde a perda indicada.</p>
+              <div class="row" style="margin-top:0">
+                <div class="step"><button data-a="ls-">−</button><div><span id="lsv">1d6</span><small>perda se falhar</small></div><button data-a="ls+">+</button></div>
+              </div>
+              <button class="roll" id="rollS">ENCARAR O HORROR</button>
+            </div>
+
+            <!-- FICHA -->
+            <div class="card hide" id="p-ficha">
+              <div class="label">Personagem</div>
+              <input type="text" id="nome" placeholder="Nome do personagem" style="margin-bottom:14px">
+              <div id="stats"></div>
+              <button class="small" id="resetF">Restaurar tudo ao máximo</button>
+            </div>
+
+            <!-- HISTÓRICO -->
+            <div class="card">
+              <div class="label" style="display:flex;justify-content:space-between;align-items:center">
+                <span>Histórico</span><button class="small" id="clr">Limpar</button>
+              </div>
+              <div class="hist" id="hist"><div class="detail">Nenhuma rolagem ainda.</div></div>
+            </div>
+          </div>
+
+          <script>
+          const $=id=>document.getElementById(id);
+          const r=n=>Math.floor(Math.random()*n)+1;
+          const store={get(k,d){try{const v=localStorage.getItem('oculto_'+k);return v?JSON.parse(v):d}catch(e){return d}},
+                       set(k,v){try{localStorage.setItem('oculto_'+k,JSON.stringify(v))}catch(e){}}};
+
+          // ---- estado
+          let die=20,qty=1,mod=0,adv=false,dis=false;
+          let pq=5,pd=6,exp=true,one=true;
+          const losses=['1','1d4','1d6','1d8','1d10','1d20','2d10'];let li=2;
+          let hist=store.get('hist',[]);
+          let ficha=store.get('ficha',{nome:'',stats:{
+            vida:{n:'Vida',v:12,max:12,c:'var(--blood)'},
+            san:{n:'Sanidade',v:60,max:99,c:'var(--accent)'},
+            von:{n:'Vontade',v:5,max:10,c:'var(--gold)'},
+            cor:{n:'Corrupção',v:0,max:10,c:'#5b8a3a'}
+          }});
+
+          // ---- abas
+          document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+            document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===t));
+            ['comum','pool','san','ficha'].forEach(p=>$('p-'+p).classList.toggle('hide',p!==t.dataset.t));
+          });
+
+          // ---- dados
+          [4,6,8,10,12,20,100].concat([3]).forEach(d=>{
+            const b=document.createElement('button');b.className='die'+(d===20?' on':'');
+            b.textContent=d===100?'d%':'d'+d;b.onclick=()=>{die=d;document.querySelectorAll('.die').forEach(x=>x.classList.toggle('on',x===b))};
+            $('dice').appendChild(b);
+          });
+          function sw(id,fn){$(id).onclick=()=>{$(id).classList.toggle('on');fn($(id).classList.contains('on'))}}
+          sw('swAdv',v=>{adv=v;if(v){dis=false;$('swDis').classList.remove('on')}});
+          sw('swDis',v=>{dis=v;if(v){adv=false;$('swAdv').classList.remove('on')}});
+          sw('swExp',v=>exp=v);sw('swOne',v=>one=v);
+
+          document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{
+            const a=b.dataset.a;
+            if(a==='q+')qty=Math.min(30,qty+1);if(a==='q-')qty=Math.max(1,qty-1);
+            if(a==='m+')mod++;if(a==='m-')mod--;
+            if(a==='pq+')pq=Math.min(30,pq+1);if(a==='pq-')pq=Math.max(1,pq-1);
+            if(a==='pd+')pd=Math.min(10,pd+1);if(a==='pd-')pd=Math.max(2,pd-1);
+            if(a==='ls+')li=Math.min(losses.length-1,li+1);if(a==='ls-')li=Math.max(0,li-1);
+            $('qv').textContent=qty;$('mv').textContent=(mod>=0?'+':'')+mod;
+            $('pqv').textContent=pq;$('pdv').textContent=pd;$('lsv').textContent=losses[li];
+          });
+
+          const crits=['As sombras se curvam a você.','Os antigos sorriem.','O véu se abre a seu favor.','Algo lá fora sentiu medo.'];
+          const fumbles=['Algo te observa do escuro...','Você ouve sussurros atrás de você.','As velas se apagam.','O sangue esfria nas veias.'];
+          const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+          function show(n,det,ver,cls,pipsHtml=''){
+            const big=$('bigN');big.classList.remove('shake','crit','fail','good');void big.offsetWidth;
+            big.textContent=n;big.classList.add('shake');if(cls)big.classList.add(cls);
+            $('det').textContent=det;$('pips').innerHTML=pipsHtml;
+            $('ver').textContent=ver||'';$('ver').className='verdict '+(cls||'');
+            if(navigator.vibrate)try{navigator.vibrate(cls==='fail'?[60,40,120]:40)}catch(e){}
+            window.scrollTo({top:0,behavior:'smooth'});
+          }
+          function addHist(label,val){
+            hist.unshift({l:label,v:val,t:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})});
+            hist=hist.slice(0,40);store.set('hist',hist);drawHist();
+          }
+          function drawHist(){
+            $('hist').innerHTML=hist.length?hist.map(h=>`<div class="h"><span>${h.l} <span style="color:var(--dim)">· ${h.t}</span></span><b>${h.v}</b></div>`).join('')
+            :'<div class="detail">Nenhuma rolagem ainda.</div>';
+          }
+          $('clr').onclick=()=>{hist=[];store.set('hist',hist);drawHist()};
+
+          function parse(f){
+            f=f.replace(/\s/g,'').toLowerCase().replace(/d%/g,'d100');
+            if(!/^[+-]?(\d*d\d+|\d+)([+-](\d*d\d+|\d+))*$/.test(f))return null;
+            let total=0,parts=[];
+            f.match(/[+-]?[^+-]+/g).forEach(t=>{
+              const s=t[0]==='-'?-1:1;t=t.replace(/^[+-]/,'');
+              if(t.includes('d')){let[q,d]=t.split('d');q=Math.min(+q||1,100);d=+d;if(d<1)return;
+                const rs=Array.from({length:q},()=>r(d));total+=s*rs.reduce((a,b)=>a+b,0);parts.push((s<0?'−':'')+t+'['+rs.join(',')+']');}
+              else{total+=s*+t;parts.push((s<0?'−':'+')+t)}
+            });
+            return{total,det:parts.join(' ')};
+          }
+
+          $('rollC').onclick=()=>{
+            const f=$('formula').value.trim();
+            if(f){const p=parse(f);if(!p){show('?','Fórmula inválida. Use algo como 2d6+3','', 'fail');return}
+              show(p.total,p.det,'',null);addHist(f,p.total);return}
+            let rolls=[],kept;
+            if((adv||dis)&&qty===1){const a=r(die),b=r(die);rolls=[a,b];kept=[adv?Math.max(a,b):Math.min(a,b)]}
+            else{rolls=Array.from({length:qty},()=>r(die));kept=rolls}
+            const sum=kept.reduce((a,b)=>a+b,0)+mod;
+            const name=(qty>1?qty:'')+(die===100?'d%':'d'+die)+(mod?(mod>0?'+':'')+mod:'')+(adv&&qty===1?' (vant.)':dis&&qty===1?' (desv.)':'');
+            let ver='',cls=null;
+            if(qty===1&&(die===20||die===100)){
+              const k=kept[0];
+              if((die===20&&k===20)||(die===100&&k<=5)){ver='CRÍTICO! '+pick(crits);cls='crit'}
+              else if((die===20&&k===1)||(die===100&&k>=96)){ver='FALHA CRÍTICA. '+pick(fumbles);cls='fail'}
+            }
+            const pips=rolls.length>1||adv||dis?rolls.map(v=>`<div class="pip ${kept.includes(v)&&(adv||dis)?'s':''}">${v}</div>`).join(''):'';
+            show(sum,'['+rolls.join(', ')+']'+(mod?` ${mod>0?'+':'−'} ${Math.abs(mod)}`:''),ver,cls,pips);
+            addHist(name,sum);
+          };
+
+          $('rollP').onclick=()=>{
+            let rolls=[],toRoll=pq,guard=0;
+            while(toRoll>0&&guard<200){let n=0;for(let i=0;i<toRoll;i++){const v=r(10);rolls.push(v);if(exp&&v===10)n++}toRoll=n;guard++}
+            let succ=rolls.filter(v=>v>=pd).length,ones=rolls.filter(v=>v===1).length;
+            let net=one?succ-ones:succ;
+            let ver,cls;
+            if(net<0||(succ===0&&ones>0)){ver='DESASTRE. '+pick(fumbles);cls='fail';net=Math.min(net,0)}
+            else if(net===0){ver='Falha. Nada acontece... por enquanto.';cls=null}
+            else if(net>=5){ver='Sucesso excepcional! '+pick(crits);cls='crit'}
+            else{ver=net===1?'Sucesso marginal.':'Sucesso!';cls='good'}
+            const pips=rolls.map(v=>`<div class="pip ${v===10?'x':v>=pd?'s':v===1?'b':''}">${v}</div>`).join('');
+            show(net,`${succ} sucesso(s), ${ones} um(ns) · dif. ${pd}`,ver,cls,pips);
+            addHist(`Parada ${pq}d10 dif.${pd}`,net+' suc.');
+          };
+
+          $('rollS').onclick=()=>{
+            const s=ficha.stats.san,roll=r(100);let ver,cls,det=`d100 = ${roll} contra Sanidade ${s.v}`;
+            if(roll<=Math.max(1,Math.floor(s.v/5))){ver='Mente de aço. Você resiste sem abalo.';cls='crit'}
+            else if(roll<=s.v){ver='Você mantém a razão.';cls='good'}
+            else{const p=parse(losses[li]);s.v=Math.max(0,s.v-p.total);ver=`Perdeu ${p.total} de Sanidade. ${pick(fumbles)}`;cls='fail';
+              if(s.v===0)ver+=' ⚠ SUA MENTE SE PARTIU.';saveF();drawStats()}
+            show(roll,det,ver,cls);addHist('Teste de Sanidade',roll);
+          };
+
+          // ---- ficha
+          function saveF(){store.set('ficha',ficha)}
+          function drawStats(){
+            $('stats').innerHTML=Object.entries(ficha.stats).map(([k,s])=>`
+              <div class="stat"><span class="nm">${s.n}</span>
+                <button data-s="${k}" data-d="-1">−</button>
+                <div class="bar"><i style="width:${s.v/s.max*100}%;background:${s.c}"></i></div>
+                <button data-s="${k}" data-d="1">+</button>
+                <span class="v">${s.v}/${s.max}</span></div>`).join('');
+            $('stats').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+              const s=ficha.stats[b.dataset.s];s.v=Math.max(0,Math.min(s.max,s.v+ +b.dataset.d));saveF();drawStats()});
+          }
+          $('nome').value=ficha.nome;$('nome').oninput=e=>{ficha.nome=e.target.value;saveF()};
+          $('resetF').onclick=()=>{Object.entries(ficha.stats).forEach(([k,s])=>s.v=k==='cor'?0:s.max);saveF();drawStats()};
+          drawStats();drawHist();
+          </script>
+          </body>
+          </html>
+          FIM_DO_ARQUIVO
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: android-actions/setup-android@v3
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Compilar APK
+        run: gradle assembleDebug --no-daemon
+
+      - name: Renomear
+        run: cp app/build/outputs/apk/debug/app-debug.apk DadosDoOculto.apk
+
+      - name: Publicar para download
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: dados-do-oculto-v${{ github.run_number }}
+          name: Dados do Oculto v${{ github.run_number }}
+          files: DadosDoOculto.apk
+          make_latest: false
+          target_commitish: ${{ github.sha }}
