@@ -482,7 +482,7 @@ function renderPage(){const L=filtered(),pg=$("page");if(cur>L.length+1)cur=L.le
 
 
 /* ---------- Ficha ---------- */
-function normFicha(f,loco){f=f||{};const d={attrs:{AGI:1,INT:1,VIG:1,PRE:1,FOR:1},desloc:(loco&&loco.base)||9,vida:{cur:20,max:20},est:{cur:20,max:20},defEquip:0,defOutros:0,bloqueio:0,esquiva:0,
+function normFicha(f,loco){f=f||{};const d={attrs:{AGI:1,INT:1,VIG:1,PRE:1,FOR:1},desloc:(loco&&loco.base)||9,vida:{cur:20,max:20},san:{cur:15,max:15},est:{cur:20,max:20},defEquip:0,defOutros:0,bloqueio:0,esquiva:0,
   pericias:DEFPER.map(([n,a])=>({n,a,t:0,o:0}))};
   return Object.assign(d,f,{attrs:Object.assign(d.attrs,f.attrs||{})})}
 const D20='<svg viewBox="0 0 20 20" fill="none" stroke="#c38bff" stroke-width="1"><path d="M10 1l8 4.5v9L10 19l-8-4.5v-9z"/><path d="M10 1L6 8h8zM6 8l-4 6.5M14 8l4 6.5M6 8l4 11 4-11M2 5.5L6 8M18 5.5L14 8"/></svg>';
@@ -498,7 +498,7 @@ function renderFicha(){const F=S.ficha,A=F.attrs,def=10+(+A.AGI||0)+(+F.defEquip
    ${ATTRS.map(([k,n],i)=>`<button class="att" style="left:${pos[i][0]}%;top:${pos[i][1]}%" onclick="attrSheet('${k}')"><b>${A[k]}</b><small>${n.toUpperCase()}</small><span>${k}</span></button>`).join("")}</div>
   <div class="boxes"><div class="bx"><button onclick="editPerfil()">${esc(S.perfil.nivel)}</button><div>Nível</div></div>
    <div class="bx"><button onclick="editDesloc()">${F.desloc} m / ${Math.floor(F.desloc/1.5)} q</button><div>Deslocamento</div></div></div>
-  ${bar("vida","Vida","#d13a6a")}${bar("est","Estamina","#e08a2a")}
+  ${bar("vida","Vida","#d13a6a")}${bar("san","Sanidade","#7a3cff")}${bar("est","Estamina","#e08a2a")}
   <div class="defrow"><div class="shield"><svg viewBox="0 0 72 82"><path d="M36 3L68 14v22c0 22-14 36-32 43C18 72 4 58 4 36V14z" fill="#12081f" stroke="#d8b4ff" stroke-width="2.5"/><path d="M36 10L61 19v17c0 18-11 30-25 36C22 66 11 54 11 36V19z" fill="none" stroke="#9b4dff" stroke-opacity=".6"/></svg><b>${def}</b></div>
    <div><div class="t">DEFESA</div><div class="f2">= 10 + AGI + <span style="text-align:center"><input class="uin" type="number" value="${F.defEquip}" onchange="setF('defEquip',this.value)"><br><small>Equip.</small></span> + <span style="text-align:center"><input class="uin" type="number" value="${F.defOutros}" onchange="setF('defOutros',this.value)"><br><small>Outros</small></span></div></div></div>
   <div class="two2"><div><label>Bloqueio</label><input class="uin w" type="number" value="${F.bloqueio}" onchange="setF('bloqueio',this.value)"></div>
