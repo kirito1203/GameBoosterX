@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meu Grimório</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050308; --ink:#ece2ff; --muted:#b9a3e0; --dim:#7d68a8;
+  --p:#b46bff; --p2:#d8b4ff; --p3:#8b3dff; --line:rgba(180,107,255,.45);
+  --glow:0 0 8px rgba(180,107,255,.85),0 0 22px rgba(139,61,255,.45);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Cormorant Garamond",Georgia,serif;font-size:18px}
+body{min-height:100vh;background:
+  radial-gradient(ellipse 80% 45% at 20% 5%,rgba(110,40,200,.28),transparent 60%),
+  radial-gradient(ellipse 70% 40% at 90% 50%,rgba(150,50,230,.16),transparent 60%),
+  radial-gradient(ellipse 60% 40% at 20% 95%,rgba(90,30,170,.2),transparent 60%),var(--bg) fixed}
+#stars{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:720px;margin:0 auto;padding:14px 12px 110px;position:relative}
+.cz{font-family:Cinzel,serif;letter-spacing:.06em}
+.glow{color:var(--p2);text-shadow:var(--glow)}
+
+/* ===== Moldura ornamentada (usada em todas as "páginas") ===== */
+.frame{position:relative;background:
+   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .6 0 0 0 0 .4 0 0 0 0 .9 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+   radial-gradient(ellipse at 50% 0%,rgba(120,50,210,.18),transparent 60%),
+   radial-gradient(ellipse at 50% 100%,rgba(90,30,170,.16),transparent 60%),
+   #0a0710;
+  border-radius:10px;padding:30px 22px 34px;
+  box-shadow:0 0 0 1px rgba(180,107,255,.25),0 0 30px rgba(139,61,255,.22),0 14px 40px rgba(0,0,0,.7)}
+.frame::before{content:"";position:absolute;inset:9px;border:1px solid var(--line);border-radius:6px;pointer-events:none;
+  box-shadow:0 0 6px rgba(180,107,255,.5),inset 0 0 6px rgba(180,107,255,.3)}
+.frame::after{content:"";position:absolute;inset:14px;border:1px solid rgba(180,107,255,.18);border-radius:4px;pointer-events:none}
+.orn{position:absolute;width:64px;height:64px;pointer-events:none;filter:drop-shadow(0 0 4px #b46bff) drop-shadow(0 0 10px rgba(139,61,255,.7));z-index:1}
+.orn.tl{top:2px;left:2px}.orn.tr{top:2px;right:2px;transform:scaleX(-1)}
+.orn.bl{bottom:2px;left:2px;transform:scaleY(-1)}.orn.br{bottom:2px;right:2px;transform:scale(-1,-1)}
+.ornmid{position:absolute;left:50%;transform:translateX(-50%);width:120px;height:22px;pointer-events:none;filter:drop-shadow(0 0 4px #b46bff);z-index:1}
+.ornmid.t{top:0}.ornmid.b{bottom:0;transform:translateX(-50%) scaleY(-1)}
+.frame>.c{position:relative;z-index:2}
+
+/* Faixa de título com trevo */
+.banner{display:flex;align-items:center;gap:8px;margin:16px 0 10px}
+.banner .lbl{position:relative;display:flex;align-items:center;gap:8px;padding:5px 16px;border:1px solid var(--line);border-radius:4px;
+  font-family:Cinzel,serif;font-size:16px;color:var(--p2);text-shadow:var(--glow);background:rgba(40,10,70,.35);box-shadow:0 0 10px rgba(139,61,255,.3)}
+.banner .lbl::before,.banner .lbl::after{content:"";position:absolute;top:50%;width:8px;height:8px;border:1px solid var(--p);transform:translateY(-50%) rotate(45deg);background:#0a0710}
+.banner .lbl::before{left:-5px}.banner .lbl::after{right:-5px}
+.banner .ln{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--p),transparent);box-shadow:0 0 6px var(--p)}
+.clv{width:26px;height:26px;flex:none;filter:drop-shadow(0 0 4px #b46bff)}
+.pagehd{display:flex;align-items:center;gap:10px;justify-content:center;font-family:Cinzel,serif;font-size:12px;color:var(--muted);letter-spacing:.15em}
+.pagehd::before,.pagehd::after{content:"";width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--p))}
+.pagehd::after{transform:scaleX(-1)}
+.ttl{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;text-align:center;font-size:32px;line-height:1.1;margin:8px 0 2px;color:var(--p2);text-shadow:var(--glow)}
+.divider{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0;color:var(--p)}
+.divider::before,.divider::after{content:"";flex:1;max-width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--p))}
+.divider::after{transform:scaleX(-1)}
+.quote{text-align:center;font-style:italic;color:var(--p2);text-shadow:0 0 8px rgba(180,107,255,.6);font-size:19px;line-height:1.35}
+
+/* ===== Página do dono (topo) ===== */
+.owner{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center}
+.emb{position:relative;aspect-ratio:1;border-radius:50%;overflow:hidden;box-shadow:0 0 24px rgba(139,61,255,.55)}
+.emb img{width:100%;height:100%;object-fit:cover;display:block}
+.emb .ring{position:absolute;inset:-6%;border:1px solid rgba(216,180,255,.5);border-radius:50%;transform:rotateX(70deg) rotateZ(-20deg);animation:orb 14s linear infinite}
+@keyframes orb{to{transform:rotateX(70deg) rotateZ(340deg)}}
+.infobox{border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:rgba(20,6,36,.5);box-shadow:inset 0 0 12px rgba(139,61,255,.25)}
+.infobox .k{font-family:Cinzel,serif;font-size:13px;color:var(--muted);margin-top:6px}
+.infobox .k:first-child{margin-top:0}
+.infobox .v{font-size:18px;color:var(--ink);line-height:1.15}
+.clvs{display:flex;gap:3px;margin-top:2px}.clvs svg{width:28px;height:28px;filter:drop-shadow(0 0 4px #b46bff)}
+.edit{position:absolute;top:18px;right:18px;z-index:3;background:rgba(20,6,36,.7);border:1px solid var(--line);border-radius:8px;padding:3px 10px;font-family:Cinzel,serif;font-size:12px;color:var(--p2)}
+.mana{margin-top:4px}
+.mana .row{display:flex;justify-content:space-between;align-items:baseline;font-family:Cinzel,serif;font-size:14px;color:var(--muted)}
+.mana .row b{color:var(--p2);font-size:18px;text-shadow:var(--glow)}
+.bar{height:12px;border-radius:999px;background:#120a1c;border:1px solid var(--line);overflow:hidden;margin:6px 0 8px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#4a12a8,#8b3dff,#d8b4ff);box-shadow:0 0 12px #b46bff;transition:width .35s}
+.mbtns{display:flex;gap:6px}
+.mbtns button{flex:1;padding:7px 0;border-radius:6px;border:1px solid var(--line);background:rgba(20,6,36,.6);font-family:Cinzel,serif;font-size:13px}
+.mbtns .full{color:var(--p2);box-shadow:0 0 8px rgba(180,107,255,.4)}
+
+/* Busca e filtros */
+.tools{margin:18px 0 8px}
+.tools input{width:100%;padding:10px 14px;border-radius:8px;border:1px solid var(--line);background:#0a0710;font-family:"Cormorant Garamond",serif;font-size:18px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:5px 12px;border-radius:4px;border:1px solid var(--line);background:#0a0710;font-family:Cinzel,serif;font-size:12px;color:var(--muted)}
+.chip.on{background:rgba(139,61,255,.35);color:#fff;box-shadow:0 0 10px rgba(180,107,255,.6);border-color:var(--p)}
+
+/* ===== Livro ===== */
+.book{perspective:1600px;margin-top:6px}
+.page{min-height:560px;transform-origin:left center}
+.page.cover{padding:0;overflow:hidden;background:#000;min-height:0;border-radius:6px 12px 12px 6px;box-shadow:0 0 30px rgba(139,61,255,.4),0 14px 40px rgba(0,0,0,.8)}
+.page.cover::before,.page.cover::after{display:none}
+.page.cover img{display:block;width:100%;height:auto}
+.page.cover .open{position:absolute;left:0;right:0;bottom:4%;text-align:center;font-family:Cinzel,serif;font-size:13px;color:var(--p2);text-shadow:var(--glow);animation:pulse 2.4s ease-in-out infinite}
+.page.cover .owner-tag{position:absolute;left:0;right:0;top:20.5%;text-align:center;font-family:Cinzel,serif;font-size:12px;letter-spacing:.2em;color:var(--muted)}
+@keyframes pulse{50%{opacity:.35}}
+.flip-out{animation:flipOut .26s ease-in forwards}.flip-in{animation:flipIn .32s ease-out}
+.flip-out-r{animation:flipOutR .26s ease-in forwards}.flip-in-r{animation:flipInR .32s ease-out}
+@keyframes flipOut{to{transform:rotateY(-88deg);filter:brightness(.3)}}
+@keyframes flipIn{from{transform:rotateY(88deg);filter:brightness(.3)}}
+@keyframes flipOutR{to{transform:rotateY(88deg);filter:brightness(.3)}}
+@keyframes flipInR{from{transform:rotateY(-88deg);filter:brightness(.3)}}
+
+/* Índice */
+.toc ul{list-style:none;margin:0;padding:0 4px}
+.toc li{display:flex;align-items:baseline;gap:6px;padding:5px 0;font-size:18px;cursor:pointer;line-height:1.2}
+.toc li::before{content:"•";color:var(--p);text-shadow:var(--glow)}
+.toc li .t{color:var(--dim);font-size:15px}
+.toc li .dot{flex:1;min-width:14px;border-bottom:1px dotted rgba(180,107,255,.35);transform:translateY(-4px)}
+.toc li .n{font-family:Cinzel,serif;color:var(--muted);font-size:13px}
+.toc .none{text-align:center;color:var(--muted);font-style:italic;padding:40px 0}
+
+/* Página de magia */
+.sname{font-family:Cinzel,serif;font-weight:600;text-align:center;font-size:20px;line-height:1.3;color:var(--p2);text-shadow:var(--glow);
+  text-decoration:underline;text-decoration-color:rgba(180,107,255,.6);text-underline-offset:5px;margin:8px 0 10px}
+.art{position:relative;margin:4px -6px 12px;border-radius:6px;overflow:hidden;box-shadow:0 0 18px rgba(139,61,255,.4)}
+.art img{display:block;width:100%;height:170px;object-fit:cover;
+  -webkit-mask-image:radial-gradient(ellipse 75% 85% at 50% 50%,#000 55%,transparent 100%);mask-image:radial-gradient(ellipse 75% 85% at 50% 50%,#000 55%,transparent 100%)}
+.circle{display:block;width:150px;height:150px;margin:0 auto 8px;filter:drop-shadow(0 0 6px #b46bff) drop-shadow(0 0 16px rgba(139,61,255,.7));animation:spin 60s linear infinite}
+.circle .inner{transform-origin:50% 50%;animation:spin 25s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pills{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px}
+.pill{border:1px solid var(--line);border-radius:999px;padding:1px 12px;font-size:15px;color:var(--p2);background:rgba(40,10,70,.35);box-shadow:0 0 6px rgba(180,107,255,.3)}
+.pill.s{color:var(--muted);border-color:rgba(180,107,255,.25);box-shadow:none}
+.sdesc{font-size:18px;line-height:1.4;white-space:pre-wrap}
+.sec{font-family:Cinzel,serif;font-size:15px;color:var(--p2);text-shadow:0 0 6px rgba(180,107,255,.6);margin:12px 0 2px}
+.blist{margin:0;padding-left:18px;font-size:17px;line-height:1.35}
+.blist li::marker{color:var(--p)}
+.phrase{text-align:center;font-style:italic;color:var(--p2);text-shadow:var(--glow);font-size:19px;margin-top:4px}
+.sacts{display:flex;gap:8px;margin-top:18px}
+.sacts button{flex:1;padding:10px 0;border-radius:6px;border:1px solid var(--line);background:rgba(20,6,36,.6);font-family:Cinzel,serif;font-size:14px}
+.sacts .cast{background:linear-gradient(180deg,#6a22d6,#3d0f8a);border-color:var(--p);box-shadow:0 0 14px rgba(180,107,255,.6);color:#fff;font-weight:700}
+.sstar{position:absolute;top:-6px;right:0;background:none;border:0;font-size:22px;color:#3d2a5c;z-index:3}
+.sstar.on{color:var(--p2);text-shadow:var(--glow)}
+.pfoot{display:flex;justify-content:center;margin-top:16px}
+
+/* Navegação */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+.nav>button{width:50px;height:50px;border-radius:50%;border:1px solid var(--line);background:#0a0710;font-size:24px;color:var(--p2);box-shadow:0 0 12px rgba(139,61,255,.4)}
+.nav>button:disabled{opacity:.2;box-shadow:none}
+.nav .mid{flex:1;text-align:center;font-family:Cinzel,serif;color:var(--muted);font-size:13px}
+.nav .mid button{border:1px solid var(--line);background:#0a0710;border-radius:4px;padding:4px 12px;margin:4px 3px 0;font-family:Cinzel,serif;font-size:12px;color:var(--p2)}
+
+.fab{position:fixed;right:16px;bottom:20px;width:60px;height:60px;border-radius:50%;border:1px solid var(--p2);
+  background:radial-gradient(circle at 40% 35%,#c99bff,#7a2ff0 55%,#2a0a5e);box-shadow:0 0 22px rgba(180,107,255,.8),0 0 0 6px rgba(139,61,255,.15);display:grid;place-items:center;z-index:10}
+.fab svg{width:30px;height:30px}
+.foot{display:flex;gap:8px;justify-content:center;margin-top:22px;flex-wrap:wrap}
+.foot button{background:none;border:1px solid rgba(180,107,255,.3);border-radius:6px;padding:6px 12px;color:var(--muted);font-family:Cinzel,serif;font-size:12px}
+.sync{font-size:13px;color:var(--dim);text-align:center;margin-top:10px;font-family:Cinzel,serif}
+
+/* Modal */
+.ov{position:fixed;inset:0;background:rgba(3,1,6,.82);display:none;align-items:flex-end;justify-content:center;z-index:20}
+.ov.show{display:flex}
+.sheet{width:100%;max-width:720px;max-height:92vh;overflow:auto;border-radius:14px 14px 0 0;background:#0b0712;border:1px solid var(--line);border-bottom:0;padding:18px 16px 26px;box-shadow:0 -6px 30px rgba(139,61,255,.35)}
+.sheet h2{margin:0 0 8px;font-family:Cinzel,serif;font-weight:600;color:var(--p2);text-shadow:var(--glow);font-size:19px}
+label{display:block;font-family:Cinzel,serif;font-size:12px;color:var(--muted);margin:10px 0 4px;letter-spacing:.05em}
+.f{width:100%;padding:9px 12px;border-radius:6px;border:1px solid rgba(180,107,255,.35);background:#06040a;font-size:17px}
+textarea.f{min-height:80px;resize:vertical}
+.hint{font-size:13px;color:var(--dim);font-style:italic}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btns{display:flex;gap:8px;margin-top:16px}
+.btns button{flex:1;padding:11px;border-radius:6px;border:1px solid var(--line);background:#150c22;font-family:Cinzel,serif;font-size:14px}
+.btns .pri{background:linear-gradient(180deg,#6a22d6,#3d0f8a);border-color:var(--p);color:#fff;box-shadow:0 0 10px rgba(180,107,255,.5)}
+.btns .del{color:#ff7b9c;border-color:rgba(255,123,156,.4);flex:.6}
+.leaves{display:flex;gap:6px}
+.leaves button{flex:1;padding:6px 0;border-radius:6px;border:1px solid rgba(180,107,255,.3);background:#06040a;font-family:Cinzel,serif;font-size:14px}
+.leaves button.on{border-color:var(--p);color:var(--p2);background:rgba(139,61,255,.25);box-shadow:0 0 8px rgba(180,107,255,.5)}
+.arts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.arts button{padding:0;border:2px solid transparent;border-radius:6px;overflow:hidden;background:#06040a;aspect-ratio:1.4;font-family:Cinzel,serif;font-size:11px;color:var(--muted)}
+.arts button img{width:100%;height:100%;object-fit:cover;display:block}
+.arts button.on{border-color:var(--p2);box-shadow:0 0 10px #b46bff}
+
+.cast-res{text-align:center}
+.cast-res .big{font-family:Cinzel,serif;font-size:58px;color:#fff;margin:4px 0;text-shadow:0 0 14px #b46bff,0 0 40px #8b3dff;animation:pop .5s ease-out}
+@keyframes pop{from{transform:scale(.4);opacity:0;filter:blur(6px)}}
+.cast-res .det{color:var(--muted);font-size:16px}
+.cast-res .name{font-family:Cinzel,serif;font-size:17px;color:var(--p2)}
+.toast{position:fixed;left:50%;bottom:94px;transform:translateX(-50%);background:#1a0d2e;border:1px solid var(--line);padding:9px 16px;border-radius:8px;opacity:0;transition:.25s;pointer-events:none;z-index:30;max-width:90vw;text-align:center;box-shadow:0 0 14px rgba(139,61,255,.5)}
+.toast.show{opacity:1}
+
+/* Medidor de mana */
+.gauge{display:flex;align-items:center;gap:14px;margin-top:6px}
+.orb{position:relative;width:118px;height:118px;flex:none;cursor:pointer}
+.orb svg{width:100%;height:100%;transform:rotate(-90deg);filter:drop-shadow(0 0 8px rgba(180,107,255,.7))}
+.orb .val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:Cinzel,serif}
+.orb .val b{font-size:28px;color:#fff;text-shadow:var(--glow);line-height:1}
+.orb .val span{font-size:12px;color:var(--muted)}
+.orb .val i{font-style:normal;font-size:10px;color:var(--dim);margin-top:2px}
+.mctl{flex:1;display:flex;flex-direction:column;gap:7px}
+.mctl .lbl{font-family:Cinzel,serif;font-size:13px;color:var(--muted)}
+.mctl input{width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--line);background:#06040a;font-family:Cinzel,serif;font-size:20px;text-align:center;color:var(--p2)}
+.mctl .two{display:flex;gap:6px}
+.mctl .two button{flex:1;padding:8px 0;border-radius:6px;border:1px solid var(--line);font-family:Cinzel,serif;font-size:13px}
+.mctl .spend{background:linear-gradient(180deg,#6a22d6,#3d0f8a);color:#fff;box-shadow:0 0 10px rgba(180,107,255,.5)}
+.mctl .gain{background:rgba(20,6,36,.6);color:var(--p2)}
+.quick{display:flex;gap:5px;margin-top:8px}
+.quick button{flex:1;padding:6px 0;border-radius:6px;border:1px solid rgba(180,107,255,.3);background:rgba(20,6,36,.5);font-family:Cinzel,serif;font-size:12px;color:var(--muted)}
+.mlog{font-size:14px;color:var(--dim);text-align:center;margin-top:6px;font-style:italic;min-height:18px}
+
+/* Locomoção */
+#locoBox{margin-top:16px}
+.mv{display:flex;align-items:baseline;justify-content:space-between;font-family:Cinzel,serif;font-size:13px;color:var(--muted)}
+.mv b{font-size:24px;color:#fff;text-shadow:var(--glow)}
+.mvbar{height:10px;border-radius:999px;background:#120a1c;border:1px solid var(--line);overflow:hidden;margin:6px 0 10px}
+.mvbar i{display:block;height:100%;background:linear-gradient(90deg,#3b0f8a,#9b4dff,#e7ccff);box-shadow:0 0 10px #b46bff;transition:width .35s}
+.mvrow{display:flex;gap:6px}
+.mvrow input{flex:1;min-width:0;padding:8px 10px;border-radius:6px;border:1px solid var(--line);background:#06040a;font-family:Cinzel,serif;font-size:18px;text-align:center;color:var(--p2)}
+.mvrow button{padding:8px 12px;border-radius:6px;border:1px solid var(--line);background:rgba(20,6,36,.6);font-family:Cinzel,serif;font-size:13px;color:var(--p2)}
+.mvrow .go{background:linear-gradient(180deg,#6a22d6,#3d0f8a);color:#fff;box-shadow:0 0 10px rgba(180,107,255,.5)}
+.modes{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.mode{position:relative;display:flex;align-items:center;gap:10px;text-align:left;padding:10px;border-radius:8px;border:1px solid var(--line);background:rgba(20,6,36,.5);box-shadow:inset 0 0 12px rgba(139,61,255,.18)}
+.mode svg{width:34px;height:34px;flex:none;filter:drop-shadow(0 0 5px #b46bff)}
+.mode .nm{font-family:Cinzel,serif;font-size:13px;color:var(--p2);line-height:1.2}
+.mode .in{font-size:14px;color:var(--muted)}
+.mode.add{justify-content:center;border-style:dashed;color:var(--muted);font-family:Cinzel,serif;font-size:13px;box-shadow:none}
+.icons{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.icons button{aspect-ratio:1;border-radius:6px;border:1px solid rgba(180,107,255,.3);background:#06040a;display:grid;place-items:center;padding:4px}
+.icons button svg{width:100%;height:100%}
+.icons button.on{border-color:var(--p2);box-shadow:0 0 10px #b46bff}
+.chk{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:16px}
+.chk input{width:20px;height:20px;accent-color:#9b4dff}
+
+/* Abas */
+.tabs{position:sticky;top:0;z-index:15;display:flex;gap:4px;padding:8px 10px;background:rgba(5,3,8,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid rgba(180,107,255,.3)}
+.tabs button{flex:1;padding:9px 0;border-radius:6px;border:1px solid transparent;background:none;font-family:Cinzel,serif;font-size:14px;color:var(--muted);letter-spacing:.05em}
+.tabs button.on{border-color:var(--line);background:rgba(139,61,255,.25);color:#fff;text-shadow:var(--glow);box-shadow:0 0 10px rgba(139,61,255,.4)}
+.tab{display:none}.tab.on{display:block}
+body:not(.g) .fab{display:none}
+
+/* Atributos em pentágono */
+.attrs{position:relative;width:100%;max-width:340px;aspect-ratio:1;margin:4px auto 0}
+.attrs svg.web{position:absolute;inset:0;width:100%;height:100%}
+.att{position:absolute;width:26%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:2px solid var(--p2);
+  background:radial-gradient(circle at 50% 40%,#2a0f4d,#0a0612 70%);box-shadow:0 0 14px rgba(180,107,255,.7),inset 0 0 12px rgba(139,61,255,.5);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:Cinzel,serif;padding:0}
+.att::before{content:"";position:absolute;inset:-9px;border-radius:50%;border:1px dashed rgba(216,180,255,.45);animation:spin 40s linear infinite}
+.att b{font-size:30px;line-height:1;color:#fff;text-shadow:var(--glow)}
+.att small{font-size:8px;letter-spacing:.08em;color:var(--muted);margin-top:2px}
+.att span{font-size:15px;font-weight:700;color:var(--p2)}
+.acenter{position:absolute;left:50%;top:50%;width:34%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;overflow:hidden;box-shadow:0 0 20px rgba(139,61,255,.6)}
+.acenter img{width:100%;height:100%;object-fit:cover;opacity:.55}
+.acenter div{position:absolute;inset:0;display:grid;place-items:center;font-family:Cinzel,serif;font-weight:700;font-size:13px;letter-spacing:.08em;color:#fff;text-shadow:0 0 8px #000,var(--glow)}
+.boxes{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:6px 0 4px}
+.bx{text-align:center}
+.bx button{min-width:74px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:rgba(20,6,36,.6);font-family:Cinzel,serif;font-size:17px;color:#fff;box-shadow:inset 0 0 10px rgba(139,61,255,.25)}
+.bx div{font-family:Cinzel,serif;font-size:11px;color:var(--muted);margin-top:3px}
+.res{margin-top:12px}
+.res .rt{text-align:center;font-family:Cinzel,serif;font-size:14px;color:var(--muted);margin-bottom:4px}
+.rbar{position:relative;display:flex;align-items:center;height:44px;border-radius:6px;overflow:hidden;border:1px solid var(--rc);box-shadow:0 0 12px color-mix(in srgb,var(--rc) 50%,transparent);background:#0b0612}
+.rbar .fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,color-mix(in srgb,var(--rc) 55%,#000),var(--rc));transition:width .35s}
+.rbar button{position:relative;z-index:1;background:none;border:0;width:42px;height:100%;font-size:20px;color:#fff;text-shadow:0 0 6px #000}
+.rbar .v{position:relative;z-index:1;flex:1;text-align:center;font-family:Cinzel,serif;font-size:19px;color:#fff;text-shadow:0 0 6px #000;background:none;border:0;height:100%}
+.defrow{display:flex;align-items:center;gap:14px;margin-top:16px}
+.shield{position:relative;width:72px;height:82px;flex:none}
+.shield svg{width:100%;height:100%;filter:drop-shadow(0 0 6px #b46bff)}
+.shield b{position:absolute;inset:0;display:grid;place-items:center;font-family:Cinzel,serif;font-size:26px;color:#fff;padding-bottom:6px}
+.defrow .t{font-family:Cinzel,serif;font-size:18px;color:var(--p2);text-shadow:var(--glow)}
+.defrow .f2{display:flex;align-items:flex-end;gap:6px;font-size:14px;color:var(--muted);flex-wrap:wrap}
+.uin{width:46px;text-align:center;background:none;border:0;border-bottom:1px solid var(--p);font-family:Cinzel,serif;font-size:17px;color:#fff;padding:2px 0}
+.uin.w{width:60px}
+.two2{display:flex;gap:24px;margin-top:14px}
+.two2 label{margin:0}
+
+/* Perícias */
+.ptab{width:100%;border-collapse:collapse;font-size:15px}
+.ptab th{font-family:Cinzel,serif;font-size:10px;letter-spacing:.06em;color:var(--muted);font-weight:400;padding:4px 2px;text-align:center}
+.ptab th:first-child{text-align:left}
+.ptab td{padding:5px 2px;text-align:center;border-bottom:1px solid rgba(180,107,255,.1)}
+.ptab td:first-child{text-align:left}
+.ptab .pn{background:none;border:0;padding:0;display:flex;align-items:center;gap:5px;text-align:left;font-size:15px;line-height:1.15;color:var(--ink)}
+.ptab .pn svg{width:16px;height:16px;flex:none;filter:drop-shadow(0 0 3px #b46bff)}
+.ptab tr.tr .pn,.ptab tr.tr td{color:#e0b8ff;text-shadow:0 0 6px rgba(180,107,255,.8)}
+.ptab .at{font-family:Cinzel,serif;font-size:11px;color:var(--muted);white-space:nowrap}
+.ptab .b{white-space:nowrap}
+.ptab select,.ptab input{width:34px;background:none;border:0;border-bottom:1px solid rgba(180,107,255,.5);text-align:center;font-family:Cinzel,serif;font-size:14px;color:inherit;padding:2px 0;-webkit-appearance:none;appearance:none}
+.ptab .b{font-family:Cinzel,serif;font-size:14px}
+.ptab .x{background:none;border:0;color:var(--dim);font-size:14px;padding:0 2px}
+
+/* Dados */
+#tab-dados .wrap2{position:relative}
+.dtop{display:flex;justify-content:space-between;gap:4px;margin:4px 0 6px}
+.dtop button{flex:1;height:46px;border:0;background:none;display:grid;place-items:center;padding:0;border-radius:8px}
+.dtop svg{width:32px;height:32px;fill:none;stroke:#b9a3e0;stroke-width:1.6}
+.dtop svg text{fill:#b9a3e0;stroke:none;font-family:Cinzel,serif;font-size:9px;font-weight:700}
+.dtop button.on{background:rgba(139,61,255,.25);box-shadow:0 0 10px rgba(180,107,255,.5)}
+.dtop button.on svg{stroke:#fff}.dtop button.on svg text{fill:#fff}
+#dCanvas{display:block;width:100%;height:46vh;min-height:300px;border-radius:12px;cursor:pointer;
+  background:linear-gradient(180deg,rgba(10,6,18,.9) 0%,rgba(10,6,18,.9) 34%,rgba(24,16,36,.85) 34.5%,rgba(14,9,22,.9) 100%);box-shadow:inset 0 0 40px rgba(0,0,0,.8),0 0 0 1px rgba(180,107,255,.25)}
+#dRes{text-align:center;min-height:96px}
+.dtot{font-family:Cinzel,serif;font-size:56px;line-height:1;color:#fff;text-shadow:0 0 14px #b46bff,0 0 36px #8b3dff;margin-top:6px;animation:pop .45s ease-out}
+.dtot.rolling{opacity:.4;animation:none}
+.dtot.crit{color:#ffe98a;text-shadow:0 0 14px #ffd84a,0 0 36px #ff9d00}
+.dtot.fail{color:#ff7b9c;text-shadow:0 0 14px #ff3d6e}
+.dexp{font-family:Cinzel,serif;font-size:14px;color:var(--p2)}
+.ddet{font-size:15px;color:var(--muted);margin-top:2px}
+.ddet s{opacity:.5}
+.dctl{display:flex;gap:8px;align-items:center;justify-content:center;margin:8px 0}
+.dctl .md{display:flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:8px;padding:2px}
+.dctl .md button{width:36px;height:36px;border:0;background:none;font-size:22px;color:var(--p2)}
+.dctl .md span{min-width:40px;text-align:center;font-family:Cinzel,serif;font-size:17px}
+.dctl .md small{font-family:Cinzel,serif;font-size:10px;color:var(--muted);padding-left:6px}
+.dctl .roll{flex:1;max-width:180px;padding:11px 0;border-radius:8px;border:1px solid var(--p);background:linear-gradient(180deg,#6a22d6,#3d0f8a);color:#fff;font-family:Cinzel,serif;font-size:16px;font-weight:700;box-shadow:0 0 14px rgba(180,107,255,.6)}
+.dctl .clr{padding:11px 12px;border-radius:8px;border:1px solid var(--line);background:none;font-family:Cinzel,serif;font-size:13px;color:var(--muted)}
+#dBar{display:flex;justify-content:space-between;gap:2px;margin-top:6px;user-select:none;-webkit-user-select:none}
+.dbtn{flex:1;border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;touch-action:manipulation}
+.dbtn .cnt{height:20px;font-family:Cinzel,serif;font-size:15px;color:#fff;text-shadow:var(--glow)}
+.dbtn svg{width:100%;max-width:50px;aspect-ratio:1;fill:none;stroke:#8d7ab3;stroke-width:1.6}
+.dbtn svg text{fill:#b9a3e0;stroke:none;font-family:Cinzel,serif;font-size:11px;font-weight:700}
+.dbtn.on svg{fill:#e7ccff;stroke:#fff;filter:drop-shadow(0 0 6px #b46bff)}
+.dbtn.on svg text{fill:#2a0a5e}
+
+.cname{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;text-align:center;font-size:30px;color:var(--p2);text-shadow:var(--glow);line-height:1.1;margin:4px 0}
+.cidea{font-size:18px;line-height:1.45;white-space:pre-wrap;color:var(--ink)}
+.cidea.empty{color:var(--dim);font-style:italic;text-align:center}
+.cbtn{display:block;margin:14px auto 0;padding:8px 18px;border-radius:6px;border:1px solid var(--line);background:rgba(20,6,36,.6);font-family:Cinzel,serif;font-size:13px;color:var(--p2);box-shadow:0 0 8px rgba(180,107,255,.3)}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><radialGradient id="cg"><stop offset="0" stop-color="#e7ccff"/><stop offset=".6" stop-color="#9b4dff"/><stop offset="1" stop-color="#5a14c8"/></radialGradient><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e7ccff"/><stop offset=".5" stop-color="#9b4dff"/><stop offset="1" stop-color="#4a12a8"/></linearGradient></defs></svg>
+<nav class="tabs"><button data-tab="ficha">Ficha</button><button data-tab="pericias">Perícias</button><button data-tab="grimorio">Grimório</button><button data-tab="dados">Dados</button></nav>
+<div class="wrap">
+ <div class="tab" id="tab-ficha">
+  <section class="frame" id="charBox" style="margin-bottom:16px"></section>
+  <section class="frame" id="ownerBox"></section>
+  <section class="frame" id="fichaBox" style="margin-top:16px"></section>
+ </div>
+ <div class="tab" id="tab-pericias"><section class="frame" id="perBox"></section></div>
+ <div class="tab" id="tab-grimorio">
+  
+
+  <div class="tools"><input id="q" placeholder="Buscar magia…" autocomplete="off"></div>
+  <div class="chips" id="chips"></div>
+
+  <div class="book"><div class="page" id="page"></div></div>
+  <div class="nav"><button id="prev" aria-label="Página anterior">‹</button><div class="mid" id="navmid"></div><button id="next" aria-label="Próxima página">›</button></div>
+ </div>
+
+
+ <div class="tab" id="tab-dados">
+  <div class="dtop">
+   <button onclick="dColors()" aria-label="Cor"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="6"/><path d="M16 3v5M16 24v5M3 16h5M24 16h5M6.8 6.8l3.5 3.5M21.7 21.7l3.5 3.5M6.8 25.2l3.5-3.5M21.7 10.3l3.5-3.5"/></svg></button>
+   <button onclick="dHist()" aria-label="Histórico"><svg viewBox="0 0 32 32"><path d="M6 16a10 10 0 1 0 3-7.1M6 5v5h5"/><path d="M16 10v7l4 3"/></svg></button>
+   <button onclick="dSaved()" aria-label="Salvos"><svg viewBox="0 0 32 32"><path d="M9 4h14v24l-7-5-7 5z"/></svg></button>
+   <button data-m="adv" onclick="setModo('adv')"><svg viewBox="0 0 32 32"><path d="M16 2l12 7v14l-12 7-12-7V9z"/><text x="16" y="15" text-anchor="middle">&gt;</text><text x="16" y="23" text-anchor="middle">ADV</text></svg></button>
+   <button data-m="dis" onclick="setModo('dis')"><svg viewBox="0 0 32 32"><path d="M16 2l12 7v14l-12 7-12-7V9z"/><text x="16" y="15" text-anchor="middle">&lt;</text><text x="16" y="23" text-anchor="middle">DIS</text></svg></button>
+   <button data-m="pct" onclick="setModo('pct')"><svg viewBox="0 0 32 32"><path d="M16 2l14 14-14 14L2 16z"/><text x="16" y="20" text-anchor="middle" style="font-size:11px">%</text></svg></button>
+  </div>
+  <canvas id="dCanvas"></canvas>
+  <div id="dLuck" class="hint" style="text-align:center;margin-top:4px;min-height:16px"></div>
+  <div id="dRes"></div>
+  <div class="dctl"><button class="clr" onclick="dClear()">Limpar</button>
+   <div class="md"><small>MOD</small><button onclick="dModAdj(-1)">−</button><span id="dMod">0</span><button onclick="dModAdj(1)">+</button></div>
+   <button class="roll" onclick="rollDice()">ROLAR</button></div>
+  <div id="dBar"></div>
+ </div>
+  <div class="foot"><button id="bExport">Copiar backup</button><button id="bImport">Restaurar backup</button></div>
+  <div class="sync" id="sync">Abrindo o grimório…</div>
+</div>
+<button class="fab" id="fab" aria-label="Nova magia"></button>
+<div class="ov" id="ov"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const TYPES=["Ofensiva","Defensiva","Suporte","Cura","Locomoção","Restrição","Selamento","Criação","Armadilha","Utilidade","Composta","Especial"];
+const OLDTYPES={"Ataque":"Ofensiva","Defesa":"Defensiva"};
+const ATTRS=[["AGI","Agilidade"],["INT","Intelecto"],["VIG","Vigor"],["PRE","Presença"],["FOR","Força"]];
+const DEFPER=[["Acrobacia","AGI"],["Atletismo","FOR"],["Conhecimento Mágico","INT"],["Controle de Mana","INT"],["Diplomacia","PRE"],["Enganação","PRE"],["Fortitude","VIG"],["Furtividade","AGI"],["Iniciativa","AGI"],["Intimidação","PRE"],["Intuição","PRE"],["Investigação","INT"],["Luta","FOR"],["Medicina","INT"],["Percepção","PRE"],["Pilotar Vassoura","AGI"],["Pontaria","AGI"],["Reflexos","AGI"],["Sobrevivência","INT"],["Tática","INT"],["Vontade","PRE"]];
+const LEVELS=["Iniciante","Intermediária","Avançada","Expert"];
+const LEVEL_TITLE={"Iniciante":"Magias Iniciantes","Intermediária":"Magias Intermediárias","Avançada":"Magias Avançadas","Expert":"Magias Expert"};
+const ARTS={portal:"Portal",vortex:"Vórtice",hex:"Prisão",esfera:"Colapso",arsenal:"Arsenal",heroi:"Portador",circulo:"Círculo"};
+const AUTO_ART={"Ofensiva":"arsenal","Defensiva":"hex","Suporte":"heroi","Cura":"vortex","Restrição":"hex","Selamento":"esfera","Criação":"vortex","Armadilha":"esfera","Utilidade":"portal","Locomoção":"portal","Composta":"arsenal","Especial":"heroi"};
+const DEFAULT={perfil:{nome:"",ideia:"",atributo:"Magia Espacial",esquadrao:"",trevo:3,nivel:"Iniciante",manaMax:100,mana:100,lema:""},magias:[]};
+let S=null,filtro="Todas",busca="",cur=0;
+let db=null,uid=null,ready=false,saveT=null;
+const LS="grimorio-bc-v1";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("show"),2200)}
+function norm(d){d.ficha=normFicha(d.ficha,d.loco);delete d.loco;d.perfil=Object.assign({},DEFAULT.perfil,d.perfil||{});if(typeof d.perfil.nivel==="number")d.perfil.nivel=String(d.perfil.nivel);
+  d.magias=(d.magias||[]).map(m=>({nivel:"Iniciante",efeitos:"",limitacoes:"",frase:"",arte:"auto",...m,tipo:OLDTYPES[m.tipo]||m.tipo||"Ofensiva"}));return d}
+
+/* ---------- SVGs ---------- */
+const LEAF="M0 0C-3-5-13-7-13-15C-13-21-5-23 0-17C5-23 13-21 13-15C13-7 3-5 0 0Z";
+function clover(n=3,cls="clv"){n=Math.max(1,Math.min(5,n));let g="";for(let i=0;i<n;i++)g+=`<path d="${LEAF}" transform="rotate(${180+i*360/n}) scale(1.2)" fill="url(#cg)"/>`;
+  return `<svg class="${cls}" viewBox="-30 -30 60 60">${n===3?'<path d="M0 0Q3 14 9 24" stroke="#b46bff" stroke-width="2.5" fill="none"/>':""}${g}<circle r="2" fill="#fff"/></svg>`}
+const ORN=`<svg viewBox="0 0 64 64" fill="none" stroke="#c38bff" stroke-width="1.1"><path d="M4 60V18Q4 4 18 4h42"/><path d="M10 60V22q0-12 12-12h38" stroke-opacity=".5"/><path d="M4 30q10-2 12-14 12-2 14-12" stroke-width="1.3"/><path d="M14 14q-6 6 0 12 6-6 12 0-6-6 0-12-6 6-12 0z" fill="#b46bff" fill-opacity=".25"/><path d="M20 20l-4-14 4 6 4-6zM20 20l-14-4 6 4-6 4z" fill="#d8b4ff" stroke="none"/><circle cx="20" cy="20" r="2" fill="#fff" stroke="none"/><path d="M4 44q6-4 6-10M44 4q-4 6-10 6" stroke-opacity=".8"/><circle cx="4" cy="44" r="1.6" fill="#d8b4ff" stroke="none"/><circle cx="44" cy="4" r="1.6" fill="#d8b4ff" stroke="none"/></svg>`;
+const ORNM=`<svg viewBox="0 0 120 22" fill="none" stroke="#c38bff" stroke-width="1.1"><path d="M0 4h40q8 0 12 8M120 4H80q-8 0-12 8"/><path d="M60 1l4 9-4 11-4-11z" fill="#d8b4ff" stroke="none"/><circle cx="46" cy="8" r="1.5" fill="#d8b4ff" stroke="none"/><circle cx="74" cy="8" r="1.5" fill="#d8b4ff" stroke="none"/></svg>`;
+const FRAME=`<span class="orn tl">${ORN}</span><span class="orn tr">${ORN}</span><span class="orn bl">${ORN}</span><span class="orn br">${ORN}</span><span class="ornmid t">${ORNM}</span><span class="ornmid b">${ORNM}</span>`;
+const banner=t=>`<div class="banner"><span class="ln"></span><span class="lbl">${clover(3)}${esc(t)}</span><span class="ln"></span></div>`;
+function magicCircle(){
+  const P=Array.from({length:6},(_,i)=>{const a=-Math.PI/2+i*Math.PI/3;return[75+46*Math.cos(a),75+46*Math.sin(a)]});
+  let ticks="";for(let i=0;i<48;i++){const a=i*Math.PI/24,r2=i%4?67:70;ticks+=`M${75+64*Math.cos(a)} ${75+64*Math.sin(a)}L${75+r2*Math.cos(a)} ${75+r2*Math.sin(a)}`}
+  return `<svg class="circle" viewBox="0 0 150 150" fill="none" stroke="#c38bff" stroke-width="1.1"><circle cx="75" cy="75" r="72"/><circle cx="75" cy="75" r="64"/><path d="${ticks}"/>
+   <g class="inner"><circle cx="75" cy="75" r="46" stroke-opacity=".7"/><path d="M${P[0]}L${P[2]}L${P[4]}ZM${P[1]}L${P[3]}L${P[5]}Z" stroke-width="1.3"/>${P.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="2.6" fill="#d8b4ff" stroke="none"/>`).join("")}</g>
+   <g transform="translate(75 75) scale(.9)">${[0,1,2].map(i=>`<path d="${LEAF}" transform="rotate(${180+i*120})" fill="#9b4dff" fill-opacity=".85" stroke="#e7ccff" stroke-width=".8"/>`).join("")}<circle r="2" fill="#fff" stroke="none"/></g></svg>`;
+}
+$("fab").innerHTML=`<svg viewBox="0 0 30 30" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M15 5v20M5 15h20"/></svg>`;
+
+/* ---------- Salvamento ---------- */
+function saveLocal(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
+function save(){saveLocal();if(!db||!uid||!ready)return;clearTimeout(saveT);
+  saveT=setTimeout(async()=>{try{await db.collection("data/users/"+uid).doc("grimorio").set({json:JSON.stringify(S),t:Date.now()});$("sync").textContent="✦ Salvo na nuvem"}catch(e){$("sync").textContent="Salvo só neste aparelho"}},600)}
+try{const l=localStorage.getItem(LS);if(l)S=norm(JSON.parse(l))}catch(e){}
+if(!S)S=norm(JSON.parse(JSON.stringify(DEFAULT)));
+(async()=>{const timer=setTimeout(()=>{if(!ready){ready=true;$("sync").textContent="Salvo neste aparelho"}},10000);
+  try{if(!window.claude)throw 0;db=await claude.use("db");const user=await claude.use("user");if(!db||!user)throw 0;uid=await user.id();
+    const snap=await db.collection("data/users/"+uid).doc("grimorio").get();const d=snap&&(typeof snap.data==="function"?snap.data():snap);
+    ready=true;if(d&&d.json){S=norm(JSON.parse(d.json));saveLocal();render()}else if(S.magias.length)save();
+    clearTimeout(timer);$("sync").textContent="✦ Sincronizado na nuvem"}
+  catch(e){clearTimeout(timer);ready=true;$("sync").textContent="Salvo neste aparelho"}})();
+
+/* ---------- Dados ---------- */
+function roll(expr){const s=String(expr||"").replace(/\s/g,"").toLowerCase();if(!s)return null;
+  const re=/([+-]?)(\d*)d(\d+)|([+-]?)(\d+)/g;let m,total=0,parts=[],ok=false;
+  while((m=re.exec(s))){if(m[3]){ok=true;const n=+(m[2]||1),f=+m[3],sg=m[1]==="-"?-1:1,rs=[];for(let i=0;i<Math.min(n,100);i++)rs.push(1+Math.floor(Math.random()*f));
+      total+=sg*rs.reduce((a,b)=>a+b,0);parts.push((sg<0?"− ":"")+"["+rs.join(", ")+"]")}
+    else if(m[5]){const v=+m[5]*(m[4]==="-"?-1:1);total+=v;parts.push((v<0?"− ":"+ ")+Math.abs(v))}}
+  return ok?{total,det:parts.join(" ")}:null}
+
+/* ---------- Render ---------- */
+function renderOwner(){const p=S.perfil,pct=p.manaMax>0?Math.max(0,Math.min(100,p.mana/p.manaMax*100)):0;
+  $("ownerBox").innerHTML=FRAME+`<button class="edit" onclick="editPerfil()">✎ Editar</button><div class="c">
+   <div class="ttl">Grimório${p.nome?" de "+esc(p.nome):""}</div>
+   ${banner(p.atributo||"Atributo mágico")}
+   <div class="owner"><div class="emb"><img src="img/emblema.jpg" alt=""><span class="ring"></span></div>
+    <div class="infobox"><div class="k">Trevos:</div><div class="clvs">${Array.from({length:p.trevo},()=>clover(3,"")).join("")}</div>
+     <div class="k">Atributo:</div><div class="v">${esc(p.atributo||"—")}</div>
+     <div class="k">Nível atual:</div><div class="v">${esc(p.nivel)}</div>
+     <div class="k">Usuário:</div><div class="v">${esc(p.nome||"________")}</div>
+     ${p.esquadrao?`<div class="k">Esquadrão:</div><div class="v">${esc(p.esquadrao)}</div>`:""}</div></div>
+   <div class="divider">✦</div>
+   <div class="row cz" style="display:flex;justify-content:space-between;font-size:14px;color:var(--muted)"><span>Medidor de Mana</span><span>${Math.round(pct)}%</span></div>
+   <div class="gauge"><div class="orb" onclick="editMana()" title="Definir mana">
+     <svg viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="50" fill="#0b0614" stroke="rgba(180,107,255,.2)" stroke-width="10"/>
+      <circle cx="60" cy="60" r="50" fill="none" stroke="url(#mg)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${(pct/100*314.16).toFixed(1)} 400" style="transition:stroke-dasharray .5s"/>
+      <circle cx="60" cy="60" r="40" fill="none" stroke="rgba(216,180,255,.25)" stroke-dasharray="2 4"/></svg>
+     <div class="val"><b>${p.mana}</b><span>de ${p.manaMax}</span><i>toque p/ definir</i></div></div>
+    <div class="mctl"><div class="lbl">Quantidade de mana:</div>
+     <input id="mAmt" type="number" inputmode="numeric" min="0" placeholder="0" value="${esc(lastAmt)}">
+     <div class="two"><button class="spend" onclick="manaAmt(-1)">− Gastar</button><button class="gain" onclick="manaAmt(1)">+ Recuperar</button></div></div></div>
+   <div class="quick"><button onclick="mana(-10)">−10</button><button onclick="mana(-5)">−5</button><button onclick="mana(5)">+5</button><button onclick="mana(10)">+10</button><button onclick="mana('full')" style="color:var(--p2)">Encher</button><button onclick="mana('zero')">Zerar</button></div>
+   <div class="mlog" id="mlog">${esc(mlog)}</div></div>`}
+function renderChips(){const used=["Todas","★ Favoritas",...LEVELS.filter(l=>S.magias.some(m=>m.nivel===l)),...TYPES.filter(t=>S.magias.some(m=>m.tipo===t))];
+  $("chips").innerHTML=used.map(t=>`<button class="chip ${t===filtro?"on":""}" data-t="${esc(t)}">${esc(t)}</button>`).join("");
+  $("chips").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{filtro=b.dataset.t;cur=1;render()})}
+function filtered(){let L=[...S.magias];
+  if(filtro==="★ Favoritas")L=L.filter(m=>m.fav);else if(LEVELS.includes(filtro))L=L.filter(m=>m.nivel===filtro);else if(filtro!=="Todas")L=L.filter(m=>m.tipo===filtro);
+  if(busca){const q=busca.toLowerCase();L=L.filter(m=>[m.nome,m.desc,m.tipo,m.efeitos,m.frase].join(" ").toLowerCase().includes(q))}
+  return L.sort((a,b)=>LEVELS.indexOf(a.nivel)-LEVELS.indexOf(b.nivel)||(+a.pagina||999)-(+b.pagina||999)||a.nome.localeCompare(b.nome))}
+const pnum=(m,i)=>m.pagina||i+2;
+const lines=t=>String(t||"").split(/\n+/).map(s=>s.replace(/^[\s•\-*]+/,"").trim()).filter(Boolean);
+function renderPage(){const L=filtered(),pg=$("page");if(cur>L.length+1)cur=L.length+1;
+  if(cur===0){pg.className="page cover frame";pg.innerHTML=`<img src="img/capa.jpg" alt="Capa do grimório"><div class="open">✦ toque para abrir ✦</div>`;pg.onclick=()=>go(1)}
+  else if(cur===1){pg.className="page frame";pg.onclick=null;
+    const grp=LEVELS.map(l=>[l,L.filter(m=>m.nivel===l)]).filter(g=>g[1].length);
+    pg.innerHTML=FRAME+`<div class="c toc"><div class="pagehd">Página 1</div>
+     <div class="ttl" style="display:flex;align-items:center;justify-content:center;gap:10px">${clover()}Lista de Magias${clover()}</div>
+     ${!S.magias.length?`<div class="none">As páginas ainda estão em branco…<br>Toque no <b>+</b> para inscrever sua primeira magia.</div>`:!L.length?`<div class="none">Nenhuma magia encontrada.</div>`:
+      grp.map(([l,ms])=>banner(LEVEL_TITLE[l])+`<ul>${ms.map(m=>`<li data-id="${m.id}"><span>${esc(m.nome)}${m.fav?" ✦":""} <span class="t">– ${esc(m.tipo)}</span></span><span class="dot"></span><span class="n">${esc(pnum(m,L.indexOf(m)))}</span></li>`).join("")}</ul>`).join("")}
+     ${S.perfil.lema?`<div class="divider">✦</div><div class="quote">“${esc(S.perfil.lema)}”</div>`:""}</div>`;
+    pg.querySelectorAll("li").forEach(li=>li.onclick=()=>go(L.findIndex(m=>m.id===li.dataset.id)+2))}
+  else{pg.className="page frame";pg.onclick=null;const i=cur-2,m=L[i],art=m.arte==="auto"?AUTO_ART[m.tipo]||"portal":m.arte;
+    const ef=lines(m.efeitos),lim=lines(m.limitacoes),extra=[m.loco&&`Locomoção: ${m.locoForma||""}${m.locoDist?` · ${m.locoDist} m`:""}`,m.custo&&`Custo: ${m.custo} mana`,m.dano&&`Dados: ${m.dano}`,m.alcance&&`Alcance: ${m.alcance}`,m.duracao&&`Duração: ${m.duracao}`].filter(Boolean);
+    pg.innerHTML=FRAME+`<div class="c"><button class="sstar ${m.fav?"on":""}" onclick="fav('${m.id}')">✦</button>
+     <div class="pagehd">Página ${esc(pnum(m,i))}</div>
+     <div class="sname">${esc(m.nome)}</div>
+     ${art==="circulo"?magicCircle():art==="nenhuma"?"":`<div class="art"><img src="img/${art}.jpg" alt=""></div>`}
+     <div class="pills"><span class="pill">Nível: ${esc(m.nivel)}</span><span class="pill">Tipo: ${esc(m.tipo)}</span>${extra.map(x=>`<span class="pill s">${esc(x)}</span>`).join("")}</div>
+     ${m.desc?`<div class="sdesc">${esc(m.desc)}</div>`:""}
+     ${ef.length?`<div class="sec">Efeitos:</div><ul class="blist">${ef.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+     ${lim.length?`<div class="sec">Limitações:</div><ul class="blist">${lim.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+     ${m.frase?`<div class="sec">Frase de ativação:</div><div class="phrase">“${esc(m.frase)}”</div>`:""}
+     <div class="sacts"><button class="cast" onclick="castSpell('${m.id}')">✦ Conjurar</button><button onclick="editMagia('${m.id}')">Reescrever</button></div>
+     <div class="pfoot">${clover(S.perfil.trevo,"clv")}</div></div>`}
+  $("prev").disabled=cur===0;$("next").disabled=cur>=L.length+1;
+  $("navmid").innerHTML=cur===0?"Capa":cur===1?`${L.length} magia${L.length===1?"":"s"}`:`${cur-1} de ${L.length}<br><button onclick="go(1)">☰ Lista</button>`}
+
+
+/* ---------- Ficha ---------- */
+function normFicha(f,loco){f=f||{};const d={attrs:{AGI:1,INT:1,VIG:1,PRE:1,FOR:1},desloc:(loco&&loco.base)||9,vida:{cur:20,max:20},est:{cur:20,max:20},defEquip:0,defOutros:0,bloqueio:0,esquiva:0,
+  pericias:DEFPER.map(([n,a])=>({n,a,t:0,o:0}))};
+  return Object.assign(d,f,{attrs:Object.assign(d.attrs,f.attrs||{})})}
+const D20='<svg viewBox="0 0 20 20" fill="none" stroke="#c38bff" stroke-width="1"><path d="M10 1l8 4.5v9L10 19l-8-4.5v-9z"/><path d="M10 1L6 8h8zM6 8l-4 6.5M14 8l4 6.5M6 8l4 11 4-11M2 5.5L6 8M18 5.5L14 8"/></svg>';
+function renderFicha(){const F=S.ficha,A=F.attrs,def=10+(+A.AGI||0)+(+F.defEquip||0)+(+F.defOutros||0);
+ const pos=ATTRS.map((_,i)=>{const a=-Math.PI/2+i*2*Math.PI/5;return[50+35*Math.cos(a),50+35*Math.sin(a)]});
+ const bar=(k,t,c)=>{const r=F[k],p=r.max>0?Math.max(0,Math.min(100,r.cur/r.max*100)):0;return `<div class="res"><div class="rt">${t}</div><div class="rbar" style="--rc:${c}"><span class="fill" style="width:${p}%"></span>
+   <button onclick="res('${k}',-5)">«</button><button onclick="res('${k}',-1)">‹</button><button class="v" onclick="editRes('${k}','${t}')">${r.cur} / ${r.max}</button><button onclick="res('${k}',1)">›</button><button onclick="res('${k}',5)">»</button></div></div>`};
+ $("fichaBox").innerHTML=FRAME+`<div class="c">${banner("Atributos")}
+  <div class="attrs"><svg class="web" viewBox="0 0 100 100" fill="none" stroke="#c38bff" stroke-opacity=".6" stroke-width=".5">
+    <path d="M${pos.map(p=>p.join(" ")).join("L")}Z"/>${pos.map(p=>`<path d="M50 50L${p[0]} ${p[1]}" stroke-dasharray="1 1.5"/>`).join("")}
+    <circle cx="50" cy="50" r="46" stroke-dasharray=".6 1.8" stroke-width="1.6" stroke-opacity=".35"/></svg>
+   <div class="acenter"><img src="img/emblema.jpg" alt=""><div>ATRIBUTOS</div></div>
+   ${ATTRS.map(([k,n],i)=>`<button class="att" style="left:${pos[i][0]}%;top:${pos[i][1]}%" onclick="attrSheet('${k}')"><b>${A[k]}</b><small>${n.toUpperCase()}</small><span>${k}</span></button>`).join("")}</div>
+  <div class="boxes"><div class="bx"><button onclick="editPerfil()">${esc(S.perfil.nivel)}</button><div>Nível</div></div>
+   <div class="bx"><button onclick="editDesloc()">${F.desloc} m / ${Math.floor(F.desloc/1.5)} q</button><div>Deslocamento</div></div></div>
+  ${bar("vida","Vida","#d13a6a")}${bar("est","Estamina","#e08a2a")}
+  <div class="defrow"><div class="shield"><svg viewBox="0 0 72 82"><path d="M36 3L68 14v22c0 22-14 36-32 43C18 72 4 58 4 36V14z" fill="#12081f" stroke="#d8b4ff" stroke-width="2.5"/><path d="M36 10L61 19v17c0 18-11 30-25 36C22 66 11 54 11 36V19z" fill="none" stroke="#9b4dff" stroke-opacity=".6"/></svg><b>${def}</b></div>
+   <div><div class="t">DEFESA</div><div class="f2">= 10 + AGI + <span style="text-align:center"><input class="uin" type="number" value="${F.defEquip}" onchange="setF('defEquip',this.value)"><br><small>Equip.</small></span> + <span style="text-align:center"><input class="uin" type="number" value="${F.defOutros}" onchange="setF('defOutros',this.value)"><br><small>Outros</small></span></div></div></div>
+  <div class="two2"><div><label>Bloqueio</label><input class="uin w" type="number" value="${F.bloqueio}" onchange="setF('bloqueio',this.value)"></div>
+   <div><label>Esquiva</label><input class="uin w" type="number" value="${F.esquiva}" onchange="setF('esquiva',this.value)"></div></div></div>`}
+function setF(k,v){S.ficha[k]=Math.floor(+v)||0;save();renderFicha()}
+function res(k,d){const r=S.ficha[k];r.cur=Math.max(0,Math.min(r.max,r.cur+d));save();renderFicha()}
+function editRes(k,t){const r=S.ficha[k];openSheet(`<h2>${t}</h2><div class="g2"><div><label>Atual</label><input class="f" id="rC" type="number" inputmode="numeric" value="${r.cur}"></div><div><label>Máxima</label><input class="f" id="rM" type="number" inputmode="numeric" value="${r.max}"></div></div>
+ <label>Dano / cura rápida</label><div class="mvrow" style="display:flex;gap:6px"><input class="f" id="rA" type="number" inputmode="numeric" placeholder="quantidade" style="flex:1"><button class="pill" onclick="resAmt('${k}',-1)">− Tirar</button><button class="pill" onclick="resAmt('${k}',1)">+ Pôr</button></div>
+ <div class="btns"><button onclick="close_()">Cancelar</button><button class="pri" onclick="const r=S.ficha['${k}'];r.max=Math.max(1,Math.floor(+$('rM').value)||r.max);r.cur=Math.max(0,Math.min(r.max,Math.floor(+$('rC').value)||0));save();renderFicha();close_()">Salvar</button></div>`)}
+function resAmt(k,s){const v=Math.floor(+$("rA").value);if(!v)return;res(k,s*v);close_()}
+function editDesloc(){openSheet(`<h2>Deslocamento</h2><label>Metros por turno</label><input class="f" id="dM" type="number" inputmode="numeric" value="${S.ficha.desloc}"><div class="hint" style="margin-top:6px">Quadrados são calculados sozinhos (1 q = 1,5 m).</div>
+ <div class="btns"><button onclick="close_()">Cancelar</button><button class="pri" onclick="S.ficha.desloc=Math.max(0,+$('dM').value||0);save();renderFicha();close_()">Salvar</button></div>`)}
+function attrSheet(k){const n=ATTRS.find(x=>x[0]===k)[1],v=S.ficha.attrs[k];
+ openSheet(`<h2>${n} (${k})</h2><div style="display:flex;align-items:center;justify-content:center;gap:18px;margin:10px 0">
+  <button class="pill" style="font-size:26px;padding:4px 18px" onclick="setAttr('${k}',-1)">−</button><b id="avv" style="font-family:Cinzel;font-size:46px;color:#fff;text-shadow:var(--glow)">${v}</b><button class="pill" style="font-size:26px;padding:4px 18px" onclick="setAttr('${k}',1)">+</button></div>
+  <div class="btns"><button onclick="close_()">Fechar</button><button class="pri" onclick="rollTest('${n}',S.ficha.attrs['${k}'],0)">🎲 Rolar ${k}</button></div>`)}
+function setAttr(k,d){const A=S.ficha.attrs;A[k]=Math.max(0,Math.min(10,(+A[k]||0)+d));$("avv").textContent=A[k];save();renderFicha()}
+function rollTest(nome,n,bonus){n=+n||0;const q=n>0?n:2,rs=Array.from({length:q},()=>1+Math.floor(Math.random()*20)),best=n>0?Math.max(...rs):Math.min(...rs),tot=best+(+bonus||0);
+ const crit=best===20?" · CRÍTICO!":best===1?" · desastre":"";
+ openSheet(`<div class="cast-res"><div class="name">${esc(nome)}</div><div class="big">${tot}</div>
+  <div class="det">${q}d20 (${n>0?"maior":"menor"}) → [${rs.map(r=>r===best?`<b style="color:#fff">${r}</b>`:r).join(", ")}]${bonus?` ${bonus>0?"+":"−"} ${Math.abs(bonus)}`:""}${crit}</div>
+  <div class="btns"><button onclick="rollTest('${esc(nome).replace(/'/g,"")}',${n},${+bonus||0})">Rolar de novo</button><button class="pri" onclick="close_()">OK</button></div></div>`)}
+
+/* ---------- Perícias ---------- */
+function renderPericias(){const P=S.ficha.pericias;
+ $("perBox").innerHTML=FRAME+`<div class="c">${banner("Perícias")}<div class="hint" style="text-align:center;margin-bottom:6px">Toque no nome para rolar · treinadas brilham</div>
+  <table class="ptab"><tr><th>Perícia</th><th>Dados</th><th>Bônus</th><th>Treino</th><th>Outros</th><th></th></tr>
+  ${P.map((p,i)=>{const b=(+p.t||0)+(+p.o||0);return `<tr class="${p.t>0?"tr":""}"><td><button class="pn" onclick="rollPer(${i})">${D20}${esc(p.n)}</button></td>
+   <td class="at">(${p.a})</td><td class="b">(${b})</td>
+   <td><select onchange="setPer(${i},'t',this.value)">${[0,5,10,15].map(v=>`<option ${v==p.t?"selected":""}>${v}</option>`).join("")}</select></td>
+   <td><input type="number" value="${p.o}" onchange="setPer(${i},'o',this.value)"></td><td><button class="x" onclick="delPer(${i})">✕</button></td></tr>`}).join("")}</table>
+  <div style="text-align:center;margin-top:12px"><button class="chip" onclick="addPer()">+ Nova perícia</button></div></div>`}
+function setPer(i,k,v){S.ficha.pericias[i][k]=Math.floor(+v)||0;save();renderPericias()}
+function rollPer(i){const p=S.ficha.pericias[i];rollTest(p.n,S.ficha.attrs[p.a],(+p.t||0)+(+p.o||0))}
+function delPer(i){const p=S.ficha.pericias[i];openSheet(`<h2>Remover ${esc(p.n)}?</h2><div class="btns"><button onclick="close_()">Cancelar</button><button class="del" style="flex:1" onclick="S.ficha.pericias.splice(${i},1);save();renderPericias();close_()">Remover</button></div>`)}
+function addPer(){openSheet(`<h2>Nova perícia</h2><label>Nome</label><input class="f" id="nP"><label>Atributo</label><select class="f" id="nA">${ATTRS.map(a=>`<option value="${a[0]}">${a[1]} (${a[0]})</option>`).join("")}</select>
+ <div class="btns"><button onclick="close_()">Cancelar</button><button class="pri" onclick="const n=$('nP').value.trim();if(!n)return;S.ficha.pericias.push({n,a:$('nA').value,t:0,o:0});S.ficha.pericias.sort((a,b)=>a.n.localeCompare(b.n));save();renderPericias();close_()">Adicionar</button></div>`)}
+
+
+/* ================= DADOS 3D ================= */
+const V3={sub:(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],add:(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]],mul:(a,s)=>[a[0]*s,a[1]*s,a[2]*s],
+  dot:(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],cross:(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],
+  len:a=>Math.hypot(a[0],a[1],a[2]),norm:a=>{const l=Math.hypot(a[0],a[1],a[2])||1;return[a[0]/l,a[1]/l,a[2]/l]}};
+const M3={mv:(m,v)=>[m[0]*v[0]+m[1]*v[1]+m[2]*v[2],m[3]*v[0]+m[4]*v[1]+m[5]*v[2],m[6]*v[0]+m[7]*v[1]+m[8]*v[2]],
+  mm:(a,b)=>{const r=[];for(let i=0;i<3;i++)for(let j=0;j<3;j++)r.push(a[i*3]*b[j]+a[i*3+1]*b[3+j]+a[i*3+2]*b[6+j]);return r},
+  cols:(a,b,c)=>[a[0],b[0],c[0],a[1],b[1],c[1],a[2],b[2],c[2]],
+  T:m=>[m[0],m[3],m[6],m[1],m[4],m[7],m[2],m[5],m[8]],
+  rot:(ax,t)=>{const[x,y,z]=ax,c=Math.cos(t),s=Math.sin(t),C=1-c;return[c+x*x*C,x*y*C-z*s,x*z*C+y*s,y*x*C+z*s,c+y*y*C,y*z*C-x*s,z*x*C-y*s,z*y*C+x*s,c+z*z*C]}};
+function randAxis(){return V3.norm([Math.random()*2-1,Math.random()*2-1,Math.random()*2-1])}
+function randRot(){return M3.rot(randAxis(),Math.random()*6.28)}
+
+function mkGeo(V,F,labels,numSize){
+  const r=Math.max(...V.map(V3.len));V=V.map(v=>V3.mul(v,1/r));
+  const faces=F.map((idx,i)=>{const c=V3.mul(idx.reduce((s,k)=>V3.add(s,V[k]),[0,0,0]),1/idx.length),n=V3.norm(c);
+    const ref=V3.norm(V3.sub(V[idx[0]],c)),b=V3.cross(n,ref);
+    idx=[...idx].sort((p,q)=>{const a=V3.sub(V[p],c),d=V3.sub(V[q],c);return Math.atan2(V3.dot(a,b),V3.dot(a,ref))-Math.atan2(V3.dot(d,b),V3.dot(d,ref))});
+    const u=V3.norm(V3.sub(V[idx[0]],c)),w=V3.cross(n,u);
+    return{idx,c,n,u,w,label:labels?labels[i]:null}});
+  return{V,faces,numSize}}
+const GEO={};
+(function(){
+  const P=(1+Math.sqrt(5))/2,iv=[];
+  for(const a of[-1,1])for(const b of[-1,1])iv.push([0,a,b*P],[a,b*P,0],[b*P,0,a]);
+  const tri=[];for(let i=0;i<12;i++)for(let j=i+1;j<12;j++)for(let k=j+1;k<12;k++){const d=(p,q)=>V3.len(V3.sub(iv[p],iv[q]));if(Math.abs(d(i,j)-2)<.01&&Math.abs(d(j,k)-2)<.01&&Math.abs(d(i,k)-2)<.01)tri.push([i,j,k])}
+  GEO.d20=mkGeo(iv,tri,tri.map((_,i)=>String(i+1)),.30);
+  const dv=tri.map(t=>V3.mul(V3.add(V3.add(iv[t[0]],iv[t[1]]),iv[t[2]]),1/3));
+  const df=iv.map((_,i)=>tri.map((t,k)=>t.includes(i)?k:-1).filter(k=>k>=0));
+  GEO.d12=mkGeo(dv,df,df.map((_,i)=>String(i+1)),.42);
+  const ov=[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],of=[];
+  for(const x of[0,1])for(const y of[2,3])for(const z of[4,5])of.push([x,y,z]);
+  GEO.d8=mkGeo(ov,of,of.map((_,i)=>String(i+1)),.42);
+  const cv=[];for(const x of[-1,1])for(const y of[-1,1])for(const z of[-1,1])cv.push([x,y,z]);
+  const cf=[];for(let ax=0;ax<3;ax++)for(const s of[-1,1])cf.push(cv.map((v,i)=>v[ax]===s?i:-1).filter(i=>i>=0));
+  GEO.d6=mkGeo(cv,cf,["1","6","2","5","3","4"],.62);
+  const tv=[[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]],tf=[[0,1,2],[0,1,3],[0,2,3],[1,2,3]];
+  GEO.d4=mkGeo(tv,tf,["1","2","3","4"],.5);
+  const z=.10557,H=1.08,k=[],r=[],tv10=[[0,H,0],[0,-H,0]];
+  for(let i=0;i<5;i++){const a=i*Math.PI*2/5,b=a+Math.PI/5;tv10.push([Math.cos(a),z*1.08,Math.sin(a)]);tv10.push([Math.cos(b),-z*1.08,Math.sin(b)])}
+  const U=i=>2+2*(i%5),L=i=>3+2*(i%5),f10=[];
+  for(let i=0;i<5;i++){f10.push([0,U(i),L(i),U(i+1)]);f10.push([1,L(i),U(i+1),L(i+1)])}
+  GEO.d10=mkGeo(tv10,f10,["1","2","3","4","5","6","7","8","9","10"],.34);
+  GEO.dp=mkGeo(tv10,f10,["00","10","20","30","40","50","60","70","80","90"],.3);
+  GEO.d1=mkGeo(tv10,f10,["0","1","2","3","4","5","6","7","8","9"],.34);
+  const N=20,cvv=[],cff=[[],[]];for(let i=0;i<N;i++){const a=i/N*Math.PI*2;cvv.push([Math.cos(a),.2,Math.sin(a)],[Math.cos(a),-.2,Math.sin(a)]);cff[0].push(2*i);cff[1].push(2*i+1)}
+  for(let i=0;i<N;i++)cff.push([2*i,2*((i+1)%N),2*((i+1)%N)+1,2*i+1]);
+  GEO.d2=mkGeo(cvv,cff,["1","2"],.7);
+})();
+const DIE_INFO={d20:{n:20,shape:"hex"},d12:{n:12,shape:"pent"},d10:{n:10,shape:"kite"},d8:{n:8,shape:"diam"},d6:{n:6,shape:"sq"},d4:{n:4,shape:"tri"},d2:{n:2,shape:"circ"}};
+const faceVal=(t,label)=>t==="dp"?+label:t==="d1"?+label:+label;
+const DCOL={roxo:["#8b3dff","#e7ccff"],vermelho:["#e02a2a","#ffb3a0"],azul:["#2a7ae0","#bfe0ff"],verde:["#1fae6a","#c4ffd9"],dourado:["#d99a1f","#fff0b8"],obsidiana:["#2a2233","#c38bff"],rosa:["#e0388f","#ffd0ea"]};
+const hex2rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+
+const DS={sel:{d20:1},mod:0,modo:"",dice:[],rolling:false,last:null,canvas:null,ctx:null,W:0,H:0,dpr:1,loop:false};
+const TILT=.72,toCam=[0,Math.sin(TILT),Math.cos(TILT)],upS=[0,Math.cos(TILT),-Math.sin(TILT)],LIGHT=V3.norm([-.5,1,.7]);
+function dSet(){if(!S.dados)S.dados={cor:"roxo",hist:[],salvos:[]};if(S.dados.sorte===undefined){S.dados.sorte=true;S.dados.limite=10}return S.dados}
+
+function buildDice(){
+  const list=[];if(DS.modo==="pct"){list.push("dp","d1")}else{
+    for(const t of["d20","d12","d10","d8","d6","d4","d2"])for(let i=0;i<(DS.sel[t]||0);i++)list.push(t);
+    if(DS.modo&&!list.includes("d20"))list.unshift("d20");
+    if(DS.modo&&list.filter(t=>t==="d20").length<2)list.splice(list.indexOf("d20"),0,"d20");}
+  const n=list.length,cols=Math.ceil(Math.sqrt(n)),rows=Math.ceil(n/cols),size=n<=1?1.25:n<=2?.95:n<=4?.78:n<=9?.56:.45,sp=size*2.75;
+  DS.dice=list.map((t,i)=>{const c=i%cols,r=Math.floor(i/cols),inRow=r===rows-1?n-r*cols:cols;
+    const sparks=Array.from({length:9},()=>V3.mul(randAxis(),Math.random()*.55));
+    return{t,geo:GEO[t],size,pos:[(c-(inRow-1)/2)*sp,size*.85,(r-(rows-1)/2)*sp*1.05],M:randRot(),val:null,dim:false,anim:null,sparks,spin:randAxis()}});
+}
+function project(p){const y=p[1]*Math.cos(TILT)-p[2]*Math.sin(TILT),z=p[1]*Math.sin(TILT)+p[2]*Math.cos(TILT),D=9,f=Math.min(DS.H*1.45,DS.W*1.9);
+  const s=f/(D-z);return[DS.W/2+p[0]*s,DS.H*.6-y*s,z]}
+function drawScene(now){
+  const c=DS.ctx,W=DS.W,H=DS.H;c.setTransform(DS.dpr,0,0,DS.dpr,0,0);c.clearRect(0,0,W,H);
+  const col=DCOL[dSet().cor]||DCOL.roxo,[r0,g0,b0]=hex2rgb(col[0]),lite=col[1];
+  // chão
+  const fl=c.createRadialGradient(W/2,H*.62,10,W/2,H*.62,W*.75);fl.addColorStop(0,`rgba(${r0},${g0},${b0},.13)`);fl.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=fl;c.fillRect(0,0,W,H);
+  // animação
+  for(const d of DS.dice){if(d.anim){const a=d.anim,t=Math.min(1,(now-a.t0)/a.dur),e=1-Math.pow(1-t,3);
+      d.M=M3.mm(a.target,M3.rot(a.axis,a.A*(1-e)));
+      d.pos=[a.x0+(a.x1-a.x0)*e,a.rest+a.h*Math.abs(Math.cos(t*Math.PI*2.5))*Math.pow(1-t,2),a.z0+(a.z1-a.z0)*e];
+      if(t>=1){d.anim=null;d.pos=[a.x1,a.rest,a.z1]}}
+    else if(!DS.rolling&&d.val==null){d.M=M3.mm(M3.rot(d.spin,.004),d.M)}}
+  if(DS.rolling&&DS.dice.every(d=>!d.anim)){DS.rolling=false;finishRoll()}
+  const order=[...DS.dice].sort((a,b)=>project(a.pos)[2]-project(b.pos)[2]);
+  for(const d of order){
+    const g=d.geo,sz=d.size,alpha=d.dim?.35:1;
+    // sombra
+    const sh=project([d.pos[0],0,d.pos[2]]),hgt=Math.max(0,d.pos[1]-sz*.85),ss=sz*(Math.min(H*1.45,W*1.9)/9)*(1.1-Math.min(.6,hgt*.25));
+    c.save();c.globalAlpha=.55*alpha*(1-Math.min(.7,hgt*.3));c.fillStyle="#000";c.beginPath();c.ellipse(sh[0],sh[1],ss*1.1,ss*.45,0,0,7);c.filter="blur(6px)";c.fill();c.restore();
+    const wv=g.V.map(v=>V3.add(V3.mul(M3.mv(d.M,v),sz),d.pos)),pv=wv.map(project);
+    const ctr=project(d.pos),rad=sz*(Math.min(H*1.45,W*1.9)/9)*1.25;
+    // brilho externo
+    const gl=c.createRadialGradient(ctr[0],ctr[1],rad*.2,ctr[0],ctr[1],rad*1.6);gl.addColorStop(0,`rgba(${r0},${g0},${b0},${.45*alpha})`);gl.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=gl;c.fillRect(ctr[0]-rad*2,ctr[1]-rad*2,rad*4,rad*4);
+    const fs=g.faces.map(f=>{const n=M3.mv(d.M,f.n),cw=V3.add(V3.mul(M3.mv(d.M,f.c),sz),d.pos);
+      const camPos=[0,9*Math.sin(TILT),9*Math.cos(TILT)],vis=V3.dot(n,V3.sub(camPos,cw));return{f,n,cw,vis}});
+    const poly=f=>{c.beginPath();f.idx.forEach((k,i)=>i?c.lineTo(pv[k][0],pv[k][1]):c.moveTo(pv[k][0],pv[k][1]));c.closePath()};
+    // faces de trás (translúcidas)
+    for(const F of fs)if(F.vis<=0){poly(F.f);c.fillStyle=`rgba(${r0*.35|0},${g0*.35|0},${b0*.35|0},${.55*alpha})`;c.fill();c.strokeStyle=`rgba(${r0},${g0},${b0},${.35*alpha})`;c.lineWidth=1;c.stroke()}
+    // núcleo brilhante e faíscas internas
+    const core=c.createRadialGradient(ctr[0],ctr[1]-rad*.1,0,ctr[0],ctr[1],rad*.85);core.addColorStop(0,`rgba(255,255,255,${.35*alpha})`);core.addColorStop(.35,`rgba(${r0},${g0},${b0},${.55*alpha})`);core.addColorStop(1,"rgba(0,0,0,0)");
+    c.fillStyle=core;c.beginPath();c.arc(ctr[0],ctr[1],rad*.9,0,7);c.fill();
+    for(const sp of d.sparks){const p=project(V3.add(V3.mul(M3.mv(d.M,sp),sz),d.pos)),s=Math.max(1.5,rad*.05);const sg=c.createRadialGradient(p[0],p[1],0,p[0],p[1],s*3);
+      sg.addColorStop(0,`rgba(255,255,255,${.9*alpha})`);sg.addColorStop(.4,`rgba(${Math.min(255,r0+120)},${Math.min(255,g0+120)},${Math.min(255,b0+120)},${.6*alpha})`);sg.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=sg;c.fillRect(p[0]-s*3,p[1]-s*3,s*6,s*6)}
+    // faces da frente
+    for(const F of fs)if(F.vis>0){const nn=V3.norm(F.n),diff=Math.max(0,V3.dot(nn,LIGHT)),spec=Math.pow(Math.max(0,V3.dot(V3.norm(V3.add(LIGHT,toCam)),nn)),18);
+      const k=.4+.55*diff;poly(F.f);c.fillStyle=`rgba(${Math.min(255,r0*k+spec*90)|0},${Math.min(255,g0*k+spec*90)|0},${Math.min(255,b0*k+spec*90)|0},${.6*alpha})`;c.fill();
+      c.strokeStyle=lite;c.globalAlpha=.75*alpha;c.lineWidth=1.3;c.stroke();c.globalAlpha=1;
+      if(F.f.label!=null){const fc=F.cw,u=M3.mv(d.M,F.f.u),w=M3.mv(d.M,F.f.w),kk=sz*g.numSize/40,P0=project(V3.add(fc,V3.mul(nn,.001)));
+        const ex=project(V3.sub(fc,V3.mul(w,kk))),ey=project(V3.sub(fc,V3.mul(u,kk)));
+        const facing=Math.min(1,F.vis/ (sz*9));
+        c.save();c.setTransform(DS.dpr*(ex[0]-P0[0]),DS.dpr*(ex[1]-P0[1]),DS.dpr*(ey[0]-P0[0]),DS.dpr*(ey[1]-P0[1]),DS.dpr*P0[0],DS.dpr*P0[1]);
+        let lb=F.f.label;if((lb==="6"||lb==="9")&&g.faces.length>6)lb+=".";
+        c.font="700 40px Cinzel, Georgia, serif";c.textAlign="center";c.textBaseline="middle";c.globalAlpha=alpha*Math.max(.25,Math.min(1,facing*3));
+        c.shadowColor=lite;c.shadowBlur=8;c.fillStyle="#fff";c.fillText(lb,0,2);c.restore()}}
+  }
+  // números de resultado flutuando
+  if(!DS.rolling&&DS.last)for(const d of DS.dice)if(d.val!=null&&DS.dice.length>1){const p=project([d.pos[0],d.pos[1]+d.size*1.25,d.pos[2]]);
+    c.font=`700 ${Math.max(12,d.size*20)|0}px Cinzel, serif`;c.textAlign="center";c.fillStyle=d.dim?"rgba(255,255,255,.3)":lite;c.shadowColor=lite;c.shadowBlur=d.dim?0:8;c.fillText(d.label,p[0],p[1]);c.shadowBlur=0}
+}
+function diceLoop(now){if(!DS.loop)return;drawScene(now);requestAnimationFrame(diceLoop)}
+function diceResize(){const cv=DS.canvas;if(!cv)return;const r=cv.getBoundingClientRect();DS.dpr=Math.min(2,devicePixelRatio||1);DS.W=r.width;DS.H=r.height;cv.width=r.width*DS.dpr;cv.height=r.height*DS.dpr}
+function rollDice(){if(DS.rolling)return;buildDice();if(!DS.dice.length){toast("Escolha um dado embaixo");return}
+  DS.rolling=true;DS.last=null;const now=performance.now();$("dRes").innerHTML=`<div class="dtot rolling">…</div>`;
+  DS.dice.forEach((d,i)=>{const g=d.geo,ds=dSet(),lim=ds.sorte?+ds.limite||10:0;let cand=g.faces.filter(f=>f.label!=null);
+    if(lim&&d.t!=="dp"&&d.t!=="d1"){const c2=cand.filter(f=>+f.label>lim);if(c2.length)cand=c2}
+    const f=cand[Math.floor(Math.random()*cand.length)];
+    d.val=faceVal(d.t,f.label);d.label=f.label;
+    const target=M3.mm(M3.cols(upS,V3.cross(toCam,upS),toCam),M3.T(M3.cols(f.u,f.w,f.n)));
+    const twist=M3.rot(toCam,(Math.random()-.5)*.5);
+    d.anim={t0:now+i*70,dur:1300+Math.random()*350,target:M3.mm(twist,target),axis:randAxis(),A:(4+Math.random()*3)*Math.PI*2,
+      x0:d.pos[0]+(Math.random()<.5?-1:1)*(2+Math.random()*2),z0:d.pos[2]+2.5,x1:d.pos[0],z1:d.pos[2],rest:d.size*.85,h:2.4};
+    d.pos=[d.anim.x0,d.anim.rest+d.anim.h,d.anim.z0]});
+}
+function finishRoll(){const D=DS.dice,mod=+DS.mod||0;let total,parts=[],expr;
+  if(DS.modo==="pct"){let v=D[0].val+D[1].val;if(v===0)v=100;total=v+mod;expr="d%";parts.push(`${D[0].label} + ${D[1].label}`)}
+  else{const d20s=D.filter(d=>d.t==="d20");
+    if(DS.modo&&d20s.length>=2){const pick=DS.modo==="adv"?Math.max(...d20s.map(d=>d.val)):Math.min(...d20s.map(d=>d.val));let kept=false;
+      d20s.forEach(d=>{if(!kept&&d.val===pick){kept=true}else d.dim=true})}
+    const kept=D.filter(d=>!d.dim);total=kept.reduce((s,d)=>s+d.val,0)+mod;
+    const g={};D.forEach(d=>{(g[d.t]=g[d.t]||[]).push(d.dim?`<s>${d.val}</s>`:d.val)});
+    parts=Object.entries(g).map(([t,v])=>`${t}: ${v.join(", ")}`);
+    expr=Object.entries(DS.sel).filter(e=>e[1]).map(([t,n])=>`${n}${t}`).join(" + ")+(DS.modo==="adv"?" (vantagem)":DS.modo==="dis"?" (desvantagem)":"")}
+  if(mod)expr+=` ${mod>0?"+":"−"} ${Math.abs(mod)}`;
+  const d20=DS.dice.find(d=>d.t==="d20"&&!d.dim),crit=d20&&DS.dice.filter(d=>d.t==="d20").length&&DS.modo!=="pct"?(d20.val===20?"crit":d20.val===1?"fail":""):"";
+  DS.last={total,expr};
+  $("dRes").innerHTML=`<div class="dtot ${crit}">${total}</div><div class="dexp">${esc(expr)}</div><div class="ddet">${parts.join(" · ")}${mod?` · mod ${mod>0?"+":""}${mod}`:""}${crit==="crit"?" · <b>CRÍTICO!</b>":crit==="fail"?" · <b>falha crítica</b>":""}</div>`;
+  const ds=dSet();ds.hist.unshift({t:Date.now(),expr,total,det:parts.join(" · ").replace(/<\/?s>/g,"~")});ds.hist=ds.hist.slice(0,40);save();
+  try{navigator.vibrate&&navigator.vibrate(25)}catch(e){}
+}
+const SHAPES={hex:'<path d="M20 2l16 9v18l-16 9-16-9V11z"/>',pent:'<path d="M20 3l17 12-6.5 20h-21L3 15z"/>',kite:'<path d="M20 2l17 18-17 18L3 20z"/>',diam:'<path d="M20 2l15 18-15 18L5 20z"/>',sq:'<rect x="5" y="5" width="30" height="30"/>',tri:'<path d="M20 4l18 32H2z"/>',circ:'<circle cx="20" cy="20" r="17"/>'};
+function renderDiceBar(){const bar=$("dBar");bar.innerHTML=Object.entries(DIE_INFO).map(([t,i])=>{const n=DS.sel[t]||0;return `<button class="dbtn ${n?"on":""}" data-t="${t}"><span class="cnt">${n||""}</span>
+  <svg viewBox="0 0 40 40">${SHAPES[i.shape]}<text x="20" y="${i.shape==="tri"?27:24}" text-anchor="middle">${i.n}</text></svg></button>`}).join("");
+  bar.querySelectorAll(".dbtn").forEach(b=>{let tm=null,long=false;
+    b.addEventListener("pointerdown",()=>{long=false;tm=setTimeout(()=>{long=true;delete DS.sel[b.dataset.t];afterSel()},500)});
+    b.addEventListener("pointerup",()=>{clearTimeout(tm);if(!long){if(DS.modo==="pct")DS.modo="";const t=b.dataset.t,tot=Object.values(DS.sel).reduce((a,c)=>a+c,0);if(tot>=12){toast("Máximo de 12 dados");return}DS.sel[t]=(DS.sel[t]||0)+1;afterSel()}});
+    b.addEventListener("pointerleave",()=>clearTimeout(tm));b.oncontextmenu=e=>e.preventDefault()});
+  $("dMod").textContent=(DS.mod>0?"+":"")+DS.mod;
+  const ds=dSet(),ind=$("dLuck");if(ind)ind.textContent=ds.sorte?`✦ Dados caem acima de ${ds.limite||10}`:"";
+  document.querySelectorAll(".dtop [data-m]").forEach(b=>b.classList.toggle("on",b.dataset.m===DS.modo))}
+function afterSel(){DS.last=null;buildDice();renderDiceBar();$("dRes").innerHTML=selText()}
+function selText(){const e=DS.modo==="pct"?"d% (1–100)":Object.entries(DS.sel).filter(e=>e[1]).map(([t,n])=>`${n}${t}`).join(" + ");
+  return `<div class="dexp" style="margin-top:14px">${e?esc(e)+(DS.modo==="adv"?" · vantagem":DS.modo==="dis"?" · desvantagem":"")+(DS.mod?` ${DS.mod>0?"+":"−"} ${Math.abs(DS.mod)}`:""):"Toque nos dados abaixo"}</div><div class="ddet">Toque no tabuleiro ou em Rolar · segure um dado para tirá-lo</div>`}
+function setModo(m){DS.modo=DS.modo===m?"":m;if(DS.modo==="pct")DS.sel={};else if(DS.modo&&!DS.sel.d20)DS.sel.d20=1;afterSel()}
+function dClear(){DS.sel={};DS.modo="";DS.mod=0;afterSel()}
+function dModAdj(v){DS.mod+=v;renderDiceBar();if(!DS.last)$("dRes").innerHTML=selText()}
+function dHist(){const h=dSet().hist;openSheet(`<h2>Histórico</h2>${h.length?`<div style="max-height:60vh;overflow:auto">${h.map(x=>`<div style="display:flex;justify-content:space-between;gap:10px;padding:8px 2px;border-bottom:1px solid rgba(180,107,255,.15)"><div><div>${esc(x.expr)}</div><div class="hint">${new Date(x.t).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})} · ${esc(x.det)}</div></div><b style="font-family:Cinzel;font-size:24px;color:#fff;text-shadow:var(--glow)">${x.total}</b></div>`).join("")}</div>`:`<p class="hint">Nenhuma rolagem ainda.</p>`}
+ <div class="btns">${h.length?`<button class="del" onclick="dSet().hist=[];save();close_()">Limpar</button>`:""}<button class="pri" onclick="close_()">Fechar</button></div>`)}
+function dSaved(){const sv=dSet().salvos,cur=DS.modo==="pct"||Object.values(DS.sel).some(Boolean);
+ openSheet(`<h2>Rolagens salvas</h2>${sv.length?sv.map((x,i)=>`<div style="display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(180,107,255,.15)"><button class="pill" style="flex:1;text-align:left;padding:8px 12px" onclick="useSaved(${i})"><b>${esc(x.nome)}</b> <span class="hint">${esc(x.expr)}</span></button><button class="x" style="background:none;border:0;color:var(--dim)" onclick="dSet().salvos.splice(${i},1);save();dSaved()">✕</button></div>`).join(""):`<p class="hint">Salve combinações que você usa sempre, tipo o dano de uma magia.</p>`}
+ ${cur?`<label>Salvar a rolagem atual como</label><div style="display:flex;gap:6px"><input class="f" id="svN" placeholder="Ex.: Lâmina do Portal" style="flex:1"><button class="pill" onclick="saveRoll()">Salvar</button></div>`:""}
+ <div class="btns"><button class="pri" onclick="close_()">Fechar</button></div>`)}
+function saveRoll(){const n=$("svN").value.trim();if(!n){toast("Dê um nome");return}const expr=DS.modo==="pct"?"d%":Object.entries(DS.sel).filter(e=>e[1]).map(([t,c])=>`${c}${t}`).join(" + ")+(DS.mod?` ${DS.mod>0?"+":"−"} ${Math.abs(DS.mod)}`:"");
+ dSet().salvos.push({nome:n,sel:{...DS.sel},mod:DS.mod,modo:DS.modo,expr});save();dSaved();toast("Rolagem salva")}
+function useSaved(i){const x=dSet().salvos[i];DS.sel={...x.sel};DS.mod=x.mod||0;DS.modo=x.modo||"";close_();afterSel();setTimeout(rollDice,150)}
+function dColors(){const cur=dSet().cor;openSheet(`<h2>Cor dos dados</h2><div class="arts" style="grid-template-columns:repeat(4,1fr)">${Object.entries(DCOL).map(([k,c])=>`<button class="${k===cur?"on":""}" style="aspect-ratio:1;background:radial-gradient(circle at 40% 35%,${c[1]},${c[0]} 60%,#000);color:#fff;text-shadow:0 0 4px #000" onclick="dSet().cor='${k}';save();dColors()">${k}</button>`).join("")}</div>
+ <h2 style="margin-top:18px">Resultado mínimo</h2>
+ <label class="chk" style="font-family:inherit;color:var(--ink);font-size:17px"><input type="checkbox" id="sOn" ${dSet().sorte?"checked":""} onchange="dSet().sorte=this.checked;save();renderDiceBar()"> Dados só caem acima de</label>
+ <input class="f" id="sLim" type="number" inputmode="numeric" value="${dSet().limite||10}" onchange="dSet().limite=Math.max(1,Math.floor(+this.value)||10);save();renderDiceBar()" style="max-width:120px">
+ <div class="hint" style="margin-top:6px">Vale para os dados que têm números maiores que esse (d20, d12…). Os dados menores rolam normal.</div>
+ <div class="btns"><button class="pri" onclick="close_()">OK</button></div>`)}
+function diceRollExpr(expr){ // usado pelas magias: "2d6+3"
+  const m=String(expr).replace(/\s/g,"").toLowerCase().match(/^(\d*)d(\d+)(([+-]\d*d\d+)*)([+-]\d+)?$/);return m}
+function initDice(){if(DS.canvas)return;DS.canvas=$("dCanvas");DS.ctx=DS.canvas.getContext("2d");diceResize();addEventListener("resize",()=>{diceResize()});
+  DS.canvas.onclick=rollDice;renderDiceBar();buildDice();$("dRes").innerHTML=selText()}
+function diceActive(on){if(on){initDice();diceResize();if(!DS.loop){DS.loop=true;requestAnimationFrame(diceLoop)}}else DS.loop=false}
+
+/* ---------- Abas ---------- */
+function showTab(t){if(!["ficha","pericias","grimorio","dados"].includes(t))t="ficha";
+ document.querySelectorAll(".tab").forEach(e=>e.classList.toggle("on",e.id==="tab-"+t));document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===t));
+ document.body.classList.toggle("g",t==="grimorio");diceActive(t==="dados");try{if(location.hash!=="#"+t)history.replaceState(null,"","#"+t)}catch(e){}scrollTo(0,0)}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+addEventListener("hashchange",()=>showTab(location.hash.slice(1)));
+
+/* ---------- Personagem ---------- */
+function renderChar(){const p=S.perfil;
+ $("charBox").innerHTML=FRAME+`<div class="c">${banner("Personagem")}
+  <div class="cname">${p.nome?esc(p.nome):'<span style="color:var(--dim)">Sem nome</span>'}</div>
+  <div class="divider">✦</div>
+  <div class="sec" style="text-align:center">Ideia do personagem</div>
+  <div class="cidea ${p.ideia?"":"empty"}">${p.ideia?esc(p.ideia):"Quem é ele? De onde vem, o que quer, como usa a magia…"}</div>
+  <button class="cbtn" onclick="editChar()">✎ ${p.nome||p.ideia?"Editar":"Escrever"} personagem</button></div>`}
+function editChar(){const p=S.perfil;
+ openSheet(`<h2>Personagem</h2>
+  <label>Nome do personagem</label><input class="f" id="cNome" value="${esc(p.nome)}" placeholder="Ex.: Astrael Vey">
+  <label>Ideia do personagem</label><textarea class="f" id="cIdeia" style="min-height:220px" placeholder="Conceito, história, personalidade, objetivos, aparência…">${esc(p.ideia||"")}</textarea>
+  <div class="btns"><button onclick="close_()">Cancelar</button><button class="pri" onclick="S.perfil.nome=$('cNome').value.trim();S.perfil.ideia=$('cIdeia').value.trim();save();render();close_();toast('Personagem salvo ✦')">Salvar</button></div>`)}
+function render(){renderChar();renderOwner();renderFicha();renderPericias();renderChips();renderPage()}
+let flipping=false;
+function go(n){const L=filtered();n=Math.max(0,Math.min(L.length+1,n));if(n===cur||flipping)return;
+  const fwd=n>cur,pg=$("page");if(matchMedia("(prefers-reduced-motion: reduce)").matches){cur=n;renderPage();return}
+  flipping=true;pg.classList.add(fwd?"flip-out":"flip-out-r");
+  setTimeout(()=>{cur=n;renderPage();pg.classList.add(fwd?"flip-in":"flip-in-r");setTimeout(()=>{pg.classList.remove("flip-in","flip-in-r");flipping=false},330)},260)}
+$("prev").onclick=()=>go(cur-1);$("next").onclick=()=>go(cur+1);
+(()=>{let sx=0,sy=0;const b=document.querySelector(".book");
+ b.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+ b.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.4)go(dx<0?cur+1:cur-1)},{passive:true})})();
+
+/* ---------- Ações ---------- */
+let lastAmt="",mlog="";
+function mana(v){const p=S.perfil,before=p.mana;p.mana=v==="full"?p.manaMax:v==="zero"?0:Math.max(0,Math.min(p.manaMax,p.mana+v));
+  const d=p.mana-before;mlog=d?(d>0?`+${d} de mana recuperada`:`${d} de mana gasta`):(v==="full"?"Mana já está cheia":"");save();renderOwner()}
+function manaAmt(sign){const v=Math.floor(+$("mAmt").value);if(!v||v<0){toast("Digite quanto de mana");return}lastAmt=String(v);
+  if(sign<0&&v>S.perfil.mana)toast(`Você só tinha ${S.perfil.mana} de mana`);mana(sign*v)}
+function editMana(){const p=S.perfil;openSheet(`<h2>Definir mana</h2>
+  <div class="g2"><div><label>Mana atual</label><input class="f" id="eCur" type="number" inputmode="numeric" value="${p.mana}"></div>
+  <div><label>Mana máxima</label><input class="f" id="eMax" type="number" inputmode="numeric" value="${p.manaMax}"></div></div>
+  <div class="btns"><button onclick="close_()">Cancelar</button><button class="pri" onclick="setMana()">Salvar</button></div>`)}
+function setMana(){const p=S.perfil,mx=Math.max(1,Math.floor(+$("eMax").value)||p.manaMax);p.manaMax=mx;p.mana=Math.max(0,Math.min(mx,Math.floor(+$("eCur").value)||0));mlog="Mana definida";save();renderOwner();close_()}
+function fav(id){const m=S.magias.find(x=>x.id===id);m.fav=!m.fav;save();renderChips();renderPage()}
+function openSheet(h){$("sheet").innerHTML=h;$("ov").classList.add("show")}
+function close_(){$("ov").classList.remove("show")}
+window.appBack=function(){if($("ov").classList.contains("show")){close_();return true}const t=document.querySelector(".tab.on");if(t&&t.id!=="tab-ficha"){showTab("ficha");return true}return false};
+$("ov").onclick=e=>{if(e.target.id==="ov")close_()};
+function castSpell(id){const m=S.magias.find(x=>x.id===id),p=S.perfil,c=+m.custo||0;
+  if(c>p.mana){openSheet(`<div class="cast-res"><div class="name">${esc(m.nome)}</div><div class="big" style="color:#ff7b9c">✕</div><div class="det">Mana insuficiente: precisa de ${c}, você tem ${p.mana}.</div><div class="btns"><button onclick="close_()">Fechar</button><button class="pri" onclick="doCast('${id}')">Conjurar mesmo assim</button></div></div>`);return}
+  doCast(id)}
+function doCast(id){const m=S.magias.find(x=>x.id===id),p=S.perfil,c=+m.custo||0;p.mana=Math.max(0,p.mana-c);if(c)mlog=`−${c} de mana: ${m.nome}`;save();renderOwner();const r=roll(m.dano);
+  openSheet(`<div class="cast-res">${m.frase?`<div class="phrase" style="font-size:22px">“${esc(m.frase)}”</div>`:`<div class="name">${esc(m.nome)}</div>`}
+   ${r?`<div class="big" id="rv">${r.total}</div><div class="det" id="rd">${esc(m.dano)} → ${esc(r.det)}</div>`:`<div class="big">✦</div><div class="det">Magia conjurada!</div>`}
+   ${m.loco?`<div class="det" style="margin-top:8px;color:var(--p2)">✦ ${esc(m.locoForma||"Locomoção")}${m.locoDist?`: até ${esc(m.locoDist)} m (${Math.floor(m.locoDist/1.5)} q)`:""}</div>`:""}
+   <div class="det" style="margin-top:10px">${c?`−${c} mana · `:""}restam <b>${p.mana}</b> / ${p.manaMax}</div>
+   <div class="btns">${r?`<button onclick="reroll('${id}')">Rolar de novo</button>`:""}<button class="pri" onclick="close_()">OK</button></div></div>`)}
+function reroll(id){const m=S.magias.find(x=>x.id===id),r=roll(m.dano);$("rv").textContent=r.total;$("rd").textContent=m.dano+" → "+r.det}
+function pick(sel){document.querySelectorAll(sel+" button").forEach(b=>b.onclick=()=>{document.querySelectorAll(sel+" button").forEach(x=>x.classList.remove("on"));b.classList.add("on")})}
+function editPerfil(){const p=S.perfil;
+  openSheet(`<h2>Portador do grimório</h2>
+   <label>Nome do personagem</label><input class="f" id="pNome" value="${esc(p.nome)}">
+   <label>Atributo mágico</label><input class="f" id="pAtr" value="${esc(p.atributo)}">
+   <div class="g2"><div><label>Nível atual</label><input class="f" id="pNiv" value="${esc(p.nivel)}" placeholder="Expert"></div>
+   <div><label>Mana máxima</label><input class="f" id="pMana" type="number" value="${p.manaMax}"></div></div>
+   <label>Esquadrão</label><input class="f" id="pEsq" value="${esc(p.esquadrao)}">
+   <label>Folhas do trevo</label><div class="leaves" id="pTrevo">${[1,2,3,4,5].map(n=>`<button data-n="${n}" class="${n==p.trevo?"on":""}">${n}</button>`).join("")}</div>
+   <label>Lema (aparece na lista de magias)</label><input class="f" id="pLema" value="${esc(p.lema)}" placeholder="Uma frase do seu personagem">
+   <div class="btns"><button onclick="close_()">Cancelar</button><button class="pri" onclick="savePerfil()">Salvar</button></div>`);pick("#pTrevo")}
+function savePerfil(){const p=S.perfil;p.nome=$("pNome").value.trim();p.atributo=$("pAtr").value.trim();p.esquadrao=$("pEsq").value.trim();p.lema=$("pLema").value.trim();
+  p.trevo=+document.querySelector("#pTrevo .on").dataset.n;p.nivel=$("pNiv").value.trim()||"Iniciante";
+  const mx=Math.max(1,+$("pMana").value||100);if(p.mana>mx||p.mana===p.manaMax)p.mana=mx;p.manaMax=mx;save();render();close_()}
+function editMagia(id){const m=id?S.magias.find(x=>x.id===id):{nome:"",tipo:"Ofensiva",nivel:"Iniciante",custo:"",dano:"",alcance:"",duracao:"",pagina:"",desc:"",efeitos:"",limitacoes:"",frase:"",arte:"auto",loco:false,locoDist:"",locoForma:"Teleporte"};
+  openSheet(`<h2>${id?"Reescrever página":"Nova página do grimório"}</h2>
+   <label>Nome da magia</label><input class="f" id="mNome" value="${esc(m.nome)}" placeholder="Magia Espacial: …">
+   <div class="g2"><div><label>Nível</label><select class="f" id="mNivel">${LEVELS.map(t=>`<option ${t===m.nivel?"selected":""}>${t}</option>`).join("")}</select></div>
+   <div><label>Tipo</label><select class="f" id="mTipo">${TYPES.map(t=>`<option ${t===m.tipo?"selected":""}>${t}</option>`).join("")}</select></div></div>
+   <div class="g2"><div><label>Custo de mana</label><input class="f" id="mCusto" type="number" value="${esc(m.custo)}"></div>
+   <div><label>Dados</label><input class="f" id="mDano" value="${esc(m.dano)}" placeholder="2d6+3"></div></div>
+   <div class="g2"><div><label>Alcance</label><input class="f" id="mAlc" value="${esc(m.alcance)}"></div><div><label>Duração</label><input class="f" id="mDur" value="${esc(m.duracao)}"></div></div>
+   <label class="chk" style="font-family:inherit;color:var(--ink);font-size:17px"><input type="checkbox" id="mLoco" ${m.loco?"checked":""} onchange="$('mLocoBox').style.display=this.checked?'grid':'none'"> Magia de locomoção</label>
+   <div class="g2" id="mLocoBox" style="display:${m.loco?"grid":"none"}"><div><label>Distância (m)</label><input class="f" id="mLocoD" type="number" inputmode="numeric" value="${esc(m.locoDist||"")}" placeholder="30"></div>
+   <div><label>Forma</label><select class="f" id="mLocoF">${["Teleporte","Portal","Voo","Corrida","Salto","Vassoura","Outra"].map(o=>`<option ${o===m.locoForma?"selected":""}>${o}</option>`).join("")}</select></div></div>
+   <label>Página</label><input class="f" id="mPag" type="number" value="${esc(m.pagina)}" placeholder="automático">
+   <label>Descrição</label><textarea class="f" id="mDesc">${esc(m.desc)}</textarea>
+   <label>Efeitos</label><textarea class="f" id="mEf" placeholder="Um efeito por linha">${esc(m.efeitos)}</textarea>
+   <label>Limitações</label><textarea class="f" id="mLim" placeholder="Uma limitação por linha">${esc(m.limitacoes)}</textarea>
+   <label>Frase de ativação</label><input class="f" id="mFrase" value="${esc(m.frase)}" placeholder="Magia Espacial: …!">
+   <label>Ilustração</label><div class="arts" id="mArte">
+     <button data-a="auto" class="${m.arte==="auto"?"on":""}">Automática</button>
+     ${Object.entries(ARTS).map(([k,n])=>`<button data-a="${k}" class="${m.arte===k?"on":""}" title="${n}">${k==="circulo"?"Círculo<br>mágico":`<img src="img/${k}.jpg" alt="${n}">`}</button>`).join("")}
+     <button data-a="nenhuma" class="${m.arte==="nenhuma"?"on":""}">Nenhuma</button></div>
+   <div class="btns">${id?`<button class="del" onclick="delMagia('${id}')">Arrancar</button>`:""}<button onclick="close_()">Cancelar</button><button class="pri" onclick="saveMagia('${id||""}')">Inscrever</button></div>`);pick("#mArte")}
+function saveMagia(id){const nome=$("mNome").value.trim();if(!nome){toast("Dê um nome à magia");return}
+  const d={nome,tipo:$("mTipo").value,nivel:$("mNivel").value,pagina:$("mPag").value,custo:$("mCusto").value,dano:$("mDano").value.trim(),alcance:$("mAlc").value.trim(),duracao:$("mDur").value.trim(),
+    desc:$("mDesc").value.trim(),efeitos:$("mEf").value.trim(),limitacoes:$("mLim").value.trim(),frase:$("mFrase").value.trim(),loco:$("mLoco").checked,locoDist:$("mLocoD").value,locoForma:$("mLocoF").value,arte:document.querySelector("#mArte .on")?.dataset.a||"auto"};
+  if(d.dano&&!roll(d.dano)){toast("Dados inválidos — use algo como 2d6+3");return}
+  let sid=id;if(id)Object.assign(S.magias.find(x=>x.id===id),d);else{sid=Date.now().toString(36)+Math.random().toString(36).slice(2,6);S.magias.push({id:sid,fav:false,...d})}
+  filtro="Todas";busca="";$("q").value="";save();cur=filtered().findIndex(x=>x.id===sid)+2;render();close_();toast(id?"Página reescrita":"Nova magia inscrita no grimório ✦")}
+function delMagia(id){openSheet(`<h2>Arrancar esta página?</h2><p>A magia será removida do grimório.</p><div class="btns"><button onclick="editMagia('${id}')">Voltar</button><button class="del" style="flex:1" onclick="S.magias=S.magias.filter(x=>x.id!=='${id}');cur=Math.max(1,cur-1);save();render();close_();toast('Página arrancada')">Arrancar</button></div>`)}
+
+/* ---------- Backup ---------- */
+$("bExport").onclick=async()=>{const t=JSON.stringify(S);try{await navigator.clipboard.writeText(t);toast("Backup copiado! Cole num bloco de notas.")}
+  catch(e){openSheet(`<h2>Backup</h2><label>Copie este texto:</label><textarea class="f" style="min-height:200px" readonly onclick="this.select()">${esc(t)}</textarea><div class="btns"><button class="pri" onclick="close_()">OK</button></div>`)}};
+$("bImport").onclick=()=>{openSheet(`<h2>Restaurar backup</h2><label>Cole aqui o texto do backup:</label><textarea class="f" id="imp" style="min-height:200px"></textarea><div class="btns"><button onclick="close_()">Cancelar</button><button class="pri" id="doImp">Restaurar</button></div>`);
+  $("doImp").onclick=()=>{try{const d=JSON.parse($("imp").value);if(!d.perfil||!Array.isArray(d.magias))throw 0;S=norm(d);cur=1;save();render();close_();toast("Grimório restaurado!")}catch(e){toast("Texto de backup inválido")}}};
+$("fab").onclick=()=>editMagia();
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="mAmt"){e.preventDefault();manaAmt(-1)}});
+$("q").oninput=e=>{busca=e.target.value;cur=1;renderPage()};
+render();showTab(location.hash.slice(1));
+
+/* ---------- Céu estrelado roxo ---------- */
+(()=>{const c=$("stars"),x=c.getContext("2d"),D=devicePixelRatio||1;let W,H,st=[];
+ function rs(){W=c.width=innerWidth*D;H=c.height=innerHeight*D;st=Array.from({length:Math.round(innerWidth*innerHeight/2800)},()=>({x:Math.random()*W,y:Math.random()*H,r:(Math.random()*1.2+.3)*D,p:Math.random()*6.28,s:.4+Math.random()*1.4,c:["#fff","#e7ccff","#c38bff","#d8b4ff"][Math.random()*4|0]}))}
+ rs();addEventListener("resize",rs);const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+ function f(t){x.clearRect(0,0,W,H);for(const s of st){x.globalAlpha=.3+.7*Math.abs(Math.sin(s.p+t/1000*s.s));x.fillStyle=s.c;x.beginPath();x.arc(s.x,s.y,s.r,0,6.28);x.fill()}
+  x.globalAlpha=1;if(!reduce)requestAnimationFrame(f)}requestAnimationFrame(f)})();
+</script>
+</body>
+</html>
