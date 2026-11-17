@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Dados do Oculto</title>
+<style>
+:root{--bg:#0c0c0f;--txt:#e9e6ee;--dim:#8d8996;--line:#3a3842;--panel:#16151b;--gold:#e7b75a;--accent:#c3151f}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,Roboto,sans-serif}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:manipulation}
+.top{position:fixed;top:0;left:0;right:0;padding:calc(env(safe-area-inset-top) + 14px) 10px 0;display:flex;justify-content:space-between;align-items:center;z-index:5}
+.ib{width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;color:#9a97a3;cursor:pointer;position:relative}
+.ib svg{width:34px;height:34px}
+.ib.on{color:#fff;filter:drop-shadow(0 0 6px var(--accent))}
+.res{position:fixed;top:calc(env(safe-area-inset-top) + 76px);left:0;right:0;text-align:center;z-index:4;pointer-events:none;padding:0 16px}
+.res .n{font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:64px;line-height:1.05;letter-spacing:1px;transition:color .3s}
+.res .d{color:var(--dim);font-size:14px;margin-top:4px;min-height:18px}
+.res .v{margin-top:6px;font-weight:600;font-size:15px;min-height:20px}
+.crit{color:var(--gold);text-shadow:0 0 22px rgba(231,183,90,.6)}
+.fail{color:#ff4a5a;text-shadow:0 0 22px rgba(255,60,80,.55)}
+.good{color:#5fe0ad}
+.hint{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 140px);text-align:center;color:#55525d;font-size:13px;z-index:4;pointer-events:none;transition:opacity .4s}
+.bottom{position:fixed;left:0;right:0;bottom:0;padding:0 8px calc(env(safe-area-inset-bottom) + 18px);display:flex;justify-content:space-between;align-items:flex-end;z-index:5}
+.dz{width:13.6%;max-width:80px;display:flex;flex-direction:column;align-items:center;background:none;border:none;cursor:pointer;color:#8f8c98}
+.dz .c{height:22px;font-size:17px;color:#c9c6d0;font-weight:600}
+.dz svg{width:100%;height:auto}
+.dz svg .sh{fill:none;stroke:currentColor;stroke-width:3}
+.dz svg text{fill:currentColor;font:600 26px system-ui,sans-serif;text-anchor:middle;dominant-baseline:central}
+.dz.on svg .sh{fill:#fff;stroke:#fff}
+.dz.on svg text{fill:#111}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-height:78vh;overflow:auto;background:var(--panel);border-top:1px solid var(--line);border-radius:18px 18px 0 0;z-index:20;padding:10px 18px calc(env(safe-area-inset-bottom) + 22px);transform:translateY(105%);transition:transform .28s ease}
+.sheet.open{transform:none}
+.grab{width:44px;height:5px;border-radius:3px;background:#3c3a44;margin:0 auto 12px}
+.sheet h2{font-family:Georgia,serif;font-size:20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.x{background:none;border:none;color:var(--dim);font-size:26px;cursor:pointer;line-height:1}
+.shade{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:19;opacity:0;pointer-events:none;transition:opacity .25s}
+.shade.open{opacity:1;pointer-events:auto}
+.opt{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #24232a;gap:12px}
+.opt p{font-size:15px}.opt small{display:block;color:var(--dim);font-size:12px;margin-top:3px;line-height:1.35}
+.sw{flex:none;width:50px;height:28px;border-radius:14px;background:#2b2a31;position:relative;cursor:pointer;border:none}
+.sw::after{content:"";position:absolute;top:4px;left:4px;width:20px;height:20px;border-radius:50%;background:#77737f;transition:.2s}
+.sw.on{background:var(--accent)}.sw.on::after{left:26px;background:#fff}
+.stp{flex:none;display:flex;align-items:center;gap:8px}
+.stp button{width:36px;height:36px;border-radius:9px;border:none;background:#2b2a31;color:#fff;font-size:20px;cursor:pointer}
+.stp span{min-width:40px;text-align:center;font-weight:600}
+.hl{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #24232a;font-size:14px}
+.hl b{font-family:Georgia,serif;font-size:17px}.hl i{color:var(--dim);font-style:normal;font-size:12px}
+.small{background:none;border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer}
+.big{width:100%;margin-top:14px;padding:15px;border:none;border-radius:12px;background:linear-gradient(135deg,#5a1020,var(--accent));color:#fff;font-family:Georgia,serif;font-size:17px;letter-spacing:1px;cursor:pointer}
+.stat{display:flex;align-items:center;gap:8px;margin:10px 0}
+.stat .nm{width:88px;font-size:14px}
+.bar{flex:1;height:10px;border-radius:5px;background:#25242b;overflow:hidden}.bar i{display:block;height:100%}
+.stat button{width:32px;height:32px;border-radius:8px;border:none;background:#2b2a31;color:#fff;font-size:18px;cursor:pointer}
+.stat .vv{width:50px;text-align:center;font-size:13px;font-weight:600}
+input[type=text]{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#1e1d24;color:var(--txt);font-size:16px}
+.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 66px);transform:translateX(-50%);background:#1d1c22;border:1px solid var(--line);padding:9px 16px;border-radius:20px;font-size:14px;z-index:30;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.on{opacity:1}
+.err{position:fixed;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:30px;color:var(--dim);z-index:3}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div class="err" id="err">Seu aparelho não conseguiu iniciar o 3D (WebGL).</div>
+
+<div class="top">
+  <button class="ib" id="bSet" aria-label="Configurações"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="20" cy="20" r="9"/><path d="M20 4v6M20 30v6M4 20h6M30 20h6M8.7 8.7l4.2 4.2M27.1 27.1l4.2 4.2M8.7 31.3l4.2-4.2M27.1 12.9l4.2-4.2"/></svg></button>
+  <button class="ib" id="bTheme" aria-label="Cor dos dados"><svg viewBox="0 0 40 40"><path d="M20 3l14.7 8.5v17L20 37 5.3 28.5v-17z" fill="none" stroke="currentColor" stroke-width="2.4"/><path id="thSwatch" d="M20 7l11 6.4v13.2L20 33 9 26.6V13.4z" fill="currentColor" opacity=".55"/></svg></button>
+  <button class="ib" id="bHist" aria-label="Histórico"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 20a13 13 0 1 0 4-9.4"/><path d="M6 6v6h6"/><path d="M20 12v9l6 4"/></svg></button>
+  <button class="ib" id="bSheet" aria-label="Ficha"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M10 4h20v32l-10-8-10 8z"/></svg></button>
+  <button class="ib" id="bAdv" aria-label="Vantagem"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 3l14.7 8.5v17L20 37 5.3 28.5v-17z"/><text x="20" y="17" font-size="8" text-anchor="middle" fill="currentColor" stroke="none" font-family="monospace">&gt;</text><text x="20" y="26" font-size="8.5" text-anchor="middle" fill="currentColor" stroke="none" font-family="monospace">ADV</text></svg></button>
+  <button class="ib" id="bDis" aria-label="Desvantagem"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 3l14.7 8.5v17L20 37 5.3 28.5v-17z"/><text x="20" y="17" font-size="8" text-anchor="middle" fill="currentColor" stroke="none" font-family="monospace">&lt;</text><text x="20" y="26" font-size="8.5" text-anchor="middle" fill="currentColor" stroke="none" font-family="monospace">DIS</text></svg></button>
+  <button class="ib" id="bPct" aria-label="Porcentagem"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 3l14 17-14 17L6 20z"/><text x="20" y="21" font-size="13" text-anchor="middle" dominant-baseline="central" fill="currentColor" stroke="none" font-family="monospace" font-weight="bold">%</text></svg></button>
+</div>
+
+<div class="res"><div class="n" id="rN"></div><div class="d" id="rD"></div><div class="v" id="rV"></div></div>
+<div class="hint" id="hint">Toque na mesa para rolar</div>
+<div class="bottom" id="bottom"></div>
+
+<div class="shade" id="shade"></div>
+<div class="sheet" id="pSet"><div class="grab"></div><h2>Configurações<button class="x" data-close>×</button></h2>
+  <div class="opt"><div><p>Dados balanceados</p><small>Cada número sai uma vez por ciclo (no d20, os 20 números saem a cada 20 rolagens) e nunca saem 3 altos ou 3 baixos seguidos.</small></div><button class="sw" id="swBal"></button></div>
+  <div class="opt"><div><p>Modificador</p><small>Somado ao total da rolagem.</small></div><div class="stp"><button data-m="-1">−</button><span id="modV">+0</span><button data-m="1">+</button></div></div>
+  <div class="opt"><div><p>Modo Parada (d10)</p><small>Com d10, conta sucessos: cada dado ≥ dificuldade é 1 sucesso, cada 1 anula um sucesso.</small></div><button class="sw" id="swPool"></button></div>
+  <div class="opt"><div><p>Dificuldade da parada</p></div><div class="stp"><button data-pd="-1">−</button><span id="pdV">6</span><button data-pd="1">+</button></div></div>
+  <div class="opt"><div><p>Vibrar ao cair</p></div><button class="sw" id="swVib"></button></div>
+  <div class="opt"><div><p>Zerar balanceamento</p><small>Recomeça os ciclos de todos os dados.</small></div><button class="small" id="resetBags">Zerar</button></div>
+</div>
+<div class="sheet" id="pHist"><div class="grab"></div><h2>Histórico<button class="x" data-close>×</button></h2>
+  <div id="histL"></div><button class="small" id="clrH" style="margin-top:12px">Limpar histórico</button></div>
+<div class="sheet" id="pSheet"><div class="grab"></div><h2>Ficha<button class="x" data-close>×</button></h2>
+  <input type="text" id="nome" placeholder="Nome do personagem">
+  <div id="stats"></div>
+  <div class="opt"><div><p>Perda se falhar na Sanidade</p></div><div class="stp"><button data-ls="-1">−</button><span id="lsV">1d6</span><button data-ls="1">+</button></div></div>
+  <button class="big" id="sanBtn">ENCARAR O HORROR (d100)</button>
+  <button class="small" id="resetF" style="margin-top:12px">Restaurar ficha</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+// ================= utilidades =================
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem('oculto3d_'+k);return v?JSON.parse(v):d}catch(e){return d}},
+             set(k,v){try{localStorage.setItem('oculto3d_'+k,JSON.stringify(v))}catch(e){}}};
+const rnd=n=>Math.floor(Math.random()*n)+1;
+const add=(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]], sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],
+  scl=(a,s)=>[a[0]*s,a[1]*s,a[2]*s], dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],
+  crs=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],
+  len=a=>Math.hypot(a[0],a[1],a[2]), nrm=a=>{const l=len(a)||1;return[a[0]/l,a[1]/l,a[2]/l]};
+// quaternions [x,y,z,w]
+const qAx=(ax,an)=>{const s=Math.sin(an/2),a=nrm(ax);return[a[0]*s,a[1]*s,a[2]*s,Math.cos(an/2)]};
+const qMul=(a,b)=>[a[3]*b[0]+a[0]*b[3]+a[1]*b[2]-a[2]*b[1],a[3]*b[1]-a[0]*b[2]+a[1]*b[3]+a[2]*b[0],a[3]*b[2]+a[0]*b[1]-a[1]*b[0]+a[2]*b[3],a[3]*b[3]-a[0]*b[0]-a[1]*b[1]-a[2]*b[2]];
+const qRot=(q,v)=>{const u=[q[0],q[1],q[2]],s=q[3];const t=scl(crs(u,v),2);return add(add(v,scl(t,s)),crs(u,t))};
+function qFromTo(a,b){const d=dot(a,b);if(d<-0.99999){let ax=crs([1,0,0],a);if(len(ax)<1e-3)ax=crs([0,1,0],a);return qAx(ax,Math.PI)}
+  const c=crs(a,b);const q=[c[0],c[1],c[2],1+d];const l=Math.hypot(...q);return q.map(x=>x/l)}
+function mPersp(f,a,n,fa){const t=1/Math.tan(f/2),r=1/(n-fa);return[t/a,0,0,0,0,t,0,0,0,0,(n+fa)*r,-1,0,0,2*n*fa*r,0]}
+function mLook(e,c,up){const z=nrm(sub(e,c)),x=nrm(crs(up,z)),y=crs(z,x);
+  return[x[0],y[0],z[0],0,x[1],y[1],z[1],0,x[2],y[2],z[2],0,-dot(x,e),-dot(y,e),-dot(z,e),1]}
+function mMul(a,b){const o=new Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++){let s=0;for(let k=0;k<4;k++)s+=a[k*4+r]*b[c*4+k];o[c*4+r]=s}return o}
+function mModel(q,t,s){const[x,y,z,w]=q;return[(1-2*(y*y+z*z))*s,2*(x*y+z*w)*s,2*(x*z-y*w)*s,0,2*(x*y-z*w)*s,(1-2*(x*x+z*z))*s,2*(y*z+x*w)*s,0,2*(x*z+y*w)*s,2*(y*z-x*w)*s,(1-2*(x*x+y*y))*s,0,t[0],t[1],t[2],1]}
+
+// ================= temas =================
+const THEMES=[
+  {n:'Sangue',c:[195,21,31],ink:'#140203'},
+  {n:'Ectoplasma',c:[30,170,100],ink:'#02140a'},
+  {n:'Abismo',c:[110,48,214],ink:'#0b0418'},
+  {n:'Osso',c:[214,206,184],ink:'#2a1f12'},
+  {n:'Ônix',c:[48,48,56],ink:'#e7b75a'},
+];
+let themeI=store.get('theme',0)%THEMES.length;
+
+// ================= geometria dos dados =================
+const PHI=(1+Math.sqrt(5))/2;
+function topK(verts,normals,k){return normals.map(n=>{n=nrm(n);const s=verts.map((v,i)=>[dot(v,n),i]).sort((a,b)=>b[0]-a[0]);return{n,verts:s.slice(0,k).map(d=>verts[d[1]])}})}
+function assignOpp(faces,sides){let next=1;for(let i=0;i<faces.length;i++){if(faces[i].value)continue;faces[i].value=next;
+  for(let j=i+1;j<faces.length;j++)if(!faces[j].value&&dot(faces[i].n,faces[j].n)<-0.99){faces[j].value=sides+1-next;break}next++}}
+function polys(type){
+  let F=[],extra=[],up='v';
+  if(type==='d4'){const v=[[1,1,1],[-1,-1,1],[-1,1,-1],[1,-1,-1]].map(nrm);F=topK(v,v.map(x=>scl(x,-1)),3);F.forEach((f,i)=>f.value=i+1)}
+  else if(type==='d6'){const v=[];for(const x of[-1,1])for(const y of[-1,1])for(const z of[-1,1])v.push(nrm([x,y,z]));
+    F=topK(v,[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],4);assignOpp(F,6);up='e'}
+  else if(type==='d8'){const v=[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]];const n=[];for(const x of[-1,1])for(const y of[-1,1])for(const z of[-1,1])n.push([x,y,z]);
+    F=topK(v,n,3);assignOpp(F,8)}
+  else if(type==='d12'||type==='d20'){const ico=[],dod=[];
+    for(const a of[-1,1])for(const b of[-1,1]){ico.push([0,a,b*PHI],[a,b*PHI,0],[b*PHI,0,a])}
+    for(const x of[-1,1])for(const y of[-1,1])for(const z of[-1,1])dod.push([x,y,z]);
+    for(const a of[-1,1])for(const b of[-1,1]){dod.push([0,a*PHI,b/PHI],[b/PHI,0,a*PHI],[a*PHI,b/PHI,0])}
+    if(type==='d20'){F=topK(ico.map(nrm),dod,3);assignOpp(F,20)}else{F=topK(dod.map(nrm),ico,5);assignOpp(F,12)}}
+  else if(type==='d10'||type==='d10t'){const c=Math.cos(Math.PI/5),h=(1-c)/(1+c),H=1;
+    const U=[],L=[];for(let k=0;k<5;k++){const a=k*2*Math.PI/5,b=a+Math.PI/5;U.push([Math.cos(a),h,Math.sin(a)]);L.push([Math.cos(b),-h,Math.sin(b)])}
+    const T=[0,H,0],B=[0,-H,0];
+    for(let k=0;k<5;k++){F.push({verts:[T,U[k],L[k],U[(k+1)%5]],up:T});F.push({verts:[B,L[k],U[(k+1)%5],L[(k+1)%5]],up:B})}
+    F.forEach((f,i)=>{f.n=nrm(f.verts.reduce(add,[0,0,0]));f.value=i+1})}
+  else if(type==='d2'){const N=40,t=.17,top=[],bot=[];for(let i=0;i<N;i++){const a=i/N*Math.PI*2;top.push([Math.cos(a),t,Math.sin(a)]);bot.push([Math.cos(a),-t,Math.sin(a)])}
+    F=[{verts:top,n:[0,1,0],value:1,up:[0,t,-1]},{verts:bot,n:[0,-1,0],value:2,up:[0,-t,-1]}];
+    for(let i=0;i<N;i++){const j=(i+1)%N;extra.push({verts:[top[i],top[j],bot[j],bot[i]],n:nrm(add(top[i],top[j]))})}}
+  const sides={d2:2,d4:4,d6:6,d8:8,d10:10,d10t:10,d12:12,d20:20}[type];
+  F.forEach(f=>{const v=f.value;f.label=type==='d10t'?String((v%10)*10).padStart(2,'0'):type==='d10'?String(v%10):String(v);
+    if(type==='d10t')f.num=(v%10)*10;else if(type==='d10')f.num=v;else f.num=v;
+    if(!f.up)f.up=up==='e'?scl(add(f.verts[0],f.verts[1]),.5):null});
+  return{F,extra,sides};
+}
+const SZ={d2:.8,d4:1.3,d6:1.22,d8:1.08,d10:1.05,d10t:1.05,d12:1.0,d20:1.0};
+const FONT={d2:.42,d4:.27,d6:.42,d8:.29,d10:.30,d10t:.25,d12:.33,d20:.26};
+function prepFace(f){const c=scl(f.verts.reduce(add,[0,0,0]),1/f.verts.length);let n=nrm(f.n);
+  // ordena vértices ao redor da normal
+  const u0=nrm(sub(f.verts[0],c)),w0=crs(n,u0);
+  const vs=f.verts.slice().sort((a,b)=>Math.atan2(dot(sub(a,c),w0),dot(sub(a,c),u0))-Math.atan2(dot(sub(b,c),w0),dot(sub(b,c),u0)));
+  let nn=nrm(crs(sub(vs[1],vs[0]),sub(vs[2],vs[0])));if(dot(nn,c)<0)nn=scl(nn,-1);
+  let upP=f.up||f.verts[0];let w=sub(sub(upP,c),scl(nn,dot(sub(upP,c),nn)));w=nrm(w);const u=crs(w,nn);
+  let R=0;vs.forEach(p=>R=Math.max(R,len(sub(p,c))));
+  return{...f,c,n:nn,w,u,vs,R}}
+function buildGeo(type){
+  const {F,extra,sides}=polys(type);const k=SZ[type];[...F,...extra].forEach(f=>{f.verts=f.verts.map(v=>scl(v,k));if(f.up)f.up=scl(f.up,k)});
+  const faces=F.map(prepFace),ex=extra.map(prepFace);
+  const cols=Math.ceil(Math.sqrt(faces.length+1));const data=[];
+  const pushV=(p,n,uv,e,fid)=>data.push(p[0],p[1],p[2],n[0],n[1],n[2],uv[0],uv[1],e,fid);
+  faces.forEach((f,i)=>{f.cell=i;const col=i%cols,row=Math.floor(i/cols);
+    const uv=p=>{const d=sub(p,f.c),x=dot(d,f.u)/f.R,y=dot(d,f.w)/f.R;return[(col+.5+x*.48)/cols,1-(row+.5-y*.48)/cols]};
+    for(let k=0;k<f.vs.length;k++){const a=f.vs[k],b=f.vs[(k+1)%f.vs.length];
+      pushV(f.c,f.n,uv(f.c),0,i);pushV(a,f.n,uv(a),1,i);pushV(b,f.n,uv(b),1,i)}});
+  const bi=faces.length,bc=[((bi%cols)+.5)/cols,1-(Math.floor(bi/cols)+.5)/cols];
+  ex.forEach(f=>{for(let k=0;k<f.vs.length;k++){const a=f.vs[k],b=f.vs[(k+1)%f.vs.length];pushV(f.c,f.n,bc,0,-1);pushV(a,f.n,bc,0,-1);pushV(b,f.n,bc,0,-1)}});
+  const allV=[];faces.concat(ex).forEach(f=>f.vs.forEach(v=>allV.push(v)));
+  return{type,sides,faces,cols,data:new Float32Array(data),count:data.length/10,allV};
+}
+function paintAtlas(geo,th){
+  const S=1024,cv=document.createElement('canvas');cv.width=cv.height=S;const g=cv.getContext('2d');const cs=S/geo.cols;
+  const [r,gr,b]=th.c;const light=`rgb(${Math.min(255,r*1.25+30)|0},${Math.min(255,gr*1.25+30)|0},${Math.min(255,b*1.25+30)|0})`,dark=`rgb(${r*.45|0},${gr*.45|0},${b*.45|0})`;
+  g.fillStyle=dark;g.fillRect(0,0,S,S);
+  let seed=7;const rr=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  for(let i=0;i<=geo.faces.length;i++){const x=(i%geo.cols)*cs,y=Math.floor(i/geo.cols)*cs,cx=x+cs/2,cy=y+cs/2;
+    const gd=g.createRadialGradient(cx,cy-cs*.1,cs*.05,cx,cy,cs*.62);gd.addColorStop(0,light);gd.addColorStop(.55,`rgb(${r},${gr},${b})`);gd.addColorStop(1,dark);
+    g.fillStyle=gd;g.fillRect(x,y,cs,cs);
+    // "inclusões" brilhantes dentro do dado
+    for(let k=0;k<22;k++){const px=x+rr()*cs,py=y+rr()*cs,pr=cs*(.008+rr()*.03);g.globalAlpha=.25+rr()*.45;
+      g.fillStyle=rr()<.5?light:`rgb(255,${Math.min(255,gr+120)|0},${Math.min(255,b+80)|0})`;g.beginPath();g.arc(px,py,pr,0,7);g.fill()}
+    g.globalAlpha=1;
+    const f=geo.faces[i];if(!f)continue;
+    const fs=cs*FONT[geo.type];g.font=`bold ${fs|0}px Georgia,'Times New Roman',serif`;g.textAlign='center';g.textBaseline='middle';
+    let lab=f.label;const ty=cy+fs*.04;
+    g.lineWidth=Math.max(2,fs*.07);g.strokeStyle='rgba(231,183,90,.85)';g.strokeText(lab,cx,ty);
+    g.fillStyle=th.ink;g.fillText(lab,cx,ty);
+    if((lab==='6'||lab==='9')&&geo.sides>=6){const w=g.measureText(lab).width;g.fillRect(cx-w*.35,ty+fs*.42,w*.7,fs*.07)}}
+  return cv;
+}
+
+// ================= WebGL =================
+const cv=$('gl');const gl=cv.getContext('webgl',{antialias:true,alpha:false})||cv.getContext('experimental-webgl');
+if(!gl){$('err').style.display='flex'}
+function sh(vs,fs){const p=gl.createProgram();for(const[t,s]of[[gl.VERTEX_SHADER,vs],[gl.FRAGMENT_SHADER,fs]]){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);
+  if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));gl.attachShader(p,o)}gl.linkProgram(p);
+  const U={};const n=gl.getProgramParameter(p,gl.ACTIVE_UNIFORMS);for(let i=0;i<n;i++){const a=gl.getActiveUniform(p,i);U[a.name.replace('[0]','')]=gl.getUniformLocation(p,a.name)}
+  return{p,U}}
+let P_DIE,P_FLOOR,floorBuf;
+if(gl){
+P_DIE=sh(`attribute vec3 aP;attribute vec3 aN;attribute vec2 aUv;attribute float aE;attribute float aF;
+uniform mat4 uM;uniform mat4 uVP;varying vec3 vN;varying vec3 vW;varying vec2 vUv;varying float vE;varying float vF;
+void main(){vec4 w=uM*vec4(aP,1.);vW=w.xyz;vN=(uM*vec4(aN,0.)).xyz;vUv=aUv;vE=aE;vF=aF;gl_Position=uVP*w;}`,
+`precision mediump float;varying vec3 vN;varying vec3 vW;varying vec2 vUv;varying float vE;varying float vF;
+uniform sampler2D uT;uniform vec3 uCam;uniform vec3 uTh;uniform float uA;uniform float uHi;uniform float uGlow;
+void main(){vec3 N=normalize(vN);vec3 V=normalize(uCam-vW);vec3 L=normalize(vec3(-.35,1.,.55));
+vec3 tex=texture2D(uT,vUv).rgb;float df=max(dot(N,L),0.);vec3 H=normalize(L+V);
+float sp=pow(max(dot(N,H),0.),56.)*.75;float rim=pow(1.-max(dot(N,V),0.),2.5);
+float fl=max(dot(N,V),0.);vec3 c=tex*(.34+.62*df+.38*fl)+vec3(sp)+uTh*rim*.55+uTh*.10*uGlow;
+float ed=smoothstep(.88,.985,vE);c=mix(c,c*.22,ed);
+if(abs(vF-uHi)<.5){float g=smoothstep(.86,.95,vE);c=mix(c,vec3(.98,.76,.36)*1.15,g*.95);c+=uTh*.12;}
+gl_FragColor=vec4(c,uA);}`);
+P_FLOOR=sh(`attribute vec3 aP;uniform mat4 uVP;varying vec3 vW;void main(){vW=aP;gl_Position=uVP*vec4(aP,1.);}`,
+`precision mediump float;varying vec3 vW;uniform vec4 uD[6];uniform float uN;uniform vec3 uTh;uniform vec3 uCam;uniform vec3 uBg;uniform float uGlow;
+void main(){vec2 p=vW.xz;vec3 c=vec3(.085,.088,.10)*(1.+.55*exp(-dot(p,p)/40.));
+for(int i=0;i<6;i++){if(float(i)>=uN)break;vec4 d=uD[i];float r=length(p-d.xy);float s=d.w;
+ float hf=clamp(1.-d.z/(4.*s),0.,1.);
+ c+=uTh*.22*uGlow*exp(-r*r/(2.6*s*s))*(.6+.4*hf);
+ c*=1.-.75*hf*smoothstep(1.15*s,.15*s,r);}
+float dist=length(vW-uCam);c=mix(c,uBg,smoothstep(11.,30.,dist));gl_FragColor=vec4(c,1.);}`);
+floorBuf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,floorBuf);
+gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-60,0,-60,60,0,-60,60,0,60,-60,0,-60,60,0,60,-60,0,60]),gl.STATIC_DRAW);
+}
+const GEO={},TEX={};
+function getGeo(t){if(!GEO[t]){const g=buildGeo(t);g.buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,g.buf);gl.bufferData(gl.ARRAY_BUFFER,g.data,gl.STATIC_DRAW);GEO[t]=g}return GEO[t]}
+function getTex(t){const k=t+'_'+themeI;if(!TEX[k]){const g=getGeo(t);const c=paintAtlas(g,THEMES[themeI]);const tx=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tx);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,c);gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  const an=gl.getExtension('EXT_texture_filter_anisotropic');if(an)gl.texParameterf(gl.TEXTURE_2D,an.TEXTURE_MAX_ANISOTROPY_EXT,4);TEX[k]=tx}return TEX[k]}
+
+// câmera
+const CAM=[0,8.6,7.6],TGT=[0,0,-1.1];let VP,W=1,Hh=1;
+const camF=nrm(sub(TGT,CAM)),camR=nrm(crs(camF,[0,1,0])),camU=crs(camR,camF);
+function resize(){const d=Math.min(window.devicePixelRatio||1,2);W=cv.clientWidth;Hh=cv.clientHeight;cv.width=W*d|0;cv.height=Hh*d|0;
+  if(gl)gl.viewport(0,0,cv.width,cv.height);VP=mMul(mPersp(36*Math.PI/180,W/Hh,.1,100),mLook(CAM,TGT,[0,1,0]));dirty=true}
+// largura visível do chão (para caber vários dados)
+function visHalfWidth(){const dist=len(sub(CAM,TGT));return Math.tan(18*Math.PI/180)*dist*(W/Hh)}
+
+// ================= estado =================
+let die=store.get('die','d20'),count=store.get('count',1),adv=false,dis=false,pct=false;
+let cfg=store.get('cfg',{bal:true,mod:0,pool:false,pd:6,vib:true});
+let hist=store.get('hist',[]);
+let dice=[],rolling=false,dirty=true,glow=1;
+const DLIST=['d20','d12','d10','d8','d6','d4','d2'];
+
+// ================= RNG balanceado =================
+let bags=store.get('bags',{});
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function draw(key,sides){
+  if(!cfg.bal)return rnd(sides);
+  let b=bags[key]||{bag:[],last:[]};const mid=(sides+1)/2,half=v=>v>mid?'H':v<mid?'L':'M';
+  if(!b.bag.length)b.bag=shuffle(Array.from({length:sides},(_,i)=>i+1));
+  let idx=0;const l=b.last;
+  if(l.length>=2&&l[l.length-1]===l[l.length-2]&&l[l.length-1]!=='M'){
+    const avoid=l[l.length-1];idx=b.bag.findIndex(v=>half(v)!==avoid);
+    if(idx<0){b.bag=b.bag.concat(shuffle(Array.from({length:sides},(_,i)=>i+1)));idx=b.bag.findIndex(v=>half(v)!==avoid)}}
+  const v=b.bag.splice(idx,1)[0];l.push(half(v));if(l.length>4)l.shift();bags[key]=b;store.set('bags',bags);return v}
+
+// ================= orientação final =================
+function finalQuat(geo,face,pos,side,twist){
+  const T=nrm(sub(CAM,pos));const tilt=nrm(add(add(scl(T,.8),[0,.22,0]),scl(camR,.32*(side||1))));
+  const q1=qFromTo(face.n,tilt);const wW=qRot(q1,face.w);
+  const U=nrm(sub(camU,scl(tilt,dot(camU,tilt))));
+  let ang=Math.atan2(dot(crs(wW,U),tilt),dot(wW,U));
+  return qMul(qAx(tilt,ang+(twist||0)),q1)}
+function restY(geo,q,s){let m=1e9;geo.allV.forEach(v=>{m=Math.min(m,qRot(q,v)[1])});return -m*s}
+
+// ================= rolagem =================
+function layout(n){const hw=visHalfWidth()*.8;let cols=n<=3?n:n===4?2:3,rows=Math.ceil(n/cols);
+  let s=n===1?.92:n===2?.72:n<=4?.62:.52;s=Math.min(s,(hw*2)/(cols*2.4));
+  const sp=s*2.4,out=[];for(let i=0;i<n;i++){const r=Math.floor(i/cols),c=i%cols,inRow=Math.min(cols,n-r*cols);
+    out.push({x:(c-(inRow-1)/2)*sp,z:(r-(rows-1)/2)*sp*1.05+.3,s})}return out}
+
+let pendingSan=false;
+function roll(forcePct){
+  if(rolling||!gl)return;closeAll();
+  const usePct=forcePct||pct;let spec=[];
+  if(usePct)spec=[{t:'d10t',key:'d10t',sides:10},{t:'d10',key:'d10u',sides:10}];
+  else if((adv||dis)&&count===1)spec=[{t:die,key:die,sides:getGeo(die).sides},{t:die,key:die,sides:getGeo(die).sides}];
+  else for(let i=0;i<count;i++)spec.push({t:die,key:die,sides:getGeo(die).sides});
+  const L=layout(spec.length);
+  dice=spec.map((sp,i)=>{const geo=getGeo(sp.t);const v=draw(sp.key,sp.sides);const face=geo.faces.find(f=>f.value===v);
+    const pos=[L[i].x,0,L[i].z];const qf=finalQuat(geo,face,pos,Math.random()<.5?-1:1,(Math.random()-.5)*.5);const ry=restY(geo,qf,L[i].s);
+    return{geo,face,num:face.num,s:L[i].s,end:[pos[0],ry,pos[2]],qf,
+      start:[pos[0]+(Math.random()-.5)*3,ry,pos[2]-3.2-Math.random()*1.5],H:2.2+Math.random()*1.2,
+      axis:nrm([Math.random()-.5,Math.random()-.5,Math.random()-.5]),A:(4+Math.random()*3)*Math.PI,
+      dur:1250+Math.random()*350,t0:performance.now()+i*70,dim:false,hi:false,pos:null,q:null}});
+  rolling=true;$('hint').style.opacity=0;showRes('','','',null);$('rN').textContent='…';
+  if(cfg.vib)vib(15);
+}
+function vib(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
+function stepDice(now){let done=true;
+  dice.forEach(d=>{let t=Math.min(1,Math.max(0,(now-d.t0)/d.dur));if(t<1)done=false;
+    const e=1-Math.pow(1-t,3);const k=1-t;
+    d.pos=[d.start[0]+(d.end[0]-d.start[0])*e,d.end[1]+d.H*k*k*Math.abs(Math.cos(Math.PI*2.5*t)),d.start[2]+(d.end[2]-d.start[2])*e];
+    d.q=qMul(qAx(d.axis,d.A*Math.pow(k,2.6)),d.qf)});
+  return done}
+function finish(){rolling=false;if(cfg.vib)vib([30,30,45]);
+  const tot=evaluate();dirty=true;}
+const crits=['As sombras se curvam a você.','Os antigos sorriem.','O véu se abre a seu favor.','Algo lá fora sentiu medo.','A lua sangra por você.'];
+const fumbles=['Algo te observa do escuro...','Você ouve sussurros atrás de você.','As velas se apagam.','O sangue esfria nas veias.','Uma porta range sozinha.'];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function showRes(n,d,v,cls){const N=$('rN');N.textContent=n;N.className='n '+(cls||'');$('rD').textContent=d;$('rV').textContent=v;$('rV').className='v '+(cls||'')}
+function evaluate(){
+  const mod=cfg.mod,ms=mod?` ${mod>0?'+':'−'} ${Math.abs(mod)}`:'';
+  if(dice.length===2&&dice[0].geo.type==='d10t'){
+    let v=dice[0].num+(dice[1].num%10);if(v===0)v=100;dice.forEach(d=>d.hi=true);
+    if(pendingSan){pendingSan=false;return sanity(v)}
+    let cls=null,ver='';if(v<=5){cls='crit';ver='CRÍTICO! '+pick(crits)}else if(v>=96){cls='fail';ver='FALHA CRÍTICA. '+pick(fumbles)}
+    showRes(v+mod,`d% → ${String(dice[0].num).padStart(2,'0')} + ${dice[1].num%10}${ms}`,ver,cls);addHist('d%'+(mod?ms.replace(/ /g,''):''),v+mod);return}
+  const t=dice[0].geo.type,lab=t.toUpperCase();
+  if((adv||dis)&&dice.length===2){const[a,b]=dice;const keep=adv?(a.num>=b.num?a:b):(a.num<=b.num?a:b);const other=keep===a?b:a;
+    other.dim=true;keep.hi=true;const k=keep.num;let cls=null,ver='';
+    if(t==='d20'){if(k===20){cls='crit';ver='CRÍTICO! '+pick(crits)}else if(k===1){cls='fail';ver='FALHA CRÍTICA. '+pick(fumbles)}}
+    showRes(k+mod,`${adv?'Vantagem':'Desvantagem'}: ${a.num} e ${b.num} → fica ${k}${ms}`,ver,cls);addHist(`${lab} ${adv?'vant.':'desv.'}`,k+mod);return}
+  dice.forEach(d=>d.hi=true);const nums=dice.map(d=>d.num);
+  if(t==='d10'&&cfg.pool){const s=nums.filter(v=>v>=cfg.pd).length,o=nums.filter(v=>v===1).length;let net=s-o;let cls,ver;
+    if(s===0&&o>0){cls='fail';ver='DESASTRE. '+pick(fumbles)}else if(net<=0){cls=null;ver='Falha. Nada acontece... por enquanto.'}
+    else if(net>=5){cls='crit';ver='Sucesso excepcional! '+pick(crits)}else{cls='good';ver=net===1?'Sucesso marginal.':'Sucesso!'}
+    showRes(Math.max(net,0)+(net===1?' sucesso':' sucessos'),`[${nums.join(', ')}] · dificuldade ${cfg.pd}`,ver,cls);addHist(`Parada ${nums.length}d10 dif.${cfg.pd}`,Math.max(net,0)+' suc.');return}
+  const sum=nums.reduce((a,b)=>a+b,0)+mod;let cls=null,ver='';
+  if(nums.length===1&&t==='d20'){if(nums[0]===20){cls='crit';ver='CRÍTICO! '+pick(crits)}else if(nums[0]===1){cls='fail';ver='FALHA CRÍTICA. '+pick(fumbles)}}
+  if(nums.length===1&&t==='d2')ver=nums[0]===1?'Cara... o destino sorri.':'Coroa... o destino desvia o olhar.';
+  showRes(sum,(nums.length>1?`[${nums.join(' + ')}]`:'')+ms,ver,cls);addHist(`${nums.length>1?nums.length:''}${t}${mod?ms.replace(/ /g,''):''}`,sum);
+}
+
+// ================= ficha / sanidade =================
+const LOSS=['1','1d4','1d6','1d8','1d10','1d20','2d10'];let li=store.get('li',2);
+let ficha=store.get('ficha',{nome:'',stats:{vida:{n:'Vida',v:12,max:12,c:'#c3151f'},san:{n:'Sanidade',v:60,max:99,c:'#8a5cf0'},von:{n:'Vontade',v:5,max:10,c:'#e7b75a'},cor:{n:'Corrupção',v:0,max:10,c:'#5b8a3a'}}});
+function lossRoll(s){if(s==='1')return 1;let[q,d]=s.split('d').map(Number);let t=0;for(let i=0;i<q;i++)t+=draw('loss'+d,d);return t}
+function sanity(v){const s=ficha.stats.san;let cls,ver;
+  if(v<=Math.max(1,Math.floor(s.v/5))){cls='crit';ver='Mente de aço. Você resiste sem abalo.'}
+  else if(v<=s.v){cls='good';ver='Você mantém a razão.'}
+  else{const p=lossRoll(LOSS[li]);s.v=Math.max(0,s.v-p);cls='fail';ver=`Perdeu ${p} de Sanidade. ${pick(fumbles)}`+(s.v===0?' ⚠ SUA MENTE SE PARTIU.':'');saveF();drawStats()}
+  showRes(v,`Teste de Sanidade: d100 = ${v} contra ${ficha.stats.san.v+(cls==='fail'?0:0)}`,ver,cls);addHist('Sanidade',v)}
+function saveF(){store.set('ficha',ficha)}
+function drawStats(){$('stats').innerHTML=Object.entries(ficha.stats).map(([k,s])=>`<div class="stat"><span class="nm">${s.n}</span><button data-s="${k}" data-d="-1">−</button><div class="bar"><i style="width:${s.v/s.max*100}%;background:${s.c}"></i></div><button data-s="${k}" data-d="1">+</button><span class="vv">${s.v}/${s.max}</span></div>`).join('');
+  $('stats').querySelectorAll('button').forEach(b=>b.onclick=()=>{const s=ficha.stats[b.dataset.s];s.v=Math.max(0,Math.min(s.max,s.v+ +b.dataset.d));saveF();drawStats()})}
+
+// ================= histórico =================
+function addHist(l,v){hist.unshift({l,v,t:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})});hist=hist.slice(0,60);store.set('hist',hist);drawHist()}
+function drawHist(){$('histL').innerHTML=hist.length?hist.map(h=>`<div class="hl"><span>${h.l} <i>· ${h.t}</i></span><b>${h.v}</b></div>`).join(''):'<p style="color:var(--dim)">Nenhuma rolagem ainda.</p>'}
+
+// ================= interface =================
+const SHAPES={d20:'<path class="sh" d="M40 6l29 17v34L40 74 11 57V23z"/>',d12:'<path class="sh" d="M40 7l32 23-12 38H20L8 30z"/>',d10:'<path class="sh" d="M40 5l30 35-30 35-30-35z"/>',
+  d8:'<path class="sh" d="M40 6l33 34-33 34L7 40z"/>',d6:'<rect class="sh" x="10" y="10" width="60" height="60"/>',d4:'<path class="sh" d="M40 6l36 66H4z"/>',d2:'<circle class="sh" cx="40" cy="40" r="35"/>'};
+function drawBottom(){$('bottom').innerHTML=DLIST.map(d=>`<button class="dz ${d===die&&!pct?'on':''}" data-d="${d}"><span class="c">${d===die&&!pct?count:''}</span><svg viewBox="0 0 80 80">${SHAPES[d]}<text x="40" y="${d==='d4'?50:41}">${d.slice(1)}</text></svg></button>`).join('');
+  $('bottom').querySelectorAll('.dz').forEach(b=>b.onclick=()=>{const d=b.dataset.d;if(pct){pct=false;die=d;count=1}else if(d===die)count=count>=6?1:count+1;else{die=d;count=1}
+    store.set('die',die);store.set('count',count);if(count>1&&(adv||dis)){adv=dis=false}syncTop();drawBottom()})}
+function syncTop(){$('bAdv').classList.toggle('on',adv);$('bDis').classList.toggle('on',dis);$('bPct').classList.toggle('on',pct);
+  const th=THEMES[themeI];$('thSwatch').style.fill=`rgb(${th.c.join(',')})`;$('thSwatch').style.opacity=1;
+  document.documentElement.style.setProperty('--accent',`rgb(${th.c.map(v=>Math.max(60,v)).join(',')})`)}
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>e.classList.remove('on'),1400)}
+$('bAdv').onclick=()=>{adv=!adv;if(adv){dis=false;pct=false;count=1;drawBottom()}syncTop();toast(adv?'Vantagem: rola 2, fica o maior':'Vantagem desligada')};
+$('bDis').onclick=()=>{dis=!dis;if(dis){adv=false;pct=false;count=1;drawBottom()}syncTop();toast(dis?'Desvantagem: rola 2, fica o menor':'Desvantagem desligada')};
+$('bPct').onclick=()=>{pct=!pct;if(pct){adv=dis=false}syncTop();drawBottom();toast(pct?'d% (d100): dezena + unidade':'d% desligado')};
+$('bTheme').onclick=()=>{themeI=(themeI+1)%THEMES.length;store.set('theme',themeI);syncTop();dirty=true;toast('Dados: '+THEMES[themeI].n)};
+function openP(id){closeAll();$(id).classList.add('open');$('shade').classList.add('open')}
+function closeAll(){document.querySelectorAll('.sheet').forEach(s=>s.classList.remove('open'));$('shade').classList.remove('open')}
+$('bSet').onclick=()=>openP('pSet');$('bHist').onclick=()=>{drawHist();openP('pHist')};$('bSheet').onclick=()=>{drawStats();openP('pSheet')};
+$('shade').onclick=closeAll;document.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeAll);
+function sw(id,key){const b=$(id);b.classList.toggle('on',!!cfg[key]);b.onclick=()=>{cfg[key]=!cfg[key];b.classList.toggle('on',cfg[key]);store.set('cfg',cfg)}}
+sw('swBal','bal');sw('swPool','pool');sw('swVib','vib');
+function syncCfg(){$('modV').textContent=(cfg.mod>=0?'+':'')+cfg.mod;$('pdV').textContent=cfg.pd;$('lsV').textContent=LOSS[li]}
+document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{cfg.mod=Math.max(-20,Math.min(20,cfg.mod+ +b.dataset.m));store.set('cfg',cfg);syncCfg()});
+document.querySelectorAll('[data-pd]').forEach(b=>b.onclick=()=>{cfg.pd=Math.max(2,Math.min(10,cfg.pd+ +b.dataset.pd));store.set('cfg',cfg);syncCfg()});
+document.querySelectorAll('[data-ls]').forEach(b=>b.onclick=()=>{li=Math.max(0,Math.min(LOSS.length-1,li+ +b.dataset.ls));store.set('li',li);syncCfg()});
+$('resetBags').onclick=()=>{bags={};store.set('bags',bags);toast('Balanceamento zerado')};
+$('clrH').onclick=()=>{hist=[];store.set('hist',hist);drawHist()};
+$('nome').value=ficha.nome;$('nome').oninput=e=>{ficha.nome=e.target.value;saveF()};
+$('resetF').onclick=()=>{Object.entries(ficha.stats).forEach(([k,s])=>s.v=k==='cor'?0:s.max);saveF();drawStats()};
+$('sanBtn').onclick=()=>{pendingSan=true;roll(true)};
+cv.addEventListener('click',()=>roll());
+window.addEventListener('resize',resize);
+syncTop();syncCfg();drawBottom();drawHist();
+
+// ================= desenho =================
+function preview(){ // dado parado na mesa antes da primeira rolagem
+  const geo=getGeo(pct?'d10t':die);const pos=[0,0,.3];const f=geo.faces[geo.faces.length-1];const s=.92;
+  const q=finalQuat(geo,f,pos,1,.15);dice=[{geo,face:f,num:f.num,s,pos:[0,restY(geo,q,s),.3],q,dim:false,hi:false,idle:true}]}
+function render(now){
+  requestAnimationFrame(render);if(!gl)return;
+  if(!rolling&&(!dice.length||(dice[0].idle&&dice[0].geo.type!==(pct?'d10t':die))))preview(),dirty=true;
+  if(rolling){if(stepDice(now))finish();dirty=true}
+  if(!dirty)return;dirty=false;
+  const bg=[.047,.047,.059];gl.clearColor(bg[0],bg[1],bg[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);
+  const th=THEMES[themeI].c.map(v=>v/255);const vis=dice.filter(d=>d.pos);
+  // chão
+  gl.useProgram(P_FLOOR.p);gl.disable(gl.CULL_FACE);gl.disable(gl.BLEND);gl.uniformMatrix4fv(P_FLOOR.U.uVP,false,VP);
+  const ud=new Float32Array(24);vis.slice(0,6).forEach((d,i)=>{ud[i*4]=d.pos[0];ud[i*4+1]=d.pos[2];ud[i*4+2]=Math.max(0,d.pos[1]-d.s*.8);ud[i*4+3]=d.s});
+  gl.uniform4fv(P_FLOOR.U.uD,ud);gl.uniform1f(P_FLOOR.U.uN,Math.min(6,vis.length));gl.uniform3fv(P_FLOOR.U.uTh,th);gl.uniform3fv(P_FLOOR.U.uCam,CAM);gl.uniform3fv(P_FLOOR.U.uBg,bg);gl.uniform1f(P_FLOOR.U.uGlow,glow);
+  gl.bindBuffer(gl.ARRAY_BUFFER,floorBuf);const fa=gl.getAttribLocation(P_FLOOR.p,'aP');gl.enableVertexAttribArray(fa);gl.vertexAttribPointer(fa,3,gl.FLOAT,false,12,0);gl.drawArrays(gl.TRIANGLES,0,6);gl.disableVertexAttribArray(fa);
+  // dados
+  gl.useProgram(P_DIE.p);gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);gl.uniformMatrix4fv(P_DIE.U.uVP,false,VP);gl.uniform3fv(P_DIE.U.uCam,CAM);gl.uniform3fv(P_DIE.U.uTh,th);gl.uniform1f(P_DIE.U.uGlow,glow);
+  const at=['aP','aN','aUv','aE','aF'].map(n=>gl.getAttribLocation(P_DIE.p,n)),sz=[3,3,2,1,1],off=[0,12,24,32,36];
+  const order=vis.slice().sort((a,b)=>(a.dim?1:0)-(b.dim?1:0));
+  order.forEach(d=>{gl.bindBuffer(gl.ARRAY_BUFFER,d.geo.buf);at.forEach((a,i)=>{if(a<0)return;gl.enableVertexAttribArray(a);gl.vertexAttribPointer(a,sz[i],gl.FLOAT,false,40,off[i])});
+    gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,getTex(d.geo.type));gl.uniform1i(P_DIE.U.uT,0);
+    gl.uniformMatrix4fv(P_DIE.U.uM,false,mModel(d.q,d.pos,d.s));gl.uniform1f(P_DIE.U.uHi,d.hi&&!rolling?d.face.cell:-5);
+    if(d.dim){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.uniform1f(P_DIE.U.uA,.35)}else{gl.disable(gl.BLEND);gl.uniform1f(P_DIE.U.uA,1)}
+    gl.drawArrays(gl.TRIANGLES,0,d.geo.count)});
+  at.forEach(a=>a>=0&&gl.disableVertexAttribArray(a));
+}
+resize();requestAnimationFrame(render);
+window.__test={roll,draw,get dice(){return dice},cfg};
+</script>
+</body>
+</html>
