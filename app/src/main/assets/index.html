@@ -316,6 +316,15 @@ body:not(.g) .fab{display:none}
 .cidea{font-size:18px;line-height:1.45;white-space:pre-wrap;color:var(--ink)}
 .cidea.empty{color:var(--dim);font-style:italic;text-align:center}
 .cbtn{display:block;margin:14px auto 0;padding:8px 18px;border-radius:6px;border:1px solid var(--line);background:rgba(20,6,36,.6);font-family:Cinzel,serif;font-size:13px;color:var(--p2);box-shadow:0 0 8px rgba(180,107,255,.3)}
+
+.portrait{position:relative;width:170px;height:170px;margin:6px auto 4px;border-radius:50%;padding:0;border:2px solid var(--p2);background:radial-gradient(circle at 50% 40%,#2a0f4d,#0a0612 70%);
+  box-shadow:0 0 18px rgba(180,107,255,.8),0 0 0 6px rgba(139,61,255,.12),inset 0 0 18px rgba(139,61,255,.5);overflow:visible;display:block}
+.portrait::before{content:"";position:absolute;inset:-12px;border-radius:50%;border:1px dashed rgba(216,180,255,.5);animation:spin 50s linear infinite;pointer-events:none}
+.portrait img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.portrait .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:Cinzel,serif;font-size:12px;color:var(--muted)}
+.portrait .ph svg{width:44px;height:44px;fill:none;stroke:#c38bff;stroke-width:1.5;filter:drop-shadow(0 0 4px #b46bff)}
+.portrait .cam{position:absolute;right:4px;bottom:4px;width:38px;height:38px;border-radius:50%;background:linear-gradient(180deg,#6a22d6,#3d0f8a);border:1px solid var(--p2);display:grid;place-items:center;box-shadow:0 0 10px #b46bff}
+.portrait .cam svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.8}
 </style>
 </head>
 <body>
@@ -729,9 +738,21 @@ function showTab(t){if(!["ficha","pericias","grimorio","dados"].includes(t))t="f
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
 addEventListener("hashchange",()=>showTab(location.hash.slice(1)));
 
+
+/* ---------- Foto do personagem ---------- */
+const CAM='<svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
+function pickPhoto(){const i=document.createElement("input");i.type="file";i.accept="image/*";i.style.display="none";document.body.appendChild(i);
+ i.onchange=()=>{const f=i.files&&i.files[0];i.remove();if(!f)return;const r=new FileReader();
+  r.onload=()=>{const img=new Image();img.onload=()=>{const M=560,s=Math.min(1,M/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
+    c.getContext("2d").drawImage(img,0,0,c.width,c.height);S.perfil.foto=c.toDataURL("image/jpeg",.82);save();renderChar();toast("Foto do personagem salva ✦")};
+   img.onerror=()=>toast("Não consegui abrir essa imagem");img.src=r.result};r.readAsDataURL(f)};i.click()}
+function photoMenu(){if(!S.perfil.foto){pickPhoto();return}
+ openSheet(`<h2>Foto do personagem</h2><img src="${S.perfil.foto}" style="display:block;max-width:100%;max-height:50vh;margin:0 auto;border-radius:10px;box-shadow:0 0 18px rgba(139,61,255,.6)">
+  <div class="btns"><button class="del" onclick="S.perfil.foto='';save();renderChar();close_()">Remover</button><button onclick="close_()">Fechar</button><button class="pri" onclick="close_();pickPhoto()">Trocar foto</button></div>`)}
 /* ---------- Personagem ---------- */
 function renderChar(){const p=S.perfil;
  $("charBox").innerHTML=FRAME+`<div class="c">${banner("Personagem")}
+  <button class="portrait" onclick="photoMenu()" aria-label="Foto do personagem">${p.foto?`<img src="${p.foto}" alt="Foto do personagem">`:`<span class="ph"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 4.5-7 8-7s7 2 8 7"/></svg>Adicionar foto</span>`}<span class="cam">${CAM}</span></button>
   <div class="cname">${p.nome?esc(p.nome):'<span style="color:var(--dim)">Sem nome</span>'}</div>
   <div class="divider">✦</div>
   <div class="sec" style="text-align:center">Ideia do personagem</div>
