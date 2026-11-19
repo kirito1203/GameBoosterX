@@ -7,17 +7,19 @@ Legenda: ✅ sim · ❌ não · ⏳ aguardando · — não se aplica ainda
 
 ## ETAPA 1 — Estrutura e arquitetura
 
+Build 21 do GitHub Actions: compilação ✅, 35 testes unitários ✅ (com `org.json` real), testes instrumentados compilados ✅.
+
 | Item | Implementado | Compilado | Testado | No C71 |
 |---|---|---|---|---|
-| Projeto Gradle, Hilt, Compose, tema | ✅ | ⏳ | — | ⏳ |
-| Banco Room (sons, categorias) | ✅ | ⏳ | ⏳ instrumentado¹ | ⏳ |
-| DataStore (configurações) | ✅ | ⏳ | ✅ regras de limite² | — |
-| Manifesto + validação | ✅ | ⏳ | ✅ parser³ | ⏳ |
-| Navegação com 7 telas + detalhe | ✅ | ⏳ | — | ⏳ |
-| Favoritos | ✅ | ⏳ | ✅ regra² · ⏳ banco¹ | ⏳ |
-| Pesquisa sem acento | ✅ | ⏳ | ✅ normalização² · ⏳ banco¹ | ⏳ |
-| Criar/excluir categoria | ✅ | ⏳ | ✅ regra² · ⏳ banco¹ | ⏳ |
-| Renomear/excluir som importado | ✅ | ⏳ | ✅ regra² | — (sem importação ainda) |
+| Projeto Gradle, Hilt, Compose, tema | ✅ | ✅ | — | ⏳ |
+| Banco Room (sons, categorias) | ✅ | ✅ | ⏳ instrumentado¹ | ⏳ |
+| DataStore (configurações) | ✅ | ✅ | ✅ regras de limite² | — |
+| Manifesto + validação | ✅ | ✅ | ✅ parser³ | ⏳ |
+| Navegação com 7 telas + detalhe | ✅ | ✅ | — | ⏳ |
+| Favoritos | ✅ | ✅ | ✅ regra² · ⏳ banco¹ | ⏳ |
+| Pesquisa sem acento | ✅ | ✅ | ✅ normalização² · ⏳ banco¹ | ⏳ |
+| Criar/excluir categoria | ✅ | ✅ | ✅ regra² · ⏳ banco¹ | ⏳ |
+| Renomear/excluir som importado | ✅ | ✅ | ✅ regra² | — (sem importação ainda) |
 
 1. `DatabaseTest` (8 testes) é compilado no CI, mas só roda com `connectedDebugAndroidTest` em aparelho ou emulador.
 2. 24 testes de JVM **executados e aprovados** durante o desenvolvimento (compilador Kotlin 2.0.21 + JUnit 4.13.2):
