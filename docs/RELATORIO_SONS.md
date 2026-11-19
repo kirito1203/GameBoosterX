@@ -204,7 +204,7 @@ Gerado automaticamente por `tools/fetch_sounds.py`. Não edite à mão.
 | Buzina de locomotiva (air horn) | Sons aleatórios | Wikimedia Commons | HarveyHenkelmann | CC0 | 4.0 s | https://commons.wikimedia.org/wiki/File:Leslie_A200-156.ogg |
 | Cachorro latindo | Sons aleatórios | Wikimedia Commons | Amada44 | CC BY-SA 3.0 | 2.6 s | https://commons.wikimedia.org/wiki/File:Barking_of_a_dog.ogg |
 | Caixa registradora (gravação) | Sons aleatórios | Wikimedia Commons | Me | Public domain | 2.1 s | https://commons.wikimedia.org/wiki/File:Cash_register.ogg |
-| Campainha (gravação) | Sons aleatórios | Wikimedia Commons | — | Public domain | 1.8 s | https://commons.wikimedia.org/wiki/File:Doorbell-cheap-dingdong.ogg |
+| Campainha (gravação) | Sons aleatórios | Wikimedia Commons | Dub (Wikimedia Commons) | Public domain | 1.8 s | https://commons.wikimedia.org/wiki/File:Doorbell-cheap-dingdong.ogg |
 | Campainha de bicicleta (gravação) | Sons aleatórios | Wikimedia Commons | AntumDeluge | CC0 | 1.2 s | https://commons.wikimedia.org/wiki/File:Rotating-bicycle-bell.wav |
 | Cavalo relinchando | Sons aleatórios | Wikimedia Commons | Hü. | Public domain | 2.1 s | https://commons.wikimedia.org/wiki/File:Wiehern.ogg |
 | Chaleira apitando | Sons aleatórios | Wikimedia Commons | Secretlondon | CC BY-SA 3.0 | 5.0 s | https://commons.wikimedia.org/wiki/File:Kettle_whistle.ogg |
@@ -244,9 +244,9 @@ Gerado automaticamente por `tools/fetch_sounds.py`. Não edite à mão.
 | Trovão (gravação) | Suspense e terror | Wikimedia Commons | Amuzujoe | CC BY-SA 4.0 | 9.1 s | https://commons.wikimedia.org/wiki/File:Thunder_01.ogg |
 | Zumbi rosnando | Suspense e terror | Wikimedia Commons | Wowsuchthings | CC BY-SA 4.0 | 6.0 s | https://commons.wikimedia.org/wiki/File:Zombie-Gutteral-Sounds.ogg |
 | Acorde de órgão | Vinhetas e músicas curtas | Wikimedia Commons | Shadowcelibi at en.wikipedia | Public domain | 3.1 s | https://commons.wikimedia.org/wiki/File:Drawbar_C_Chord.ogg |
-| Berimbau (capoeira Angola) | Vinhetas e músicas curtas | Wikimedia Commons | — | Public domain | 10.0 s | https://commons.wikimedia.org/wiki/File:Toque-de-angola.ogg |
+| Berimbau (capoeira Angola) | Vinhetas e músicas curtas | Wikimedia Commons | Aarchiba~commonswiki (Wikimedia Commons) | Public domain | 10.0 s | https://commons.wikimedia.org/wiki/File:Toque-de-angola.ogg |
 | Caxixi | Vinhetas e músicas curtas | Wikimedia Commons | http://en.wikipedia.org/wiki/User:Freddythehat | Public domain | 5.0 s | https://commons.wikimedia.org/wiki/File:Caxixi.ogg |
-| Cuíca | Vinhetas e músicas curtas | Wikimedia Commons | — | CC BY-SA 3.0 | 6.7 s | https://commons.wikimedia.org/wiki/File:Cuica01.ogg |
+| Cuíca | Vinhetas e músicas curtas | Wikimedia Commons | っ (Wikimedia Commons) | CC BY-SA 3.0 | 6.7 s | https://commons.wikimedia.org/wiki/File:Cuica01.ogg |
 | Fanfarra (Kevin MacLeod) | Vinhetas e músicas curtas | Wikimedia Commons | Kevin MacLeod | CC BY 3.0 | 10.0 s | https://commons.wikimedia.org/wiki/File:Kevin_MacLeod_-_Running_Fanfare.ogg |
 | Gaita | Vinhetas e músicas curtas | Wikimedia Commons | mastermesh | Public domain | 4.7 s | https://commons.wikimedia.org/wiki/File:Harmonica_playing.ogg |
 | Glissando no piano | Vinhetas e músicas curtas | Wikimedia Commons | Rafael Tavares Juliani | CC0 | 1.5 s | https://commons.wikimedia.org/wiki/File:Deslizando_o_dedo_no_piano.ogg |
