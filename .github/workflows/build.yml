@@ -1,0 +1,64 @@
+name: Build MEME SOUNDBOARD X
+
+on:
+  push:
+    branches: [meme-soundboard-x]
+    paths-ignore: ["**.md"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: android-actions/setup-android@v3
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+
+      - name: Testes unitários
+        run: gradle testDebugUnitTest --stacktrace
+
+      - name: Compilar APK
+        run: gradle assembleDebug --stacktrace
+
+      - name: Compilar testes instrumentados (não executa)
+        run: gradle assembleDebugAndroidTest --stacktrace
+
+      - name: Relatório de testes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-testes
+          path: app/build/reports/tests/
+          if-no-files-found: ignore
+
+      - name: Renomear APK
+        run: cp app/build/outputs/apk/debug/app-debug.apk MemeSoundboardX-build${{ github.run_number }}.apk
+
+      - name: Publicar APK em Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: meme-x-build-${{ github.run_number }}
+          target_commitish: ${{ github.sha }}
+          name: "MEME SOUNDBOARD X — build ${{ github.run_number }}"
+          prerelease: true
+          files: MemeSoundboardX-build${{ github.run_number }}.apk
+          body: |
+            Build automático (debug) do commit ${{ github.sha }}.
+            Baixe o .apk abaixo e instale no celular.

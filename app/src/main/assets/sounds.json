@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "categories": [
+    { "id": "memes_classicos", "name": "Memes clássicos", "targetCount": 50, "order": 1 },
+    { "id": "memes_brasileiros", "name": "Memes brasileiros", "targetCount": 50, "order": 2 },
+    { "id": "risadas_reacoes", "name": "Risadas e reações", "targetCount": 35, "order": 3 },
+    { "id": "impactos_comicos", "name": "Impactos e efeitos cômicos", "targetCount": 35, "order": 4 },
+    { "id": "suspense_terror", "name": "Suspense e terror", "targetCount": 30, "order": 5 },
+    { "id": "anime_poderes", "name": "Anime e poderes", "targetCount": 35, "order": 6 },
+    { "id": "games_roblox", "name": "Games e Roblox", "targetCount": 35, "order": 7 },
+    { "id": "sons_aleatorios", "name": "Sons aleatórios", "targetCount": 40, "order": 8 },
+    { "id": "vinhetas_musicas", "name": "Vinhetas e músicas curtas", "targetCount": 40, "order": 9 }
+  ],
+  "sounds": []
+}

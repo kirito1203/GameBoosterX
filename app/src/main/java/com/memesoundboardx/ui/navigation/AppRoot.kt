@@ -1,0 +1,171 @@
+package com.memesoundboardx.ui.navigation
+
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.memesoundboardx.ui.screens.categories.CategoriesScreen
+import com.memesoundboardx.ui.screens.categories.CategoryDetailScreen
+import com.memesoundboardx.ui.screens.favorites.FavoritesScreen
+import com.memesoundboardx.ui.screens.home.HomeScreen
+import com.memesoundboardx.ui.screens.library.LibraryScreen
+import com.memesoundboardx.ui.screens.myaudio.MyAudioScreen
+import com.memesoundboardx.ui.screens.search.SearchScreen
+import com.memesoundboardx.ui.screens.settings.SettingsScreen
+import com.memesoundboardx.ui.theme.NeonColors
+
+object Routes {
+    const val HOME = "home"
+    const val LIBRARY = "library"
+    const val CATEGORIES = "categories"
+    const val FAVORITES = "favorites"
+    const val MY_AUDIO = "my_audio"
+    const val SEARCH = "search"
+    const val SETTINGS = "settings"
+    const val CATEGORY_DETAIL = "category/{categoryId}"
+    const val ARG_CATEGORY_ID = "categoryId"
+
+    fun categoryDetail(id: String) = "category/$id"
+}
+
+private data class Tab(val route: String, val label: String, val icon: ImageVector)
+
+private val tabs = listOf(
+    Tab(Routes.HOME, "Início", Icons.Filled.Home),
+    Tab(Routes.LIBRARY, "Biblioteca", Icons.AutoMirrored.Filled.List),
+    Tab(Routes.CATEGORIES, "Categorias", Icons.Filled.Menu),
+    Tab(Routes.FAVORITES, "Favoritos", Icons.Filled.Favorite),
+    Tab(Routes.SEARCH, "Pesquisa", Icons.Filled.Search),
+)
+
+private fun titleFor(route: String?): String = when (route) {
+    Routes.LIBRARY -> "Biblioteca"
+    Routes.CATEGORIES -> "Categorias"
+    Routes.FAVORITES -> "Favoritos"
+    Routes.SEARCH -> "Pesquisa"
+    Routes.MY_AUDIO -> "Meus áudios"
+    Routes.SETTINGS -> "Configurações"
+    Routes.CATEGORY_DETAIL -> "Categoria"
+    else -> "MEME SOUNDBOARD X"
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppRoot() {
+    val nav = rememberNavController()
+    val backStack by nav.currentBackStackEntryAsState()
+    val currentRoute = backStack?.destination?.route
+    val isTopLevel = tabs.any { it.route == currentRoute }
+
+    Scaffold(
+        containerColor = NeonColors.BgDeep,
+        topBar = {
+            TopAppBar(
+                title = { Text(titleFor(currentRoute), fontWeight = FontWeight.Black) },
+                navigationIcon = {
+                    if (!isTopLevel && currentRoute != null) {
+                        IconButton(onClick = { nav.popBackStack() }) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
+                        }
+                    }
+                },
+                actions = {
+                    if (currentRoute != Routes.SETTINGS) {
+                        IconButton(onClick = { nav.navigate(Routes.SETTINGS) { launchSingleTop = true } }) {
+                            Icon(Icons.Filled.Settings, contentDescription = "Configurações")
+                        }
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = NeonColors.BgDeep,
+                    titleContentColor = NeonColors.Text,
+                    actionIconContentColor = NeonColors.TextDim,
+                    navigationIconContentColor = NeonColors.Text,
+                ),
+            )
+        },
+        bottomBar = {
+            NavigationBar(containerColor = NeonColors.Surface) {
+                tabs.forEach { tab ->
+                    val selected = backStack?.destination?.hierarchy?.any { it.route == tab.route } == true
+                    NavigationBarItem(
+                        selected = selected,
+                        onClick = { nav.navigateToTab(tab.route) },
+                        icon = { Icon(tab.icon, contentDescription = tab.label) },
+                        label = { Text(tab.label, maxLines = 1) },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = NeonColors.Blue,
+                            selectedTextColor = NeonColors.Blue,
+                            indicatorColor = NeonColors.Blue.copy(alpha = 0.15f),
+                            unselectedIconColor = NeonColors.TextDim,
+                            unselectedTextColor = NeonColors.TextDim,
+                        ),
+                    )
+                }
+            }
+        },
+    ) { padding ->
+        NavHost(
+            navController = nav,
+            startDestination = Routes.HOME,
+            modifier = Modifier.padding(padding),
+        ) {
+            composable(Routes.HOME) {
+                HomeScreen(
+                    onOpenMyAudio = { nav.navigate(Routes.MY_AUDIO) },
+                    onOpenSettings = { nav.navigate(Routes.SETTINGS) },
+                    onOpenTab = { nav.navigateToTab(it) },
+                )
+            }
+            composable(Routes.LIBRARY) { LibraryScreen() }
+            composable(Routes.CATEGORIES) {
+                CategoriesScreen(onOpenCategory = { nav.navigate(Routes.categoryDetail(it)) })
+            }
+            composable(
+                Routes.CATEGORY_DETAIL,
+                arguments = listOf(navArgument(Routes.ARG_CATEGORY_ID) { type = NavType.StringType }),
+            ) { CategoryDetailScreen() }
+            composable(Routes.FAVORITES) { FavoritesScreen() }
+            composable(Routes.SEARCH) { SearchScreen() }
+            composable(Routes.MY_AUDIO) { MyAudioScreen() }
+            composable(Routes.SETTINGS) { SettingsScreen() }
+        }
+    }
+}
+
+private fun NavHostController.navigateToTab(route: String) {
+    navigate(route) {
+        popUpTo(graph.findStartDestination().id) { saveState = true }
+        launchSingleTop = true
+        restoreState = true
+    }
+}

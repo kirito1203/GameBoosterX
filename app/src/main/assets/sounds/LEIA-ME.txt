@@ -1,0 +1,25 @@
+PASTA DE SONS EMBUTIDOS — MEME SOUNDBOARD X
+
+Esta pasta começa vazia de propósito. Nenhum arquivo de áudio foi inventado.
+
+Para adicionar um som embutido:
+1. Coloque o arquivo aqui (preferência: .ogg, mono, 44.1 kHz, até 6 s).
+2. Adicione uma entrada em app/src/main/assets/sounds.json, dentro de "sounds":
+
+   {
+     "id": "impacto_soco_01",
+     "file": "impacto_soco_01.ogg",
+     "name": "Soco seco",
+     "categoryId": "impactos_comicos",
+     "license": "CC0",
+     "author": "nome do autor",
+     "sourceUrl": "https://link-da-origem",
+     "tags": ["soco", "impacto"]
+   }
+
+Licenças aceitas pelo app: CC0, PUBLIC_DOMAIN, CC_BY, ORIGINAL, LICENSED.
+Entradas sem licença válida, com categoria inexistente ou com id repetido são REJEITADAS
+na leitura do manifesto e não aparecem no app.
+
+Áudios com direitos autorais (memes de TV, músicas, falas de filmes) NÃO devem ser
+embutidos aqui. Use a tela "Meus áudios" para importar arquivos do seu celular.
