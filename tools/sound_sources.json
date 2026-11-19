@@ -1,0 +1,3018 @@
+{
+ "sounds": [
+  {
+   "id": "kv_male_game_over",
+   "name": "Game over (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/game_over.ogg"
+   },
+   "tags": [
+    "game over",
+    "perdeu"
+   ]
+  },
+  {
+   "id": "kv_female_game_over",
+   "name": "Game over (voz feminina)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Female/game_over.ogg"
+   },
+   "tags": [
+    "game over"
+   ]
+  },
+  {
+   "id": "kv_male_you_win",
+   "name": "You win! (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/you_win.ogg"
+   },
+   "tags": [
+    "vitória",
+    "ganhou"
+   ]
+  },
+  {
+   "id": "kv_female_you_win",
+   "name": "You win! (voz feminina)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Female/you_win.ogg"
+   },
+   "tags": [
+    "vitória"
+   ]
+  },
+  {
+   "id": "kv_male_you_lose",
+   "name": "You lose (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/you_lose.ogg"
+   },
+   "tags": [
+    "derrota",
+    "perdeu"
+   ]
+  },
+  {
+   "id": "kv_female_you_lose",
+   "name": "You lose (voz feminina)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Female/you_lose.ogg"
+   },
+   "tags": [
+    "derrota"
+   ]
+  },
+  {
+   "id": "kv_male_level_up",
+   "name": "Level up! (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/level_up.ogg"
+   },
+   "tags": [
+    "level up",
+    "nível"
+   ]
+  },
+  {
+   "id": "kv_male_power_up",
+   "name": "Power up! (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/power_up.ogg"
+   },
+   "tags": [
+    "power up"
+   ]
+  },
+  {
+   "id": "kv_male_new_highscore",
+   "name": "New highscore! (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/new_highscore.ogg"
+   },
+   "tags": [
+    "recorde"
+   ]
+  },
+  {
+   "id": "kv_male_mission_completed",
+   "name": "Mission completed (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/mission_completed.ogg"
+   },
+   "tags": [
+    "missão",
+    "completa"
+   ]
+  },
+  {
+   "id": "kv_male_mission_failed",
+   "name": "Mission failed (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/mission_failed.ogg"
+   },
+   "tags": [
+    "missão",
+    "falhou",
+    "fail"
+   ]
+  },
+  {
+   "id": "kv_male_objective_achieved",
+   "name": "Objective achieved (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/objective_achieved.ogg"
+   },
+   "tags": [
+    "objetivo"
+   ]
+  },
+  {
+   "id": "kv_male_ready",
+   "name": "Ready? (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/ready.ogg"
+   },
+   "tags": [
+    "pronto",
+    "largada"
+   ]
+  },
+  {
+   "id": "kv_male_go",
+   "name": "Go! (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/go.ogg"
+   },
+   "tags": [
+    "vai",
+    "largada"
+   ]
+  },
+  {
+   "id": "kv_male_hurry_up",
+   "name": "Hurry up! (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/hurry_up.ogg"
+   },
+   "tags": [
+    "pressa",
+    "rápido"
+   ]
+  },
+  {
+   "id": "kv_male_time_over",
+   "name": "Time over (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/time_over.ogg"
+   },
+   "tags": [
+    "tempo",
+    "acabou"
+   ]
+  },
+  {
+   "id": "kv_male_final_round",
+   "name": "Final round (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/final_round.ogg"
+   },
+   "tags": [
+    "round final",
+    "luta"
+   ]
+  },
+  {
+   "id": "kv_male_its_a_tie",
+   "name": "It's a tie (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/its_a_tie.ogg"
+   },
+   "tags": [
+    "empate"
+   ]
+  },
+  {
+   "id": "kv_male_war_fire_in_the_hole",
+   "name": "Fire in the hole! (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/war_fire_in_the_hole.ogg"
+   },
+   "tags": [
+    "fire in the hole",
+    "granada"
+   ]
+  },
+  {
+   "id": "kv_female_war_fire_in_the_hole",
+   "name": "Fire in the hole! (voz feminina)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Female/war_fire_in_the_hole.ogg"
+   },
+   "tags": [
+    "fire in the hole"
+   ]
+  },
+  {
+   "id": "kv_male_war_go_go_go",
+   "name": "Go, go, go! (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/war_go_go_go.ogg"
+   },
+   "tags": [
+    "vai",
+    "ataque"
+   ]
+  },
+  {
+   "id": "kv_male_war_medic",
+   "name": "Medic! (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/war_medic.ogg"
+   },
+   "tags": [
+    "médico",
+    "socorro"
+   ]
+  },
+  {
+   "id": "kv_male_war_look_out",
+   "name": "Look out! (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/war_look_out.ogg"
+   },
+   "tags": [
+    "cuidado"
+   ]
+  },
+  {
+   "id": "kv_male_war_get_down",
+   "name": "Get down! (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/war_get_down.ogg"
+   },
+   "tags": [
+    "abaixa"
+   ]
+  },
+  {
+   "id": "kv_male_war_target_destroyed",
+   "name": "Target destroyed (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/war_target_destroyed.ogg"
+   },
+   "tags": [
+    "alvo",
+    "destruído"
+   ]
+  },
+  {
+   "id": "kv_male_war_reloading",
+   "name": "Reloading! (voz)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/war_reloading.ogg"
+   },
+   "tags": [
+    "recarregando"
+   ]
+  },
+  {
+   "id": "kv_male_congratulations",
+   "name": "Congratulations! (voz)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/congratulations.ogg"
+   },
+   "tags": [
+    "parabéns"
+   ]
+  },
+  {
+   "id": "kv_female_congratulations",
+   "name": "Congratulations! (voz feminina)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Female/congratulations.ogg"
+   },
+   "tags": [
+    "parabéns"
+   ]
+  },
+  {
+   "id": "kv_male_correct",
+   "name": "Correct! (voz)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/correct.ogg"
+   },
+   "tags": [
+    "certo",
+    "correto"
+   ]
+  },
+  {
+   "id": "kv_female_correct",
+   "name": "Correct! (voz feminina)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Female/correct.ogg"
+   },
+   "tags": [
+    "certo"
+   ]
+  },
+  {
+   "id": "kv_male_wrong",
+   "name": "Wrong! (voz)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Male/wrong.ogg"
+   },
+   "tags": [
+    "errado"
+   ]
+  },
+  {
+   "id": "kv_female_wrong",
+   "name": "Wrong! (voz feminina)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "zip",
+    "pack": "oga_voiceover",
+    "path": "Female/wrong.ogg"
+   },
+   "tags": [
+    "errado"
+   ]
+  },
+  {
+   "id": "ss_coin_cluster1",
+   "name": "Chuva de moedas (retrô)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Coins/sfx_coin_cluster1.wav"
+   },
+   "tags": [
+    "moeda",
+    "coin"
+   ]
+  },
+  {
+   "id": "ss_coin_double2",
+   "name": "Moeda dupla (retrô)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Coins/sfx_coin_double2.wav"
+   },
+   "tags": [
+    "moeda"
+   ]
+  },
+  {
+   "id": "ss_sounds_powerup1",
+   "name": "Power-up (retrô)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Positive Sounds/sfx_sounds_powerup1.wav"
+   },
+   "tags": [
+    "power up"
+   ]
+  },
+  {
+   "id": "ss_sounds_powerup4",
+   "name": "Power-up longo (retrô)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Positive Sounds/sfx_sounds_powerup4.wav"
+   },
+   "tags": [
+    "power up"
+   ]
+  },
+  {
+   "id": "ss_sounds_fanfare1",
+   "name": "Fanfarra (retrô)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Fanfares/sfx_sounds_fanfare1.wav"
+   },
+   "tags": [
+    "vitória",
+    "fanfarra"
+   ]
+  },
+  {
+   "id": "ss_sounds_error12",
+   "name": "Erro longo (retrô)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Negative Sounds/sfx_sounds_error12.wav"
+   },
+   "tags": [
+    "erro"
+   ]
+  },
+  {
+   "id": "ss_sounds_error1",
+   "name": "Erro (retrô)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Negative Sounds/sfx_sounds_error1.wav"
+   },
+   "tags": [
+    "erro"
+   ]
+  },
+  {
+   "id": "ss_sounds_damage1",
+   "name": "Dano (retrô)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Negative Sounds/sfx_sounds_damage1.wav"
+   },
+   "tags": [
+    "dano",
+    "hit"
+   ]
+  },
+  {
+   "id": "ss_movement_jump11",
+   "name": "Pulo (retrô)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/Movement/Jumping and Landing/sfx_movement_jump11.wav"
+   },
+   "tags": [
+    "pulo"
+   ]
+  },
+  {
+   "id": "ss_sounds_pause1_in",
+   "name": "Pausa (retrô)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Pause Sounds/sfx_sounds_pause1_in.wav"
+   },
+   "tags": [
+    "pausa"
+   ]
+  },
+  {
+   "id": "ss_menu_select4",
+   "name": "Seleção de menu (retrô)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Menu Sounds/sfx_menu_select4.wav"
+   },
+   "tags": [
+    "menu"
+   ]
+  },
+  {
+   "id": "ss_movement_portal2",
+   "name": "Portal (retrô)",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/Movement/Portals and Transitions/sfx_movement_portal2.wav"
+   },
+   "tags": [
+    "portal",
+    "teleporte"
+   ]
+  },
+  {
+   "id": "ss_movement_portal4",
+   "name": "Teleporte (retrô)",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/Movement/Portals and Transitions/sfx_movement_portal4.wav"
+   },
+   "tags": [
+    "teleporte"
+   ]
+  },
+  {
+   "id": "ss_wpn_laser11",
+   "name": "Raio laser (retrô)",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/Weapons/Lasers/sfx_wpn_laser11.wav"
+   },
+   "tags": [
+    "laser",
+    "raio"
+   ]
+  },
+  {
+   "id": "ss_wpn_laser5",
+   "name": "Laser carregado (retrô)",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/Weapons/Lasers/sfx_wpn_laser5.wav"
+   },
+   "tags": [
+    "laser"
+   ]
+  },
+  {
+   "id": "ss_exp_medium1",
+   "name": "Explosão (retrô)",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/Explosions/Medium Length/sfx_exp_medium1.wav"
+   },
+   "tags": [
+    "explosão"
+   ]
+  },
+  {
+   "id": "ss_exp_long5",
+   "name": "Explosão longa (retrô)",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/Explosions/Long/sfx_exp_long5.wav"
+   },
+   "tags": [
+    "explosão",
+    "boom"
+   ]
+  },
+  {
+   "id": "ss_sounds_impact10",
+   "name": "Impacto (retrô)",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Impacts/sfx_sounds_impact10.wav"
+   },
+   "tags": [
+    "impacto"
+   ]
+  },
+  {
+   "id": "ss_sounds_falling10",
+   "name": "Queda longa (retrô)",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/Movement/Falling Sounds/sfx_sounds_falling10.wav"
+   },
+   "tags": [
+    "queda",
+    "caindo"
+   ]
+  },
+  {
+   "id": "ss_deathscream_human3",
+   "name": "Grito de derrota (retrô)",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/Death Screams/Human/sfx_deathscream_human3.wav"
+   },
+   "tags": [
+    "grito",
+    "morte"
+   ]
+  },
+  {
+   "id": "ss_deathscream_alien1",
+   "name": "Grito alienígena (retrô)",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/Death Screams/Alien/sfx_deathscream_alien1.wav"
+   },
+   "tags": [
+    "alien",
+    "grito"
+   ]
+  },
+  {
+   "id": "ss_deathscream_robot3",
+   "name": "Robô desligando (retrô)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/Death Screams/Robot/sfx_deathscream_robot3.wav"
+   },
+   "tags": [
+    "robô",
+    "desligar"
+   ]
+  },
+  {
+   "id": "ss_lowhealth_alarmloop1",
+   "name": "Vida baixa (retrô)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Alarms/Low health Alarms/sfx_lowhealth_alarmloop1.wav"
+   },
+   "tags": [
+    "vida",
+    "alarme"
+   ]
+  },
+  {
+   "id": "ss_sound_bling",
+   "name": "Bling (retrô)",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Weird Sounds/sfx_sound_bling.wav"
+   },
+   "tags": [
+    "bling",
+    "brilho"
+   ]
+  },
+  {
+   "id": "ss_sound_refereewhistle",
+   "name": "Apito de juiz (retrô)",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Weird Sounds/sfx_sound_refereewhistle.wav"
+   },
+   "tags": [
+    "apito",
+    "juiz"
+   ]
+  },
+  {
+   "id": "ss_sound_poweron",
+   "name": "Ligando (retrô)",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Weird Sounds/sfx_sound_poweron.wav"
+   },
+   "tags": [
+    "ligar"
+   ]
+  },
+  {
+   "id": "ss_sound_shutdown1",
+   "name": "Desligando (retrô)",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "zip",
+    "pack": "oga_512",
+    "path": "The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Weird Sounds/sfx_sound_shutdown1.wav"
+   },
+   "tags": [
+    "desligar"
+   ]
+  },
+  {
+   "id": "c_wilhelm",
+   "name": "Grito Wilhelm",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Wilhelm Scream.ogg"
+   },
+   "tags": [
+    "grito",
+    "wilhelm",
+    "filme"
+   ]
+  },
+  {
+   "id": "c_sad_trombone_1",
+   "name": "Trombone triste (gravação)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Sad Trombone-Joe Lamb-665429450.ogg"
+   },
+   "tags": [
+    "fail",
+    "triste",
+    "wah wah"
+   ]
+  },
+  {
+   "id": "c_sad_trombone_2",
+   "name": "Trombone triste 2 (gravação)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Sad Trombone.wav"
+   },
+   "tags": [
+    "fail",
+    "triste"
+   ]
+  },
+  {
+   "id": "c_houston_problem",
+   "name": "Houston, we've had a problem (NASA)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Apollo13-wehaveaproblem edit 1.ogg"
+   },
+   "tags": [
+    "houston",
+    "problema",
+    "nasa"
+   ],
+   "maxSeconds": 9
+  },
+  {
+   "id": "c_lol",
+   "name": "LOL (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Man saying lol.oga"
+   },
+   "tags": [
+    "lol",
+    "risada"
+   ]
+  },
+  {
+   "id": "c_nope",
+   "name": "Nope (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Wodencafe-nope.wav"
+   },
+   "tags": [
+    "nope",
+    "não"
+   ]
+  },
+  {
+   "id": "c_what",
+   "name": "What? (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Rachlel-what.wav"
+   },
+   "tags": [
+    "what",
+    "quê"
+   ]
+  },
+  {
+   "id": "c_why",
+   "name": "Why? (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-She animates-why.wav"
+   },
+   "tags": [
+    "why",
+    "por quê"
+   ]
+  },
+  {
+   "id": "c_uh_oh",
+   "name": "Uh-oh (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Grendelkhan-uh-oh.wav"
+   },
+   "tags": [
+    "uh oh",
+    "ops"
+   ]
+  },
+  {
+   "id": "c_seriously",
+   "name": "Seriously? (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Wodencafe-seriously.wav"
+   },
+   "tags": [
+    "sério"
+   ]
+  },
+  {
+   "id": "c_epic",
+   "name": "Epic! (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Wodencafe-epic.wav"
+   },
+   "tags": [
+    "épico",
+    "epic"
+   ]
+  },
+  {
+   "id": "c_noob",
+   "name": "Noob (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Vealhurl-noob.wav"
+   },
+   "tags": [
+    "noob",
+    "novato"
+   ]
+  },
+  {
+   "id": "c_fail",
+   "name": "Fail (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Nattes à chat-fail.wav"
+   },
+   "tags": [
+    "fail",
+    "falhou"
+   ]
+  },
+  {
+   "id": "c_whatever",
+   "name": "Whatever (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Back ache-whatever.wav"
+   },
+   "tags": [
+    "tanto faz"
+   ]
+  },
+  {
+   "id": "c_wow",
+   "name": "Wow (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Back ache-wow.wav"
+   },
+   "tags": [
+    "wow",
+    "uau"
+   ]
+  },
+  {
+   "id": "c_yippee",
+   "name": "Yippee ki-yay (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Vealhurl-yippie ki-yay.wav"
+   },
+   "tags": [
+    "yippee"
+   ]
+  },
+  {
+   "id": "c_really",
+   "name": "Really? (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Wodencafe-really.wav"
+   },
+   "tags": [
+    "sério"
+   ]
+  },
+  {
+   "id": "c_no_no",
+   "name": "No, no! (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Simplificationalizer-no-no.wav"
+   },
+   "tags": [
+    "não"
+   ]
+  },
+  {
+   "id": "c_awesome",
+   "name": "Awesome! (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Wodencafe-awesome.wav"
+   },
+   "tags": [
+    "incrível"
+   ]
+  },
+  {
+   "id": "c_nice",
+   "name": "Nice (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Wodencafe-nice.wav"
+   },
+   "tags": [
+    "nice",
+    "boa"
+   ]
+  },
+  {
+   "id": "c_oh_oh",
+   "name": "Oh-oh (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Arlo Barnes-oh-oh.wav"
+   },
+   "tags": [
+    "ops"
+   ]
+  },
+  {
+   "id": "c_stop",
+   "name": "Stop! (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Simplificationalizer-stop.wav"
+   },
+   "tags": [
+    "pare"
+   ]
+  },
+  {
+   "id": "c_help",
+   "name": "Help! (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Vealhurl-help.wav"
+   },
+   "tags": [
+    "socorro"
+   ]
+  },
+  {
+   "id": "c_ouch",
+   "name": "Ouch! (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-StuckInLagToad-ouch.wav"
+   },
+   "tags": [
+    "ai",
+    "dor"
+   ]
+  },
+  {
+   "id": "c_amazing",
+   "name": "Amazing! (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Wodencafe-amazing.wav"
+   },
+   "tags": [
+    "incrível"
+   ]
+  },
+  {
+   "id": "c_wait",
+   "name": "Wait... (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Back ache-wait.wav"
+   },
+   "tags": [
+    "espera"
+   ]
+  },
+  {
+   "id": "c_jackpot",
+   "name": "Jackpot! (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Vealhurl-jackpot.wav"
+   },
+   "tags": [
+    "prêmio"
+   ]
+  },
+  {
+   "id": "c_bingo",
+   "name": "Bingo! (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Vealhurl-bingo.wav"
+   },
+   "tags": [
+    "bingo"
+   ]
+  },
+  {
+   "id": "c_warning",
+   "name": "Warning! (voz)",
+   "categoryId": "memes_classicos",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Back ache-warning.wav"
+   },
+   "tags": [
+    "alerta"
+   ]
+  },
+  {
+   "id": "c_plateia_ri_aplaude",
+   "name": "Plateia rindo e aplaudindo",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:72844 lonemonk approx-800-laughter-and-clapter-1.wav"
+   },
+   "tags": [
+    "risada",
+    "plateia",
+    "aplausos"
+   ],
+   "maxSeconds": 9
+  },
+  {
+   "id": "c_plateia_gargalhada",
+   "name": "Plateia gargalhando",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:72842 lonemonk approx-800-laugh-1.wav"
+   },
+   "tags": [
+    "risada",
+    "plateia"
+   ]
+  },
+  {
+   "id": "c_plateia_rindo",
+   "name": "Plateia rindo",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:72843 lonemonk approx-800-laughter-only-1.wav"
+   },
+   "tags": [
+    "risada",
+    "plateia"
+   ],
+   "maxSeconds": 8
+  },
+  {
+   "id": "c_pessoas_rindo",
+   "name": "Pessoas rindo",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Menschen-Lachen.ogg"
+   },
+   "tags": [
+    "risada"
+   ]
+  },
+  {
+   "id": "c_risada_alegre",
+   "name": "Risada alegre",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Different-Types-of-Laughter-Modulate-Connectivity-within-Distinct-Parts-of-the-Laughter-Perception-pone.0063441.s010.oga"
+   },
+   "tags": [
+    "risada",
+    "feliz"
+   ],
+   "maxSeconds": 9
+  },
+  {
+   "id": "c_risada_cocegas",
+   "name": "Risada de cócegas",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Different-Types-of-Laughter-Modulate-Connectivity-within-Distinct-Parts-of-the-Laughter-Perception-pone.0063441.s011.oga"
+   },
+   "tags": [
+    "risada",
+    "cócegas"
+   ]
+  },
+  {
+   "id": "c_risada_deboche",
+   "name": "Risada debochada",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Different-Types-of-Laughter-Modulate-Connectivity-within-Distinct-Parts-of-the-Laughter-Perception-pone.0063441.s012.oga"
+   },
+   "tags": [
+    "risada",
+    "deboche",
+    "zoeira"
+   ]
+  },
+  {
+   "id": "c_risada_bebe",
+   "name": "Risada de bebê",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Baby Laugh.ogg"
+   },
+   "tags": [
+    "risada",
+    "bebê",
+    "fofo"
+   ]
+  },
+  {
+   "id": "c_risada_maligna",
+   "name": "Risada maligna",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Evil laugh 2.oga"
+   },
+   "tags": [
+    "risada",
+    "maligna",
+    "vilão"
+   ]
+  },
+  {
+   "id": "c_risada_maligna_longa",
+   "name": "Risada maligna longa",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Evil laughter.ogg"
+   },
+   "tags": [
+    "risada",
+    "maligna",
+    "vilão"
+   ],
+   "maxSeconds": 10
+  },
+  {
+   "id": "c_risada_maligna_grupo",
+   "name": "Risada maligna em grupo",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Evil laugh.ogg"
+   },
+   "tags": [
+    "risada",
+    "maligna"
+   ],
+   "maxSeconds": 8
+  },
+  {
+   "id": "c_risada_desenho",
+   "name": "Risada de desenho",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Cartoon Laugh.ogg"
+   },
+   "tags": [
+    "risada",
+    "desenho"
+   ],
+   "maxSeconds": 6
+  },
+  {
+   "id": "c_risada_robo",
+   "name": "Risada de robô (SAM)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Laugh.wav"
+   },
+   "tags": [
+    "risada",
+    "robô",
+    "retrô"
+   ]
+  },
+  {
+   "id": "c_criancas_rindo",
+   "name": "Crianças rindo",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Ηχογράφηση (2).ogg"
+   },
+   "tags": [
+    "risada",
+    "crianças"
+   ],
+   "maxSeconds": 8
+  },
+  {
+   "id": "c_aplausos_real",
+   "name": "Aplausos (gravação)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Applause ii.ogg"
+   },
+   "tags": [
+    "aplausos",
+    "palmas"
+   ],
+   "maxSeconds": 8
+  },
+  {
+   "id": "c_aplausos_vivas",
+   "name": "Aplausos e vivas",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Clapping hurray.ogg"
+   },
+   "tags": [
+    "aplausos",
+    "vivas"
+   ],
+   "maxSeconds": 8
+  },
+  {
+   "id": "c_ohhh_ahhh",
+   "name": "Ohhh! Ahhh! (plateia)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Ohhh ahhh.ogg"
+   },
+   "tags": [
+    "plateia",
+    "uau"
+   ]
+  },
+  {
+   "id": "c_surprise_party",
+   "name": "Surprise! A party!",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Surprise! - A party! Awesome!.ogg"
+   },
+   "tags": [
+    "surpresa",
+    "festa"
+   ]
+  },
+  {
+   "id": "c_surprise",
+   "name": "Surprise! (voz)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Nattes à chat-surprise.wav"
+   },
+   "tags": [
+    "surpresa"
+   ]
+  },
+  {
+   "id": "c_fiu_fiu_real",
+   "name": "Fiu-fiu (assobio real)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Wolf whistle.ogg"
+   },
+   "tags": [
+    "assobio"
+   ]
+  },
+  {
+   "id": "c_ahhh",
+   "name": "Ahhh! (grito)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:UncleSigmund - ahhh (cc0) (freesound).mp3"
+   },
+   "tags": [
+    "grito",
+    "susto"
+   ]
+  },
+  {
+   "id": "c_rufar_real",
+   "name": "Rufar de tambor (gravação)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Drum Roll Intro.ogg"
+   },
+   "tags": [
+    "suspense",
+    "tambor"
+   ]
+  },
+  {
+   "id": "c_espirro",
+   "name": "Espirro",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Sneeze.ogg"
+   },
+   "tags": [
+    "espirro",
+    "atchim"
+   ]
+  },
+  {
+   "id": "c_arroto",
+   "name": "Arroto",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Burp.ogg"
+   },
+   "tags": [
+    "arroto"
+   ]
+  },
+  {
+   "id": "c_soluco",
+   "name": "Soluço",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Hiccupsound.ogg"
+   },
+   "tags": [
+    "soluço"
+   ]
+  },
+  {
+   "id": "c_bocejo",
+   "name": "Bocejo",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Yawning 2.ogg"
+   },
+   "tags": [
+    "bocejo",
+    "sono",
+    "tédio"
+   ]
+  },
+  {
+   "id": "c_hmm_suspiro",
+   "name": "Hmm... suspiro",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Hm and sigh.ogg"
+   },
+   "tags": [
+    "suspiro",
+    "tédio"
+   ]
+  },
+  {
+   "id": "c_ronco",
+   "name": "Ronco",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Zzz.ogg"
+   },
+   "tags": [
+    "ronco",
+    "dormindo"
+   ],
+   "maxSeconds": 6
+  },
+  {
+   "id": "c_gol_grito",
+   "name": "GOOOOL! (grito)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:Goal Shout.ogg"
+   },
+   "tags": [
+    "gol",
+    "futebol"
+   ],
+   "maxSeconds": 6
+  },
+  {
+   "id": "c_hooray",
+   "name": "Hooray! (voz)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Wodencafe-hooray.wav"
+   },
+   "tags": [
+    "viva"
+   ]
+  },
+  {
+   "id": "c_bravo",
+   "name": "Bravo! (voz)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Grendelkhan-bravo.wav"
+   },
+   "tags": [
+    "bravo",
+    "parabéns"
+   ]
+  },
+  {
+   "id": "c_victory",
+   "name": "Victory! (voz)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-Simplificationalizer-victory.wav"
+   },
+   "tags": [
+    "vitória"
+   ]
+  },
+  {
+   "id": "c_yes",
+   "name": "Yes! (voz)",
+   "categoryId": "risadas_reacoes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q1860 (eng)-She animates-yes.wav"
+   },
+   "tags": [
+    "sim"
+   ]
+  },
+  {
+   "id": "c_vidro_real",
+   "name": "Vidro quebrando (gravação)",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Glass breaking 2 (Gravity Sound).wav"
+   },
+   "tags": [
+    "vidro",
+    "quebrar"
+   ]
+  },
+  {
+   "id": "c_soco_forte",
+   "name": "Soco forte (gravação)",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Hard Punch Flesh (Gravity Sound).mp3"
+   },
+   "tags": [
+    "soco"
+   ]
+  },
+  {
+   "id": "c_soco_barriga",
+   "name": "Soco na barriga",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Punch Gut Damage (Gravity Sound).mp3"
+   },
+   "tags": [
+    "soco"
+   ]
+  },
+  {
+   "id": "c_tapa_real",
+   "name": "Tapa (gravação)",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Smack (Gravity Sound).wav"
+   },
+   "tags": [
+    "tapa"
+   ]
+  },
+  {
+   "id": "c_porta_batendo",
+   "name": "Porta batendo",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Slam closet door (Gravity Sound).wav"
+   },
+   "tags": [
+    "porta"
+   ]
+  },
+  {
+   "id": "c_explosao_real",
+   "name": "Explosão (gravação)",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Explosion 10.ogg"
+   },
+   "tags": [
+    "explosão"
+   ]
+  },
+  {
+   "id": "c_explosoes",
+   "name": "Explosões",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Explosions-LS100150.ogg"
+   },
+   "tags": [
+    "explosão"
+   ]
+  },
+  {
+   "id": "c_prato_bateria",
+   "name": "Prato de bateria",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Crash cymbal.ogg"
+   },
+   "tags": [
+    "prato",
+    "bateria"
+   ]
+  },
+  {
+   "id": "c_boing_real",
+   "name": "Boing (gravação)",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Boing raw.ogg"
+   },
+   "tags": [
+    "boing"
+   ]
+  },
+  {
+   "id": "c_patinho",
+   "name": "Patinho de borracha",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Rubber Duck Squeaker.ogg"
+   },
+   "tags": [
+    "patinho",
+    "apito"
+   ]
+  },
+  {
+   "id": "c_kazoo",
+   "name": "Kazoo",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:NoiseCollector KazooA.wav"
+   },
+   "tags": [
+    "kazoo"
+   ]
+  },
+  {
+   "id": "c_sting_comedia",
+   "name": "Sting de comédia",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Sting (2).ogg"
+   },
+   "tags": [
+    "piada",
+    "sting"
+   ]
+  },
+  {
+   "id": "c_pancada_surda",
+   "name": "Pancada surda",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Dull thud.ogg"
+   },
+   "tags": [
+    "pancada"
+   ]
+  },
+  {
+   "id": "c_coisas_caindo",
+   "name": "Coisas caindo da mesa",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Clonk debris falling off table.ogg"
+   },
+   "tags": [
+    "queda"
+   ]
+  },
+  {
+   "id": "c_ferramenta_caindo",
+   "name": "Ferramenta caindo",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Dropping tool from desk.ogg"
+   },
+   "tags": [
+    "queda"
+   ]
+  },
+  {
+   "id": "c_metal_chao",
+   "name": "Metal caindo no chão",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Metal Clanging Noises.ogg"
+   },
+   "tags": [
+    "metal",
+    "queda"
+   ],
+   "maxSeconds": 5
+  },
+  {
+   "id": "c_gongo_real",
+   "name": "Gongo (gravação)",
+   "categoryId": "impactos_comicos",
+   "from": {
+    "type": "commons",
+    "title": "File:Gong or bell vibrant (short).ogg"
+   },
+   "tags": [
+    "gongo"
+   ]
+  },
+  {
+   "id": "c_trovao_real",
+   "name": "Trovão (gravação)",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "commons",
+    "title": "File:Thunder 01.ogg"
+   },
+   "tags": [
+    "trovão"
+   ]
+  },
+  {
+   "id": "c_chuva_trovao",
+   "name": "Chuva e trovão",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "commons",
+    "title": "File:Rain and thunder (01).ogg"
+   },
+   "tags": [
+    "chuva",
+    "trovão"
+   ]
+  },
+  {
+   "id": "c_risada_terror",
+   "name": "Risada de terror",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "commons",
+    "title": "File:Horror laugh.ogg"
+   },
+   "tags": [
+    "risada",
+    "terror"
+   ]
+  },
+  {
+   "id": "c_zumbi_gemido",
+   "name": "Gemido de zumbi",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "commons",
+    "title": "File:Zombie moan.ogg"
+   },
+   "tags": [
+    "zumbi"
+   ]
+  },
+  {
+   "id": "c_zumbi_rosnando",
+   "name": "Zumbi rosnando",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "commons",
+    "title": "File:Zombie-Gutteral-Sounds.ogg"
+   },
+   "tags": [
+    "zumbi"
+   ],
+   "maxSeconds": 6
+  },
+  {
+   "id": "c_coruja",
+   "name": "Coruja na noite",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "commons",
+    "title": "File:Strix aluco male.oga"
+   },
+   "tags": [
+    "coruja",
+    "noite"
+   ]
+  },
+  {
+   "id": "c_sinos_abadia",
+   "name": "Sinos da abadia",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "commons",
+    "title": "File:Church Bells of Murbach.flac"
+   },
+   "tags": [
+    "sino",
+    "igreja"
+   ]
+  },
+  {
+   "id": "c_coracao_real",
+   "name": "Coração batendo (gravação)",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "commons",
+    "title": "File:Heartbeat.ogg"
+   },
+   "tags": [
+    "coração"
+   ],
+   "maxSeconds": 8
+  },
+  {
+   "id": "c_grito_demoniaco",
+   "name": "Grito demoníaco",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "commons",
+    "title": "File:Nick121087 - Demonic Woman Scream (cc0) (freesound).mp3"
+   },
+   "tags": [
+    "grito",
+    "demônio"
+   ]
+  },
+  {
+   "id": "c_theremin",
+   "name": "Theremin assustador",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "commons",
+    "title": "File:Theremin puccini high.ogg"
+   },
+   "tags": [
+    "theremin",
+    "estranho"
+   ]
+  },
+  {
+   "id": "c_caixinha_notas",
+   "name": "Caixinha de música (notas)",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "commons",
+    "title": "File:Music box notes 1.ogg"
+   },
+   "tags": [
+    "caixinha"
+   ]
+  },
+  {
+   "id": "c_porta_metal",
+   "name": "Porta de metal rangendo",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "commons",
+    "title": "File:Metal cabinet door jarring.ogg"
+   },
+   "tags": [
+    "porta",
+    "rangido"
+   ],
+   "maxSeconds": 6
+  },
+  {
+   "id": "c_sirene_real",
+   "name": "Sirene (gravação)",
+   "categoryId": "suspense_terror",
+   "from": {
+    "type": "commons",
+    "title": "File:Siren.ogg"
+   },
+   "tags": [
+    "sirene"
+   ],
+   "maxSeconds": 6
+  },
+  {
+   "id": "c_espada_1",
+   "name": "Espada cortando",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "commons",
+    "title": "File:Sword 1 (Gravity Sound).mp3"
+   },
+   "tags": [
+    "espada"
+   ]
+  },
+  {
+   "id": "c_espada_2",
+   "name": "Espada 2",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "commons",
+    "title": "File:Sword 2 (Gravity Sound).mp3"
+   },
+   "tags": [
+    "espada"
+   ]
+  },
+  {
+   "id": "c_espada_3",
+   "name": "Golpe rápido de espada",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "commons",
+    "title": "File:Sword 3 (Gravity Sound).mp3"
+   },
+   "tags": [
+    "espada"
+   ]
+  },
+  {
+   "id": "c_sugoi",
+   "name": "Sugoi! (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5287 (jpn)-Fukujinzuke-すごい.wav"
+   },
+   "tags": [
+    "sugoi",
+    "anime",
+    "incrível"
+   ]
+  },
+  {
+   "id": "c_nani",
+   "name": "Nani? (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5287 (jpn)-Fukujinzuke-なに.wav"
+   },
+   "tags": [
+    "nani",
+    "anime",
+    "quê"
+   ]
+  },
+  {
+   "id": "c_kawaii",
+   "name": "Kawaii (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5287 (jpn)-Fukujinzuke-かわいい.wav"
+   },
+   "tags": [
+    "kawaii",
+    "anime",
+    "fofo"
+   ]
+  },
+  {
+   "id": "c_uso",
+   "name": "Uso! — Mentira! (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5287 (jpn)-Fukujinzuke-うそ.wav"
+   },
+   "tags": [
+    "anime",
+    "mentira"
+   ]
+  },
+  {
+   "id": "c_sayonara",
+   "name": "Sayonara (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5287 (jpn)-Fukujinzuke-さようなら.wav"
+   },
+   "tags": [
+    "anime",
+    "tchau"
+   ]
+  },
+  {
+   "id": "c_arigatou",
+   "name": "Arigatou (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5287 (jpn)-Fukujinzuke-ありがとう.wav"
+   },
+   "tags": [
+    "anime",
+    "obrigado"
+   ]
+  },
+  {
+   "id": "c_ohayou",
+   "name": "Ohayou (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5287 (jpn)-Fukujinzuke-おはよう.wav"
+   },
+   "tags": [
+    "anime",
+    "bom dia"
+   ]
+  },
+  {
+   "id": "c_oyasumi",
+   "name": "Oyasumi (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5287 (jpn)-Fukujinzuke-おやすみ.wav"
+   },
+   "tags": [
+    "anime",
+    "boa noite"
+   ]
+  },
+  {
+   "id": "c_konnichiwa",
+   "name": "Konnichiwa (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5287 (jpn)-Fukujinzuke-こんにちは.wav"
+   },
+   "tags": [
+    "anime",
+    "olá"
+   ]
+  },
+  {
+   "id": "c_scanner_alien",
+   "name": "Scanner alienígena",
+   "categoryId": "anime_poderes",
+   "from": {
+    "type": "commons",
+    "title": "File:Alien technology scanning device.ogg"
+   },
+   "tags": [
+    "scanner",
+    "alien"
+   ]
+  },
+  {
+   "id": "c_game_over_br",
+   "name": "Game over retrô",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "commons",
+    "title": "File:Fim efeito sonoro retrô.oga"
+   },
+   "tags": [
+    "game over",
+    "retrô"
+   ]
+  },
+  {
+   "id": "c_level_up_g2",
+   "name": "Level up (gravação)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "commons",
+    "title": "File:Level Up 2 (Gravity Sound).wav"
+   },
+   "tags": [
+    "level up"
+   ]
+  },
+  {
+   "id": "c_level_up_g4",
+   "name": "Level up 2 (gravação)",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "commons",
+    "title": "File:Level Up 4 (Gravity Sound).wav"
+   },
+   "tags": [
+    "level up"
+   ]
+  },
+  {
+   "id": "c_pulo_arcade",
+   "name": "Pulo de arcade",
+   "categoryId": "games_roblox",
+   "from": {
+    "type": "commons",
+    "title": "File:Jump Arcade (Gravity Sound).mp3"
+   },
+   "tags": [
+    "pulo"
+   ]
+  },
+  {
+   "id": "c_gato",
+   "name": "Gato miando",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Felis silvestris catus.ogg"
+   },
+   "tags": [
+    "gato",
+    "miau"
+   ]
+  },
+  {
+   "id": "c_cachorro",
+   "name": "Cachorro latindo",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Barking of a dog.ogg"
+   },
+   "tags": [
+    "cachorro",
+    "au au"
+   ]
+  },
+  {
+   "id": "c_galo",
+   "name": "Galo cantando",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Rooster crowing.oga"
+   },
+   "tags": [
+    "galo",
+    "manhã"
+   ]
+  },
+  {
+   "id": "c_vaca",
+   "name": "Vaca mugindo",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Mudchute cow 1.ogg"
+   },
+   "tags": [
+    "vaca",
+    "muu"
+   ]
+  },
+  {
+   "id": "c_ovelha",
+   "name": "Ovelha",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Sheep bleat.ogg"
+   },
+   "tags": [
+    "ovelha",
+    "mé"
+   ]
+  },
+  {
+   "id": "c_cavalo",
+   "name": "Cavalo relinchando",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Wiehern.ogg"
+   },
+   "tags": [
+    "cavalo"
+   ]
+  },
+  {
+   "id": "c_porco",
+   "name": "Porco",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Mudchute pig 1.ogg"
+   },
+   "tags": [
+    "porco",
+    "oinc"
+   ]
+  },
+  {
+   "id": "c_elefante",
+   "name": "Elefante",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Elephant voice - trumpeting.ogg"
+   },
+   "tags": [
+    "elefante"
+   ]
+  },
+  {
+   "id": "c_burro",
+   "name": "Burro zurrando",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:157763 felix-blume a-donkey-is-braying-in-his-enclosure-in-south-of-france.wav"
+   },
+   "tags": [
+    "burro",
+    "jumento"
+   ],
+   "maxSeconds": 6
+  },
+  {
+   "id": "c_galinhas",
+   "name": "Galinhas",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Chickens demanding food.ogg"
+   },
+   "tags": [
+    "galinha"
+   ],
+   "maxSeconds": 6
+  },
+  {
+   "id": "c_falcao",
+   "name": "Falcão gritando",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Screaming Hawk.wav"
+   },
+   "tags": [
+    "falcão",
+    "águia"
+   ]
+  },
+  {
+   "id": "c_papagaio",
+   "name": "Papagaio",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Talking Parrot (Psittacula krameri).ogg"
+   },
+   "tags": [
+    "papagaio"
+   ],
+   "maxSeconds": 6
+  },
+  {
+   "id": "c_campainha_real",
+   "name": "Campainha (gravação)",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Doorbell-cheap-dingdong.ogg"
+   },
+   "tags": [
+    "campainha"
+   ]
+  },
+  {
+   "id": "c_despertador_real",
+   "name": "Despertador (gravação)",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Alarmclock-mechanical.ogg"
+   },
+   "tags": [
+    "despertador"
+   ],
+   "maxSeconds": 5
+  },
+  {
+   "id": "c_maquina_escrever",
+   "name": "Ding da máquina de escrever",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:406243 stubb typewriter-ding-near-mono.wav"
+   },
+   "tags": [
+    "máquina de escrever"
+   ]
+  },
+  {
+   "id": "c_foto",
+   "name": "Foto (obturador)",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Holga shuttersound.ogg"
+   },
+   "tags": [
+    "foto",
+    "câmera"
+   ]
+  },
+  {
+   "id": "c_bolha_real",
+   "name": "Bolha",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Bubble 01 nevit.ogg"
+   },
+   "tags": [
+    "bolha"
+   ]
+  },
+  {
+   "id": "c_trem_vapor",
+   "name": "Apito de trem a vapor",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Parovoz sound.ogg"
+   },
+   "tags": [
+    "trem"
+   ]
+  },
+  {
+   "id": "c_caixa_real",
+   "name": "Caixa registradora (gravação)",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Cash register.ogg"
+   },
+   "tags": [
+    "dinheiro",
+    "caixa"
+   ]
+  },
+  {
+   "id": "c_cofrinho",
+   "name": "Moedas no cofrinho",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Coins dropped in metallic moneybox.ogg"
+   },
+   "tags": [
+    "moedas",
+    "dinheiro"
+   ],
+   "maxSeconds": 4
+  },
+  {
+   "id": "c_fogos",
+   "name": "Fogos de artifício",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Fireworks in Rome 01.ogg"
+   },
+   "tags": [
+    "fogos",
+    "festa"
+   ]
+  },
+  {
+   "id": "c_chaleira",
+   "name": "Chaleira apitando",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Kettle whistle.ogg"
+   },
+   "tags": [
+    "chaleira"
+   ],
+   "maxSeconds": 5
+  },
+  {
+   "id": "c_descarga",
+   "name": "Descarga",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Toilettenspülung 01.ogg"
+   },
+   "tags": [
+    "descarga",
+    "banheiro"
+   ],
+   "maxSeconds": 6
+  },
+  {
+   "id": "c_moto",
+   "name": "Moto",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Motorbike 4.ogg"
+   },
+   "tags": [
+    "moto"
+   ]
+  },
+  {
+   "id": "c_bike_real",
+   "name": "Campainha de bicicleta (gravação)",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Rotating-bicycle-bell.wav"
+   },
+   "tags": [
+    "bicicleta"
+   ]
+  },
+  {
+   "id": "c_sputnik",
+   "name": "Bip do Sputnik",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Sputnik beep.ogg"
+   },
+   "tags": [
+    "sputnik",
+    "espaço",
+    "bip"
+   ]
+  },
+  {
+   "id": "c_vuvuzela",
+   "name": "Vuvuzela",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Vuvuzela single note.ogg"
+   },
+   "tags": [
+    "vuvuzela",
+    "copa"
+   ]
+  },
+  {
+   "id": "c_air_horn_trem",
+   "name": "Buzina de locomotiva (air horn)",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Leslie A200-156.ogg"
+   },
+   "tags": [
+    "buzina",
+    "air horn"
+   ],
+   "maxSeconds": 4
+  },
+  {
+   "id": "c_telefone_antigo",
+   "name": "Telefone antigo",
+   "categoryId": "sons_aleatorios",
+   "from": {
+    "type": "commons",
+    "title": "File:Model 500 Telephone British ring.ogg"
+   },
+   "tags": [
+    "telefone"
+   ],
+   "maxSeconds": 6
+  },
+  {
+   "id": "c_sting_kevin_1",
+   "name": "Sting (Kevin MacLeod)",
+   "categoryId": "vinhetas_musicas",
+   "from": {
+    "type": "commons",
+    "title": "File:Loping Sting (ISRC USUAN1200014).mp3"
+   },
+   "tags": [
+    "sting",
+    "vinheta"
+   ]
+  },
+  {
+   "id": "c_sting_kevin_2",
+   "name": "Sting 2 (Kevin MacLeod)",
+   "categoryId": "vinhetas_musicas",
+   "from": {
+    "type": "commons",
+    "title": "File:Der Kleber Sting (ISRC USUAN1100612).mp3"
+   },
+   "tags": [
+    "sting",
+    "vinheta"
+   ]
+  },
+  {
+   "id": "c_fanfarra_kevin",
+   "name": "Fanfarra (Kevin MacLeod)",
+   "categoryId": "vinhetas_musicas",
+   "from": {
+    "type": "commons",
+    "title": "File:Kevin MacLeod - Running Fanfare.ogg"
+   },
+   "tags": [
+    "fanfarra"
+   ],
+   "maxSeconds": 10
+  },
+  {
+   "id": "c_groove_kevin",
+   "name": "Groove (Kevin MacLeod)",
+   "categoryId": "vinhetas_musicas",
+   "from": {
+    "type": "commons",
+    "title": "File:Home Base Groove (Kevin MacLeod) Time 0-22 (ISRC USUAN1100563).oga"
+   },
+   "tags": [
+    "groove",
+    "loop"
+   ],
+   "maxSeconds": 12
+  },
+  {
+   "id": "c_jingle_xilofone",
+   "name": "Jingle de xilofone",
+   "categoryId": "vinhetas_musicas",
+   "from": {
+    "type": "commons",
+    "title": "File:Xylophone jingle.wav"
+   },
+   "tags": [
+    "jingle",
+    "xilofone"
+   ]
+  },
+  {
+   "id": "c_cuica",
+   "name": "Cuíca",
+   "categoryId": "vinhetas_musicas",
+   "from": {
+    "type": "commons",
+    "title": "File:Cuica01.ogg"
+   },
+   "tags": [
+    "cuíca",
+    "samba",
+    "brasil"
+   ]
+  },
+  {
+   "id": "c_berimbau",
+   "name": "Berimbau (capoeira Angola)",
+   "categoryId": "vinhetas_musicas",
+   "from": {
+    "type": "commons",
+    "title": "File:Toque-de-angola.ogg"
+   },
+   "tags": [
+    "berimbau",
+    "capoeira",
+    "brasil"
+   ],
+   "maxSeconds": 10
+  },
+  {
+   "id": "c_caxixi",
+   "name": "Caxixi",
+   "categoryId": "vinhetas_musicas",
+   "from": {
+    "type": "commons",
+    "title": "File:Caxixi.ogg"
+   },
+   "tags": [
+    "caxixi",
+    "capoeira"
+   ],
+   "maxSeconds": 5
+  },
+  {
+   "id": "c_orgao",
+   "name": "Acorde de órgão",
+   "categoryId": "vinhetas_musicas",
+   "from": {
+    "type": "commons",
+    "title": "File:Drawbar C Chord.ogg"
+   },
+   "tags": [
+    "órgão"
+   ]
+  },
+  {
+   "id": "c_glissando",
+   "name": "Glissando no piano",
+   "categoryId": "vinhetas_musicas",
+   "from": {
+    "type": "commons",
+    "title": "File:Deslizando o dedo no piano.ogg"
+   },
+   "tags": [
+    "piano"
+   ]
+  },
+  {
+   "id": "c_gaita",
+   "name": "Gaita",
+   "categoryId": "vinhetas_musicas",
+   "from": {
+    "type": "commons",
+    "title": "File:Harmonica playing.ogg"
+   },
+   "tags": [
+    "gaita",
+    "harmônica"
+   ]
+  },
+  {
+   "id": "c_sanfona",
+   "name": "Sanfona (acordes)",
+   "categoryId": "vinhetas_musicas",
+   "from": {
+    "type": "commons",
+    "title": "File:Accordion chords-01.ogg"
+   },
+   "tags": [
+    "sanfona",
+    "forró"
+   ],
+   "maxSeconds": 8
+  }
+ ],
+ "pending": [
+  {
+   "id": "xcubidu",
+   "name": "XCubidu",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "provável meme \"Escubidubidu\" (homem cantando o tema do Scooby-Doo); confirme ouvindo"
+  },
+  {
+   "id": "vine_boom",
+   "name": "Vine Boom",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "batida grave dos vídeos do Vine"
+  },
+  {
+   "id": "bruh",
+   "name": "Bruh (original)",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "voz dizendo \"bruh\""
+  },
+  {
+   "id": "metal_pipe",
+   "name": "Metal Pipe",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "cano de metal caindo"
+  },
+  {
+   "id": "discord_join",
+   "name": "Discord Join",
+   "categoryId": "memes_classicos",
+   "reason": "som de marca registrada do Discord",
+   "hint": "entrar em chamada"
+  },
+  {
+   "id": "discord_leave",
+   "name": "Discord Leave",
+   "categoryId": "memes_classicos",
+   "reason": "som de marca registrada do Discord",
+   "hint": "sair de chamada"
+  },
+  {
+   "id": "windows_error",
+   "name": "Windows Error",
+   "categoryId": "memes_classicos",
+   "reason": "som de sistema da Microsoft",
+   "hint": "erro do Windows XP"
+  },
+  {
+   "id": "windows_startup",
+   "name": "Windows XP Startup",
+   "categoryId": "memes_classicos",
+   "reason": "som de sistema da Microsoft",
+   "hint": "inicialização do XP"
+  },
+  {
+   "id": "among_us",
+   "name": "Among Us (sus)",
+   "categoryId": "memes_classicos",
+   "reason": "som do jogo Among Us",
+   "hint": "revelação de impostor"
+  },
+  {
+   "id": "mlg_airhorn",
+   "name": "MLG Airhorn",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "buzina dos vídeos MLG"
+  },
+  {
+   "id": "sad_violin",
+   "name": "Sad Violin",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "violino triste"
+  },
+  {
+   "id": "emotional_damage",
+   "name": "Emotional Damage",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Steven He"
+  },
+  {
+   "id": "oh_no_laugh",
+   "name": "Oh no no no (risada)",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "\"oh no, no, no\" + risada"
+  },
+  {
+   "id": "robert_weide",
+   "name": "Directed by Robert B. Weide",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "tema de encerramento"
+  },
+  {
+   "id": "to_be_continued",
+   "name": "To Be Continued",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "JoJo / Roundabout"
+  },
+  {
+   "id": "taco_bell",
+   "name": "Taco Bell Bong",
+   "categoryId": "memes_classicos",
+   "reason": "som de marca registrada",
+   "hint": "\"bong\" da Taco Bell"
+  },
+  {
+   "id": "fbi_open_up",
+   "name": "FBI Open Up",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "batida na porta + \"FBI\""
+  },
+  {
+   "id": "wasted",
+   "name": "Wasted (GTA)",
+   "categoryId": "memes_classicos",
+   "reason": "som do jogo GTA",
+   "hint": "tela de morte"
+  },
+  {
+   "id": "dramatic_chipmunk",
+   "name": "Dun dun dunnn",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Dramatic Chipmunk"
+  },
+  {
+   "id": "coffin_dance",
+   "name": "Coffin Dance",
+   "categoryId": "memes_classicos",
+   "reason": "música protegida",
+   "hint": "Astronomia"
+  },
+  {
+   "id": "roblox_oof",
+   "name": "Oof (Roblox antigo)",
+   "categoryId": "memes_classicos",
+   "reason": "som licenciado, retirado do Roblox em 2022",
+   "hint": "som de morte antigo"
+  },
+  {
+   "id": "troll_song",
+   "name": "Trollface song",
+   "categoryId": "memes_classicos",
+   "reason": "música protegida",
+   "hint": "Problem? / Trololo"
+  },
+  {
+   "id": "rickroll",
+   "name": "Rickroll",
+   "categoryId": "memes_classicos",
+   "reason": "música protegida",
+   "hint": "Never Gonna Give You Up"
+  },
+  {
+   "id": "eu_boto_ou_nao_boto",
+   "name": "Eu boto ou não boto? Tô com medo",
+   "categoryId": "memes_brasileiros",
+   "reason": "música protegida",
+   "hint": "\"História da Corrinha\", Caviar com Rapadura (forró)"
+  },
+  {
+   "id": "faustao_errou",
+   "name": "Errou! (Faustão)",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Domingão do Faustão"
+  },
+  {
+   "id": "faustao_oloco",
+   "name": "Ô loco, meu! (Faustão)",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Domingão do Faustão"
+  },
+  {
+   "id": "silvio_ma_oe",
+   "name": "Ma oe! (Silvio Santos)",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "SBT"
+  },
+  {
+   "id": "receba",
+   "name": "Receba!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "bordão viral"
+  },
+  {
+   "id": "acabou_jessica",
+   "name": "Já acabou, Jéssica?",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "vídeo viral"
+  },
+  {
+   "id": "taca_pau_marcos",
+   "name": "Taca-lhe pau, Marcos!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "vídeo viral"
+  },
+  {
+   "id": "ele_gosta",
+   "name": "Ele gosta!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "vídeo viral"
+  },
+  {
+   "id": "irra",
+   "name": "Irraaa!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "bordão viral"
+  },
+  {
+   "id": "para_nossa_alegria",
+   "name": "Para nossa alegria",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "vídeo viral"
+  },
+  {
+   "id": "que_deselegante",
+   "name": "Que deselegante!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Sandra Annenberg"
+  },
+  {
+   "id": "olha_a_faca",
+   "name": "Olha a faca!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "vídeo viral"
+  },
+  {
+   "id": "sabe_de_nada",
+   "name": "Sabe de nada, inocente!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Compadre Washington"
+  },
+  {
+   "id": "e_tetra",
+   "name": "É tetra! (Galvão Bueno)",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "narração da Copa de 1994"
+  },
+  {
+   "id": "senta_la_claudia",
+   "name": "Senta lá, Cláudia",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Faustão"
+  },
+  {
+   "id": "eita_giovana",
+   "name": "Eita, Giovana!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "vídeo viral"
+  },
+  {
+   "id": "o_gas",
+   "name": "Ó o gás!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "jingle do caminhão de gás"
+  }
+ ]
+}

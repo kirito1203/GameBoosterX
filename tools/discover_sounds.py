@@ -238,7 +238,33 @@ def discover_zips():
         json.dump(report, f, ensure_ascii=False, indent=0)
 
 
+def discover_portuguese():
+    """Lingua Libre em português: tenta os dois códigos (Q5146 português, Q750553 pt-BR) e duas formas de busca."""
+    words = LINGUA_LIBRE["LL-Q750553"]
+    items, seen = [], set()
+    for w in words:
+        titles = []
+        for q in (f"intitle:LL-Q5146 intitle:{w}", f"intitle:LL-Q750553 intitle:{w}", f'"(por)" intitle:"{w}" filetype:audio'):
+            try:
+                titles += commons_search(q, 8)
+            except Exception as e:  # noqa: BLE001
+                print("busca falhou", q, repr(e))
+        exact = [t for t in dict.fromkeys(titles) if t not in seen and "(por)" in t
+                 and re.search(r"-" + re.escape(w) + r"\.(wav|ogg|flac|mp3)$", t, re.I)]
+        seen.update(exact)
+        for it in commons_info(exact[:4]):
+            it["query"] = w
+            if it["license"]:
+                items.append(it)
+        print(w, len(exact))
+    with open(os.path.join(OUT, "commons_por.json"), "w", encoding="utf-8") as f:
+        json.dump(items, f, ensure_ascii=False, indent=0)
+
+
 if __name__ == "__main__":
+    if os.environ.get("DISCOVER_ONLY") == "por":
+        discover_portuguese()
+        sys.exit(0)
     if not os.path.exists(os.path.join(OUT, "packs.json")):
         discover_zips()
     discover_commons()
