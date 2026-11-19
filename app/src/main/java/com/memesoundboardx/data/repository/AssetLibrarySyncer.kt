@@ -7,6 +7,7 @@ import com.memesoundboardx.core.util.TextNormalizer
 import com.memesoundboardx.data.local.db.AppDatabase
 import com.memesoundboardx.data.local.db.CategoryEntity
 import com.memesoundboardx.data.local.db.SoundEntity
+import com.memesoundboardx.data.importer.ImportedFileStore
 import com.memesoundboardx.data.manifest.SoundManifestParser
 import com.memesoundboardx.di.IoDispatcher
 import com.memesoundboardx.domain.model.LibrarySyncReport
@@ -36,6 +37,7 @@ import javax.inject.Singleton
 class AssetLibrarySyncer @Inject constructor(
     @ApplicationContext private val context: Context,
     private val db: AppDatabase,
+    private val importedFiles: ImportedFileStore,
     @IoDispatcher private val io: CoroutineDispatcher,
 ) : LibrarySyncer {
 
@@ -89,7 +91,7 @@ class AssetLibrarySyncer @Inject constructor(
                         categoryId = s.categoryId,
                         source = SoundSource.BUNDLED.name,
                         uri = "$SOUNDS_DIR/${s.file}",
-                        durationMs = old?.durationMs, // medido na ETAPA 4
+                        durationMs = s.durationMs ?: old?.durationMs,
                         sizeBytes = assetSize("$SOUNDS_DIR/${s.file}"),
                         isFavorite = old?.isFavorite ?: false,
                         license = s.license.name,
@@ -108,6 +110,12 @@ class AssetLibrarySyncer @Inject constructor(
                     categoryDao.deleteBuiltInNotIn(parsed.categories.map { it.id })
                 }
                 validCount = toUpsert.size
+            }
+
+            // Importados: marca como indisponível se a cópia interna sumiu (ex.: limpeza de dados parcial).
+            for (imp in soundDao.getBySource(SoundSource.IMPORTED.name)) {
+                val exists = importedFiles.exists(imp.uri)
+                if (exists != imp.isAvailable) soundDao.setAvailable(imp.id, exists)
             }
 
             errors.forEach { Log.w(TAG, it) }

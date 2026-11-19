@@ -29,22 +29,18 @@ jobs:
         with:
           gradle-version: "8.11.1"
 
-      - name: Testes unitários
+      - name: Testes unitários (JVM)
         run: gradle testDebugUnitTest --stacktrace
+
+      - name: Resumo dos testes unitários
+        if: always()
+        run: python3 tools/junit_summary.py "Unitários" app/build/test-results/testDebugUnitTest
 
       - name: Compilar APK
         run: gradle assembleDebug --stacktrace
 
-      - name: Compilar testes instrumentados (não executa)
+      - name: Compilar testes instrumentados
         run: gradle assembleDebugAndroidTest --stacktrace
-
-      - name: Relatório de testes
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: relatorio-testes
-          path: app/build/reports/tests/
-          if-no-files-found: ignore
 
       - name: Renomear APK
         run: cp app/build/outputs/apk/debug/app-debug.apk MemeSoundboardX-build${{ github.run_number }}.apk
@@ -61,3 +57,50 @@ jobs:
           body: |
             Build automático (debug) do commit ${{ github.sha }}.
             Baixe o .apk abaixo e instale no celular.
+
+  instrumented:
+    # Testes em um emulador Android real (API 34, x86_64). Não bloqueia o APK.
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Habilitar KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+
+      - name: Compilar antes de ligar o emulador
+        run: gradle assembleDebug assembleDebugAndroidTest --stacktrace
+
+      - name: Rodar testes no emulador
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: default
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -no-boot-anim -camera-back none
+          script: gradle connectedDebugAndroidTest --stacktrace
+
+      - name: Resumo dos testes no emulador
+        if: always()
+        run: python3 tools/junit_summary.py "Emulador" app/build/outputs/androidTest-results/connected
+
+      - name: Relatório completo
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-emulador
+          path: app/build/reports/androidTests/
+          if-no-files-found: ignore

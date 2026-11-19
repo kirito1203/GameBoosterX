@@ -1,15 +1,3422 @@
 {
-  "schemaVersion": 1,
-  "categories": [
-    { "id": "memes_classicos", "name": "Memes clássicos", "targetCount": 50, "order": 1 },
-    { "id": "memes_brasileiros", "name": "Memes brasileiros", "targetCount": 50, "order": 2 },
-    { "id": "risadas_reacoes", "name": "Risadas e reações", "targetCount": 35, "order": 3 },
-    { "id": "impactos_comicos", "name": "Impactos e efeitos cômicos", "targetCount": 35, "order": 4 },
-    { "id": "suspense_terror", "name": "Suspense e terror", "targetCount": 30, "order": 5 },
-    { "id": "anime_poderes", "name": "Anime e poderes", "targetCount": 35, "order": 6 },
-    { "id": "games_roblox", "name": "Games e Roblox", "targetCount": 35, "order": 7 },
-    { "id": "sons_aleatorios", "name": "Sons aleatórios", "targetCount": 40, "order": 8 },
-    { "id": "vinhetas_musicas", "name": "Vinhetas e músicas curtas", "targetCount": 40, "order": 9 }
-  ],
-  "sounds": []
+ "schemaVersion": 1,
+ "categories": [
+  {
+   "id": "memes_classicos",
+   "name": "Memes clássicos",
+   "targetCount": 50,
+   "order": 1
+  },
+  {
+   "id": "memes_brasileiros",
+   "name": "Memes brasileiros",
+   "targetCount": 50,
+   "order": 2
+  },
+  {
+   "id": "risadas_reacoes",
+   "name": "Risadas e reações",
+   "targetCount": 35,
+   "order": 3
+  },
+  {
+   "id": "impactos_comicos",
+   "name": "Impactos e efeitos cômicos",
+   "targetCount": 35,
+   "order": 4
+  },
+  {
+   "id": "suspense_terror",
+   "name": "Suspense e terror",
+   "targetCount": 30,
+   "order": 5
+  },
+  {
+   "id": "anime_poderes",
+   "name": "Anime e poderes",
+   "targetCount": 35,
+   "order": 6
+  },
+  {
+   "id": "games_roblox",
+   "name": "Games e Roblox",
+   "targetCount": 35,
+   "order": 7
+  },
+  {
+   "id": "sons_aleatorios",
+   "name": "Sons aleatórios",
+   "targetCount": 40,
+   "order": 8
+  },
+  {
+   "id": "vinhetas_musicas",
+   "name": "Vinhetas e músicas curtas",
+   "targetCount": 40,
+   "order": 9
+  }
+ ],
+ "sounds": [
+  {
+   "id": "soco_seco",
+   "file": "soco_seco.ogg",
+   "name": "Soco seco",
+   "categoryId": "impactos_comicos",
+   "durationMs": 280,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "soco",
+    "luta",
+    "porrada"
+   ]
+  },
+  {
+   "id": "soco_pesado",
+   "file": "soco_pesado.ogg",
+   "name": "Soco pesado",
+   "categoryId": "impactos_comicos",
+   "durationMs": 640,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "soco",
+    "luta",
+    "impacto"
+   ]
+  },
+  {
+   "id": "tapa",
+   "file": "tapa.ogg",
+   "name": "Tapa",
+   "categoryId": "impactos_comicos",
+   "durationMs": 120,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "tapa",
+    "slap",
+    "bofetada"
+   ]
+  },
+  {
+   "id": "bonk",
+   "file": "bonk.ogg",
+   "name": "Bonk",
+   "categoryId": "impactos_comicos",
+   "durationMs": 700,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "bonk",
+    "panela",
+    "metal",
+    "cabeçada"
+   ]
+  },
+  {
+   "id": "bonk_agudo",
+   "file": "bonk_agudo.ogg",
+   "name": "Bonk agudo",
+   "categoryId": "impactos_comicos",
+   "durationMs": 500,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "bonk",
+    "metal"
+   ]
+  },
+  {
+   "id": "queda_seca",
+   "file": "queda_seca.ogg",
+   "name": "Queda seca",
+   "categoryId": "impactos_comicos",
+   "durationMs": 400,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "queda",
+    "tombo",
+    "thud"
+   ]
+  },
+  {
+   "id": "explosao_curta",
+   "file": "explosao_curta.ogg",
+   "name": "Explosão curta",
+   "categoryId": "impactos_comicos",
+   "durationMs": 900,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "explosão",
+    "boom",
+    "bomba"
+   ]
+  },
+  {
+   "id": "explosao_grande",
+   "file": "explosao_grande.ogg",
+   "name": "Explosão grande",
+   "categoryId": "impactos_comicos",
+   "durationMs": 2077,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "explosão",
+    "boom",
+    "bomba"
+   ]
+  },
+  {
+   "id": "explosao_distante",
+   "file": "explosao_distante.ogg",
+   "name": "Explosão distante",
+   "categoryId": "impactos_comicos",
+   "durationMs": 1921,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "explosão",
+    "longe"
+   ]
+  },
+  {
+   "id": "boing",
+   "file": "boing.ogg",
+   "name": "Boing",
+   "categoryId": "impactos_comicos",
+   "durationMs": 800,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "boing",
+    "mola",
+    "pulo"
+   ]
+  },
+  {
+   "id": "boing_duplo",
+   "file": "boing_duplo.ogg",
+   "name": "Boing duplo",
+   "categoryId": "impactos_comicos",
+   "durationMs": 950,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "boing",
+    "mola"
+   ]
+  },
+  {
+   "id": "mola_vibrando",
+   "file": "mola_vibrando.ogg",
+   "name": "Mola vibrando",
+   "categoryId": "impactos_comicos",
+   "durationMs": 1200,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "mola",
+    "boing"
+   ]
+  },
+  {
+   "id": "apito_subindo",
+   "file": "apito_subindo.ogg",
+   "name": "Apito subindo",
+   "categoryId": "impactos_comicos",
+   "durationMs": 900,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "apito",
+    "slide",
+    "desenho"
+   ]
+  },
+  {
+   "id": "apito_descendo",
+   "file": "apito_descendo.ogg",
+   "name": "Apito descendo",
+   "categoryId": "impactos_comicos",
+   "durationMs": 1100,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "apito",
+    "slide",
+    "queda",
+    "desenho"
+   ]
+  },
+  {
+   "id": "pop_bolha",
+   "file": "pop_bolha.ogg",
+   "name": "Pop de bolha",
+   "categoryId": "impactos_comicos",
+   "durationMs": 60,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "pop",
+    "bolha"
+   ]
+  },
+  {
+   "id": "pop_rolha",
+   "file": "pop_rolha.ogg",
+   "name": "Pop de rolha",
+   "categoryId": "impactos_comicos",
+   "durationMs": 80,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "pop",
+    "rolha",
+    "garrafa"
+   ]
+  },
+  {
+   "id": "passos_desenho",
+   "file": "passos_desenho.ogg",
+   "name": "Passinhos de desenho",
+   "categoryId": "impactos_comicos",
+   "durationMs": 850,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "passos",
+    "andar",
+    "desenho"
+   ]
+  },
+  {
+   "id": "corrida_desenho",
+   "file": "corrida_desenho.ogg",
+   "name": "Corrida de desenho",
+   "categoryId": "impactos_comicos",
+   "durationMs": 1185,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "correr",
+    "fuga",
+    "desenho"
+   ]
+  },
+  {
+   "id": "zip_rapido",
+   "file": "zip_rapido.ogg",
+   "name": "Zip rápido",
+   "categoryId": "impactos_comicos",
+   "durationMs": 220,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "zip",
+    "rápido",
+    "sumir"
+   ]
+  },
+  {
+   "id": "whoosh",
+   "file": "whoosh.ogg",
+   "name": "Whoosh",
+   "categoryId": "impactos_comicos",
+   "durationMs": 550,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "whoosh",
+    "vento",
+    "passar"
+   ]
+  },
+  {
+   "id": "whoosh_pesado",
+   "file": "whoosh_pesado.ogg",
+   "name": "Whoosh pesado",
+   "categoryId": "impactos_comicos",
+   "durationMs": 900,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "whoosh",
+    "pesado"
+   ]
+  },
+  {
+   "id": "vidro_quebrando",
+   "file": "vidro_quebrando.ogg",
+   "name": "Vidro quebrando",
+   "categoryId": "impactos_comicos",
+   "durationMs": 630,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "vidro",
+    "quebrar",
+    "crash"
+   ]
+  },
+  {
+   "id": "batida_porta",
+   "file": "batida_porta.ogg",
+   "name": "Batida na porta",
+   "categoryId": "impactos_comicos",
+   "durationMs": 560,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "porta",
+    "bater",
+    "toc toc"
+   ]
+  },
+  {
+   "id": "sino_luta",
+   "file": "sino_luta.ogg",
+   "name": "Sino de luta",
+   "categoryId": "impactos_comicos",
+   "durationMs": 2111,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "sino",
+    "ringue",
+    "round",
+    "luta"
+   ]
+  },
+  {
+   "id": "rimshot",
+   "file": "rimshot.ogg",
+   "name": "Ba-dum-tss",
+   "categoryId": "impactos_comicos",
+   "durationMs": 1650,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "piada",
+    "rimshot",
+    "bateria"
+   ]
+  },
+  {
+   "id": "trombone_triste",
+   "file": "trombone_triste.ogg",
+   "name": "Trombone triste",
+   "categoryId": "impactos_comicos",
+   "durationMs": 2440,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "fail",
+    "triste",
+    "falhou",
+    "wah wah"
+   ]
+  },
+  {
+   "id": "buzina_palhaco",
+   "file": "buzina_palhaco.ogg",
+   "name": "Buzina de palhaço",
+   "categoryId": "impactos_comicos",
+   "durationMs": 550,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "buzina",
+    "palhaço",
+    "honk"
+   ]
+  },
+  {
+   "id": "apito_juiz",
+   "file": "apito_juiz.ogg",
+   "name": "Apito de juiz",
+   "categoryId": "impactos_comicos",
+   "durationMs": 800,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "apito",
+    "falta",
+    "juiz"
+   ]
+  },
+  {
+   "id": "plim_ideia",
+   "file": "plim_ideia.ogg",
+   "name": "Plim de ideia",
+   "categoryId": "impactos_comicos",
+   "durationMs": 1000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "ideia",
+    "plim",
+    "lâmpada"
+   ]
+  },
+  {
+   "id": "tombo_desenho",
+   "file": "tombo_desenho.ogg",
+   "name": "Tombo de desenho",
+   "categoryId": "impactos_comicos",
+   "durationMs": 1450,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "tombo",
+    "queda",
+    "cair",
+    "desenho"
+   ]
+  },
+  {
+   "id": "pancada_metal",
+   "file": "pancada_metal.ogg",
+   "name": "Pancada metálica",
+   "categoryId": "impactos_comicos",
+   "durationMs": 1280,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "metal",
+    "pancada",
+    "cano"
+   ]
+  },
+  {
+   "id": "martelada",
+   "file": "martelada.ogg",
+   "name": "Martelada",
+   "categoryId": "impactos_comicos",
+   "durationMs": 950,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "martelo",
+    "bater",
+    "obra"
+   ]
+  },
+  {
+   "id": "estalo_dedos",
+   "file": "estalo_dedos.ogg",
+   "name": "Estalo de dedos",
+   "categoryId": "impactos_comicos",
+   "durationMs": 50,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "estalo",
+    "dedos",
+    "snap"
+   ]
+  },
+  {
+   "id": "chicote",
+   "file": "chicote.ogg",
+   "name": "Chicote",
+   "categoryId": "impactos_comicos",
+   "durationMs": 320,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "chicote",
+    "estalo"
+   ]
+  },
+  {
+   "id": "grilos",
+   "file": "grilos.ogg",
+   "name": "Grilos (silêncio constrangedor)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 2517,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "grilos",
+    "silêncio",
+    "vergonha",
+    "awkward"
+   ]
+  },
+  {
+   "id": "aplausos",
+   "file": "aplausos.ogg",
+   "name": "Aplausos",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 2910,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "aplausos",
+    "palmas",
+    "parabéns"
+   ]
+  },
+  {
+   "id": "aplausos_fortes",
+   "file": "aplausos_fortes.ogg",
+   "name": "Aplausos fortes",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 4143,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "aplausos",
+    "palmas",
+    "plateia"
+   ]
+  },
+  {
+   "id": "rufar_tambor",
+   "file": "rufar_tambor.ogg",
+   "name": "Rufar de tambor",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 2100,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "suspense",
+    "tambor",
+    "resultado"
+   ]
+  },
+  {
+   "id": "rufar_prato",
+   "file": "rufar_prato.ogg",
+   "name": "Rufar + prato",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 3450,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "suspense",
+    "tambor",
+    "revelação"
+   ]
+  },
+  {
+   "id": "ta_da",
+   "file": "ta_da.ogg",
+   "name": "Ta-da!",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 1071,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "tada",
+    "mágica",
+    "apresentando"
+   ]
+  },
+  {
+   "id": "ta_da_triunfal",
+   "file": "ta_da_triunfal.ogg",
+   "name": "Ta-da triunfal",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 1928,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "tada",
+    "vitória",
+    "triunfo"
+   ]
+  },
+  {
+   "id": "acerto",
+   "file": "acerto.ogg",
+   "name": "Resposta certa",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 667,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "certo",
+    "acerto",
+    "correto"
+   ]
+  },
+  {
+   "id": "erro_buzzer",
+   "file": "erro_buzzer.ogg",
+   "name": "Resposta errada (buzzer)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 900,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "errado",
+    "erro",
+    "buzzer"
+   ]
+  },
+  {
+   "id": "erro_duplo",
+   "file": "erro_duplo.ogg",
+   "name": "Erro duplo",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 730,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "errado",
+    "erro"
+   ]
+  },
+  {
+   "id": "ding",
+   "file": "ding.ogg",
+   "name": "Ding",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 1500,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "ding",
+    "notificação",
+    "certo"
+   ]
+  },
+  {
+   "id": "ding_dong",
+   "file": "ding_dong.ogg",
+   "name": "Ding-dong",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 2100,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "campainha",
+    "porta",
+    "chegou"
+   ]
+  },
+  {
+   "id": "gongo",
+   "file": "gongo.ogg",
+   "name": "Gongo",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 4080,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "gongo",
+    "eliminado",
+    "fim"
+   ]
+  },
+  {
+   "id": "campainha_resposta",
+   "file": "campainha_resposta.ogg",
+   "name": "Campainha de resposta",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 750,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "quiz",
+    "campainha",
+    "responder"
+   ]
+  },
+  {
+   "id": "contagem_bips",
+   "file": "contagem_bips.ogg",
+   "name": "Contagem 3-2-1",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 3600,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "contagem",
+    "largada",
+    "bip"
+   ]
+  },
+  {
+   "id": "tic_tac",
+   "file": "tic_tac.ogg",
+   "name": "Tic-tac",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 3540,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "relógio",
+    "tempo",
+    "esperando"
+   ]
+  },
+  {
+   "id": "suspense_quiz",
+   "file": "suspense_quiz.ogg",
+   "name": "Suspense de quiz",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 1846,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "quiz",
+    "suspense",
+    "pensando"
+   ]
+  },
+  {
+   "id": "fanfarra_curta",
+   "file": "fanfarra_curta.ogg",
+   "name": "Fanfarra curta",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 1684,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "fanfarra",
+    "vitória",
+    "anúncio"
+   ]
+  },
+  {
+   "id": "vitoria",
+   "file": "vitoria.ogg",
+   "name": "Vitória",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 2101,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "vitória",
+    "ganhou",
+    "campeão"
+   ]
+  },
+  {
+   "id": "derrota",
+   "file": "derrota.ogg",
+   "name": "Derrota",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 3167,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "derrota",
+    "perdeu",
+    "triste"
+   ]
+  },
+  {
+   "id": "aww_triste",
+   "file": "aww_triste.ogg",
+   "name": "Aww triste (instrumental)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 2700,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "triste",
+    "aww",
+    "pena"
+   ]
+  },
+  {
+   "id": "drone_sombrio",
+   "file": "drone_sombrio.ogg",
+   "name": "Drone sombrio",
+   "categoryId": "suspense_terror",
+   "durationMs": 5000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "drone",
+    "sombrio",
+    "tensão"
+   ]
+  },
+  {
+   "id": "drone_grave",
+   "file": "drone_grave.ogg",
+   "name": "Drone grave",
+   "categoryId": "suspense_terror",
+   "durationMs": 6000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "drone",
+    "grave",
+    "terror"
+   ]
+  },
+  {
+   "id": "batimento",
+   "file": "batimento.ogg",
+   "name": "Batimento cardíaco",
+   "categoryId": "suspense_terror",
+   "durationMs": 5400,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "coração",
+    "batimento",
+    "medo"
+   ]
+  },
+  {
+   "id": "batimento_acelerado",
+   "file": "batimento_acelerado.ogg",
+   "name": "Batimento acelerado",
+   "categoryId": "suspense_terror",
+   "durationMs": 4554,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "coração",
+    "pânico",
+    "medo"
+   ]
+  },
+  {
+   "id": "jumpscare",
+   "file": "jumpscare.ogg",
+   "name": "Jumpscare",
+   "categoryId": "suspense_terror",
+   "durationMs": 2021,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "susto",
+    "jumpscare",
+    "terror"
+   ]
+  },
+  {
+   "id": "jumpscare_agudo",
+   "file": "jumpscare_agudo.ogg",
+   "name": "Jumpscare agudo",
+   "categoryId": "suspense_terror",
+   "durationMs": 1900,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "susto",
+    "grito",
+    "terror"
+   ]
+  },
+  {
+   "id": "violino_agudo",
+   "file": "violino_agudo.ogg",
+   "name": "Violinos estridentes",
+   "categoryId": "suspense_terror",
+   "durationMs": 1560,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "violino",
+    "psicose",
+    "facada"
+   ]
+  },
+  {
+   "id": "porta_rangendo",
+   "file": "porta_rangendo.ogg",
+   "name": "Porta rangendo",
+   "categoryId": "suspense_terror",
+   "durationMs": 1600,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "porta",
+    "rangido",
+    "casa assombrada"
+   ]
+  },
+  {
+   "id": "vento_uivante",
+   "file": "vento_uivante.ogg",
+   "name": "Vento uivante",
+   "categoryId": "suspense_terror",
+   "durationMs": 5000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "vento",
+    "uivo",
+    "tempestade"
+   ]
+  },
+  {
+   "id": "trovao",
+   "file": "trovao.ogg",
+   "name": "Trovão",
+   "categoryId": "suspense_terror",
+   "durationMs": 4248,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "trovão",
+    "tempestade",
+    "raio"
+   ]
+  },
+  {
+   "id": "trovao_distante",
+   "file": "trovao_distante.ogg",
+   "name": "Trovão distante",
+   "categoryId": "suspense_terror",
+   "durationMs": 5470,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "trovão",
+    "longe",
+    "chuva"
+   ]
+  },
+  {
+   "id": "sino_igreja",
+   "file": "sino_igreja.ogg",
+   "name": "Sino de igreja distante",
+   "categoryId": "suspense_terror",
+   "durationMs": 6738,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "sino",
+    "igreja",
+    "meia-noite"
+   ]
+  },
+  {
+   "id": "caixinha_assombrada",
+   "file": "caixinha_assombrada.ogg",
+   "name": "Caixinha de música assombrada",
+   "categoryId": "suspense_terror",
+   "durationMs": 5803,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "caixinha",
+    "assombrado",
+    "boneca"
+   ]
+  },
+  {
+   "id": "riser_tensao",
+   "file": "riser_tensao.ogg",
+   "name": "Riser de tensão",
+   "categoryId": "suspense_terror",
+   "durationMs": 4000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "tensão",
+    "subindo",
+    "suspense"
+   ]
+  },
+  {
+   "id": "riser_rapido",
+   "file": "riser_rapido.ogg",
+   "name": "Riser rápido",
+   "categoryId": "suspense_terror",
+   "durationMs": 1500,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "tensão",
+    "rápido"
+   ]
+  },
+  {
+   "id": "braam",
+   "file": "braam.ogg",
+   "name": "Braaam",
+   "categoryId": "suspense_terror",
+   "durationMs": 3569,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "braam",
+    "trailer",
+    "épico",
+    "grave"
+   ]
+  },
+  {
+   "id": "braam_duplo",
+   "file": "braam_duplo.ogg",
+   "name": "Braaam duplo",
+   "categoryId": "suspense_terror",
+   "durationMs": 5042,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "braam",
+    "trailer"
+   ]
+  },
+  {
+   "id": "gotejamento",
+   "file": "gotejamento.ogg",
+   "name": "Goteira em caverna",
+   "categoryId": "suspense_terror",
+   "durationMs": 5250,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "gota",
+    "caverna",
+    "eco"
+   ]
+  },
+  {
+   "id": "passos_corredor",
+   "file": "passos_corredor.ogg",
+   "name": "Passos no corredor",
+   "categoryId": "suspense_terror",
+   "durationMs": 5201,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "passos",
+    "alguém",
+    "corredor"
+   ]
+  },
+  {
+   "id": "estatica_radio",
+   "file": "estatica_radio.ogg",
+   "name": "Estática de rádio",
+   "categoryId": "suspense_terror",
+   "durationMs": 3000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "estática",
+    "rádio",
+    "chiado"
+   ]
+  },
+  {
+   "id": "interferencia",
+   "file": "interferencia.ogg",
+   "name": "Interferência",
+   "categoryId": "suspense_terror",
+   "durationMs": 2100,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "glitch",
+    "interferência",
+    "sinal"
+   ]
+  },
+  {
+   "id": "batidas_parede",
+   "file": "batidas_parede.ogg",
+   "name": "Batidas na parede",
+   "categoryId": "suspense_terror",
+   "durationMs": 2753,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "batida",
+    "parede",
+    "vizinho"
+   ]
+  },
+  {
+   "id": "ruido_alienigena",
+   "file": "ruido_alienigena.ogg",
+   "name": "Ruído alienígena",
+   "categoryId": "suspense_terror",
+   "durationMs": 3000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "alien",
+    "ovni",
+    "estranho"
+   ]
+  },
+  {
+   "id": "sirene_ataque",
+   "file": "sirene_ataque.ogg",
+   "name": "Sirene de alerta",
+   "categoryId": "suspense_terror",
+   "durationMs": 5000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "sirene",
+    "alerta",
+    "perigo"
+   ]
+  },
+  {
+   "id": "alarme",
+   "file": "alarme.ogg",
+   "name": "Alarme",
+   "categoryId": "suspense_terror",
+   "durationMs": 2850,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "alarme",
+    "perigo",
+    "invasão"
+   ]
+  },
+  {
+   "id": "tique_taque_sinistro",
+   "file": "tique_taque_sinistro.ogg",
+   "name": "Tique-taque sinistro",
+   "categoryId": "suspense_terror",
+   "durationMs": 5463,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "relógio",
+    "contagem",
+    "bomba"
+   ]
+  },
+  {
+   "id": "glitch",
+   "file": "glitch.ogg",
+   "name": "Glitch",
+   "categoryId": "suspense_terror",
+   "durationMs": 1195,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "glitch",
+    "bug",
+    "erro"
+   ]
+  },
+  {
+   "id": "eco_metalico",
+   "file": "eco_metalico.ogg",
+   "name": "Eco metálico",
+   "categoryId": "suspense_terror",
+   "durationMs": 1749,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "metal",
+    "eco",
+    "fábrica"
+   ]
+  },
+  {
+   "id": "piano_dissonante",
+   "file": "piano_dissonante.ogg",
+   "name": "Piano dissonante",
+   "categoryId": "suspense_terror",
+   "durationMs": 1847,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "piano",
+    "dissonante",
+    "susto"
+   ]
+  },
+  {
+   "id": "sussurro_vento",
+   "file": "sussurro_vento.ogg",
+   "name": "Sopro assombrado",
+   "categoryId": "suspense_terror",
+   "durationMs": 4000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "sopro",
+    "fantasma",
+    "assombrado"
+   ]
+  },
+  {
+   "id": "teleporte",
+   "file": "teleporte.ogg",
+   "name": "Teletransporte",
+   "categoryId": "anime_poderes",
+   "durationMs": 794,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "teleporte",
+    "sumir",
+    "aparecer"
+   ]
+  },
+  {
+   "id": "teleporte_rapido",
+   "file": "teleporte_rapido.ogg",
+   "name": "Teletransporte rápido",
+   "categoryId": "anime_poderes",
+   "durationMs": 200,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "teleporte",
+    "instantâneo"
+   ]
+  },
+  {
+   "id": "carga_energia",
+   "file": "carga_energia.ogg",
+   "name": "Carregando energia",
+   "categoryId": "anime_poderes",
+   "durationMs": 2000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "carregar",
+    "energia",
+    "ki",
+    "poder"
+   ]
+  },
+  {
+   "id": "disparo_energia",
+   "file": "disparo_energia.ogg",
+   "name": "Disparo de energia",
+   "categoryId": "anime_poderes",
+   "durationMs": 1200,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "disparo",
+    "raio",
+    "energia",
+    "kame"
+   ]
+  },
+  {
+   "id": "laser",
+   "file": "laser.ogg",
+   "name": "Raio laser",
+   "categoryId": "anime_poderes",
+   "durationMs": 250,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "laser",
+    "tiro",
+    "pew"
+   ]
+  },
+  {
+   "id": "laser_longo",
+   "file": "laser_longo.ogg",
+   "name": "Laser contínuo",
+   "categoryId": "anime_poderes",
+   "durationMs": 1600,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "laser",
+    "raio",
+    "feixe"
+   ]
+  },
+  {
+   "id": "escudo",
+   "file": "escudo.ogg",
+   "name": "Escudo ativado",
+   "categoryId": "anime_poderes",
+   "durationMs": 1296,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "escudo",
+    "proteção",
+    "barreira"
+   ]
+  },
+  {
+   "id": "cura",
+   "file": "cura.ogg",
+   "name": "Cura",
+   "categoryId": "anime_poderes",
+   "durationMs": 1505,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "cura",
+    "vida",
+    "magia"
+   ]
+  },
+  {
+   "id": "brilho_magico",
+   "file": "brilho_magico.ogg",
+   "name": "Brilho mágico",
+   "categoryId": "anime_poderes",
+   "durationMs": 1954,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "brilho",
+    "magia",
+    "estrela"
+   ]
+  },
+  {
+   "id": "feitico",
+   "file": "feitico.ogg",
+   "name": "Feitiço",
+   "categoryId": "anime_poderes",
+   "durationMs": 1592,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "feitiço",
+    "magia",
+    "lançar"
+   ]
+  },
+  {
+   "id": "explosao_magica",
+   "file": "explosao_magica.ogg",
+   "name": "Explosão mágica",
+   "categoryId": "anime_poderes",
+   "durationMs": 2049,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "explosão",
+    "magia"
+   ]
+  },
+  {
+   "id": "aura_poder",
+   "file": "aura_poder.ogg",
+   "name": "Aura de poder",
+   "categoryId": "anime_poderes",
+   "durationMs": 4000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "aura",
+    "poder",
+    "nível"
+   ]
+  },
+  {
+   "id": "transformacao",
+   "file": "transformacao.ogg",
+   "name": "Transformação",
+   "categoryId": "anime_poderes",
+   "durationMs": 4457,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "transformação",
+    "super",
+    "poder máximo"
+   ]
+  },
+  {
+   "id": "golpe_espada",
+   "file": "golpe_espada.ogg",
+   "name": "Golpe de espada",
+   "categoryId": "anime_poderes",
+   "durationMs": 250,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "espada",
+    "golpe",
+    "corte"
+   ]
+  },
+  {
+   "id": "desembainhar",
+   "file": "desembainhar.ogg",
+   "name": "Desembainhar espada",
+   "categoryId": "anime_poderes",
+   "durationMs": 1950,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "espada",
+    "katana",
+    "sacar"
+   ]
+  },
+  {
+   "id": "choque_espadas",
+   "file": "choque_espadas.ogg",
+   "name": "Choque de espadas",
+   "categoryId": "anime_poderes",
+   "durationMs": 1270,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "espada",
+    "clang",
+    "duelo"
+   ]
+  },
+  {
+   "id": "corte_rapido",
+   "file": "corte_rapido.ogg",
+   "name": "Corte rápido",
+   "categoryId": "anime_poderes",
+   "durationMs": 470,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "corte",
+    "espada",
+    "rápido"
+   ]
+  },
+  {
+   "id": "soco_anime",
+   "file": "soco_anime.ogg",
+   "name": "Soco de anime",
+   "categoryId": "anime_poderes",
+   "durationMs": 755,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "soco",
+    "impacto",
+    "anime"
+   ]
+  },
+  {
+   "id": "combo_socos",
+   "file": "combo_socos.ogg",
+   "name": "Combo de socos",
+   "categoryId": "anime_poderes",
+   "durationMs": 1873,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "combo",
+    "soco",
+    "rajada"
+   ]
+  },
+  {
+   "id": "raio_eletrico",
+   "file": "raio_eletrico.ogg",
+   "name": "Raio elétrico",
+   "categoryId": "anime_poderes",
+   "durationMs": 2375,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "raio",
+    "elétrico",
+    "choque",
+    "trovão"
+   ]
+  },
+  {
+   "id": "fogo",
+   "file": "fogo.ogg",
+   "name": "Ataque de fogo",
+   "categoryId": "anime_poderes",
+   "durationMs": 2000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "fogo",
+    "chama",
+    "queimar"
+   ]
+  },
+  {
+   "id": "gelo",
+   "file": "gelo.ogg",
+   "name": "Congelamento",
+   "categoryId": "anime_poderes",
+   "durationMs": 1813,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "gelo",
+    "congelar",
+    "frio"
+   ]
+  },
+  {
+   "id": "vento_cortante",
+   "file": "vento_cortante.ogg",
+   "name": "Vento cortante",
+   "categoryId": "anime_poderes",
+   "durationMs": 600,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "vento",
+    "corte",
+    "lâmina"
+   ]
+  },
+  {
+   "id": "terremoto",
+   "file": "terremoto.ogg",
+   "name": "Terremoto",
+   "categoryId": "anime_poderes",
+   "durationMs": 3500,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "terremoto",
+    "tremor",
+    "chão"
+   ]
+  },
+  {
+   "id": "dash",
+   "file": "dash.ogg",
+   "name": "Dash",
+   "categoryId": "anime_poderes",
+   "durationMs": 300,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "dash",
+    "avançar",
+    "velocidade"
+   ]
+  },
+  {
+   "id": "salto_alto",
+   "file": "salto_alto.ogg",
+   "name": "Salto alto",
+   "categoryId": "anime_poderes",
+   "durationMs": 600,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "pulo",
+    "salto",
+    "voar"
+   ]
+  },
+  {
+   "id": "pouso_impacto",
+   "file": "pouso_impacto.ogg",
+   "name": "Pouso com impacto",
+   "categoryId": "anime_poderes",
+   "durationMs": 900,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "pouso",
+    "aterrissar",
+    "impacto"
+   ]
+  },
+  {
+   "id": "aparicao_dramatica",
+   "file": "aparicao_dramatica.ogg",
+   "name": "Aparição dramática",
+   "categoryId": "anime_poderes",
+   "durationMs": 2809,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "aparição",
+    "chegada",
+    "dramático"
+   ]
+  },
+  {
+   "id": "brilho_olhos",
+   "file": "brilho_olhos.ogg",
+   "name": "Brilho no olhar",
+   "categoryId": "anime_poderes",
+   "durationMs": 1112,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "brilho",
+    "olhar",
+    "ting"
+   ]
+  },
+  {
+   "id": "poder_subindo",
+   "file": "poder_subindo.ogg",
+   "name": "Poder subindo",
+   "categoryId": "anime_poderes",
+   "durationMs": 3000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "poder",
+    "nível",
+    "aumentando"
+   ]
+  },
+  {
+   "id": "barreira_quebrando",
+   "file": "barreira_quebrando.ogg",
+   "name": "Barreira quebrando",
+   "categoryId": "anime_poderes",
+   "durationMs": 1130,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "barreira",
+    "quebrar",
+    "escudo"
+   ]
+  },
+  {
+   "id": "portal_abrindo",
+   "file": "portal_abrindo.ogg",
+   "name": "Portal abrindo",
+   "categoryId": "anime_poderes",
+   "durationMs": 3030,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "portal",
+    "abrir",
+    "dimensão"
+   ]
+  },
+  {
+   "id": "portal_fechando",
+   "file": "portal_fechando.ogg",
+   "name": "Portal fechando",
+   "categoryId": "anime_poderes",
+   "durationMs": 1464,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "portal",
+    "fechar"
+   ]
+  },
+  {
+   "id": "energia_caindo",
+   "file": "energia_caindo.ogg",
+   "name": "Energia acabando",
+   "categoryId": "anime_poderes",
+   "durationMs": 1500,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "energia",
+    "acabar",
+    "desligar"
+   ]
+  },
+  {
+   "id": "carga_maxima",
+   "file": "carga_maxima.ogg",
+   "name": "Carga máxima",
+   "categoryId": "anime_poderes",
+   "durationMs": 2382,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "carga",
+    "máximo",
+    "pronto"
+   ]
+  },
+  {
+   "id": "golpe_final",
+   "file": "golpe_final.ogg",
+   "name": "Golpe final",
+   "categoryId": "anime_poderes",
+   "durationMs": 3196,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "golpe final",
+    "especial",
+    "finalizar"
+   ]
+  },
+  {
+   "id": "clone_sombra",
+   "file": "clone_sombra.ogg",
+   "name": "Clones aparecendo",
+   "categoryId": "anime_poderes",
+   "durationMs": 610,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "clone",
+    "jutsu",
+    "fumaça"
+   ]
+  },
+  {
+   "id": "moeda",
+   "file": "moeda.ogg",
+   "name": "Moeda",
+   "categoryId": "games_roblox",
+   "durationMs": 470,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "moeda",
+    "coin",
+    "dinheiro"
+   ]
+  },
+  {
+   "id": "moeda_dupla",
+   "file": "moeda_dupla.ogg",
+   "name": "Duas moedas",
+   "categoryId": "games_roblox",
+   "durationMs": 510,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "moeda",
+    "coin"
+   ]
+  },
+  {
+   "id": "pulo",
+   "file": "pulo.ogg",
+   "name": "Pulo",
+   "categoryId": "games_roblox",
+   "durationMs": 180,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "pulo",
+    "jump",
+    "pular"
+   ]
+  },
+  {
+   "id": "pulo_duplo",
+   "file": "pulo_duplo.ogg",
+   "name": "Pulo duplo",
+   "categoryId": "games_roblox",
+   "durationMs": 300,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "pulo",
+    "duplo"
+   ]
+  },
+  {
+   "id": "power_up",
+   "file": "power_up.ogg",
+   "name": "Power-up",
+   "categoryId": "games_roblox",
+   "durationMs": 601,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "power up",
+    "poder",
+    "item"
+   ]
+  },
+  {
+   "id": "vida_extra",
+   "file": "vida_extra.ogg",
+   "name": "Vida extra",
+   "categoryId": "games_roblox",
+   "durationMs": 602,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "vida",
+    "1up",
+    "extra"
+   ]
+  },
+  {
+   "id": "dano",
+   "file": "dano.ogg",
+   "name": "Dano",
+   "categoryId": "games_roblox",
+   "durationMs": 250,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "dano",
+    "hit",
+    "machucou"
+   ]
+  },
+  {
+   "id": "game_over",
+   "file": "game_over.ogg",
+   "name": "Game over",
+   "categoryId": "games_roblox",
+   "durationMs": 1804,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "game over",
+    "perdeu",
+    "fim de jogo"
+   ]
+  },
+  {
+   "id": "level_up",
+   "file": "level_up.ogg",
+   "name": "Level up",
+   "categoryId": "games_roblox",
+   "durationMs": 781,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "level up",
+    "nível",
+    "subiu"
+   ]
+  },
+  {
+   "id": "fase_completa",
+   "file": "fase_completa.ogg",
+   "name": "Fase completa",
+   "categoryId": "games_roblox",
+   "durationMs": 1400,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "fase",
+    "completou",
+    "vitória"
+   ]
+  },
+  {
+   "id": "menu_selecao",
+   "file": "menu_selecao.ogg",
+   "name": "Seleção de menu",
+   "categoryId": "games_roblox",
+   "durationMs": 50,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "menu",
+    "selecionar",
+    "cursor"
+   ]
+  },
+  {
+   "id": "confirmar",
+   "file": "confirmar.ogg",
+   "name": "Confirmar",
+   "categoryId": "games_roblox",
+   "durationMs": 121,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "confirmar",
+    "ok",
+    "aceitar"
+   ]
+  },
+  {
+   "id": "cancelar",
+   "file": "cancelar.ogg",
+   "name": "Cancelar",
+   "categoryId": "games_roblox",
+   "durationMs": 141,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "cancelar",
+    "voltar",
+    "não"
+   ]
+  },
+  {
+   "id": "item_coletado",
+   "file": "item_coletado.ogg",
+   "name": "Item coletado",
+   "categoryId": "games_roblox",
+   "durationMs": 181,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "item",
+    "coletar",
+    "pegar"
+   ]
+  },
+  {
+   "id": "bau_aberto",
+   "file": "bau_aberto.ogg",
+   "name": "Baú aberto",
+   "categoryId": "games_roblox",
+   "durationMs": 1420,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "baú",
+    "tesouro",
+    "abrir"
+   ]
+  },
+  {
+   "id": "tiro_8bit",
+   "file": "tiro_8bit.ogg",
+   "name": "Tiro 8-bit",
+   "categoryId": "games_roblox",
+   "durationMs": 150,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "tiro",
+    "disparo",
+    "laser"
+   ]
+  },
+  {
+   "id": "explosao_8bit",
+   "file": "explosao_8bit.ogg",
+   "name": "Explosão 8-bit",
+   "categoryId": "games_roblox",
+   "durationMs": 392,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "explosão",
+    "8bit"
+   ]
+  },
+  {
+   "id": "inimigo_derrotado",
+   "file": "inimigo_derrotado.ogg",
+   "name": "Inimigo derrotado",
+   "categoryId": "games_roblox",
+   "durationMs": 323,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "inimigo",
+    "derrotado",
+    "eliminar"
+   ]
+  },
+  {
+   "id": "checkpoint",
+   "file": "checkpoint.ogg",
+   "name": "Checkpoint",
+   "categoryId": "games_roblox",
+   "durationMs": 542,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "checkpoint",
+    "salvo",
+    "bandeira"
+   ]
+  },
+  {
+   "id": "teleporte_8bit",
+   "file": "teleporte_8bit.ogg",
+   "name": "Teleporte 8-bit",
+   "categoryId": "games_roblox",
+   "durationMs": 605,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "teleporte",
+    "8bit"
+   ]
+  },
+  {
+   "id": "tempo_acabando",
+   "file": "tempo_acabando.ogg",
+   "name": "Tempo acabando",
+   "categoryId": "games_roblox",
+   "durationMs": 1930,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "tempo",
+    "pressa",
+    "alarme"
+   ]
+  },
+  {
+   "id": "pausa",
+   "file": "pausa.ogg",
+   "name": "Pausa",
+   "categoryId": "games_roblox",
+   "durationMs": 281,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "pausa",
+    "pause",
+    "parar"
+   ]
+  },
+  {
+   "id": "erro_8bit",
+   "file": "erro_8bit.ogg",
+   "name": "Erro 8-bit",
+   "categoryId": "games_roblox",
+   "durationMs": 300,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "erro",
+    "bloqueado",
+    "não pode"
+   ]
+  },
+  {
+   "id": "combo",
+   "file": "combo.ogg",
+   "name": "Combo",
+   "categoryId": "games_roblox",
+   "durationMs": 321,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "combo",
+    "sequência",
+    "multiplicador"
+   ]
+  },
+  {
+   "id": "recorde",
+   "file": "recorde.ogg",
+   "name": "Novo recorde",
+   "categoryId": "games_roblox",
+   "durationMs": 771,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "recorde",
+    "high score",
+    "pontuação"
+   ]
+  },
+  {
+   "id": "bloqueio",
+   "file": "bloqueio.ogg",
+   "name": "Bloqueio",
+   "categoryId": "games_roblox",
+   "durationMs": 120,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "bloquear",
+    "defesa",
+    "escudo"
+   ]
+  },
+  {
+   "id": "escudo_8bit",
+   "file": "escudo_8bit.ogg",
+   "name": "Escudo 8-bit",
+   "categoryId": "games_roblox",
+   "durationMs": 301,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "escudo",
+    "proteção",
+    "8bit"
+   ]
+  },
+  {
+   "id": "mola_8bit",
+   "file": "mola_8bit.ogg",
+   "name": "Mola 8-bit",
+   "categoryId": "games_roblox",
+   "durationMs": 300,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "mola",
+    "pulo",
+    "trampolim"
+   ]
+  },
+  {
+   "id": "queda_buraco",
+   "file": "queda_buraco.ogg",
+   "name": "Caindo no buraco",
+   "categoryId": "games_roblox",
+   "durationMs": 1000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "queda",
+    "buraco",
+    "cair"
+   ]
+  },
+  {
+   "id": "chefe_aparece",
+   "file": "chefe_aparece.ogg",
+   "name": "Chefão aparecendo",
+   "categoryId": "games_roblox",
+   "durationMs": 3074,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "chefão",
+    "boss",
+    "batalha"
+   ]
+  },
+  {
+   "id": "vitoria_8bit",
+   "file": "vitoria_8bit.ogg",
+   "name": "Vitória 8-bit",
+   "categoryId": "games_roblox",
+   "durationMs": 1202,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "vitória",
+    "ganhou",
+    "8bit"
+   ]
+  },
+  {
+   "id": "respawn",
+   "file": "respawn.ogg",
+   "name": "Respawn",
+   "categoryId": "games_roblox",
+   "durationMs": 850,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "respawn",
+    "renascer",
+    "voltar"
+   ]
+  },
+  {
+   "id": "conquista",
+   "file": "conquista.ogg",
+   "name": "Conquista desbloqueada",
+   "categoryId": "games_roblox",
+   "durationMs": 1440,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "conquista",
+    "troféu",
+    "achievement"
+   ]
+  },
+  {
+   "id": "contagem_largada",
+   "file": "contagem_largada.ogg",
+   "name": "3, 2, 1, Vai!",
+   "categoryId": "games_roblox",
+   "durationMs": 3700,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "largada",
+    "corrida",
+    "contagem"
+   ]
+  },
+  {
+   "id": "desbloqueio",
+   "file": "desbloqueio.ogg",
+   "name": "Desbloqueio",
+   "categoryId": "games_roblox",
+   "durationMs": 441,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "desbloquear",
+    "porta",
+    "liberado"
+   ]
+  },
+  {
+   "id": "dano_critico",
+   "file": "dano_critico.ogg",
+   "name": "Dano crítico",
+   "categoryId": "games_roblox",
+   "durationMs": 420,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "crítico",
+    "dano",
+    "golpe"
+   ]
+  },
+  {
+   "id": "bip",
+   "file": "bip.ogg",
+   "name": "Bip",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 180,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "bip",
+    "beep"
+   ]
+  },
+  {
+   "id": "bip_duplo",
+   "file": "bip_duplo.ogg",
+   "name": "Bip duplo",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 260,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "bip",
+    "beep"
+   ]
+  },
+  {
+   "id": "clique",
+   "file": "clique.ogg",
+   "name": "Clique",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 60,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "clique",
+    "click"
+   ]
+  },
+  {
+   "id": "clique_mouse",
+   "file": "clique_mouse.ogg",
+   "name": "Clique de mouse",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 85,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "mouse",
+    "clique"
+   ]
+  },
+  {
+   "id": "teclado",
+   "file": "teclado.ogg",
+   "name": "Teclado digitando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2400,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "teclado",
+    "digitar",
+    "hacker"
+   ]
+  },
+  {
+   "id": "sino_bicicleta",
+   "file": "sino_bicicleta.ogg",
+   "name": "Campainha de bicicleta",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1320,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "bicicleta",
+    "campainha",
+    "trim"
+   ]
+  },
+  {
+   "id": "campainha_porta",
+   "file": "campainha_porta.ogg",
+   "name": "Campainha de porta",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2067,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "campainha",
+    "porta",
+    "visita"
+   ]
+  },
+  {
+   "id": "telefone",
+   "file": "telefone.ogg",
+   "name": "Telefone tocando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 3000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "telefone",
+    "ligação",
+    "atende"
+   ]
+  },
+  {
+   "id": "despertador",
+   "file": "despertador.ogg",
+   "name": "Despertador",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2740,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "despertador",
+    "acordar",
+    "alarme"
+   ]
+  },
+  {
+   "id": "notificacao",
+   "file": "notificacao.ogg",
+   "name": "Notificação suave",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 920,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "notificação",
+    "mensagem"
+   ]
+  },
+  {
+   "id": "gota",
+   "file": "gota.ogg",
+   "name": "Gota d'água",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 70,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "gota",
+    "água",
+    "pingo"
+   ]
+  },
+  {
+   "id": "bolhas",
+   "file": "bolhas.ogg",
+   "name": "Bolhas",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1450,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "bolhas",
+    "água",
+    "aquário"
+   ]
+  },
+  {
+   "id": "splash",
+   "file": "splash.ogg",
+   "name": "Splash",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 900,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "água",
+    "mergulho",
+    "splash"
+   ]
+  },
+  {
+   "id": "moeda_chao",
+   "file": "moeda_chao.ogg",
+   "name": "Moeda caindo no chão",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 730,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "moeda",
+    "chão",
+    "cair"
+   ]
+  },
+  {
+   "id": "papel_amassando",
+   "file": "papel_amassando.ogg",
+   "name": "Papel amassando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1242,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "papel",
+    "amassar",
+    "lixo"
+   ]
+  },
+  {
+   "id": "relogio",
+   "file": "relogio.ogg",
+   "name": "Relógio",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 4030,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "relógio",
+    "tic tac"
+   ]
+  },
+  {
+   "id": "cuco",
+   "file": "cuco.ogg",
+   "name": "Cuco",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2300,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "cuco",
+    "relógio",
+    "hora"
+   ]
+  },
+  {
+   "id": "buzina_carro",
+   "file": "buzina_carro.ogg",
+   "name": "Buzina de carro",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 950,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "buzina",
+    "carro",
+    "trânsito"
+   ]
+  },
+  {
+   "id": "sirene_policia",
+   "file": "sirene_policia.ogg",
+   "name": "Sirene",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 4000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "sirene",
+    "polícia",
+    "fuga"
+   ]
+  },
+  {
+   "id": "apito_trem",
+   "file": "apito_trem.ogg",
+   "name": "Apito de trem",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2694,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "trem",
+    "apito",
+    "estação"
+   ]
+  },
+  {
+   "id": "motor",
+   "file": "motor.ogg",
+   "name": "Motor ligando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2500,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "motor",
+    "carro",
+    "ligar"
+   ]
+  },
+  {
+   "id": "vento_suave",
+   "file": "vento_suave.ogg",
+   "name": "Vento suave",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 4000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "vento",
+    "brisa"
+   ]
+  },
+  {
+   "id": "chuva",
+   "file": "chuva.ogg",
+   "name": "Chuva",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 5000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "chuva",
+    "tempestade"
+   ]
+  },
+  {
+   "id": "fogueira",
+   "file": "fogueira.ogg",
+   "name": "Fogueira",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 5000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "fogo",
+    "fogueira",
+    "acampamento"
+   ]
+  },
+  {
+   "id": "ondas_mar",
+   "file": "ondas_mar.ogg",
+   "name": "Ondas do mar",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 6000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "mar",
+    "praia",
+    "ondas"
+   ]
+  },
+  {
+   "id": "passarinho",
+   "file": "passarinho.ogg",
+   "name": "Passarinho",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1799,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "pássaro",
+    "passarinho",
+    "manhã"
+   ]
+  },
+  {
+   "id": "assobio_lobo",
+   "file": "assobio_lobo.ogg",
+   "name": "Fiu-fiu",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 900,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "assobio",
+    "fiu fiu",
+    "elogio"
+   ]
+  },
+  {
+   "id": "ping_pong",
+   "file": "ping_pong.ogg",
+   "name": "Ping-pong",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1840,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "ping pong",
+    "bola",
+    "mesa"
+   ]
+  },
+  {
+   "id": "bola_quicando",
+   "file": "bola_quicando.ogg",
+   "name": "Bola quicando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1750,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "bola",
+    "quicar",
+    "basquete"
+   ]
+  },
+  {
+   "id": "robo_falando",
+   "file": "robo_falando.ogg",
+   "name": "Robô bipando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1900,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "robô",
+    "bip",
+    "máquina"
+   ]
+  },
+  {
+   "id": "modem",
+   "file": "modem.ogg",
+   "name": "Modem discando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2900,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "modem",
+    "internet",
+    "antigo"
+   ]
+  },
+  {
+   "id": "radio_sintonizando",
+   "file": "radio_sintonizando.ogg",
+   "name": "Rádio sintonizando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2500,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "rádio",
+    "sintonizar",
+    "estação"
+   ]
+  },
+  {
+   "id": "scanner",
+   "file": "scanner.ogg",
+   "name": "Scanner",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1500,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "scanner",
+    "leitura",
+    "escanear"
+   ]
+  },
+  {
+   "id": "estalo",
+   "file": "estalo.ogg",
+   "name": "Estalo",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 100,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "estalo",
+    "quebrar",
+    "galho"
+   ]
+  },
+  {
+   "id": "pipoca",
+   "file": "pipoca.ogg",
+   "name": "Pipoca estourando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2409,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "pipoca",
+    "estourar",
+    "cinema"
+   ]
+  },
+  {
+   "id": "garrafa_abrindo",
+   "file": "garrafa_abrindo.ogg",
+   "name": "Refrigerante abrindo",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1640,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "refrigerante",
+    "lata",
+    "abrir",
+    "gás"
+   ]
+  },
+  {
+   "id": "fosforo",
+   "file": "fosforo.ogg",
+   "name": "Fósforo acendendo",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1150,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "fósforo",
+    "acender",
+    "fogo"
+   ]
+  },
+  {
+   "id": "cronometro",
+   "file": "cronometro.ogg",
+   "name": "Cronômetro",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1400,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "cronômetro",
+    "tempo",
+    "fim"
+   ]
+  },
+  {
+   "id": "maquina_registradora",
+   "file": "maquina_registradora.ogg",
+   "name": "Caixa registradora",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1250,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "dinheiro",
+    "caixa",
+    "venda"
+   ]
+  },
+  {
+   "id": "pombo_eletronico",
+   "file": "pombo_eletronico.ogg",
+   "name": "Ronronar eletrônico",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "fofo",
+    "eletrônico",
+    "pet"
+   ]
+  },
+  {
+   "id": "zipper",
+   "file": "zipper.ogg",
+   "name": "Zíper",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 598,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "zíper",
+    "fechar",
+    "roupa"
+   ]
+  },
+  {
+   "id": "sonar",
+   "file": "sonar.ogg",
+   "name": "Sonar",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1996,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "sonar",
+    "submarino",
+    "radar"
+   ]
+  },
+  {
+   "id": "abertura_epica",
+   "file": "abertura_epica.ogg",
+   "name": "Abertura épica",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 9658,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "abertura",
+    "épico",
+    "intro"
+   ]
+  },
+  {
+   "id": "abertura_gamer",
+   "file": "abertura_gamer.ogg",
+   "name": "Abertura gamer",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3750,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "abertura",
+    "gamer",
+    "intro",
+    "live"
+   ]
+  },
+  {
+   "id": "encerramento",
+   "file": "encerramento.ogg",
+   "name": "Encerramento",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 4480,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "fim",
+    "encerramento",
+    "tchau"
+   ]
+  },
+  {
+   "id": "transicao_rapida",
+   "file": "transicao_rapida.ogg",
+   "name": "Transição rápida",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 1300,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "transição",
+    "corte"
+   ]
+  },
+  {
+   "id": "transicao_suave",
+   "file": "transicao_suave.ogg",
+   "name": "Transição suave",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 2834,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "transição",
+    "suave"
+   ]
+  },
+  {
+   "id": "intro_chiptune",
+   "file": "intro_chiptune.ogg",
+   "name": "Intro chiptune",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3200,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "chiptune",
+    "8bit",
+    "intro"
+   ]
+  },
+  {
+   "id": "jingle_feliz",
+   "file": "jingle_feliz.ogg",
+   "name": "Jingle feliz",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 2143,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "feliz",
+    "alegre",
+    "jingle"
+   ]
+  },
+  {
+   "id": "jingle_triste",
+   "file": "jingle_triste.ogg",
+   "name": "Jingle triste",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 6943,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "triste",
+    "melancolia"
+   ]
+  },
+  {
+   "id": "jingle_misterioso",
+   "file": "jingle_misterioso.ogg",
+   "name": "Jingle misterioso",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 4266,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "mistério",
+    "investigação",
+    "detetive"
+   ]
+  },
+  {
+   "id": "vinheta_noticia",
+   "file": "vinheta_noticia.ogg",
+   "name": "Vinheta de notícia",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 2000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "notícia",
+    "jornal",
+    "plantão"
+   ]
+  },
+  {
+   "id": "batida_eletronica",
+   "file": "batida_eletronica.ogg",
+   "name": "Batida eletrônica",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3871,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "eletrônica",
+    "batida",
+    "beat"
+   ]
+  },
+  {
+   "id": "loop_lofi",
+   "file": "loop_lofi.ogg",
+   "name": "Loop lo-fi",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 5993,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "lofi",
+    "relaxar",
+    "loop",
+    "estudar"
+   ]
+  },
+  {
+   "id": "loop_chiptune",
+   "file": "loop_chiptune.ogg",
+   "name": "Loop chiptune",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3450,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "chiptune",
+    "loop",
+    "fase"
+   ]
+  },
+  {
+   "id": "loop_suspense",
+   "file": "loop_suspense.ogg",
+   "name": "Loop de suspense",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 4364,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "suspense",
+    "loop",
+    "tensão"
+   ]
+  },
+  {
+   "id": "loop_acao",
+   "file": "loop_acao.ogg",
+   "name": "Loop de ação",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3450,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "ação",
+    "loop",
+    "perseguição"
+   ]
+  },
+  {
+   "id": "fanfarra_real",
+   "file": "fanfarra_real.ogg",
+   "name": "Fanfarra real",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3922,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "fanfarra",
+    "rei",
+    "anúncio",
+    "realeza"
+   ]
+  },
+  {
+   "id": "fanfarra_vitoria",
+   "file": "fanfarra_vitoria.ogg",
+   "name": "Fanfarra de vitória",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3521,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "vitória",
+    "fanfarra",
+    "campeão"
+   ]
+  },
+  {
+   "id": "tema_vilao",
+   "file": "tema_vilao.ogg",
+   "name": "Tema de vilão",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 5211,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "vilão",
+    "mal",
+    "malvado"
+   ]
+  },
+  {
+   "id": "tema_heroi",
+   "file": "tema_heroi.ogg",
+   "name": "Tema de herói",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 10013,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "herói",
+    "heroico",
+    "salvar"
+   ]
+  },
+  {
+   "id": "tema_comedia",
+   "file": "tema_comedia.ogg",
+   "name": "Tema de comédia",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 2400,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "comédia",
+    "engraçado",
+    "palhaçada"
+   ]
+  },
+  {
+   "id": "valsa_curta",
+   "file": "valsa_curta.ogg",
+   "name": "Valsa curta",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 4525,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "valsa",
+    "dança",
+    "elegante"
+   ]
+  },
+  {
+   "id": "musica_elevador",
+   "file": "musica_elevador.ogg",
+   "name": "Música de elevador",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 5053,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "elevador",
+    "espera",
+    "tédio"
+   ]
+  },
+  {
+   "id": "musica_espera",
+   "file": "musica_espera.ogg",
+   "name": "Música de espera",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 4364,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "espera",
+    "aguardando",
+    "telefone"
+   ]
+  },
+  {
+   "id": "caixinha_musica",
+   "file": "caixinha_musica.ogg",
+   "name": "Caixinha de música",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 5088,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "caixinha",
+    "ninar",
+    "doce"
+   ]
+  },
+  {
+   "id": "virada_bateria",
+   "file": "virada_bateria.ogg",
+   "name": "Virada de bateria",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3500,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "bateria",
+    "virada",
+    "fill"
+   ]
+  },
+  {
+   "id": "batida_suspense",
+   "file": "batida_suspense.ogg",
+   "name": "Batida de suspense",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 5695,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "suspense",
+    "batida",
+    "investigação"
+   ]
+  },
+  {
+   "id": "beat_rap",
+   "file": "beat_rap.ogg",
+   "name": "Beat de rap",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 5333,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "rap",
+    "beat",
+    "hip hop"
+   ]
+  },
+  {
+   "id": "batida_funk",
+   "file": "batida_funk.ogg",
+   "name": "Batida funk (tamborzão)",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3796,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "funk",
+    "batida",
+    "baile"
+   ]
+  },
+  {
+   "id": "batida_trap",
+   "file": "batida_trap.ogg",
+   "name": "Batida trap",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3429,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "trap",
+    "beat",
+    "808"
+   ]
+  },
+  {
+   "id": "bossa_curta",
+   "file": "bossa_curta.ogg",
+   "name": "Bossa curta",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 5538,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "bossa",
+    "violão",
+    "brasil",
+    "relax"
+   ]
+  },
+  {
+   "id": "samba_curto",
+   "file": "samba_curto.ogg",
+   "name": "Batucada curta",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 5179,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "samba",
+    "batucada",
+    "carnaval"
+   ]
+  },
+  {
+   "id": "rock_curto",
+   "file": "rock_curto.ogg",
+   "name": "Riff de rock",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3664,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "rock",
+    "guitarra",
+    "riff"
+   ]
+  },
+  {
+   "id": "metal_curto",
+   "file": "metal_curto.ogg",
+   "name": "Riff pesado",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 1856,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "metal",
+    "pesado",
+    "guitarra"
+   ]
+  },
+  {
+   "id": "reggae_curto",
+   "file": "reggae_curto.ogg",
+   "name": "Reggae curto",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 6000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "reggae",
+    "relax",
+    "praia"
+   ]
+  },
+  {
+   "id": "piano_dramatico",
+   "file": "piano_dramatico.ogg",
+   "name": "Piano dramático",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 6985,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "piano",
+    "drama",
+    "novela"
+   ]
+  },
+  {
+   "id": "orquestra_tensa",
+   "file": "orquestra_tensa.ogg",
+   "name": "Orquestra tensa",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 4268,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "orquestra",
+    "tensão",
+    "batalha"
+   ]
+  },
+  {
+   "id": "festa",
+   "file": "festa.ogg",
+   "name": "Festa",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3871,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "festa",
+    "dança",
+    "aniversário"
+   ]
+  },
+  {
+   "id": "parabens_instrumental",
+   "file": "parabens_instrumental.ogg",
+   "name": "Ritmo de festa (sinos)",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 5602,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "festa",
+    "sinos",
+    "comemoração"
+   ]
+  },
+  {
+   "id": "intro_podcast",
+   "file": "intro_podcast.ogg",
+   "name": "Intro de podcast",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 2182,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "podcast",
+    "intro",
+    "programa"
+   ]
+  },
+  {
+   "id": "cha_cha_curto",
+   "file": "cha_cha_curto.ogg",
+   "name": "Ritmo latino",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 4000,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "latino",
+    "dança",
+    "salsa"
+   ]
+  },
+  {
+   "id": "sintetizador_retro",
+   "file": "sintetizador_retro.ogg",
+   "name": "Sintetizador retrô",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 9823,
+   "license": "ORIGINAL",
+   "author": "MEME SOUNDBOARD X (síntese sonora original)",
+   "tags": [
+    "retrô",
+    "anos 80",
+    "synthwave"
+   ]
+  }
+ ]
 }

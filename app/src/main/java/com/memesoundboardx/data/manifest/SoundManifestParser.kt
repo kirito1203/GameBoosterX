@@ -19,6 +19,8 @@ data class ManifestSound(
     val name: String,
     val categoryId: String,
     val license: SoundLicense,
+    /** Duração medida na geração; evita medir no celular. */
+    val durationMs: Long?,
     val author: String?,
     val sourceUrl: String?,
     val tags: List<String>,
@@ -126,6 +128,7 @@ object SoundManifestParser {
                 name = name,
                 categoryId = categoryId,
                 license = license!!,
+                durationMs = if (o.has("durationMs")) o.optLong("durationMs").takeIf { it > 0 } else null,
                 author = o.optString("author").trim().ifEmpty { null },
                 sourceUrl = o.optString("sourceUrl").trim().ifEmpty { null },
                 tags = o.optJSONArray("tags").toStringList(),

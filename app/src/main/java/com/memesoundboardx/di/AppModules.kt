@@ -6,6 +6,8 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
+import com.memesoundboardx.core.audio.SoundEngine
+import com.memesoundboardx.data.importer.SafAudioImporter
 import com.memesoundboardx.data.local.datastore.SettingsDataStore
 import com.memesoundboardx.data.local.db.AppDatabase
 import com.memesoundboardx.data.local.db.CategoryDao
@@ -13,9 +15,11 @@ import com.memesoundboardx.data.local.db.SoundDao
 import com.memesoundboardx.data.repository.AssetLibrarySyncer
 import com.memesoundboardx.data.repository.CategoryRepositoryImpl
 import com.memesoundboardx.data.repository.SoundRepositoryImpl
+import com.memesoundboardx.domain.repository.AudioImporter
 import com.memesoundboardx.domain.repository.CategoryRepository
 import com.memesoundboardx.domain.repository.LibrarySyncer
 import com.memesoundboardx.domain.repository.SettingsRepository
+import com.memesoundboardx.domain.repository.SoundPlayer
 import com.memesoundboardx.domain.repository.SoundRepository
 import dagger.Binds
 import dagger.Module
@@ -94,4 +98,10 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindLibrarySyncer(impl: AssetLibrarySyncer): LibrarySyncer
+
+    @Binds
+    abstract fun bindSoundPlayer(impl: SoundEngine): SoundPlayer
+
+    @Binds
+    abstract fun bindAudioImporter(impl: SafAudioImporter): AudioImporter
 }

@@ -1,5 +1,6 @@
 package com.memesoundboardx.ui.navigation
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -16,14 +17,21 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -33,6 +41,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.memesoundboardx.ui.components.LocalPlayerUi
+import com.memesoundboardx.ui.components.PlayerBar
+import com.memesoundboardx.ui.components.PlayerUi
+import com.memesoundboardx.ui.components.PlayerViewModel
 import com.memesoundboardx.ui.screens.categories.CategoriesScreen
 import com.memesoundboardx.ui.screens.categories.CategoryDetailScreen
 import com.memesoundboardx.ui.screens.favorites.FavoritesScreen
@@ -86,8 +98,21 @@ fun AppRoot() {
     val currentRoute = backStack?.destination?.route
     val isTopLevel = tabs.any { it.route == currentRoute }
 
+    val playerVm: PlayerViewModel = hiltViewModel()
+    val playerState by playerVm.state.collectAsStateWithLifecycle()
+    val playerUi = PlayerUi(playerState, playerVm::toggle, playerVm::stop)
+    val snackbar = remember { SnackbarHostState() }
+    LaunchedEffect(playerState.lastError) {
+        playerState.lastError?.let {
+            snackbar.showSnackbar(it)
+            playerVm.clearError()
+        }
+    }
+
+    CompositionLocalProvider(LocalPlayerUi provides playerUi) {
     Scaffold(
         containerColor = NeonColors.BgDeep,
+        snackbarHost = { SnackbarHost(snackbar) },
         topBar = {
             TopAppBar(
                 title = { Text(titleFor(currentRoute), fontWeight = FontWeight.Black) },
@@ -114,6 +139,13 @@ fun AppRoot() {
             )
         },
         bottomBar = {
+          Column {
+            PlayerBar(
+                state = playerState,
+                onVolumeCommit = playerVm::setVolume,
+                onToggleRepeat = { playerVm.setRepeat(!playerState.repeat) },
+                onStopAll = playerVm::stopAll,
+            )
             NavigationBar(containerColor = NeonColors.Surface) {
                 tabs.forEach { tab ->
                     val selected = backStack?.destination?.hierarchy?.any { it.route == tab.route } == true
@@ -132,6 +164,7 @@ fun AppRoot() {
                     )
                 }
             }
+          }
         },
     ) { padding ->
         NavHost(
@@ -159,6 +192,7 @@ fun AppRoot() {
             composable(Routes.MY_AUDIO) { MyAudioScreen() }
             composable(Routes.SETTINGS) { SettingsScreen() }
         }
+    }
     }
 }
 

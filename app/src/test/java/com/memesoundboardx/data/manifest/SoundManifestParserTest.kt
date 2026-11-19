@@ -81,11 +81,25 @@ class SoundManifestParserTest {
         assertEquals(1, r.errors.size)
     }
 
-    @Test fun realBundledManifestHasNineCategoriesAndTarget350() {
+    @Test fun parsesOptionalDuration() {
+        val r = SoundManifestParser.parse(manifest("""[{"id":"a","file":"a.ogg","name":"A","categoryId":"impactos","license":"ORIGINAL","durationMs":1234}]"""))
+        assertEquals(1234L, r.sounds.single().durationMs)
+        assertEquals(null, SoundManifestParser.parse(manifest("[$valid]")).sounds.single().durationMs)
+    }
+
+    @Test fun realBundledManifestIsValidAndEveryFileExists() {
         val json = java.io.File("src/main/assets/sounds.json").readText()
         val r = SoundManifestParser.parse(json)
         assertTrue(r.errors.toString(), r.errors.isEmpty())
         assertEquals(9, r.categories.size)
         assertEquals(350, r.categories.sumOf { it.targetCount ?: 0 })
+        assertTrue("esperado 200+ sons, veio ${r.sounds.size}", r.sounds.size >= 200)
+        for (s in r.sounds) {
+            val f = java.io.File("src/main/assets/sounds/" + s.file)
+            assertTrue("arquivo ausente: ${s.file}", f.isFile)
+            assertTrue("arquivo pequeno demais (vazio?): ${s.file}", f.length() > 1_000)
+            assertTrue("sem duração: ${s.id}", (s.durationMs ?: 0) > 0)
+            assertEquals("licença de ${s.id}", SoundLicense.ORIGINAL, s.license)
+        }
     }
 }

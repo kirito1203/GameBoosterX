@@ -53,6 +53,12 @@ interface SoundDao {
     @Query("SELECT * FROM sounds WHERE id = :id")
     suspend fun getById(id: Long): SoundEntity?
 
+    @Query("SELECT * FROM sounds WHERE `key` = :key")
+    suspend fun getByKey(key: String): SoundEntity?
+
+    @Query("UPDATE sounds SET isAvailable = :available WHERE id = :id")
+    suspend fun setAvailable(id: Long, available: Boolean)
+
     @Upsert
     suspend fun upsertAll(sounds: List<SoundEntity>)
 

@@ -1,6 +1,7 @@
 package com.memesoundboardx.data.repository
 
 import com.memesoundboardx.core.util.TextNormalizer
+import com.memesoundboardx.data.importer.ImportedFileStore
 import com.memesoundboardx.data.local.db.SoundDao
 import com.memesoundboardx.domain.model.LibraryStats
 import com.memesoundboardx.domain.model.Sound
@@ -15,6 +16,7 @@ import javax.inject.Singleton
 @Singleton
 class SoundRepositoryImpl @Inject constructor(
     private val dao: SoundDao,
+    private val importedFiles: ImportedFileStore,
 ) : SoundRepository {
 
     override fun observeAll(): Flow<List<Sound>> =
@@ -48,8 +50,14 @@ class SoundRepositoryImpl @Inject constructor(
         dao.setCategory(soundId, categoryId)
 
     /**
-     * Remove o som da biblioteca. Para sons importados, a liberação da permissão
-     * persistente do SAF é feita na ETAPA 5 (o arquivo original do usuário nunca é apagado).
+     * Remove o som da biblioteca e apaga a CÓPIA interna (pasta privada do app).
+     * O arquivo original do usuário, de onde o som foi importado, nunca é tocado.
+     * Sons embutidos não podem ser excluídos (voltariam na próxima sincronização).
      */
-    override suspend fun delete(soundId: Long) = dao.deleteById(soundId)
+    override suspend fun delete(soundId: Long) {
+        val s = dao.getById(soundId) ?: return
+        if (s.source != SoundSource.IMPORTED.name) return
+        dao.deleteById(soundId)
+        importedFiles.delete(s.uri)
+    }
 }

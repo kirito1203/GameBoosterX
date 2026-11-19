@@ -19,11 +19,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -38,8 +41,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.memesoundboardx.core.util.Formatters
+import com.memesoundboardx.domain.model.PlayStatus
 import com.memesoundboardx.domain.model.Sound
 import com.memesoundboardx.domain.model.SoundSource
 import com.memesoundboardx.ui.theme.MonoLabel
@@ -117,8 +122,8 @@ fun EmptyState(icon: ImageVector, title: String, message: String, modifier: Modi
 }
 
 /**
- * Linha de som. Na ETAPA 1 não há botão de tocar: o motor de áudio chega na ETAPA 3
- * e nenhum botão finge reproduzir. O favorito funciona de verdade (salvo no Room).
+ * Linha de som: toque na linha ou no botão grande para tocar/pausar/continuar.
+ * O botão quadrado (parar) aparece só enquanto o som está ativo.
  */
 @Composable
 fun SoundRow(
@@ -128,10 +133,16 @@ fun SoundRow(
     modifier: Modifier = Modifier,
     trailing: @Composable (() -> Unit)? = null,
 ) {
+    val player = LocalPlayerUi.current
+    val status = player.state.statusOf(sound.id)
+    val active = status != null
     val favColor by animateColorAsState(
         if (sound.isFavorite) NeonColors.Purple else NeonColors.TextDim, label = "favColor",
     )
     val favScale by animateFloatAsState(if (sound.isFavorite) 1.15f else 1f, label = "favScale")
+    val borderColor by animateColorAsState(
+        if (status == PlayStatus.PLAYING) NeonColors.Blue else NeonColors.Outline, label = "border",
+    )
     val shape = RoundedCornerShape(14.dp)
 
     Row(
@@ -139,10 +150,13 @@ fun SoundRow(
             .fillMaxWidth()
             .clip(shape)
             .background(NeonColors.Surface)
-            .border(1.dp, NeonColors.Outline, shape)
-            .padding(start = 14.dp, end = 4.dp, top = 10.dp, bottom = 10.dp),
+            .border(if (active) 1.5.dp else 1.dp, borderColor, shape)
+            .clickable(enabled = sound.isAvailable) { player.onToggle(sound) }
+            .padding(start = 8.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        PlayButton(status, enabled = sound.isAvailable) { player.onToggle(sound) }
+        Spacer(Modifier.width(10.dp))
         Column(Modifier.weight(1f)) {
             Text(
                 sound.name,
@@ -160,6 +174,11 @@ fun SoundRow(
             }.joinToString(" · ")
             Text(meta, style = MonoLabel, color = NeonColors.TextDim, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
+        if (active) {
+            IconButton(onClick = { player.onStop(sound) }) {
+                Icon(AppIcons.Stop, contentDescription = "Parar", tint = NeonColors.Text)
+            }
+        }
         IconButton(onClick = { onToggleFavorite(sound) }) {
             Icon(
                 if (sound.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
@@ -169,6 +188,31 @@ fun SoundRow(
             )
         }
         trailing?.invoke()
+    }
+}
+
+/** Botão circular grande: tocar / pausar / carregando. */
+@Composable
+fun PlayButton(status: PlayStatus?, enabled: Boolean = true, size: Dp = 48.dp, onClick: () -> Unit) {
+    val bg = when (status) {
+        PlayStatus.PLAYING -> NeonColors.NeonGradient
+        PlayStatus.PAUSED, PlayStatus.LOADING -> androidx.compose.ui.graphics.SolidColor(NeonColors.SurfaceHigh)
+        null -> androidx.compose.ui.graphics.SolidColor(NeonColors.Blue.copy(alpha = if (enabled) 0.18f else 0.06f))
+    }
+    Box(
+        Modifier
+            .size(size)
+            .clip(CircleShape)
+            .background(bg)
+            .clickable(enabled = enabled, onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) {
+        when (status) {
+            PlayStatus.LOADING -> CircularProgressIndicator(Modifier.size(size * 0.45f), strokeWidth = 2.dp, color = NeonColors.Blue)
+            PlayStatus.PLAYING -> Icon(AppIcons.Pause, contentDescription = "Pausar", tint = NeonColors.Text)
+            PlayStatus.PAUSED -> Icon(Icons.Filled.PlayArrow, contentDescription = "Continuar", tint = NeonColors.Blue)
+            null -> Icon(Icons.Filled.PlayArrow, contentDescription = "Tocar", tint = if (enabled) NeonColors.Blue else NeonColors.TextDim)
+        }
     }
 }
 
