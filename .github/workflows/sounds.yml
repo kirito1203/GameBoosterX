@@ -1,0 +1,48 @@
+name: Biblioteca de sons (descoberta e download)
+
+# Commit com "[discover]" → lista candidatos (tools/candidates/*.json).
+# Commit com "[fetch]"    → baixa os sons escolhidos em tools/sound_sources.json,
+#                            converte para OGG, atualiza o manifesto e o relatório.
+on:
+  push:
+    branches: [meme-soundboard-x]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sounds
+  cancel-in-progress: false
+
+jobs:
+  sounds:
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[discover]') || contains(github.event.head_commit.message, '[fetch]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ferramentas
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+          python3 -m pip install --quiet numpy scipy
+
+      - name: Descoberta
+        if: ${{ contains(github.event.head_commit.message, '[discover]') }}
+        run: python3 tools/discover_sounds.py
+
+      - name: Download dos sons escolhidos
+        if: ${{ contains(github.event.head_commit.message, '[fetch]') }}
+        env:
+          FREESOUND_API_KEY: ${{ secrets.FREESOUND_API_KEY }}
+        run: python3 tools/fetch_sounds.py
+
+      - name: Commit dos resultados
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A tools/candidates app/src/main/assets docs || true
+          git diff --cached --quiet && echo "Nada mudou." && exit 0
+          git commit -m "Sons: resultado automático (${{ github.run_number }})"
+          git push
