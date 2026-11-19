@@ -1,5 +1,16 @@
 # Relatório de testes e status
 
+## Build 30 (biblioteca 0.3.0) — commit ce322da
+
+- Compilação: ✅ · Testes de JVM: ✅ **54/54** · Emulador Android (API 34): ✅ **23/23**
+- Novos testes:
+  - manifesto real com 475 sons: todo arquivo existe; todo som externo tem link e licença válida; todo CC BY/BY-SA tem autor (JVM)
+  - itens pendentes e licença CC BY-SA no manifesto (JVM)
+  - sincronização da biblioteca real com 350+ sons, remover som embutido, não voltar, restaurar (emulador)
+  - sons do Commons e do OpenGameArt tocam no motor (emulador)
+  - importar arquivo para um meme pendente: nome e categoria certos, sai da lista de pendentes, aparece na pesquisa (emulador)
+- Durante o trabalho, o teste de JVM encontrou 1 som CC BY-SA sem autor ("Cuíca"); corrigido creditando quem enviou o arquivo ao Commons.
+
 Legenda: ✅ sim · ❌ não · ⏳ aguardando · — não se aplica
 
 **Implementado** = código escrito · **Compilado** = passou no GitHub Actions ·

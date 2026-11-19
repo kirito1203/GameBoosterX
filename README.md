@@ -8,12 +8,13 @@ Kotlin · Jetpack Compose · Material 3 · Room · DataStore · Hilt. Sem root.
 
 ## Status
 
-**ETAPA 2 — Motor de áudio, importação e biblioteca** (versão 0.2.0).
+**Versão 0.3.0** — motor de áudio, importação e biblioteca com **475 sons**:
+241 originais (síntese) + 234 gravações de fontes livres com licença registrada.
+40 memes sem fonte autorizada ficam como itens pendentes para importação manual.
 
-- Toca, pausa, continua e para sons; volume, repetição e limite de simultâneos.
-- Importa MP3, WAV, OGG, M4A e AAC pelo seletor do Android, com categoria automática.
-- 241 efeitos sonoros originais embutidos (gerados por `tools/generate_sounds.py`).
-- 52 testes de JVM + 20 testes em emulador Android passando. Veja [docs/TESTES.md](docs/TESTES.md).
+- [docs/RELATORIO_SONS.md](docs/RELATORIO_SONS.md) — cada som com fonte, autor, licença e link
+- [docs/FONTES_DE_SONS.md](docs/FONTES_DE_SONS.md) — pesquisa das fontes e decisões de licença
+- [docs/TESTES.md](docs/TESTES.md) — 54 testes de JVM + 23 em emulador passando
 
 ## Como compilar só pelo celular (GitHub Actions)
 
