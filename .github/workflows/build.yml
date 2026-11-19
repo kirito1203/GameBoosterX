@@ -25,8 +25,6 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - uses: android-actions/setup-android@v3
-
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.11.1"
@@ -58,6 +56,7 @@ jobs:
           target_commitish: ${{ github.sha }}
           name: "MEME SOUNDBOARD X — build ${{ github.run_number }}"
           prerelease: true
+          make_latest: false
           files: MemeSoundboardX-build${{ github.run_number }}.apk
           body: |
             Build automático (debug) do commit ${{ github.sha }}.
