@@ -37,9 +37,9 @@ data class ManifestPending(
 data class ManifestParseResult(
     val categories: List<ManifestCategory>,
     val sounds: List<ManifestSound>,
-    val pending: List<ManifestPending> = emptyList(),
     /** Uma mensagem por entrada rejeitada. Vazio = tudo válido. */
     val errors: List<String>,
+    val pending: List<ManifestPending> = emptyList(),
 )
 
 /**
@@ -73,7 +73,7 @@ object SoundManifestParser {
         val categoryIds = categories.map { it.id }.toSet()
         val sounds = parseSounds(root.optJSONArray("sounds") ?: JSONArray(), categoryIds, errors)
         val pending = parsePending(root.optJSONArray("pending") ?: JSONArray(), categoryIds, errors)
-        return ManifestParseResult(categories, sounds, pending, errors)
+        return ManifestParseResult(categories, sounds, errors, pending)
     }
 
     private fun parseCategories(arr: JSONArray, errors: MutableList<String>): List<ManifestCategory> {

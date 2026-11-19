@@ -51,6 +51,8 @@ private class FakeSettings : SettingsRepository {
     override suspend fun setMaxSimultaneous(count: Int) { flow.value = flow.value.copy(maxSimultaneous = AppSettings.clampSimultaneous(count)) }
     override suspend fun setRequestAudioFocus(enabled: Boolean) { flow.value = flow.value.copy(requestAudioFocus = enabled) }
     override suspend fun setOnboardingDone(done: Boolean) = Unit
+    override suspend fun hideBundled(key: String) { flow.value = flow.value.copy(hiddenBundled = flow.value.hiddenBundled + key) }
+    override suspend fun restoreBundled() { flow.value = flow.value.copy(hiddenBundled = emptySet()) }
 }
 
 /** Gera um WAV PCM 16-bit mono válido (tom senoidal). */
@@ -287,7 +289,7 @@ class AudioIntegrationTest {
         engine.stop(sound.id)
 
         // Excluir remove a linha e a cópia
-        SoundRepositoryImpl(db.soundDao(), store).delete(persisted.id)
+        SoundRepositoryImpl(db.soundDao(), store, settings).delete(persisted.id)
         assertNull(db.soundDao().getById(persisted.id))
         assertFalse(store.exists(persisted.uri))
 

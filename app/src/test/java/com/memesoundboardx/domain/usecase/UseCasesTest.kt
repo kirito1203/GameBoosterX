@@ -46,6 +46,7 @@ private class FakeSoundRepository(initial: List<Sound>) : SoundRepository {
     }
     override suspend fun setCategory(soundId: Long, categoryId: String?) = Unit
     override suspend fun delete(soundId: Long) { data.value = data.value.filterNot { it.id == soundId } }
+    override fun observeFulfilledPending(): Flow<Set<String>> = flowOf(emptySet())
 }
 
 private class FakeCategoryRepository(names: List<String>) : CategoryRepository {

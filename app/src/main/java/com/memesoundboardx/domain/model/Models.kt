@@ -75,8 +75,8 @@ data class LibraryStats(
 data class LibrarySyncReport(
     val validSounds: Int,
     val rejected: List<String>,
-    val hidden: Int = 0,
     val finishedAt: Long,
+    val hidden: Int = 0,
 )
 
 data class AppSettings(
