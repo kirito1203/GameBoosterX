@@ -1,55 +1,62 @@
 # Relatório de testes e status
 
-Legenda: ✅ sim · ❌ não · ⏳ aguardando · — não se aplica ainda
+Legenda: ✅ sim · ❌ não · ⏳ aguardando · — não se aplica
 
 **Implementado** = código escrito · **Compilado** = passou no GitHub Actions ·
 **Testado** = testes automáticos passaram · **No C71** = verificado por você no aparelho
 
-## ETAPA 1 — Estrutura e arquitetura
+## Build 24 (ETAPA 2) — commit bc3475e
 
-Build 21 do GitHub Actions: compilação ✅, 35 testes unitários ✅ (com `org.json` real), testes instrumentados compilados ✅.
+- Compilação: ✅
+- Testes de JVM: ✅ **52/52**
+- Testes instrumentados em emulador Android (API 34, x86_64): ✅ **20/20**
 
-| Item | Implementado | Compilado | Testado | No C71 |
+| Requisito | Implementado | Compilado | Testado | No C71 |
 |---|---|---|---|---|
-| Projeto Gradle, Hilt, Compose, tema | ✅ | ✅ | — | ⏳ |
-| Banco Room (sons, categorias) | ✅ | ✅ | ⏳ instrumentado¹ | ⏳ |
-| DataStore (configurações) | ✅ | ✅ | ✅ regras de limite² | — |
-| Manifesto + validação | ✅ | ✅ | ✅ parser³ | ⏳ |
-| Navegação com 7 telas + detalhe | ✅ | ✅ | — | ⏳ |
-| Favoritos | ✅ | ✅ | ✅ regra² · ⏳ banco¹ | ⏳ |
-| Pesquisa sem acento | ✅ | ✅ | ✅ normalização² · ⏳ banco¹ | ⏳ |
-| Criar/excluir categoria | ✅ | ✅ | ✅ regra² · ⏳ banco¹ | ⏳ |
-| Renomear/excluir som importado | ✅ | ✅ | ✅ regra² | — (sem importação ainda) |
+| Tocar som curto (SoundPool) | ✅ | ✅ | ✅ emulador | ⏳ |
+| Tocar som longo (MediaPlayer) | ✅ | ✅ | ✅ emulador | ⏳ |
+| Pausar / continuar / parar | ✅ | ✅ | ✅ emulador | ⏳ |
+| Parar todos | ✅ | ✅ | ✅ emulador | ⏳ |
+| Sem duplicação ao tocar de novo | ✅ | ✅ | ✅ emulador | ⏳ |
+| Volume geral (inclusive em som tocando) | ✅ | ✅ | ✅ emulador | ⏳ |
+| Repetição | ✅ | ✅ | ✅ emulador | ⏳ |
+| Limite de sons simultâneos | ✅ | ✅ | ✅ emulador + JVM | ⏳ |
+| Recuperação após arquivo quebrado | ✅ | ✅ | ✅ emulador | ⏳ |
+| Memória: cache de no máx. 40 amostras | ✅ | ✅ | ✅ emulador (80 sons) + JVM (350) | ⏳ |
+| Importar via seletor do Android (SAF) | ✅ | ✅ | ⏳ parcial¹ | ⏳ |
+| Validar arquivo (falso .mp3, vazio, .txt) | ✅ | ✅ | ✅ emulador | ⏳ |
+| Duração e tamanho dos importados | ✅ | ✅ | ✅ emulador | ⏳ |
+| Duplicados | ✅ | ✅ | ✅ emulador | ⏳ |
+| Categoria automática pelo nome | ✅ | ✅ | ✅ JVM + emulador | ⏳ |
+| Persistência após fechar (banco + cópia) | ✅ | ✅ | ✅ emulador² | ⏳ |
+| Importado toca pelo motor | ✅ | ✅ | ✅ emulador | ⏳ |
+| Excluir apaga a cópia, não o original | ✅ | ✅ | ✅ emulador | ⏳ |
+| Favoritos | ✅ | ✅ | ✅ JVM + emulador | ⏳ |
+| Pesquisa sem acento | ✅ | ✅ | ✅ JVM + emulador | ⏳ |
+| 241 sons embutidos válidos | ✅ | ✅ | ✅ JVM³ | ⏳ ouvir |
+| Microfone do Roblox | ❌ **não suportado** | — | — | — |
 
-1. `DatabaseTest` (8 testes) é compilado no CI, mas só roda com `connectedDebugAndroidTest` em aparelho ou emulador.
-2. 24 testes de JVM **executados e aprovados** durante o desenvolvimento (compilador Kotlin 2.0.21 + JUnit 4.13.2):
-   TextNormalizer, Formatters, SupportedFormats, AppSettings, NameRules e os casos de uso
-   de favorito, pesquisa, criar categoria e renomear.
-3. `SoundManifestParserTest` (11 testes) **executado e aprovado** com um substituto temporário do `org.json`
-   (a biblioteca real não estava disponível no ambiente de desenvolvimento). No GitHub Actions roda com o `org.json` real.
-   Inclui a verificação do `sounds.json` real: 9 categorias, meta total 350.
+1. O teste importa por `file://` com o mesmo código. A tela do seletor do sistema (toque do usuário) não é automatizada.
+2. Fecha o banco, apaga o arquivo original, reabre: os sons continuam lá e tocam.
+3. Manifesto válido, cada arquivo existe, tem mais de 1 KB, duração e licença ORIGINAL. Todos decodificam no ffmpeg.
+   **Ninguém ouviu os sons ainda.**
 
-## Pendente (etapas futuras)
+## O que os testes NÃO cobrem
 
-| Requisito do projeto | Etapa | Status |
-|---|---|---|
-| Reprodução, pausa, parar, repetição, fila | 3 | ❌ não implementado |
-| Controle de volume e sons simultâneos | 3 | ❌ (configuração salva, sem efeito ainda) |
-| Recuperação após interrupção (ligação, outro app) | 3 | ❌ |
-| Importação MP3/WAV/OGG/M4A/AAC | 5 | ❌ |
-| Detecção de arquivo inválido, duração, tamanho | 5 | ❌ |
-| Painel flutuante | 6 | ❌ |
-| Transmissão pelo microfone do Roblox | 7 | ❌ **não suportado** — ver LIMITACOES.md |
-| Consumo de memória | 8 | ❌ |
+- Latência real no Realme C71 (emulador não mede isso de forma confiável).
+- Tocar com o Roblox aberto ao mesmo tempo.
+- Qualidade sonora dos efeitos sintetizados.
+- Bateria.
 
-## Checklist para você no Realme C71 (ETAPA 1)
+## Checklist para você no Realme C71 (ETAPA 2)
 
-1. Instalar o APK de Releases e abrir. O app abre em até ~2 s?
-2. Início mostra 0 sons e 9 categorias?
-3. Categorias: as 9 padrão aparecem com "0 / N sons"? Criar "Teste", aparece em "Minhas categorias"?
-4. Criar "teste" de novo → deve recusar (nome repetido).
-5. Excluir "Teste" → some da lista.
-6. Configurações → "Sons válidos no manifesto: 0", "Entradas rejeitadas: 0".
-7. Girar a tela e trocar de aba várias vezes: nada trava ou fecha?
-
-Responda com o resultado de cada item; a coluna "No C71" só é marcada a partir disso.
+1. Biblioteca mostra 241 sons? Configurações → "Sons válidos no manifesto: 241", "rejeitadas: 0"?
+2. Toque em "Bonk", "Moeda", "Boing": o som sai na hora ou tem atraso perceptível?
+3. Toque num som e toque de novo: pausa? De novo: continua? O botão quadrado para?
+4. Toque 5 sons rápido: tocam juntos? Em Configurações, ponha "Sons ao mesmo tempo: 2" e repita.
+5. Arraste a barra de volume com um som longo tocando ("Abertura épica"): o volume muda?
+6. Repetição (ícone de setas) + um som curto: fica repetindo? Desligue: para no fim?
+7. Meus áudios → Importar: escolha 2–3 MP3/WAV seus. Aparecem com duração e tamanho? Na categoria certa?
+8. Feche o app (tire dos recentes), abra de novo: os importados continuam lá e tocam?
+9. Abra o Roblox, volte e toque sons: o som do jogo continua normal?
+10. Quais sons ficaram ruins ou estranhos? (lista por nome)

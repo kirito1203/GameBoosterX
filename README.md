@@ -8,8 +8,12 @@ Kotlin · Jetpack Compose · Material 3 · Room · DataStore · Hilt. Sem root.
 
 ## Status
 
-**ETAPA 1 — Estrutura e arquitetura** (versão 0.1.0). Ainda não toca sons.
-Veja o que está implementado, compilado e testado em [docs/TESTES.md](docs/TESTES.md).
+**ETAPA 2 — Motor de áudio, importação e biblioteca** (versão 0.2.0).
+
+- Toca, pausa, continua e para sons; volume, repetição e limite de simultâneos.
+- Importa MP3, WAV, OGG, M4A e AAC pelo seletor do Android, com categoria automática.
+- 241 efeitos sonoros originais embutidos (gerados por `tools/generate_sounds.py`).
+- 52 testes de JVM + 20 testes em emulador Android passando. Veja [docs/TESTES.md](docs/TESTES.md).
 
 ## Como compilar só pelo celular (GitHub Actions)
 
@@ -46,10 +50,10 @@ copie as últimas ~40 linhas do log e me envie.
 ## Etapas
 
 1. ✅ Estrutura e arquitetura
-2. Interface completa
-3. Motor de áudio
-4. Biblioteca de efeitos
-5. Importação de áudios
+2. Interface completa (parcial: telas atuais mantidas)
+3. ✅ Motor de áudio (adiantado)
+4. ✅ Biblioteca de efeitos (241 originais; memes dependem de importação)
+5. ✅ Importação de áudios (adiantado)
 6. Botão flutuante
 7. Investigação da integração com Roblox
 8. Otimização
