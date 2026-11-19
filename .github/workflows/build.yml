@@ -30,7 +30,16 @@ jobs:
           gradle-version: "8.11.1"
 
       - name: Testes unitários (JVM)
-        run: gradle testDebugUnitTest --stacktrace
+        shell: bash
+        run: |
+          set -o pipefail
+          gradle testDebugUnitTest 2>&1 | tee gradle-test.log
+
+      - name: Erros de compilação (anotações)
+        if: failure()
+        shell: bash
+        run: |
+          grep -hE "^e: |error:|FAILED|What went wrong" gradle-test.log | head -25 | sed -E 's/^/::error title=Compilação::/' || true
 
       - name: Resumo dos testes unitários
         if: always()

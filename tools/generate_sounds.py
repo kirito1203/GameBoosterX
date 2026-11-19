@@ -826,7 +826,8 @@ def write_wav(path, x):
 def main():
     os.makedirs(OUT, exist_ok=True)
     for f in os.listdir(OUT):
-        if f.endswith(".ogg"):
+        # x_*.ogg vêm de fontes externas (tools/fetch_sounds.py) e são preservados
+        if f.endswith(".ogg") and not f.startswith("x_"):
             os.remove(os.path.join(OUT, f))
     ids = [s["id"] for s in SOUNDS]
     dup = {i for i in ids if ids.count(i) > 1}
@@ -862,10 +863,16 @@ def main():
                     "tags": s["tags"],
                 }
             )
+    previous = {}
+    mpath = os.path.join(ASSETS, "sounds.json")
+    if os.path.exists(mpath):
+        previous = json.load(open(mpath, encoding="utf-8"))
+    external = [e for e in previous.get("sounds", []) if e.get("license") != "ORIGINAL"]
     manifest = {
         "schemaVersion": 1,
         "categories": [{"id": c, "name": n, "targetCount": t, "order": i + 1} for i, (c, n, t) in enumerate(CATEGORIES)],
-        "sounds": entries,
+        "sounds": entries + external,
+        "pending": previous.get("pending", []),
     }
     with open(os.path.join(ASSETS, "sounds.json"), "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=1)
