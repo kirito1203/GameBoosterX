@@ -50,7 +50,7 @@ def pack_zip(pack_key):
 def from_commons(title):
     r = commons_api({
         "action": "query", "prop": "imageinfo", "titles": title,
-        "iiprop": "url|mime|mediatype|extmetadata",
+        "iiprop": "url|mime|mediatype|extmetadata|user",
         "iiextmetadatafilter": "LicenseShortName|Artist|Credit",
     })
     page = r["query"]["pages"][0]
@@ -64,6 +64,11 @@ def from_commons(title):
         raise ValueError(f"licença não permitida: {lic_raw!r}")
     data = http_get(ii["url"], binary=True, pause=1.5)
     author = strip_html(em.get("Artist", {}).get("value", "")) or None
+    if not author and ii.get("user"):
+        # Sem campo "Autor": o Commons credita quem enviou o arquivo.
+        author = f"{ii['user']} (Wikimedia Commons)"
+    if not author and lic in ("CC_BY", "CC_BY_SA"):
+        raise ValueError("licença exige crédito, mas o autor não está disponível")
     ext = os.path.splitext(urllib.parse.urlparse(ii["url"]).path)[1] or ".bin"
     return data, ext, {
         "license": lic, "license_raw": lic_raw, "author": author[:120] if author else None,
