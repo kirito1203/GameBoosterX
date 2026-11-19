@@ -106,7 +106,7 @@ class AudioIntegrationTest {
 
     // ------------------------------------------------------------------ reprodução
 
-    @Test fun shortBundledSoundPlaysAndFinishesByItself() = runBlocking {
+    @Test fun shortBundledSoundPlaysAndFinishesByItself() = runBlocking<Unit> {
         val bip = bundledById("bip")
         engine.play(bip)
         await(what = "bip tocando") { it.statusOf(bip.id) == PlayStatus.PLAYING }
@@ -114,7 +114,7 @@ class AudioIntegrationTest {
         assertNull(engine.state.value.lastError)
     }
 
-    @Test fun pauseResumeStop() = runBlocking {
+    @Test fun pauseResumeStop() = runBlocking<Unit> {
         val s = bundledById("aplausos")
         assertTrue(PlaybackPolicy.useSoundPool(s.durationMs, null))
         engine.toggle(s)
@@ -129,7 +129,7 @@ class AudioIntegrationTest {
         await(what = "parado") { it.statusOf(s.id) == null }
     }
 
-    @Test fun longSoundStreamsWithMediaPlayer() = runBlocking {
+    @Test fun longSoundStreamsWithMediaPlayer() = runBlocking<Unit> {
         val long = bundled.first { (it.durationMs ?: 0) > PlaybackPolicy.SHORT_SOUND_MS }
         engine.play(long)
         await(what = "longo tocando (${long.name})") { it.statusOf(long.id) == PlayStatus.PLAYING }
@@ -139,7 +139,7 @@ class AudioIntegrationTest {
         await(what = "longo parado") { it.statusOf(long.id) == null }
     }
 
-    @Test fun tappingTwiceDoesNotDuplicate() = runBlocking {
+    @Test fun tappingTwiceDoesNotDuplicate() = runBlocking<Unit> {
         val s = bundledById("aplausos_fortes")
         engine.toggle(s)
         await(what = "tocando") { it.statusOf(s.id) == PlayStatus.PLAYING }
@@ -148,7 +148,7 @@ class AudioIntegrationTest {
         assertEquals(1, engine.state.value.active.size)
     }
 
-    @Test fun respectsMaxSimultaneous() = runBlocking {
+    @Test fun respectsMaxSimultaneous() = runBlocking<Unit> {
         settings.setMaxSimultaneous(2)
         delay(200)
         val three = listOf("drone_sombrio", "vento_uivante", "chuva").map(::bundledById)
@@ -157,14 +157,14 @@ class AudioIntegrationTest {
         assertNull("o mais antigo deve ter sido interrompido", engine.state.value.statusOf(three[0].id))
     }
 
-    @Test fun stopAllStopsEverything() = runBlocking {
+    @Test fun stopAllStopsEverything() = runBlocking<Unit> {
         listOf("drone_sombrio", "chuva", "fogueira").map(::bundledById).forEach { engine.play(it) }
         await(what = "três ativos") { it.active.size == 3 }
         engine.stopAll()
         await(what = "nenhum ativo") { it.active.isEmpty() }
     }
 
-    @Test fun volumeFollowsSettings() = runBlocking {
+    @Test fun volumeFollowsSettings() = runBlocking<Unit> {
         settings.setMasterVolume(0.25f)
         await(what = "volume 0.25") { it.volume == 0.25f }
         val s = bundledById("drone_grave")
@@ -175,7 +175,7 @@ class AudioIntegrationTest {
         assertEquals(PlayStatus.PLAYING, engine.state.value.statusOf(s.id))
     }
 
-    @Test fun repeatKeepsShortSoundAlive() = runBlocking {
+    @Test fun repeatKeepsShortSoundAlive() = runBlocking<Unit> {
         engine.setRepeat(true)
         val bip = bundledById("bip")
         engine.play(bip)
@@ -186,7 +186,7 @@ class AudioIntegrationTest {
         await(timeoutMs = 3_000, what = "terminar após desligar repetição") { it.statusOf(bip.id) == null }
     }
 
-    @Test fun recoversAfterBrokenSound() = runBlocking {
+    @Test fun recoversAfterBrokenSound() = runBlocking<Unit> {
         val broken = bundledById("bip").copy(id = 9_999, uri = "sounds/nao_existe.ogg")
         engine.play(broken)
         await(what = "erro reportado") { it.lastError != null }
@@ -197,7 +197,7 @@ class AudioIntegrationTest {
         await(what = "som válido toca depois do erro") { it.statusOf(ok.id) == PlayStatus.PLAYING }
     }
 
-    @Test fun unavailableSoundIsRefused() = runBlocking {
+    @Test fun unavailableSoundIsRefused() = runBlocking<Unit> {
         val s = bundledById("bip").copy(isAvailable = false)
         engine.play(s)
         await(what = "erro") { it.lastError != null }
@@ -206,7 +206,7 @@ class AudioIntegrationTest {
 
     // ------------------------------------------------------------------ memória
 
-    @Test fun sampleCacheNeverExceedsLimit() = runBlocking {
+    @Test fun sampleCacheNeverExceedsLimit() = runBlocking<Unit> {
         val short = bundled.filter { PlaybackPolicy.useSoundPool(it.durationMs, null) }
         assertTrue("precisa de 60+ sons curtos, tem ${short.size}", short.size >= 60)
         short.take(80).chunked(16).forEach { engine.preload(it); delay(400) }
@@ -232,7 +232,7 @@ class AudioIntegrationTest {
         )
     }
 
-    @Test fun importsValidatesDeduplicatesPersistsAndDeletes() = runBlocking {
+    @Test fun importsValidatesDeduplicatesPersistsAndDeletes() = runBlocking<Unit> {
         val store = ImportedFileStore(ctx)
         val dbFile = newDbFile()
         var db = openDb(dbFile)

@@ -47,7 +47,7 @@ class DatabaseTest {
     private suspend fun seedCategory() =
         categories.upsertAll(listOf(CategoryEntity("impactos", "Impactos", false, 1, 35)))
 
-    @Test fun favoriteToggleIsPersisted() = runBlocking {
+    @Test fun favoriteToggleIsPersisted() = runBlocking<Unit> {
         seedCategory()
         val id = sounds.insert(entity("k1", "Soco"))
         sounds.setFavorite(id, true)
@@ -56,7 +56,7 @@ class DatabaseTest {
         assertTrue(sounds.observeFavorites().first().isEmpty())
     }
 
-    @Test fun searchIgnoresAccentsAndMatchesTags() = runBlocking {
+    @Test fun searchIgnoresAccentsAndMatchesTags() = runBlocking<Unit> {
         seedCategory()
         sounds.insert(entity("k1", "Reação épica"))
         sounds.insert(entity("k2", "Tapa", tags = listOf("impacto")))
@@ -66,7 +66,7 @@ class DatabaseTest {
         assertEquals(listOf("Tapa"), sounds.search("impacto").first().map { it.name })
     }
 
-    @Test fun searchTreatsPercentLiterally() = runBlocking {
+    @Test fun searchTreatsPercentLiterally() = runBlocking<Unit> {
         seedCategory()
         sounds.insert(entity("k1", "100% bruh"))
         sounds.insert(entity("k2", "Nada"))
@@ -74,7 +74,7 @@ class DatabaseTest {
         assertEquals(listOf("100% bruh"), sounds.search(escaped).first().map { it.name })
     }
 
-    @Test fun deletingCustomCategoryKeepsSoundsUncategorized() = runBlocking {
+    @Test fun deletingCustomCategoryKeepsSoundsUncategorized() = runBlocking<Unit> {
         categories.insert(CategoryEntity("custom_1", "Minha", true, 1, null))
         val id = sounds.insert(entity("k1", "Som", cat = "custom_1"))
         categories.deleteCustom("custom_1")
@@ -82,20 +82,20 @@ class DatabaseTest {
         assertEquals(1, sounds.observeAll().first().size)
     }
 
-    @Test fun builtInCategoryCannotBeDeletedAsCustom() = runBlocking {
+    @Test fun builtInCategoryCannotBeDeletedAsCustom() = runBlocking<Unit> {
         seedCategory()
         categories.deleteCustom("impactos")
         assertEquals(1, categories.getAllWithCounts().size)
     }
 
-    @Test fun categoryCountsSounds() = runBlocking {
+    @Test fun categoryCountsSounds() = runBlocking<Unit> {
         seedCategory()
         sounds.insert(entity("k1", "A"))
         sounds.insert(entity("k2", "B"))
         assertEquals(2, categories.observeWithCounts().first().single().soundCount)
     }
 
-    @Test fun renameUpdatesSearchIndex() = runBlocking {
+    @Test fun renameUpdatesSearchIndex() = runBlocking<Unit> {
         seedCategory()
         val id = sounds.insert(entity("k1", "Antigo"))
         sounds.rename(id, "Novo nome", TextNormalizer.searchIndex("Novo nome", emptyList()))
@@ -103,7 +103,7 @@ class DatabaseTest {
         assertTrue(sounds.search("antigo").first().isEmpty())
     }
 
-    @Test fun statsCountsBySource() = runBlocking {
+    @Test fun statsCountsBySource() = runBlocking<Unit> {
         seedCategory()
         val id = sounds.insert(entity("k1", "A"))
         sounds.insert(entity("k2", "B"))
