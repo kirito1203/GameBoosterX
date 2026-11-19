@@ -6477,6 +6477,406 @@
     "forró",
     "wikimedia commons"
    ]
+  },
+  {
+   "id": "x_c_pt_nossa",
+   "file": "x_c_pt_nossa.ogg",
+   "name": "Nossa! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 637,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-nossa.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "nossa",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_caramba",
+   "file": "x_c_pt_caramba.ogg",
+   "name": "Caramba! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 637,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-caramba.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "caramba",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_socorro",
+   "file": "x_c_pt_socorro.ogg",
+   "name": "Socorro! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 1045,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-socorro.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "socorro",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_uau",
+   "file": "x_c_pt_uau.ogg",
+   "name": "Uau! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 605,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-uau.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "uau",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_rapaz",
+   "file": "x_c_pt_rapaz.ogg",
+   "name": "Rapaz... (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 855,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-rapaz.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "rapaz",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_egua",
+   "file": "x_c_pt_egua.ogg",
+   "name": "Égua! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 544,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-%C3%A9gua.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "égua",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_beleza",
+   "file": "x_c_pt_beleza.ogg",
+   "name": "Beleza! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 814,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-beleza.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "beleza",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_serio",
+   "file": "x_c_pt_serio.ogg",
+   "name": "Sério? (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 832,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-s%C3%A9rio.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "sério",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_mentira",
+   "file": "x_c_pt_mentira.ogg",
+   "name": "Mentira! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 706,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-mentira.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "mentira",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_cuidado",
+   "file": "x_c_pt_cuidado.ogg",
+   "name": "Cuidado! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 741,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-cuidado.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "cuidado",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_corre",
+   "file": "x_c_pt_corre.ogg",
+   "name": "Corre! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 521,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-corre.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "corre",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_parabens",
+   "file": "x_c_pt_parabens.ogg",
+   "name": "Parabéns! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 829,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-parab%C3%A9ns.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "parabéns",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_tchau",
+   "file": "x_c_pt_tchau.ogg",
+   "name": "Tchau! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 547,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-tchau.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "tchau",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_ufa",
+   "file": "x_c_pt_ufa.ogg",
+   "name": "Ufa! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 566,
+   "license": "CC_BY",
+   "author": "Speaker: Milaziggy Recorder: Milaziggy",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Milaziggy-ufa.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "ufa",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_olha",
+   "file": "x_c_pt_olha.ogg",
+   "name": "Olha! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 438,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-olha.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "olha",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_ai",
+   "file": "x_c_pt_ai.ogg",
+   "name": "Ai! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 391,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-ai.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "ai",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_nao",
+   "file": "x_c_pt_nao.ogg",
+   "name": "Não! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 595,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Santamarcanda Recorder: Santamarcanda",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Santamarcanda-n%C3%A3o.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "não",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_fogo",
+   "file": "x_c_pt_fogo.ogg",
+   "name": "Fogo! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 592,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-fogo.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "fogo",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_para",
+   "file": "x_c_pt_para.ogg",
+   "name": "Para! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 488,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Santamarcanda Recorder: Santamarcanda",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Santamarcanda-para.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "para",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_vamos",
+   "file": "x_c_pt_vamos.ogg",
+   "name": "Vamos! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 890,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Santamarcanda Recorder: Santamarcanda",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Santamarcanda-vamos.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "vamos",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_silencio",
+   "file": "x_c_pt_silencio.ogg",
+   "name": "Silêncio! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 1055,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-sil%C3%AAncio.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "silêncio",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_acorda",
+   "file": "x_c_pt_acorda.ogg",
+   "name": "Acorda! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 764,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-acorda.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "acorda",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_pronto",
+   "file": "x_c_pt_pronto.ogg",
+   "name": "Pronto! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 582,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-pronto.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "pronto",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_calma",
+   "file": "x_c_pt_calma.ogg",
+   "name": "Calma! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 501,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-calma.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "calma",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pt_gol",
+   "file": "x_c_pt_gol.ogg",
+   "name": "Gol! (voz)",
+   "categoryId": "memes_brasileiros",
+   "durationMs": 504,
+   "license": "CC0",
+   "author": "Speaker: MedK1 Recorder: MedK1",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-MedK1-gol.wav",
+   "tags": [
+    "bordão",
+    "português",
+    "gol",
+    "wikimedia commons"
+   ]
   }
  ],
  "pending": [

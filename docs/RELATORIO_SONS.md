@@ -7,7 +7,7 @@ Gerado automaticamente por `tools/fetch_sounds.py`. Não edite à mão.
 | Categoria | Meta | Originais (síntese) | Fontes livres | Total | Pendentes (importação manual) |
 |---|---|---|---|---|---|
 | Memes clássicos | 50 | 0 | 29 | 29 | 23 |
-| Memes brasileiros | 50 | 0 | 0 | 0 | 17 |
+| Memes brasileiros | 50 | 0 | 25 | 25 | 17 |
 | Risadas e reações | 35 | 21 | 39 | 60 | 0 |
 | Impactos e efeitos cômicos | 35 | 34 | 21 | 55 | 0 |
 | Suspense e terror | 30 | 30 | 15 | 45 | 0 |
@@ -15,7 +15,7 @@ Gerado automaticamente por `tools/fetch_sounds.py`. Não edite à mão.
 | Games e Roblox | 35 | 36 | 43 | 79 | 0 |
 | Sons aleatórios | 40 | 42 | 33 | 75 | 0 |
 | Vinhetas e músicas curtas | 40 | 41 | 12 | 53 | 0 |
-| **Total** | **350** | **241** | **209** | **450** | **40** |
+| **Total** | **350** | **241** | **234** | **475** | **40** |
 
 ## Sons de fontes livres incluídos
 
@@ -102,6 +102,31 @@ Gerado automaticamente por `tools/fetch_sounds.py`. Não edite à mão.
 | Sting de comédia | Impactos e efeitos cômicos | Wikimedia Commons | User:PiAndWhippedCream | CC BY-SA 3.0 | 1.7 s | https://commons.wikimedia.org/wiki/File:Sting_(2).ogg |
 | Tapa (gravação) | Impactos e efeitos cômicos | Wikimedia Commons | Gravity Sound | CC BY 4.0 | 1.0 s | https://commons.wikimedia.org/wiki/File:Smack_(Gravity_Sound).wav |
 | Vidro quebrando (gravação) | Impactos e efeitos cômicos | Wikimedia Commons | Gravity Sound | CC BY 4.0 | 0.5 s | https://commons.wikimedia.org/wiki/File:Glass_breaking_2_(Gravity_Sound).wav |
+| Acorda! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.8 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-acorda.wav |
+| Ai! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.4 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-ai.wav |
+| Beleza! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.8 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-beleza.wav |
+| Calma! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.5 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-calma.wav |
+| Caramba! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.6 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-caramba.wav |
+| Corre! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.5 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-corre.wav |
+| Cuidado! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.7 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-cuidado.wav |
+| Fogo! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.6 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-fogo.wav |
+| Gol! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: MedK1 Recorder: MedK1 | CC0 | 0.5 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-MedK1-gol.wav |
+| Mentira! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.7 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-mentira.wav |
+| Nossa! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.6 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-nossa.wav |
+| Não! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Santamarcanda Recorder: Santamarcanda | CC BY-SA 4.0 | 0.6 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Santamarcanda-n%C3%A3o.wav |
+| Olha! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.4 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-olha.wav |
+| Para! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Santamarcanda Recorder: Santamarcanda | CC BY-SA 4.0 | 0.5 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Santamarcanda-para.wav |
+| Parabéns! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.8 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-parab%C3%A9ns.wav |
+| Pronto! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.6 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-pronto.wav |
+| Rapaz... (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.9 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-rapaz.wav |
+| Silêncio! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 1.1 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-sil%C3%AAncio.wav |
+| Socorro! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 1.0 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-socorro.wav |
+| Sério? (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.8 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-s%C3%A9rio.wav |
+| Tchau! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.5 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-tchau.wav |
+| Uau! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.6 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-uau.wav |
+| Ufa! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Milaziggy Recorder: Milaziggy | CC BY 4.0 | 0.6 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Milaziggy-ufa.wav |
+| Vamos! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Santamarcanda Recorder: Santamarcanda | CC BY-SA 4.0 | 0.9 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Santamarcanda-vamos.wav |
+| Égua! (voz) | Memes brasileiros | Wikimedia Commons | Speaker: Nelson Ricardo 2500 Recorder: Nelson Ricardo 2500 | CC BY-SA 4.0 | 0.5 s | https://commons.wikimedia.org/wiki/File:LL-Q5146_(por)-Nelson_Ricardo_2500-%C3%A9gua.wav |
 | Amazing! (voz) | Memes clássicos | Wikimedia Commons | Speaker: Wodencafe Recorder: Wodencafe | CC0 | 0.8 s | https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-amazing.wav |
 | Awesome! (voz) | Memes clássicos | Wikimedia Commons | Speaker: Wodencafe Recorder: Wodencafe | CC0 | 0.6 s | https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-awesome.wav |
 | Bingo! (voz) | Memes clássicos | Wikimedia Commons | Speaker: Vealhurl Recorder: Vealhurl | CC BY-SA 4.0 | 0.6 s | https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-bingo.wav |
