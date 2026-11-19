@@ -2731,6 +2731,356 @@
     "forró"
    ],
    "maxSeconds": 8
+  },
+  {
+   "id": "c_pt_nossa",
+   "name": "Nossa! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-nossa.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "nossa"
+   ]
+  },
+  {
+   "id": "c_pt_caramba",
+   "name": "Caramba! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-caramba.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "caramba"
+   ]
+  },
+  {
+   "id": "c_pt_socorro",
+   "name": "Socorro! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-socorro.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "socorro"
+   ]
+  },
+  {
+   "id": "c_pt_uau",
+   "name": "Uau! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-uau.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "uau"
+   ]
+  },
+  {
+   "id": "c_pt_rapaz",
+   "name": "Rapaz... (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-rapaz.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "rapaz"
+   ]
+  },
+  {
+   "id": "c_pt_egua",
+   "name": "Égua! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-égua.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "égua"
+   ]
+  },
+  {
+   "id": "c_pt_beleza",
+   "name": "Beleza! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-beleza.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "beleza"
+   ]
+  },
+  {
+   "id": "c_pt_serio",
+   "name": "Sério? (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-sério.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "sério"
+   ]
+  },
+  {
+   "id": "c_pt_mentira",
+   "name": "Mentira! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-mentira.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "mentira"
+   ]
+  },
+  {
+   "id": "c_pt_cuidado",
+   "name": "Cuidado! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-cuidado.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "cuidado"
+   ]
+  },
+  {
+   "id": "c_pt_corre",
+   "name": "Corre! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-corre.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "corre"
+   ]
+  },
+  {
+   "id": "c_pt_parabens",
+   "name": "Parabéns! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-parabéns.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "parabéns"
+   ]
+  },
+  {
+   "id": "c_pt_tchau",
+   "name": "Tchau! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-tchau.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "tchau"
+   ]
+  },
+  {
+   "id": "c_pt_ufa",
+   "name": "Ufa! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Milaziggy-ufa.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "ufa"
+   ]
+  },
+  {
+   "id": "c_pt_olha",
+   "name": "Olha! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-olha.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "olha"
+   ]
+  },
+  {
+   "id": "c_pt_ai",
+   "name": "Ai! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-ai.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "ai"
+   ]
+  },
+  {
+   "id": "c_pt_nao",
+   "name": "Não! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Santamarcanda-não.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "não"
+   ]
+  },
+  {
+   "id": "c_pt_fogo",
+   "name": "Fogo! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-fogo.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "fogo"
+   ]
+  },
+  {
+   "id": "c_pt_para",
+   "name": "Para! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Santamarcanda-para.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "para"
+   ]
+  },
+  {
+   "id": "c_pt_vamos",
+   "name": "Vamos! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Santamarcanda-vamos.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "vamos"
+   ]
+  },
+  {
+   "id": "c_pt_silencio",
+   "name": "Silêncio! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-silêncio.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "silêncio"
+   ]
+  },
+  {
+   "id": "c_pt_acorda",
+   "name": "Acorda! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-acorda.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "acorda"
+   ]
+  },
+  {
+   "id": "c_pt_pronto",
+   "name": "Pronto! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-pronto.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "pronto"
+   ]
+  },
+  {
+   "id": "c_pt_calma",
+   "name": "Calma! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-Nelson Ricardo 2500-calma.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "calma"
+   ]
+  },
+  {
+   "id": "c_pt_gol",
+   "name": "Gol! (voz)",
+   "categoryId": "memes_brasileiros",
+   "from": {
+    "type": "commons",
+    "title": "File:LL-Q5146 (por)-MedK1-gol.wav"
+   },
+   "tags": [
+    "bordão",
+    "português",
+    "gol"
+   ]
   }
  ],
  "pending": [

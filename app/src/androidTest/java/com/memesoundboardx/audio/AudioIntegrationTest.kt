@@ -12,7 +12,9 @@ import com.memesoundboardx.data.importer.SafAudioImporter
 import com.memesoundboardx.data.local.db.AppDatabase
 import com.memesoundboardx.data.local.db.CategoryEntity
 import com.memesoundboardx.data.manifest.SoundManifestParser
+import com.memesoundboardx.data.repository.AssetLibrarySyncer
 import com.memesoundboardx.data.repository.SoundRepositoryImpl
+import com.memesoundboardx.domain.model.PendingItem
 import com.memesoundboardx.data.repository.toDomain
 import com.memesoundboardx.domain.model.AppSettings
 import com.memesoundboardx.domain.model.PlayStatus
@@ -296,5 +298,69 @@ class AudioIntegrationTest {
         db.close()
         dbFile.delete()
         dir.deleteRecursively()
+    }
+
+    // ------------------------------------------------------------------ biblioteca real, remoção, pendentes
+
+    @Test fun bundledLibrarySyncsHidesRestoresAndExposesCredits() = runBlocking<Unit> {
+        val db = Room.inMemoryDatabaseBuilder(ctx, AppDatabase::class.java).build()
+        val store = ImportedFileStore(ctx)
+        val syncer = AssetLibrarySyncer(ctx, db, store, settings, Dispatchers.IO)
+
+        val r1 = syncer.syncBundled()
+        assertTrue("rejeitados: ${r1.rejected.take(5)}", r1.rejected.isEmpty())
+        assertTrue("esperado 350+ sons, veio ${r1.validSounds}", r1.validSounds >= 350)
+        assertEquals(r1.validSounds, db.soundDao().getBySource("BUNDLED").size)
+
+        // Remover um som embutido: some e não volta na próxima sincronização
+        val bip = db.soundDao().getByKey("bundled:bip")!!
+        SoundRepositoryImpl(db.soundDao(), store, settings).delete(bip.id)
+        val r2 = syncer.syncBundled()
+        assertNull(db.soundDao().getByKey("bundled:bip"))
+        assertEquals(1, r2.hidden)
+
+        // Restaurar traz de volta
+        settings.restoreBundled()
+        syncer.syncBundled()
+        assertNotNull(db.soundDao().getByKey("bundled:bip"))
+
+        // Pendentes e créditos vêm do manifesto
+        assertTrue(syncer.pending.value.any { it.id == "xcubidu" })
+        assertTrue(syncer.pending.value.any { it.id == "eu_boto_ou_nao_boto" })
+        assertTrue(syncer.credits.value.all { it.sourceUrl != null })
+        assertTrue(syncer.credits.value.size >= 150)
+        db.close()
+    }
+
+    @Test fun externalBundledSoundsPlay() = runBlocking<Unit> {
+        // Um de cada fonte: Commons (CC BY), Commons (CC0), OpenGameArt (CC0)
+        for (id in listOf("x_c_risada_bebe", "x_c_wilhelm", "x_kv_male_game_over")) {
+            val s = bundledById(id)
+            engine.play(s)
+            await(what = "tocando $id") { it.statusOf(s.id) == PlayStatus.PLAYING }
+            engine.stop(s.id)
+            await(what = "parado $id") { it.statusOf(s.id) == null }
+        }
+    }
+
+    @Test fun importForPendingUsesItemNameCategoryAndMarksFulfilled() = runBlocking<Unit> {
+        val store = ImportedFileStore(ctx)
+        val dbFile = newDbFile()
+        val db = openDb(dbFile)
+        db.categoryDao().upsertAll(listOf(CategoryEntity("memes_brasileiros", "Memes brasileiros", false, 1, 50)))
+        val importer = SafAudioImporter(ctx, db.soundDao(), db.categoryDao(), store, Dispatchers.IO)
+        val repo = SoundRepositoryImpl(db.soundDao(), store, settings)
+        val wav = File(ctx.cacheDir, "qualquer_nome.wav").also { writeWav(it, 1.0, 660.0) }
+        val item = PendingItem("eu_boto_ou_nao_boto", "Eu boto ou não boto? Tô com medo", "memes_brasileiros", "música protegida", null)
+
+        val r = importer.importForPending(Uri.fromFile(wav).toString(), item)
+        assertEquals(listOf(item.name), r.imported)
+        val row = db.soundDao().getBySource("IMPORTED").single()
+        assertEquals(item.name, row.name)
+        assertEquals("memes_brasileiros", row.categoryId)
+        assertEquals(setOf("eu_boto_ou_nao_boto"), repo.observeFulfilledPending().first())
+        // aparece na pesquisa pelo nome
+        assertEquals(1, db.soundDao().search("boto").first().size)
+        db.close(); dbFile.delete(); wav.delete()
     }
 }

@@ -87,6 +87,28 @@ class SoundManifestParserTest {
         assertEquals(null, SoundManifestParser.parse(manifest("[$valid]")).sounds.single().durationMs)
     }
 
+    @Test fun parsesPendingItems() {
+        val json = """{"schemaVersion":1,"categories":[{"id":"memes","name":"Memes","order":1}],"sounds":[],
+            "pending":[
+              {"id":"vine_boom","name":"Vine Boom","categoryId":"memes","reason":"protegido","hint":"batida grave"},
+              {"id":"vine_boom","name":"Repetido","categoryId":"memes"},
+              {"id":"x","name":"Sem categoria","categoryId":"nao_existe"},
+              {"id":"semmotivo","name":"Sem motivo","categoryId":"memes"}
+            ]}"""
+        val r = SoundManifestParser.parse(json)
+        assertEquals(listOf("vine_boom", "semmotivo"), r.pending.map { it.id })
+        assertEquals("protegido", r.pending[0].reason)
+        assertEquals("batida grave", r.pending[0].hint)
+        assertEquals("sem fonte autorizada", r.pending[1].reason)
+        assertEquals(2, r.errors.size)
+    }
+
+    @Test fun acceptsCcBySa() {
+        val r = SoundManifestParser.parse(manifest("""[{"id":"a","file":"a.ogg","name":"A","categoryId":"impactos","license":"CC_BY_SA","author":"Fulano","sourceUrl":"https://commons.wikimedia.org/wiki/File:A.ogg"}]"""))
+        assertEquals(SoundLicense.CC_BY_SA, r.sounds.single().license)
+        assertEquals("Fulano", r.sounds.single().author)
+    }
+
     @Test fun realBundledManifestIsValidAndEveryFileExists() {
         val json = java.io.File("src/main/assets/sounds.json").readText()
         val r = SoundManifestParser.parse(json)
@@ -99,7 +121,14 @@ class SoundManifestParserTest {
             assertTrue("arquivo ausente: ${s.file}", f.isFile)
             assertTrue("arquivo pequeno demais (vazio?): ${s.file}", f.length() > 1_000)
             assertTrue("sem duração: ${s.id}", (s.durationMs ?: 0) > 0)
-            assertEquals("licença de ${s.id}", SoundLicense.ORIGINAL, s.license)
+            if (s.file.startsWith("x_")) {
+                // Fonte externa: precisa de link de origem e licença que não seja ORIGINAL
+                assertTrue("sem link de origem: ${s.id}", !s.sourceUrl.isNullOrBlank())
+                assertTrue("licença de ${s.id}", s.license != SoundLicense.ORIGINAL)
+                if (s.license.requiresAttribution) assertTrue("CC BY sem autor: ${s.id}", !s.author.isNullOrBlank())
+            } else {
+                assertEquals("licença de ${s.id}", SoundLicense.ORIGINAL, s.license)
+            }
         }
     }
 }

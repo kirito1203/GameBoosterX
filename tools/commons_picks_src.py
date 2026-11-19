@@ -190,6 +190,22 @@ for key, sid, name, cat, tags, mx in PICKS:
     if mx:
         p["maxSeconds"] = mx
     out.append(p)
+# --- bordões em português (Lingua Libre): uma gravação por palavra, preferindo os mesmos locutores
+POR = os.path.join(ROOT, "tools", "candidates", "commons_por.json")
+if os.path.exists(POR):
+    d = json.load(open(POR, encoding="utf-8"))
+    pref = ["Nelson Ricardo 2500", "Juliano P. Junho", "Santamarcanda", "Sillim", "Waldyrious", "Milaziggy", "Rute"]
+    skip = {"nordeste", "cafuné", "saudade", "sim", "obrigado"}
+    label = {"rapaz": "Rapaz...", "sério": "Sério?", "égua": "Égua!"}
+    for w in dict.fromkeys(it["query"] for it in d):
+        if w in skip:
+            continue
+        cands = sorted((it for it in d if it["query"] == w),
+                       key=lambda it: next((i for i, p in enumerate(pref) if p in it["title"]), 99))
+        sid = "pt_" + "".join({"é": "e", "ê": "e", "ã": "a", "ô": "o", "á": "a", " ": "_"}.get(ch, ch) for ch in w)
+        out.append({"id": "c_" + sid, "name": label.get(w, w.capitalize() + "!") + " (voz)",
+                    "categoryId": "memes_brasileiros", "title": cands[0]["title"], "tags": ["bordão", "português", w]})
+
 if problems:
     print("AMBÍGUOS/NÃO ENCONTRADOS:", *problems, sep="\n  ")
     sys.exit(1)
