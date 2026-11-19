@@ -3417,6 +3417,3348 @@
     "anos 80",
     "synthwave"
    ]
+  },
+  {
+   "id": "x_kv_male_game_over",
+   "file": "x_kv_male_game_over.ogg",
+   "name": "Game over (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 1351,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "game over",
+    "perdeu",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_female_game_over",
+   "file": "x_kv_female_game_over.ogg",
+   "name": "Game over (voz feminina)",
+   "categoryId": "games_roblox",
+   "durationMs": 1233,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "game over",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_you_win",
+   "file": "x_kv_male_you_win.ogg",
+   "name": "You win! (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 972,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "vitória",
+    "ganhou",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_female_you_win",
+   "file": "x_kv_female_you_win.ogg",
+   "name": "You win! (voz feminina)",
+   "categoryId": "games_roblox",
+   "durationMs": 888,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "vitória",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_you_lose",
+   "file": "x_kv_male_you_lose.ogg",
+   "name": "You lose (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 1344,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "derrota",
+    "perdeu",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_female_you_lose",
+   "file": "x_kv_female_you_lose.ogg",
+   "name": "You lose (voz feminina)",
+   "categoryId": "games_roblox",
+   "durationMs": 1181,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "derrota",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_level_up",
+   "file": "x_kv_male_level_up.ogg",
+   "name": "Level up! (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 795,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "level up",
+    "nível",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_power_up",
+   "file": "x_kv_male_power_up.ogg",
+   "name": "Power up! (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 772,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "power up",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_new_highscore",
+   "file": "x_kv_male_new_highscore.ogg",
+   "name": "New highscore! (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 1197,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "recorde",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_mission_completed",
+   "file": "x_kv_male_mission_completed.ogg",
+   "name": "Mission completed (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 1226,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "missão",
+    "completa",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_mission_failed",
+   "file": "x_kv_male_mission_failed.ogg",
+   "name": "Mission failed (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 1072,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "missão",
+    "falhou",
+    "fail",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_objective_achieved",
+   "file": "x_kv_male_objective_achieved.ogg",
+   "name": "Objective achieved (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 1380,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "objetivo",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_ready",
+   "file": "x_kv_male_ready.ogg",
+   "name": "Ready? (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 682,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "pronto",
+    "largada",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_go",
+   "file": "x_kv_male_go.ogg",
+   "name": "Go! (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 603,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "vai",
+    "largada",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_hurry_up",
+   "file": "x_kv_male_hurry_up.ogg",
+   "name": "Hurry up! (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 641,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "pressa",
+    "rápido",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_time_over",
+   "file": "x_kv_male_time_over.ogg",
+   "name": "Time over (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 941,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "tempo",
+    "acabou",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_final_round",
+   "file": "x_kv_male_final_round.ogg",
+   "name": "Final round (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 1072,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "round final",
+    "luta",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_its_a_tie",
+   "file": "x_kv_male_its_a_tie.ogg",
+   "name": "It's a tie (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 1000,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "empate",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_war_fire_in_the_hole",
+   "file": "x_kv_male_war_fire_in_the_hole.ogg",
+   "name": "Fire in the hole! (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 1348,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "fire in the hole",
+    "granada",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_female_war_fire_in_the_hole",
+   "file": "x_kv_female_war_fire_in_the_hole.ogg",
+   "name": "Fire in the hole! (voz feminina)",
+   "categoryId": "games_roblox",
+   "durationMs": 967,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "fire in the hole",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_war_go_go_go",
+   "file": "x_kv_male_war_go_go_go.ogg",
+   "name": "Go, go, go! (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 944,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "vai",
+    "ataque",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_war_medic",
+   "file": "x_kv_male_war_medic.ogg",
+   "name": "Medic! (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 643,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "médico",
+    "socorro",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_war_look_out",
+   "file": "x_kv_male_war_look_out.ogg",
+   "name": "Look out! (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 599,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "cuidado",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_war_get_down",
+   "file": "x_kv_male_war_get_down.ogg",
+   "name": "Get down! (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 826,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "abaixa",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_war_target_destroyed",
+   "file": "x_kv_male_war_target_destroyed.ogg",
+   "name": "Target destroyed (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 1295,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "alvo",
+    "destruído",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_war_reloading",
+   "file": "x_kv_male_war_reloading.ogg",
+   "name": "Reloading! (voz)",
+   "categoryId": "games_roblox",
+   "durationMs": 859,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "recarregando",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_congratulations",
+   "file": "x_kv_male_congratulations.ogg",
+   "name": "Congratulations! (voz)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 1506,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "parabéns",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_female_congratulations",
+   "file": "x_kv_female_congratulations.ogg",
+   "name": "Congratulations! (voz feminina)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 1258,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "parabéns",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_correct",
+   "file": "x_kv_male_correct.ogg",
+   "name": "Correct! (voz)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 640,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "certo",
+    "correto",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_female_correct",
+   "file": "x_kv_female_correct.ogg",
+   "name": "Correct! (voz feminina)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 605,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "certo",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_male_wrong",
+   "file": "x_kv_male_wrong.ogg",
+   "name": "Wrong! (voz)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 698,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "errado",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_kv_female_wrong",
+   "file": "x_kv_female_wrong.ogg",
+   "name": "Wrong! (voz feminina)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 602,
+   "license": "CC0",
+   "author": "Kenney (www.kenney.nl)",
+   "sourceUrl": "https://opengameart.org/content/voiceover-pack-40-lines",
+   "tags": [
+    "errado",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_coin_cluster1",
+   "file": "x_ss_coin_cluster1.ogg",
+   "name": "Chuva de moedas (retrô)",
+   "categoryId": "games_roblox",
+   "durationMs": 693,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "moeda",
+    "coin",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_coin_double2",
+   "file": "x_ss_coin_double2.ogg",
+   "name": "Moeda dupla (retrô)",
+   "categoryId": "games_roblox",
+   "durationMs": 325,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "moeda",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_sounds_powerup1",
+   "file": "x_ss_sounds_powerup1.ogg",
+   "name": "Power-up (retrô)",
+   "categoryId": "games_roblox",
+   "durationMs": 836,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "power up",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_sounds_powerup4",
+   "file": "x_ss_sounds_powerup4.ogg",
+   "name": "Power-up longo (retrô)",
+   "categoryId": "games_roblox",
+   "durationMs": 738,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "power up",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_sounds_fanfare1",
+   "file": "x_ss_sounds_fanfare1.ogg",
+   "name": "Fanfarra (retrô)",
+   "categoryId": "games_roblox",
+   "durationMs": 516,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "vitória",
+    "fanfarra",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_sounds_error12",
+   "file": "x_ss_sounds_error12.ogg",
+   "name": "Erro longo (retrô)",
+   "categoryId": "games_roblox",
+   "durationMs": 836,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "erro",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_sounds_error1",
+   "file": "x_ss_sounds_error1.ogg",
+   "name": "Erro (retrô)",
+   "categoryId": "games_roblox",
+   "durationMs": 325,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "erro",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_sounds_damage1",
+   "file": "x_ss_sounds_damage1.ogg",
+   "name": "Dano (retrô)",
+   "categoryId": "games_roblox",
+   "durationMs": 174,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "dano",
+    "hit",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_movement_jump11",
+   "file": "x_ss_movement_jump11.ogg",
+   "name": "Pulo (retrô)",
+   "categoryId": "games_roblox",
+   "durationMs": 392,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "pulo",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_sounds_pause1_in",
+   "file": "x_ss_sounds_pause1_in.ogg",
+   "name": "Pausa (retrô)",
+   "categoryId": "games_roblox",
+   "durationMs": 253,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "pausa",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_menu_select4",
+   "file": "x_ss_menu_select4.ogg",
+   "name": "Seleção de menu (retrô)",
+   "categoryId": "games_roblox",
+   "durationMs": 1076,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "menu",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_movement_portal2",
+   "file": "x_ss_movement_portal2.ogg",
+   "name": "Portal (retrô)",
+   "categoryId": "anime_poderes",
+   "durationMs": 2052,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "portal",
+    "teleporte",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_movement_portal4",
+   "file": "x_ss_movement_portal4.ogg",
+   "name": "Teleporte (retrô)",
+   "categoryId": "anime_poderes",
+   "durationMs": 1093,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "teleporte",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_wpn_laser11",
+   "file": "x_ss_wpn_laser11.ogg",
+   "name": "Raio laser (retrô)",
+   "categoryId": "anime_poderes",
+   "durationMs": 892,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "laser",
+    "raio",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_wpn_laser5",
+   "file": "x_ss_wpn_laser5.ogg",
+   "name": "Laser carregado (retrô)",
+   "categoryId": "anime_poderes",
+   "durationMs": 1052,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "laser",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_exp_medium1",
+   "file": "x_ss_exp_medium1.ogg",
+   "name": "Explosão (retrô)",
+   "categoryId": "impactos_comicos",
+   "durationMs": 1646,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "explosão",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_exp_long5",
+   "file": "x_ss_exp_long5.ogg",
+   "name": "Explosão longa (retrô)",
+   "categoryId": "impactos_comicos",
+   "durationMs": 4700,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "explosão",
+    "boom",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_sounds_impact10",
+   "file": "x_ss_sounds_impact10.ogg",
+   "name": "Impacto (retrô)",
+   "categoryId": "impactos_comicos",
+   "durationMs": 362,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "impacto",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_sounds_falling10",
+   "file": "x_ss_sounds_falling10.ogg",
+   "name": "Queda longa (retrô)",
+   "categoryId": "impactos_comicos",
+   "durationMs": 2905,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "queda",
+    "caindo",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_deathscream_human3",
+   "file": "x_ss_deathscream_human3.ogg",
+   "name": "Grito de derrota (retrô)",
+   "categoryId": "suspense_terror",
+   "durationMs": 674,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "grito",
+    "morte",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_deathscream_alien1",
+   "file": "x_ss_deathscream_alien1.ogg",
+   "name": "Grito alienígena (retrô)",
+   "categoryId": "suspense_terror",
+   "durationMs": 1432,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "alien",
+    "grito",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_deathscream_robot3",
+   "file": "x_ss_deathscream_robot3.ogg",
+   "name": "Robô desligando (retrô)",
+   "categoryId": "games_roblox",
+   "durationMs": 1878,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "robô",
+    "desligar",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_lowhealth_alarmloop1",
+   "file": "x_ss_lowhealth_alarmloop1.ogg",
+   "name": "Vida baixa (retrô)",
+   "categoryId": "games_roblox",
+   "durationMs": 800,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "vida",
+    "alarme",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_sound_bling",
+   "file": "x_ss_sound_bling.ogg",
+   "name": "Bling (retrô)",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1028,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "bling",
+    "brilho",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_sound_refereewhistle",
+   "file": "x_ss_sound_refereewhistle.ogg",
+   "name": "Apito de juiz (retrô)",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 372,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "apito",
+    "juiz",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_sound_poweron",
+   "file": "x_ss_sound_poweron.ogg",
+   "name": "Ligando (retrô)",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1608,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "ligar",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_ss_sound_shutdown1",
+   "file": "x_ss_sound_shutdown1.ogg",
+   "name": "Desligando (retrô)",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2042,
+   "license": "CC0",
+   "author": "SubspaceAudio (Juhani Junkala)",
+   "sourceUrl": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+   "tags": [
+    "desligar",
+    "opengameart"
+   ]
+  },
+  {
+   "id": "x_c_wilhelm",
+   "file": "x_c_wilhelm.ogg",
+   "name": "Grito Wilhelm",
+   "categoryId": "memes_classicos",
+   "durationMs": 1281,
+   "license": "CC0",
+   "author": "likely Sheb Wooley",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wilhelm_Scream.ogg",
+   "tags": [
+    "grito",
+    "wilhelm",
+    "filme",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_sad_trombone_1",
+   "file": "x_c_sad_trombone_1.ogg",
+   "name": "Trombone triste (gravação)",
+   "categoryId": "memes_classicos",
+   "durationMs": 3723,
+   "license": "CC_BY",
+   "author": "Joe Lamb",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sad_Trombone-Joe_Lamb-665429450.ogg",
+   "tags": [
+    "fail",
+    "triste",
+    "wah wah",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_sad_trombone_2",
+   "file": "x_c_sad_trombone_2.ogg",
+   "name": "Trombone triste 2 (gravação)",
+   "categoryId": "memes_classicos",
+   "durationMs": 3755,
+   "license": "CC_BY",
+   "author": "Sad Tromboner",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sad_Trombone.wav",
+   "tags": [
+    "fail",
+    "triste",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_houston_problem",
+   "file": "x_c_houston_problem.ogg",
+   "name": "Houston, we've had a problem (NASA)",
+   "categoryId": "memes_classicos",
+   "durationMs": 9000,
+   "license": "PUBLIC_DOMAIN",
+   "author": "National Aeronautics and Space Administration (NASA)",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Apollo13-wehaveaproblem_edit_1.ogg",
+   "tags": [
+    "houston",
+    "problema",
+    "nasa",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_lol",
+   "file": "x_c_lol.ogg",
+   "name": "LOL (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 1088,
+   "license": "CC_BY_SA",
+   "author": "Clément Bucco-Lechat",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Man_saying_lol.oga",
+   "tags": [
+    "lol",
+    "risada",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_nope",
+   "file": "x_c_nope.ogg",
+   "name": "Nope (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 382,
+   "license": "CC0",
+   "author": "Speaker: Wodencafe Recorder: Wodencafe",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-nope.wav",
+   "tags": [
+    "nope",
+    "não",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_what",
+   "file": "x_c_what.ogg",
+   "name": "What? (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 252,
+   "license": "CC0",
+   "author": "Speaker: Rachlel Recorder: Rachlel",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Rachlel-what.wav",
+   "tags": [
+    "what",
+    "quê",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_why",
+   "file": "x_c_why.ogg",
+   "name": "Why? (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 386,
+   "license": "CC0",
+   "author": "Speaker: She animates Recorder: She animates",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-She_animates-why.wav",
+   "tags": [
+    "why",
+    "por quê",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_uh_oh",
+   "file": "x_c_uh_oh.ogg",
+   "name": "Uh-oh (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 515,
+   "license": "CC0",
+   "author": "Speaker: Grendelkhan Recorder: Grendelkhan",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-uh-oh.wav",
+   "tags": [
+    "uh oh",
+    "ops",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_seriously",
+   "file": "x_c_seriously.ogg",
+   "name": "Seriously? (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 1013,
+   "license": "CC0",
+   "author": "Speaker: Wodencafe Recorder: Wodencafe",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-seriously.wav",
+   "tags": [
+    "sério",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_epic",
+   "file": "x_c_epic.ogg",
+   "name": "Epic! (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 471,
+   "license": "CC0",
+   "author": "Speaker: Wodencafe Recorder: Wodencafe",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-epic.wav",
+   "tags": [
+    "épico",
+    "epic",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_noob",
+   "file": "x_c_noob.ogg",
+   "name": "Noob (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 458,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Vealhurl Recorder: Vealhurl",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-noob.wav",
+   "tags": [
+    "noob",
+    "novato",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_fail",
+   "file": "x_c_fail.ogg",
+   "name": "Fail (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 557,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nattes à chat Recorder: Nattes à chat",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Nattes_%C3%A0_chat-fail.wav",
+   "tags": [
+    "fail",
+    "falhou",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_whatever",
+   "file": "x_c_whatever.ogg",
+   "name": "Whatever (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 453,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Back ache Recorder: Back ache",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-whatever.wav",
+   "tags": [
+    "tanto faz",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_wow",
+   "file": "x_c_wow.ogg",
+   "name": "Wow (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 480,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Back ache Recorder: Back ache",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-wow.wav",
+   "tags": [
+    "wow",
+    "uau",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_yippee",
+   "file": "x_c_yippee.ogg",
+   "name": "Yippee ki-yay (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 1098,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Vealhurl Recorder: Vealhurl",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-yippie_ki-yay.wav",
+   "tags": [
+    "yippee",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_really",
+   "file": "x_c_really.ogg",
+   "name": "Really? (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 543,
+   "license": "CC0",
+   "author": "Speaker: Wodencafe Recorder: Wodencafe",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-really.wav",
+   "tags": [
+    "sério",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_no_no",
+   "file": "x_c_no_no.ogg",
+   "name": "No, no! (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 616,
+   "license": "CC0",
+   "author": "Speaker: Simplificationalizer Recorder: Simplificationalizer",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Simplificationalizer-no-no.wav",
+   "tags": [
+    "não",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_awesome",
+   "file": "x_c_awesome.ogg",
+   "name": "Awesome! (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 607,
+   "license": "CC0",
+   "author": "Speaker: Wodencafe Recorder: Wodencafe",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-awesome.wav",
+   "tags": [
+    "incrível",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_nice",
+   "file": "x_c_nice.ogg",
+   "name": "Nice (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 622,
+   "license": "CC0",
+   "author": "Speaker: Wodencafe Recorder: Wodencafe",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-nice.wav",
+   "tags": [
+    "nice",
+    "boa",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_oh_oh",
+   "file": "x_c_oh_oh.ogg",
+   "name": "Oh-oh (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 377,
+   "license": "CC0",
+   "author": "Speaker: Arlo Barnes Recorder: Arlo Barnes",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-oh-oh.wav",
+   "tags": [
+    "ops",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_stop",
+   "file": "x_c_stop.ogg",
+   "name": "Stop! (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 579,
+   "license": "CC0",
+   "author": "Speaker: Simplificationalizer Recorder: Simplificationalizer",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Simplificationalizer-stop.wav",
+   "tags": [
+    "pare",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_help",
+   "file": "x_c_help.ogg",
+   "name": "Help! (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 239,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Vealhurl Recorder: Vealhurl",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-help.wav",
+   "tags": [
+    "socorro",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_ouch",
+   "file": "x_c_ouch.ogg",
+   "name": "Ouch! (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 561,
+   "license": "CC_BY_SA",
+   "author": "Speaker: StuckInLagToad Recorder: StuckInLagToad",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-StuckInLagToad-ouch.wav",
+   "tags": [
+    "ai",
+    "dor",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_amazing",
+   "file": "x_c_amazing.ogg",
+   "name": "Amazing! (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 785,
+   "license": "CC0",
+   "author": "Speaker: Wodencafe Recorder: Wodencafe",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-amazing.wav",
+   "tags": [
+    "incrível",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_wait",
+   "file": "x_c_wait.ogg",
+   "name": "Wait... (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 529,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Back ache Recorder: Back ache",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-wait.wav",
+   "tags": [
+    "espera",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_jackpot",
+   "file": "x_c_jackpot.ogg",
+   "name": "Jackpot! (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 867,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Vealhurl Recorder: Vealhurl",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-jackpot.wav",
+   "tags": [
+    "prêmio",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_bingo",
+   "file": "x_c_bingo.ogg",
+   "name": "Bingo! (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 641,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Vealhurl Recorder: Vealhurl",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-bingo.wav",
+   "tags": [
+    "bingo",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_warning",
+   "file": "x_c_warning.ogg",
+   "name": "Warning! (voz)",
+   "categoryId": "memes_classicos",
+   "durationMs": 546,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Back ache Recorder: Back ache",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-warning.wav",
+   "tags": [
+    "alerta",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_plateia_ri_aplaude",
+   "file": "x_c_plateia_ri_aplaude.ogg",
+   "name": "Plateia rindo e aplaudindo",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 9000,
+   "license": "CC_BY",
+   "author": "lonemonk on freesound.org",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:72844_lonemonk_approx-800-laughter-and-clapter-1.wav",
+   "tags": [
+    "risada",
+    "plateia",
+    "aplausos",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_plateia_gargalhada",
+   "file": "x_c_plateia_gargalhada.ogg",
+   "name": "Plateia gargalhando",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 2450,
+   "license": "CC_BY",
+   "author": "lonemonk on freesound.org",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:72842_lonemonk_approx-800-laugh-1.wav",
+   "tags": [
+    "risada",
+    "plateia",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_plateia_rindo",
+   "file": "x_c_plateia_rindo.ogg",
+   "name": "Plateia rindo",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 8000,
+   "license": "CC_BY",
+   "author": "lonemonk on freesound.org",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:72843_lonemonk_approx-800-laughter-only-1.wav",
+   "tags": [
+    "risada",
+    "plateia",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pessoas_rindo",
+   "file": "x_c_pessoas_rindo.ogg",
+   "name": "Pessoas rindo",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 4800,
+   "license": "CC_BY_SA",
+   "author": "Geckomove",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Menschen-Lachen.ogg",
+   "tags": [
+    "risada",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_risada_alegre",
+   "file": "x_c_risada_alegre.ogg",
+   "name": "Risada alegre",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 9000,
+   "license": "CC_BY",
+   "author": "Wildgruber D, Szameitat D, Ethofer T, Bruck C, Alter K, Grodd W, Kreifelts B",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Different-Types-of-Laughter-Modulate-Connectivity-within-Distinct-Parts-of-the-Laughter-Perception-pone.0063441.s010.oga",
+   "tags": [
+    "risada",
+    "feliz",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_risada_cocegas",
+   "file": "x_c_risada_cocegas.ogg",
+   "name": "Risada de cócegas",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 6600,
+   "license": "CC_BY",
+   "author": "Wildgruber D, Szameitat D, Ethofer T, Bruck C, Alter K, Grodd W, Kreifelts B",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Different-Types-of-Laughter-Modulate-Connectivity-within-Distinct-Parts-of-the-Laughter-Perception-pone.0063441.s011.oga",
+   "tags": [
+    "risada",
+    "cócegas",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_risada_deboche",
+   "file": "x_c_risada_deboche.ogg",
+   "name": "Risada debochada",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 7500,
+   "license": "CC_BY",
+   "author": "Wildgruber D, Szameitat D, Ethofer T, Bruck C, Alter K, Grodd W, Kreifelts B",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Different-Types-of-Laughter-Modulate-Connectivity-within-Distinct-Parts-of-the-Laughter-Perception-pone.0063441.s012.oga",
+   "tags": [
+    "risada",
+    "deboche",
+    "zoeira",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_risada_bebe",
+   "file": "x_c_risada_bebe.ogg",
+   "name": "Risada de bebê",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 2053,
+   "license": "CC_BY",
+   "author": "reinsamba",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Baby_Laugh.ogg",
+   "tags": [
+    "risada",
+    "bebê",
+    "fofo",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_risada_maligna",
+   "file": "x_c_risada_maligna.ogg",
+   "name": "Risada maligna",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 6500,
+   "license": "CC_BY_SA",
+   "author": "Original uploader was Witeg at en.wikipedia.org.",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Evil_laugh_2.oga",
+   "tags": [
+    "risada",
+    "maligna",
+    "vilão",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_risada_maligna_longa",
+   "file": "x_c_risada_maligna_longa.ogg",
+   "name": "Risada maligna longa",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 10000,
+   "license": "PUBLIC_DOMAIN",
+   "author": "stilgar",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Evil_laughter.ogg",
+   "tags": [
+    "risada",
+    "maligna",
+    "vilão",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_risada_maligna_grupo",
+   "file": "x_c_risada_maligna_grupo.ogg",
+   "name": "Risada maligna em grupo",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 8000,
+   "license": "CC0",
+   "author": "freesound",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Evil_laugh.ogg",
+   "tags": [
+    "risada",
+    "maligna",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_risada_desenho",
+   "file": "x_c_risada_desenho.ogg",
+   "name": "Risada de desenho",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 6000,
+   "license": "CC0",
+   "author": "JohnsonBrandEditing",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cartoon_Laugh.ogg",
+   "tags": [
+    "risada",
+    "desenho",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_risada_robo",
+   "file": "x_c_risada_robo.ogg",
+   "name": "Risada de robô (SAM)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 1411,
+   "license": "CC_BY_SA",
+   "author": "Abduhlamidala",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Laugh.wav",
+   "tags": [
+    "risada",
+    "robô",
+    "retrô",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_criancas_rindo",
+   "file": "x_c_criancas_rindo.ogg",
+   "name": "Crianças rindo",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 8000,
+   "license": "CC_BY_SA",
+   "author": "Vivliothikonomia",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:%CE%97%CF%87%CE%BF%CE%B3%CF%81%CE%AC%CF%86%CE%B7%CF%83%CE%B7_(2).ogg",
+   "tags": [
+    "risada",
+    "crianças",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_aplausos_real",
+   "file": "x_c_aplausos_real.ogg",
+   "name": "Aplausos (gravação)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 8000,
+   "license": "PUBLIC_DOMAIN",
+   "author": "thore",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Applause_ii.ogg",
+   "tags": [
+    "aplausos",
+    "palmas",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_aplausos_vivas",
+   "file": "x_c_aplausos_vivas.ogg",
+   "name": "Aplausos e vivas",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 8000,
+   "license": "PUBLIC_DOMAIN",
+   "author": "starlite",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Clapping_hurray.ogg",
+   "tags": [
+    "aplausos",
+    "vivas",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_ohhh_ahhh",
+   "file": "x_c_ohhh_ahhh.ogg",
+   "name": "Ohhh! Ahhh! (plateia)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 4500,
+   "license": "PUBLIC_DOMAIN",
+   "author": "starlite",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ohhh_ahhh.ogg",
+   "tags": [
+    "plateia",
+    "uau",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_surprise_party",
+   "file": "x_c_surprise_party.ogg",
+   "name": "Surprise! A party!",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 6400,
+   "license": "PUBLIC_DOMAIN",
+   "author": "VOA Learning English",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Surprise!_-_A_party!_Awesome!.ogg",
+   "tags": [
+    "surpresa",
+    "festa",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_surprise",
+   "file": "x_c_surprise.ogg",
+   "name": "Surprise! (voz)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 913,
+   "license": "CC_BY_SA",
+   "author": "Speaker: Nattes à chat Recorder: Nattes à chat",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Nattes_%C3%A0_chat-surprise.wav",
+   "tags": [
+    "surpresa",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_fiu_fiu_real",
+   "file": "x_c_fiu_fiu_real.ogg",
+   "name": "Fiu-fiu (assobio real)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 1114,
+   "license": "PUBLIC_DOMAIN",
+   "author": "self",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wolf_whistle.ogg",
+   "tags": [
+    "assobio",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_ahhh",
+   "file": "x_c_ahhh.ogg",
+   "name": "Ahhh! (grito)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 2556,
+   "license": "CC0",
+   "author": "UncleSigmund",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:UncleSigmund_-_ahhh_(cc0)_(freesound).mp3",
+   "tags": [
+    "grito",
+    "susto",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_rufar_real",
+   "file": "x_c_rufar_real.ogg",
+   "name": "Rufar de tambor (gravação)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 3791,
+   "license": "CC0",
+   "author": "Iwan Sounds and DIY",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Drum_Roll_Intro.ogg",
+   "tags": [
+    "suspense",
+    "tambor",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_espirro",
+   "file": "x_c_espirro.ogg",
+   "name": "Espirro",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 395,
+   "license": "CC0",
+   "author": "Neo139",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sneeze.ogg",
+   "tags": [
+    "espirro",
+    "atchim",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_arroto",
+   "file": "x_c_arroto.ogg",
+   "name": "Arroto",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 1439,
+   "license": "PUBLIC_DOMAIN",
+   "author": "ezwa",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Burp.ogg",
+   "tags": [
+    "arroto",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_soluco",
+   "file": "x_c_soluco.ogg",
+   "name": "Soluço",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 813,
+   "license": "CC_BY_SA",
+   "author": "SergeantBolt at English Wikipedia",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hiccupsound.ogg",
+   "tags": [
+    "soluço",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_bocejo",
+   "file": "x_c_bocejo.ogg",
+   "name": "Bocejo",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 3180,
+   "license": "PUBLIC_DOMAIN",
+   "author": "ezwa",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yawning_2.ogg",
+   "tags": [
+    "bocejo",
+    "sono",
+    "tédio",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_hmm_suspiro",
+   "file": "x_c_hmm_suspiro.ogg",
+   "name": "Hmm... suspiro",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 8000,
+   "license": "PUBLIC_DOMAIN",
+   "author": "ezwa",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hm_and_sigh.ogg",
+   "tags": [
+    "suspiro",
+    "tédio",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_ronco",
+   "file": "x_c_ronco.ogg",
+   "name": "Ronco",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 6000,
+   "license": "CC_BY_SA",
+   "author": "Béotien lambda",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zzz.ogg",
+   "tags": [
+    "ronco",
+    "dormindo",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_gol_grito",
+   "file": "x_c_gol_grito.ogg",
+   "name": "GOOOOL! (grito)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 6000,
+   "license": "CC_BY_SA",
+   "author": "Frogfriend99",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Goal_Shout.ogg",
+   "tags": [
+    "gol",
+    "futebol",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_hooray",
+   "file": "x_c_hooray.ogg",
+   "name": "Hooray! (voz)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 471,
+   "license": "CC0",
+   "author": "Speaker: Wodencafe Recorder: Wodencafe",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-hooray.wav",
+   "tags": [
+    "viva",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_bravo",
+   "file": "x_c_bravo.ogg",
+   "name": "Bravo! (voz)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 496,
+   "license": "CC0",
+   "author": "Speaker: Grendelkhan Recorder: Grendelkhan",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-bravo.wav",
+   "tags": [
+    "bravo",
+    "parabéns",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_victory",
+   "file": "x_c_victory.ogg",
+   "name": "Victory! (voz)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 565,
+   "license": "CC0",
+   "author": "Speaker: Simplificationalizer Recorder: Simplificationalizer",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Simplificationalizer-victory.wav",
+   "tags": [
+    "vitória",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_yes",
+   "file": "x_c_yes.ogg",
+   "name": "Yes! (voz)",
+   "categoryId": "risadas_reacoes",
+   "durationMs": 484,
+   "license": "CC0",
+   "author": "Speaker: She animates Recorder: She animates",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-She_animates-yes.wav",
+   "tags": [
+    "sim",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_vidro_real",
+   "file": "x_c_vidro_real.ogg",
+   "name": "Vidro quebrando (gravação)",
+   "categoryId": "impactos_comicos",
+   "durationMs": 450,
+   "license": "CC_BY",
+   "author": "Gravity Sound",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Glass_breaking_2_(Gravity_Sound).wav",
+   "tags": [
+    "vidro",
+    "quebrar",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_soco_forte",
+   "file": "x_c_soco_forte.ogg",
+   "name": "Soco forte (gravação)",
+   "categoryId": "impactos_comicos",
+   "durationMs": 444,
+   "license": "CC_BY",
+   "author": "Gravity Sound",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hard_Punch_Flesh_(Gravity_Sound).mp3",
+   "tags": [
+    "soco",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_soco_barriga",
+   "file": "x_c_soco_barriga.ogg",
+   "name": "Soco na barriga",
+   "categoryId": "impactos_comicos",
+   "durationMs": 442,
+   "license": "CC_BY",
+   "author": "Gravity Sound",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Punch_Gut_Damage_(Gravity_Sound).mp3",
+   "tags": [
+    "soco",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_tapa_real",
+   "file": "x_c_tapa_real.ogg",
+   "name": "Tapa (gravação)",
+   "categoryId": "impactos_comicos",
+   "durationMs": 1000,
+   "license": "CC_BY",
+   "author": "Gravity Sound",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Smack_(Gravity_Sound).wav",
+   "tags": [
+    "tapa",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_porta_batendo",
+   "file": "x_c_porta_batendo.ogg",
+   "name": "Porta batendo",
+   "categoryId": "impactos_comicos",
+   "durationMs": 2000,
+   "license": "CC_BY",
+   "author": "Gravity Sound",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Slam_closet_door_(Gravity_Sound).wav",
+   "tags": [
+    "porta",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_explosao_real",
+   "file": "x_c_explosao_real.ogg",
+   "name": "Explosão (gravação)",
+   "categoryId": "impactos_comicos",
+   "durationMs": 2655,
+   "license": "PUBLIC_DOMAIN",
+   "author": "tcpp",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Explosion_10.ogg",
+   "tags": [
+    "explosão",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_explosoes",
+   "file": "x_c_explosoes.ogg",
+   "name": "Explosões",
+   "categoryId": "impactos_comicos",
+   "durationMs": 5100,
+   "license": "PUBLIC_DOMAIN",
+   "author": "Fg2",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Explosions-LS100150.ogg",
+   "tags": [
+    "explosão",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_prato_bateria",
+   "file": "x_c_prato_bateria.ogg",
+   "name": "Prato de bateria",
+   "categoryId": "impactos_comicos",
+   "durationMs": 4600,
+   "license": "CC_BY_SA",
+   "author": "No machine-readable author provided. Clngre~commonswiki assumed (based on copyright claims).",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Crash_cymbal.ogg",
+   "tags": [
+    "prato",
+    "bateria",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_boing_real",
+   "file": "x_c_boing_real.ogg",
+   "name": "Boing (gravação)",
+   "categoryId": "impactos_comicos",
+   "durationMs": 3614,
+   "license": "CC_BY",
+   "author": "cfork",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Boing_raw.ogg",
+   "tags": [
+    "boing",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_patinho",
+   "file": "x_c_patinho.ogg",
+   "name": "Patinho de borracha",
+   "categoryId": "impactos_comicos",
+   "durationMs": 507,
+   "license": "CC_BY_SA",
+   "author": "Dragonhawk12",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rubber_Duck_Squeaker.ogg",
+   "tags": [
+    "patinho",
+    "apito",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_kazoo",
+   "file": "x_c_kazoo.ogg",
+   "name": "Kazoo",
+   "categoryId": "impactos_comicos",
+   "durationMs": 4100,
+   "license": "CC_BY",
+   "author": "NoiseCollector",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:NoiseCollector_KazooA.wav",
+   "tags": [
+    "kazoo",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_sting_comedia",
+   "file": "x_c_sting_comedia.ogg",
+   "name": "Sting de comédia",
+   "categoryId": "impactos_comicos",
+   "durationMs": 1700,
+   "license": "CC_BY_SA",
+   "author": "User:PiAndWhippedCream",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sting_(2).ogg",
+   "tags": [
+    "piada",
+    "sting",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pancada_surda",
+   "file": "x_c_pancada_surda.ogg",
+   "name": "Pancada surda",
+   "categoryId": "impactos_comicos",
+   "durationMs": 364,
+   "license": "PUBLIC_DOMAIN",
+   "author": "gregoryweir",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dull_thud.ogg",
+   "tags": [
+    "pancada",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_coisas_caindo",
+   "file": "x_c_coisas_caindo.ogg",
+   "name": "Coisas caindo da mesa",
+   "categoryId": "impactos_comicos",
+   "durationMs": 3290,
+   "license": "PUBLIC_DOMAIN",
+   "author": "stephan",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Clonk_debris_falling_off_table.ogg",
+   "tags": [
+    "queda",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_ferramenta_caindo",
+   "file": "x_c_ferramenta_caindo.ogg",
+   "name": "Ferramenta caindo",
+   "categoryId": "impactos_comicos",
+   "durationMs": 2445,
+   "license": "PUBLIC_DOMAIN",
+   "author": "stephan",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dropping_tool_from_desk.ogg",
+   "tags": [
+    "queda",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_metal_chao",
+   "file": "x_c_metal_chao.ogg",
+   "name": "Metal caindo no chão",
+   "categoryId": "impactos_comicos",
+   "durationMs": 5000,
+   "license": "CC_BY_SA",
+   "author": "Camshaft64",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Metal_Clanging_Noises.ogg",
+   "tags": [
+    "metal",
+    "queda",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_gongo_real",
+   "file": "x_c_gongo_real.ogg",
+   "name": "Gongo (gravação)",
+   "categoryId": "impactos_comicos",
+   "durationMs": 5600,
+   "license": "CC0",
+   "author": "PDSounds description: http://www.pdsounds.org/sounds/gong_or_bell_vibrant",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gong_or_bell_vibrant_(short).ogg",
+   "tags": [
+    "gongo",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_trovao_real",
+   "file": "x_c_trovao_real.ogg",
+   "name": "Trovão (gravação)",
+   "categoryId": "suspense_terror",
+   "durationMs": 9100,
+   "license": "CC_BY_SA",
+   "author": "Amuzujoe",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Thunder_01.ogg",
+   "tags": [
+    "trovão",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_chuva_trovao",
+   "file": "x_c_chuva_trovao.ogg",
+   "name": "Chuva e trovão",
+   "categoryId": "suspense_terror",
+   "durationMs": 9000,
+   "license": "CC_BY_SA",
+   "author": "Bidgee",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rain_and_thunder_(01).ogg",
+   "tags": [
+    "chuva",
+    "trovão",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_risada_terror",
+   "file": "x_c_risada_terror.ogg",
+   "name": "Risada de terror",
+   "categoryId": "suspense_terror",
+   "durationMs": 6200,
+   "license": "CC_BY",
+   "author": "klankbeeld",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Horror_laugh.ogg",
+   "tags": [
+    "risada",
+    "terror",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_zumbi_gemido",
+   "file": "x_c_zumbi_gemido.ogg",
+   "name": "Gemido de zumbi",
+   "categoryId": "suspense_terror",
+   "durationMs": 1838,
+   "license": "PUBLIC_DOMAIN",
+   "author": "gregoryweir",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zombie_moan.ogg",
+   "tags": [
+    "zumbi",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_zumbi_rosnando",
+   "file": "x_c_zumbi_rosnando.ogg",
+   "name": "Zumbi rosnando",
+   "categoryId": "suspense_terror",
+   "durationMs": 6000,
+   "license": "CC_BY_SA",
+   "author": "Wowsuchthings",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zombie-Gutteral-Sounds.ogg",
+   "tags": [
+    "zumbi",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_coruja",
+   "file": "x_c_coruja.ogg",
+   "name": "Coruja na noite",
+   "categoryId": "suspense_terror",
+   "durationMs": 7200,
+   "license": "CC_BY_SA",
+   "author": "Vianney Bajart",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Strix_aluco_male.oga",
+   "tags": [
+    "coruja",
+    "noite",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_sinos_abadia",
+   "file": "x_c_sinos_abadia.ogg",
+   "name": "Sinos da abadia",
+   "categoryId": "suspense_terror",
+   "durationMs": 6700,
+   "license": "CC_BY_SA",
+   "author": "Amada44",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Church_Bells_of_Murbach.flac",
+   "tags": [
+    "sino",
+    "igreja",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_coracao_real",
+   "file": "x_c_coracao_real.ogg",
+   "name": "Coração batendo (gravação)",
+   "categoryId": "suspense_terror",
+   "durationMs": 8000,
+   "license": "CC_BY",
+   "author": "HerbertBoland",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Heartbeat.ogg",
+   "tags": [
+    "coração",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_grito_demoniaco",
+   "file": "x_c_grito_demoniaco.ogg",
+   "name": "Grito demoníaco",
+   "categoryId": "suspense_terror",
+   "durationMs": 3688,
+   "license": "CC0",
+   "author": "nick121087",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nick121087_-_Demonic_Woman_Scream_(cc0)_(freesound).mp3",
+   "tags": [
+    "grito",
+    "demônio",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_theremin",
+   "file": "x_c_theremin.ogg",
+   "name": "Theremin assustador",
+   "categoryId": "suspense_terror",
+   "durationMs": 5200,
+   "license": "PUBLIC_DOMAIN",
+   "author": "Effebit",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Theremin_puccini_high.ogg",
+   "tags": [
+    "theremin",
+    "estranho",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_caixinha_notas",
+   "file": "x_c_caixinha_notas.ogg",
+   "name": "Caixinha de música (notas)",
+   "categoryId": "suspense_terror",
+   "durationMs": 6900,
+   "license": "CC_BY_SA",
+   "author": "Luisalvaz",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Music_box_notes_1.ogg",
+   "tags": [
+    "caixinha",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_porta_metal",
+   "file": "x_c_porta_metal.ogg",
+   "name": "Porta de metal rangendo",
+   "categoryId": "suspense_terror",
+   "durationMs": 6000,
+   "license": "PUBLIC_DOMAIN",
+   "author": "stephan",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Metal_cabinet_door_jarring.ogg",
+   "tags": [
+    "porta",
+    "rangido",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_sirene_real",
+   "file": "x_c_sirene_real.ogg",
+   "name": "Sirene (gravação)",
+   "categoryId": "suspense_terror",
+   "durationMs": 6000,
+   "license": "PUBLIC_DOMAIN",
+   "author": "mastermesh",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Siren.ogg",
+   "tags": [
+    "sirene",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_espada_1",
+   "file": "x_c_espada_1.ogg",
+   "name": "Espada cortando",
+   "categoryId": "anime_poderes",
+   "durationMs": 534,
+   "license": "CC_BY",
+   "author": "Gravity Sound",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sword_1_(Gravity_Sound).mp3",
+   "tags": [
+    "espada",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_espada_2",
+   "file": "x_c_espada_2.ogg",
+   "name": "Espada 2",
+   "categoryId": "anime_poderes",
+   "durationMs": 682,
+   "license": "CC_BY",
+   "author": "Gravity Sound",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sword_2_(Gravity_Sound).mp3",
+   "tags": [
+    "espada",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_espada_3",
+   "file": "x_c_espada_3.ogg",
+   "name": "Golpe rápido de espada",
+   "categoryId": "anime_poderes",
+   "durationMs": 400,
+   "license": "CC_BY",
+   "author": "Gravity Sound",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sword_3_(Gravity_Sound).mp3",
+   "tags": [
+    "espada",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_sugoi",
+   "file": "x_c_sugoi.ogg",
+   "name": "Sugoi! (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "durationMs": 514,
+   "license": "CC_BY",
+   "author": "Speaker: Fukujinzuke Recorder: Fukujinzuke",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-Fukujinzuke-%E3%81%99%E3%81%94%E3%81%84.wav",
+   "tags": [
+    "sugoi",
+    "anime",
+    "incrível",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_nani",
+   "file": "x_c_nani.ogg",
+   "name": "Nani? (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "durationMs": 503,
+   "license": "CC_BY",
+   "author": "Speaker: Fukujinzuke Recorder: Fukujinzuke",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-Fukujinzuke-%E3%81%AA%E3%81%AB.wav",
+   "tags": [
+    "nani",
+    "anime",
+    "quê",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_kawaii",
+   "file": "x_c_kawaii.ogg",
+   "name": "Kawaii (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "durationMs": 738,
+   "license": "CC_BY",
+   "author": "Speaker: Fukujinzuke Recorder: Fukujinzuke",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-Fukujinzuke-%E3%81%8B%E3%82%8F%E3%81%84%E3%81%84.wav",
+   "tags": [
+    "kawaii",
+    "anime",
+    "fofo",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_uso",
+   "file": "x_c_uso.ogg",
+   "name": "Uso! — Mentira! (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "durationMs": 445,
+   "license": "CC_BY",
+   "author": "Speaker: Fukujinzuke Recorder: Fukujinzuke",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-Fukujinzuke-%E3%81%86%E3%81%9D.wav",
+   "tags": [
+    "anime",
+    "mentira",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_sayonara",
+   "file": "x_c_sayonara.ogg",
+   "name": "Sayonara (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "durationMs": 912,
+   "license": "CC_BY",
+   "author": "Speaker: Fukujinzuke Recorder: Fukujinzuke",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-Fukujinzuke-%E3%81%95%E3%82%88%E3%81%86%E3%81%AA%E3%82%89.wav",
+   "tags": [
+    "anime",
+    "tchau",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_arigatou",
+   "file": "x_c_arigatou.ogg",
+   "name": "Arigatou (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "durationMs": 915,
+   "license": "CC_BY",
+   "author": "Speaker: Fukujinzuke Recorder: Fukujinzuke",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-Fukujinzuke-%E3%81%82%E3%82%8A%E3%81%8C%E3%81%A8%E3%81%86.wav",
+   "tags": [
+    "anime",
+    "obrigado",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_ohayou",
+   "file": "x_c_ohayou.ogg",
+   "name": "Ohayou (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "durationMs": 698,
+   "license": "CC_BY",
+   "author": "Speaker: Fukujinzuke Recorder: Fukujinzuke",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-Fukujinzuke-%E3%81%8A%E3%81%AF%E3%82%88%E3%81%86.wav",
+   "tags": [
+    "anime",
+    "bom dia",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_oyasumi",
+   "file": "x_c_oyasumi.ogg",
+   "name": "Oyasumi (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "durationMs": 810,
+   "license": "CC_BY",
+   "author": "Speaker: Fukujinzuke Recorder: Fukujinzuke",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-Fukujinzuke-%E3%81%8A%E3%82%84%E3%81%99%E3%81%BF.wav",
+   "tags": [
+    "anime",
+    "boa noite",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_konnichiwa",
+   "file": "x_c_konnichiwa.ogg",
+   "name": "Konnichiwa (voz japonesa)",
+   "categoryId": "anime_poderes",
+   "durationMs": 840,
+   "license": "CC_BY",
+   "author": "Speaker: Fukujinzuke Recorder: Fukujinzuke",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q5287_(jpn)-Fukujinzuke-%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF.wav",
+   "tags": [
+    "anime",
+    "olá",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_scanner_alien",
+   "file": "x_c_scanner_alien.ogg",
+   "name": "Scanner alienígena",
+   "categoryId": "anime_poderes",
+   "durationMs": 1727,
+   "license": "PUBLIC_DOMAIN",
+   "author": "stephan",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alien_technology_scanning_device.ogg",
+   "tags": [
+    "scanner",
+    "alien",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_game_over_br",
+   "file": "x_c_game_over_br.ogg",
+   "name": "Game over retrô",
+   "categoryId": "games_roblox",
+   "durationMs": 2383,
+   "license": "CC0",
+   "author": "Rafaeljuliani",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fim_efeito_sonoro_retr%C3%B4.oga",
+   "tags": [
+    "game over",
+    "retrô",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_level_up_g2",
+   "file": "x_c_level_up_g2.ogg",
+   "name": "Level up (gravação)",
+   "categoryId": "games_roblox",
+   "durationMs": 863,
+   "license": "CC_BY",
+   "author": "Gravity Sound",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Level_Up_2_(Gravity_Sound).wav",
+   "tags": [
+    "level up",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_level_up_g4",
+   "file": "x_c_level_up_g4.ogg",
+   "name": "Level up 2 (gravação)",
+   "categoryId": "games_roblox",
+   "durationMs": 500,
+   "license": "CC_BY",
+   "author": "Gravity Sound",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Level_Up_4_(Gravity_Sound).wav",
+   "tags": [
+    "level up",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_pulo_arcade",
+   "file": "x_c_pulo_arcade.ogg",
+   "name": "Pulo de arcade",
+   "categoryId": "games_roblox",
+   "durationMs": 296,
+   "license": "CC_BY",
+   "author": "Gravity Sound",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jump_Arcade_(Gravity_Sound).mp3",
+   "tags": [
+    "pulo",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_gato",
+   "file": "x_c_gato.ogg",
+   "name": "Gato miando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1637,
+   "license": "CC_BY_SA",
+   "author": "Jeanot",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Felis_silvestris_catus.ogg",
+   "tags": [
+    "gato",
+    "miau",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_cachorro",
+   "file": "x_c_cachorro.ogg",
+   "name": "Cachorro latindo",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2610,
+   "license": "CC_BY_SA",
+   "author": "Amada44",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Barking_of_a_dog.ogg",
+   "tags": [
+    "cachorro",
+    "au au",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_galo",
+   "file": "x_c_galo.ogg",
+   "name": "Galo cantando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 5200,
+   "license": "CC_BY_SA",
+   "author": "Georgethewriter",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rooster_crowing.oga",
+   "tags": [
+    "galo",
+    "manhã",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_vaca",
+   "file": "x_c_vaca.ogg",
+   "name": "Vaca mugindo",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2194,
+   "license": "CC_BY_SA",
+   "author": "Secretlondon",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mudchute_cow_1.ogg",
+   "tags": [
+    "vaca",
+    "muu",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_ovelha",
+   "file": "x_c_ovelha.ogg",
+   "name": "Ovelha",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 498,
+   "license": "CC0",
+   "author": "Eviatar Bach",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sheep_bleat.ogg",
+   "tags": [
+    "ovelha",
+    "mé",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_cavalo",
+   "file": "x_c_cavalo.ogg",
+   "name": "Cavalo relinchando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2139,
+   "license": "PUBLIC_DOMAIN",
+   "author": "Hü.",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wiehern.ogg",
+   "tags": [
+    "cavalo",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_porco",
+   "file": "x_c_porco.ogg",
+   "name": "Porco",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 360,
+   "license": "CC_BY_SA",
+   "author": "Secretlondon",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mudchute_pig_1.ogg",
+   "tags": [
+    "porco",
+    "oinc",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_elefante",
+   "file": "x_c_elefante.ogg",
+   "name": "Elefante",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1316,
+   "license": "CC0",
+   "author": "தகவலுழவன்",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Elephant_voice_-_trumpeting.ogg",
+   "tags": [
+    "elefante",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_burro",
+   "file": "x_c_burro.ogg",
+   "name": "Burro zurrando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 6000,
+   "license": "CC0",
+   "author": "felix-blume",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:157763_felix-blume_a-donkey-is-braying-in-his-enclosure-in-south-of-france.wav",
+   "tags": [
+    "burro",
+    "jumento",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_galinhas",
+   "file": "x_c_galinhas.ogg",
+   "name": "Galinhas",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 6000,
+   "license": "PUBLIC_DOMAIN",
+   "author": "alys",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chickens_demanding_food.ogg",
+   "tags": [
+    "galinha",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_falcao",
+   "file": "x_c_falcao.ogg",
+   "name": "Falcão gritando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 3233,
+   "license": "CC_BY",
+   "author": "PsychoBird",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Screaming_Hawk.wav",
+   "tags": [
+    "falcão",
+    "águia",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_papagaio",
+   "file": "x_c_papagaio.ogg",
+   "name": "Papagaio",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 6000,
+   "license": "CC_BY",
+   "author": "Amada44",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Talking_Parrot_(Psittacula_krameri).ogg",
+   "tags": [
+    "papagaio",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_campainha_real",
+   "file": "x_c_campainha_real.ogg",
+   "name": "Campainha (gravação)",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1781,
+   "license": "PUBLIC_DOMAIN",
+   "author": null,
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Doorbell-cheap-dingdong.ogg",
+   "tags": [
+    "campainha",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_despertador_real",
+   "file": "x_c_despertador_real.ogg",
+   "name": "Despertador (gravação)",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 5000,
+   "license": "CC_BY_SA",
+   "author": "Dub",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alarmclock-mechanical.ogg",
+   "tags": [
+    "despertador",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_maquina_escrever",
+   "file": "x_c_maquina_escrever.ogg",
+   "name": "Ding da máquina de escrever",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 514,
+   "license": "CC0",
+   "author": "_stubb",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:406243_stubb_typewriter-ding-near-mono.wav",
+   "tags": [
+    "máquina de escrever",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_foto",
+   "file": "x_c_foto.ogg",
+   "name": "Foto (obturador)",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 593,
+   "license": "PUBLIC_DOMAIN",
+   "author": "Doitashimashite at Dutch Wikipedia",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Holga_shuttersound.ogg",
+   "tags": [
+    "foto",
+    "câmera",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_bolha_real",
+   "file": "x_c_bolha_real.ogg",
+   "name": "Bolha",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1841,
+   "license": "CC_BY_SA",
+   "author": "Nevit Dilmen (talk)",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bubble_01_nevit.ogg",
+   "tags": [
+    "bolha",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_trem_vapor",
+   "file": "x_c_trem_vapor.ogg",
+   "name": "Apito de trem a vapor",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 3414,
+   "license": "PUBLIC_DOMAIN",
+   "author": "Alex Alex Lep",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Parovoz_sound.ogg",
+   "tags": [
+    "trem",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_caixa_real",
+   "file": "x_c_caixa_real.ogg",
+   "name": "Caixa registradora (gravação)",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 2134,
+   "license": "PUBLIC_DOMAIN",
+   "author": "Me",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cash_register.ogg",
+   "tags": [
+    "dinheiro",
+    "caixa",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_cofrinho",
+   "file": "x_c_cofrinho.ogg",
+   "name": "Moedas no cofrinho",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 4000,
+   "license": "PUBLIC_DOMAIN",
+   "author": "ezwa",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Coins_dropped_in_metallic_moneybox.ogg",
+   "tags": [
+    "moedas",
+    "dinheiro",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_fogos",
+   "file": "x_c_fogos.ogg",
+   "name": "Fogos de artifício",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 7600,
+   "license": "CC_BY_SA",
+   "author": "Nicholas Gemini",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fireworks_in_Rome_01.ogg",
+   "tags": [
+    "fogos",
+    "festa",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_chaleira",
+   "file": "x_c_chaleira.ogg",
+   "name": "Chaleira apitando",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 5000,
+   "license": "CC_BY_SA",
+   "author": "Secretlondon",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kettle_whistle.ogg",
+   "tags": [
+    "chaleira",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_descarga",
+   "file": "x_c_descarga.ogg",
+   "name": "Descarga",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 6000,
+   "license": "CC_BY_SA",
+   "author": "Huhu Uet",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Toilettensp%C3%BClung_01.ogg",
+   "tags": [
+    "descarga",
+    "banheiro",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_moto",
+   "file": "x_c_moto.ogg",
+   "name": "Moto",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 3113,
+   "license": "PUBLIC_DOMAIN",
+   "author": "ezwa",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Motorbike_4.ogg",
+   "tags": [
+    "moto",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_bike_real",
+   "file": "x_c_bike_real.ogg",
+   "name": "Campainha de bicicleta (gravação)",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 1169,
+   "license": "CC0",
+   "author": "AntumDeluge",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rotating-bicycle-bell.wav",
+   "tags": [
+    "bicicleta",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_sputnik",
+   "file": "x_c_sputnik.ogg",
+   "name": "Bip do Sputnik",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 4400,
+   "license": "PUBLIC_DOMAIN",
+   "author": "NASA",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sputnik_beep.ogg",
+   "tags": [
+    "sputnik",
+    "espaço",
+    "bip",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_vuvuzela",
+   "file": "x_c_vuvuzela.ogg",
+   "name": "Vuvuzela",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 4100,
+   "license": "CC_BY_SA",
+   "author": "DisillusionedBitterAndKnackered",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vuvuzela_single_note.ogg",
+   "tags": [
+    "vuvuzela",
+    "copa",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_air_horn_trem",
+   "file": "x_c_air_horn_trem.ogg",
+   "name": "Buzina de locomotiva (air horn)",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 4000,
+   "license": "CC0",
+   "author": "HarveyHenkelmann",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Leslie_A200-156.ogg",
+   "tags": [
+    "buzina",
+    "air horn",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_telefone_antigo",
+   "file": "x_c_telefone_antigo.ogg",
+   "name": "Telefone antigo",
+   "categoryId": "sons_aleatorios",
+   "durationMs": 6000,
+   "license": "CC_BY_SA",
+   "author": "CianMcCann",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Model_500_Telephone_British_ring.ogg",
+   "tags": [
+    "telefone",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_sting_kevin_1",
+   "file": "x_c_sting_kevin_1.ogg",
+   "name": "Sting (Kevin MacLeod)",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3753,
+   "license": "CC_BY",
+   "author": "Kevin MacLeod",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Loping_Sting_(ISRC_USUAN1200014).mp3",
+   "tags": [
+    "sting",
+    "vinheta",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_sting_kevin_2",
+   "file": "x_c_sting_kevin_2.ogg",
+   "name": "Sting 2 (Kevin MacLeod)",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 5200,
+   "license": "CC_BY",
+   "author": "Kevin MacLeod",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Der_Kleber_Sting_(ISRC_USUAN1100612).mp3",
+   "tags": [
+    "sting",
+    "vinheta",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_fanfarra_kevin",
+   "file": "x_c_fanfarra_kevin.ogg",
+   "name": "Fanfarra (Kevin MacLeod)",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 10000,
+   "license": "CC_BY",
+   "author": "Kevin MacLeod",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kevin_MacLeod_-_Running_Fanfare.ogg",
+   "tags": [
+    "fanfarra",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_groove_kevin",
+   "file": "x_c_groove_kevin.ogg",
+   "name": "Groove (Kevin MacLeod)",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 12000,
+   "license": "CC_BY",
+   "author": "Kevin MacLeod, USA",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Home_Base_Groove_(Kevin_MacLeod)_Time_0-22_(ISRC_USUAN1100563).oga",
+   "tags": [
+    "groove",
+    "loop",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_jingle_xilofone",
+   "file": "x_c_jingle_xilofone.ogg",
+   "name": "Jingle de xilofone",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3760,
+   "license": "CC_BY",
+   "author": "spazzo_1493",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Xylophone_jingle.wav",
+   "tags": [
+    "jingle",
+    "xilofone",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_cuica",
+   "file": "x_c_cuica.ogg",
+   "name": "Cuíca",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 6700,
+   "license": "CC_BY_SA",
+   "author": null,
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cuica01.ogg",
+   "tags": [
+    "cuíca",
+    "samba",
+    "brasil",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_berimbau",
+   "file": "x_c_berimbau.ogg",
+   "name": "Berimbau (capoeira Angola)",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 10000,
+   "license": "PUBLIC_DOMAIN",
+   "author": null,
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Toque-de-angola.ogg",
+   "tags": [
+    "berimbau",
+    "capoeira",
+    "brasil",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_caxixi",
+   "file": "x_c_caxixi.ogg",
+   "name": "Caxixi",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 5000,
+   "license": "PUBLIC_DOMAIN",
+   "author": "http://en.wikipedia.org/wiki/User:Freddythehat",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Caxixi.ogg",
+   "tags": [
+    "caxixi",
+    "capoeira",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_orgao",
+   "file": "x_c_orgao.ogg",
+   "name": "Acorde de órgão",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 3090,
+   "license": "PUBLIC_DOMAIN",
+   "author": "Shadowcelibi at en.wikipedia",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Drawbar_C_Chord.ogg",
+   "tags": [
+    "órgão",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_glissando",
+   "file": "x_c_glissando.ogg",
+   "name": "Glissando no piano",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 1501,
+   "license": "CC0",
+   "author": "Rafael Tavares Juliani",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Deslizando_o_dedo_no_piano.ogg",
+   "tags": [
+    "piano",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_gaita",
+   "file": "x_c_gaita.ogg",
+   "name": "Gaita",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 4700,
+   "license": "PUBLIC_DOMAIN",
+   "author": "mastermesh",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Harmonica_playing.ogg",
+   "tags": [
+    "gaita",
+    "harmônica",
+    "wikimedia commons"
+   ]
+  },
+  {
+   "id": "x_c_sanfona",
+   "file": "x_c_sanfona.ogg",
+   "name": "Sanfona (acordes)",
+   "categoryId": "vinhetas_musicas",
+   "durationMs": 8000,
+   "license": "CC_BY_SA",
+   "author": "No machine-readable author provided. Clngre~commonswiki assumed (based on copyright claims).",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Accordion_chords-01.ogg",
+   "tags": [
+    "sanfona",
+    "forró",
+    "wikimedia commons"
+   ]
+  }
+ ],
+ "pending": [
+  {
+   "id": "xcubidu",
+   "name": "XCubidu",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "provável meme \"Escubidubidu\" (homem cantando o tema do Scooby-Doo); confirme ouvindo"
+  },
+  {
+   "id": "vine_boom",
+   "name": "Vine Boom",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "batida grave dos vídeos do Vine"
+  },
+  {
+   "id": "bruh",
+   "name": "Bruh (original)",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "voz dizendo \"bruh\""
+  },
+  {
+   "id": "metal_pipe",
+   "name": "Metal Pipe",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "cano de metal caindo"
+  },
+  {
+   "id": "discord_join",
+   "name": "Discord Join",
+   "categoryId": "memes_classicos",
+   "reason": "som de marca registrada do Discord",
+   "hint": "entrar em chamada"
+  },
+  {
+   "id": "discord_leave",
+   "name": "Discord Leave",
+   "categoryId": "memes_classicos",
+   "reason": "som de marca registrada do Discord",
+   "hint": "sair de chamada"
+  },
+  {
+   "id": "windows_error",
+   "name": "Windows Error",
+   "categoryId": "memes_classicos",
+   "reason": "som de sistema da Microsoft",
+   "hint": "erro do Windows XP"
+  },
+  {
+   "id": "windows_startup",
+   "name": "Windows XP Startup",
+   "categoryId": "memes_classicos",
+   "reason": "som de sistema da Microsoft",
+   "hint": "inicialização do XP"
+  },
+  {
+   "id": "among_us",
+   "name": "Among Us (sus)",
+   "categoryId": "memes_classicos",
+   "reason": "som do jogo Among Us",
+   "hint": "revelação de impostor"
+  },
+  {
+   "id": "mlg_airhorn",
+   "name": "MLG Airhorn",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "buzina dos vídeos MLG"
+  },
+  {
+   "id": "sad_violin",
+   "name": "Sad Violin",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "violino triste"
+  },
+  {
+   "id": "emotional_damage",
+   "name": "Emotional Damage",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Steven He"
+  },
+  {
+   "id": "oh_no_laugh",
+   "name": "Oh no no no (risada)",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "\"oh no, no, no\" + risada"
+  },
+  {
+   "id": "robert_weide",
+   "name": "Directed by Robert B. Weide",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "tema de encerramento"
+  },
+  {
+   "id": "to_be_continued",
+   "name": "To Be Continued",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "JoJo / Roundabout"
+  },
+  {
+   "id": "taco_bell",
+   "name": "Taco Bell Bong",
+   "categoryId": "memes_classicos",
+   "reason": "som de marca registrada",
+   "hint": "\"bong\" da Taco Bell"
+  },
+  {
+   "id": "fbi_open_up",
+   "name": "FBI Open Up",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "batida na porta + \"FBI\""
+  },
+  {
+   "id": "wasted",
+   "name": "Wasted (GTA)",
+   "categoryId": "memes_classicos",
+   "reason": "som do jogo GTA",
+   "hint": "tela de morte"
+  },
+  {
+   "id": "dramatic_chipmunk",
+   "name": "Dun dun dunnn",
+   "categoryId": "memes_classicos",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Dramatic Chipmunk"
+  },
+  {
+   "id": "coffin_dance",
+   "name": "Coffin Dance",
+   "categoryId": "memes_classicos",
+   "reason": "música protegida",
+   "hint": "Astronomia"
+  },
+  {
+   "id": "roblox_oof",
+   "name": "Oof (Roblox antigo)",
+   "categoryId": "memes_classicos",
+   "reason": "som licenciado, retirado do Roblox em 2022",
+   "hint": "som de morte antigo"
+  },
+  {
+   "id": "troll_song",
+   "name": "Trollface song",
+   "categoryId": "memes_classicos",
+   "reason": "música protegida",
+   "hint": "Problem? / Trololo"
+  },
+  {
+   "id": "rickroll",
+   "name": "Rickroll",
+   "categoryId": "memes_classicos",
+   "reason": "música protegida",
+   "hint": "Never Gonna Give You Up"
+  },
+  {
+   "id": "eu_boto_ou_nao_boto",
+   "name": "Eu boto ou não boto? Tô com medo",
+   "categoryId": "memes_brasileiros",
+   "reason": "música protegida",
+   "hint": "\"História da Corrinha\", Caviar com Rapadura (forró)"
+  },
+  {
+   "id": "faustao_errou",
+   "name": "Errou! (Faustão)",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Domingão do Faustão"
+  },
+  {
+   "id": "faustao_oloco",
+   "name": "Ô loco, meu! (Faustão)",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Domingão do Faustão"
+  },
+  {
+   "id": "silvio_ma_oe",
+   "name": "Ma oe! (Silvio Santos)",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "SBT"
+  },
+  {
+   "id": "receba",
+   "name": "Receba!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "bordão viral"
+  },
+  {
+   "id": "acabou_jessica",
+   "name": "Já acabou, Jéssica?",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "vídeo viral"
+  },
+  {
+   "id": "taca_pau_marcos",
+   "name": "Taca-lhe pau, Marcos!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "vídeo viral"
+  },
+  {
+   "id": "ele_gosta",
+   "name": "Ele gosta!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "vídeo viral"
+  },
+  {
+   "id": "irra",
+   "name": "Irraaa!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "bordão viral"
+  },
+  {
+   "id": "para_nossa_alegria",
+   "name": "Para nossa alegria",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "vídeo viral"
+  },
+  {
+   "id": "que_deselegante",
+   "name": "Que deselegante!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Sandra Annenberg"
+  },
+  {
+   "id": "olha_a_faca",
+   "name": "Olha a faca!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "vídeo viral"
+  },
+  {
+   "id": "sabe_de_nada",
+   "name": "Sabe de nada, inocente!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Compadre Washington"
+  },
+  {
+   "id": "e_tetra",
+   "name": "É tetra! (Galvão Bueno)",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "narração da Copa de 1994"
+  },
+  {
+   "id": "senta_la_claudia",
+   "name": "Senta lá, Cláudia",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "Faustão"
+  },
+  {
+   "id": "eita_giovana",
+   "name": "Eita, Giovana!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "vídeo viral"
+  },
+  {
+   "id": "o_gas",
+   "name": "Ó o gás!",
+   "categoryId": "memes_brasileiros",
+   "reason": "gravação protegida por direitos autorais",
+   "hint": "jingle do caminhão de gás"
   }
  ]
 }
