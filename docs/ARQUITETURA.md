@@ -15,9 +15,8 @@ UI (Compose)  →  ViewModel  →  UseCase  →  Repository (interface)
 - **data/** — Room (sons e categorias), DataStore (configurações), leitor do manifesto embutido.
 - **ui/** — Compose + Material 3, uma pasta por tela, cada tela com seu ViewModel.
 - **di/** — Hilt.
-- **core/** — utilitários puros (normalização de texto, formatação, formatos aceitos).
-  `core/audio/` recebe o motor na ETAPA 3.
-- **service/** — serviço de reprodução (ETAPA 3) e painel flutuante (ETAPA 6).
+- **core/** — utilitários puros (normalização de texto, formatação, formatos aceitos) e o motor de áudio.
+- **service/** — painel flutuante (ETAPA 6).
 
 Módulo único foi escolha deliberada: multi-módulo aumenta o tempo de build no GitHub Actions
 e complica a edição pelo celular. A separação por pacote mantém as fronteiras; se um dia for
@@ -28,7 +27,7 @@ preciso, cada pasta vira um módulo sem reescrever código.
 ```
 app/src/main/
 ├── assets/sounds.json          manifesto da biblioteca (9 categorias, meta 350)
-├── assets/sounds/              arquivos de áudio embutidos (vazio na ETAPA 1)
+├── assets/sounds/              241 efeitos originais (.ogg), gerados por tools/generate_sounds.py
 └── java/com/memesoundboardx/
     ├── MemeSoundboardApp.kt    Hilt + sincronização do manifesto em segundo plano
     ├── MainActivity.kt
@@ -70,23 +69,49 @@ Na abertura do app, `AssetLibrarySyncer`:
 
 Sons importados e categorias do usuário nunca são alterados por esse processo.
 
-## Motor de áudio (planejado — ETAPA 3)
+## Motor de áudio — `core/audio/SoundEngine.kt`
 
 | Tipo de som | Player | Motivo |
 |---|---|---|
-| Clipes ≤ 6 s (maioria) | `SoundPool` | Latência mínima; áudio decodificado em memória |
-| Vinhetas e músicas | Media3 / ExoPlayer | Streaming; não ocupa RAM com PCM |
+| Até 5 s e até 1 MB (216 dos 241 embutidos) | `SoundPool` | Amostra decodificada na RAM → disparo quase instantâneo |
+| Vinhetas e músicas (> 5 s) | `MediaPlayer` | Streaming; não ocupa RAM com áudio decodificado |
 
-- Até 8 sons simultâneos (configurável de 1 a 8).
-- Cache LRU: só os ~40 sons mais recentes ficam carregados; o resto é liberado.
-- **Não pede foco de áudio por padrão** → o Roblox continua tocando sem ser abaixado.
+- Tocar o mesmo som de novo **não duplica**: tocando → pausa; pausado → continua. Botão quadrado para.
+- Até 8 sons simultâneos (configurável 1–8). Ao passar do limite, o mais antigo é interrompido.
+  No máximo 2 sons longos ao mesmo tempo.
+- **Cache LRU de 40 amostras**: com centenas de sons na biblioteca, só os 40 usados por último ficam
+  na memória. Sons tocando nunca são descarregados. O Android pedindo memória (`onTrimMemory`)
+  descarrega tudo que está parado. Os favoritos (até 16) são pré-carregados na tela Início.
+- Todo o estado do motor muda numa fila única (dispatcher com paralelismo 1): não há condição de corrida
+  entre toques rápidos, término de sons e mudança de volume.
 - `AudioAttributes`: `USAGE_GAME` + `CONTENT_TYPE_SONIFICATION`.
-- Serviço em primeiro plano do tipo `mediaPlayback` para continuar com o app em segundo plano.
+- **Não pede foco de áudio por padrão** → o som do Roblox não é abaixado. Opção em Configurações.
+- Fone desconectado (`ACTION_AUDIO_BECOMING_NOISY`) → para tudo.
+- Arquivo inválido ou apagado → mensagem na tela; o motor continua funcionando (testado).
+- O SoundPool não avisa quando um som termina; o motor usa a duração medida (manifesto ou importação)
+  descontando pausas para liberar o estado "tocando".
+
+## Importação — `data/importer/SafAudioImporter.kt`
+
+1. Seletor do sistema (Storage Access Framework, `OpenMultipleDocuments`): não pede permissão de armazenamento.
+2. Aceita MP3, WAV, OGG, M4A e AAC (por extensão ou tipo MIME). Limite: 30 MB e 10 minutos por arquivo.
+3. **Copia** o arquivo para a pasta privada do app (`files/imported/`), calculando SHA-256 durante a cópia.
+   Assim o som sobrevive a fechar o app, reiniciar o celular, mover ou apagar o original, ou o app de origem
+   revogar o acesso. O arquivo original nunca é alterado nem apagado.
+4. Conteúdo idêntico já importado → marcado como duplicado, sem nova cópia.
+5. Validação real: `MediaExtractor` precisa encontrar uma faixa de áudio e ler uma amostra. Arquivo de texto
+   renomeado para `.mp3`, vazio ou corrompido é recusado com o motivo.
+6. Duração por `MediaExtractor`/`MediaMetadataRetriever`; tamanho pelos bytes copiados.
+7. Categoria automática pelo nome do arquivo (`CategoryAutoMatcher`). Sem correspondência → "Sons aleatórios".
+   O usuário pode mover depois (⋮ → Mover para categoria).
+8. Excluir remove a linha do banco e apaga a cópia interna.
+
+Na abertura do app, importados cuja cópia sumiu são marcados como indisponíveis (aparecem acinzentados).
 
 ## Configurações (DataStore)
 
-Volume geral, máximo de sons simultâneos, pedir foco de áudio (padrão: não), onboarding concluído.
-Já são persistidas na ETAPA 1; os controles aparecem na ETAPA 3, junto com o motor que os aplica.
+Volume geral, máximo de sons simultâneos, pedir foco de áudio (padrão: não). O motor observa essas
+configurações e aplica na hora, inclusive em sons já tocando.
 
 ## Versões
 

@@ -48,11 +48,32 @@ para todas as contas. Tocar sons no chat de voz pode gerar denúncias e moderaç
 - **Teste real com o Roblox:** feito por você, com outra pessoa ouvindo no jogo. Só esse teste pode
   mudar o status desta limitação, e o resultado será registrado em `TESTES.md`.
 
-## L2 — Biblioteca começa vazia
+## L2 — Biblioteca: 241 sons originais, sem memes gravados
 
-Não há arquivos de áudio embutidos na ETAPA 1. Memes de TV, músicas e falas de filmes têm direitos
-autorais e não serão embutidos. O app aceita, no manifesto, apenas sons com licença declarada
-(CC0, domínio público, CC-BY, original ou licenciado). Seus próprios arquivos entram pela importação (ETAPA 5).
+A biblioteca embutida tem **241 efeitos originais**, criados por síntese sonora pelo script
+`tools/generate_sounds.py` (osciladores, ruído, filtros, síntese FM e Karplus-Strong). Não há
+gravações de terceiros, por isso a licença é ORIGINAL.
+
+| Categoria | Embutidos | Meta |
+|---|---|---|
+| Memes clássicos | **0** | 50 |
+| Memes brasileiros | **0** | 50 |
+| Risadas e reações | 21 (sem risadas: só reações instrumentais) | 35 |
+| Impactos e efeitos cômicos | 34 | 35 |
+| Suspense e terror | 30 | 30 |
+| Anime e poderes | 37 | 35 |
+| Games e Roblox (estilo 8-bit, sem sons do Roblox) | 36 | 35 |
+| Sons aleatórios | 42 | 40 |
+| Vinhetas e músicas curtas | 41 | 40 |
+
+Por que memes e risadas ficam de fora: são gravações (falas, vozes, trechos de TV e internet)
+com direitos autorais. Síntese não reproduz voz humana de forma aceitável. Esses entram pela
+importação ("Meus áudios"), com arquivos que você tenha. A categorização automática coloca
+arquivos com nomes como "bruh", "vine boom", "faustão", "kkkk" nas categorias certas.
+
+Os sons foram verificados por medidas objetivas (duração, volume, silêncio, decodificação,
+espectrograma), mas **ninguém os ouviu antes da entrega** — o desenvolvedor não tem como ouvir áudio.
+Sua avaliação no celular é o teste de qualidade real.
 
 ## L3 — Painel flutuante pode ser ocultado pelo jogo
 
@@ -65,7 +86,18 @@ Alternativa planejada: controles na notificação de mídia. A confirmar na ETAP
 O sistema da realme encerra apps em segundo plano de forma agressiva. Pode ser necessário
 liberar o app em Configurações → Bateria. O app vai orientar, mas não pode mudar isso sozinho.
 
-## L5 — Compilação e testes
+## L5 — Reprodução em segundo plano
+
+Os sons continuam tocando se você sair do app, enquanto o Android mantiver o processo vivo.
+Não há serviço em primeiro plano nem notificação nesta etapa; isso entra junto com o painel
+flutuante (ETAPA 6), que é o jeito de disparar sons por cima do Roblox.
+
+## L6 — Volume
+
+O volume do app é relativo ao volume de mídia do celular. Se o celular estiver no mudo de
+mídia, o app não toca nada, mesmo em 100%.
+
+## L7 — Compilação e testes
 
 O projeto é compilado pelo GitHub Actions. O desenvolvedor (Claude) não tem um Realme C71:
 toda marcação "testado no dispositivo real" depende de você.

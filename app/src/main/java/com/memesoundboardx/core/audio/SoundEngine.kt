@@ -279,8 +279,8 @@ class SoundEngine @Inject constructor(
 
     private fun startStream(sound: Sound, sample: Sample) {
         val streamId = pool.play(sample.sampleId, volume, volume, 1, if (repeat) -1 else 0, 1f)
-        voices.remove(sound.id)
         if (streamId == 0) {
+            voices.remove(sound.id)
             fail("O sistema recusou tocar \"${sound.name}\".")
             return
         }
@@ -288,6 +288,8 @@ class SoundEngine @Inject constructor(
             sound, streamId, repeat,
             sound.durationMs ?: PlaybackPolicy.UNKNOWN_DURATION_FALLBACK_MS,
         )
+        // Substitui no mesmo lugar: a ordem de início vale a partir do toque, não do fim do carregamento.
+        // (LinkedHashMap mantém a posição original ao sobrescrever uma chave existente.)
         voices[sound.id] = v
         scheduleEnd(v)
     }
