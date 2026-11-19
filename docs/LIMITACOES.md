@@ -48,32 +48,22 @@ para todas as contas. Tocar sons no chat de voz pode gerar denúncias e moderaç
 - **Teste real com o Roblox:** feito por você, com outra pessoa ouvindo no jogo. Só esse teste pode
   mudar o status desta limitação, e o resultado será registrado em `TESTES.md`.
 
-## L2 — Biblioteca: 241 sons originais, sem memes gravados
+## L2 — Memes virais e bordões de TV não vêm embutidos
 
-A biblioteca embutida tem **241 efeitos originais**, criados por síntese sonora pelo script
-`tools/generate_sounds.py` (osciladores, ruído, filtros, síntese FM e Karplus-Strong). Não há
-gravações de terceiros, por isso a licença é ORIGINAL.
+A biblioteca embutida tem **475 sons**: 241 originais (síntese) + 234 gravações de fontes livres
+(Wikimedia Commons, Lingua Libre e OpenGameArt), cada uma com fonte, autor, licença e link registrados.
+Detalhes em [RELATORIO_SONS.md](RELATORIO_SONS.md) e [FONTES_DE_SONS.md](FONTES_DE_SONS.md).
 
-| Categoria | Embutidos | Meta |
-|---|---|---|
-| Memes clássicos | **0** | 50 |
-| Memes brasileiros | **0** | 50 |
-| Risadas e reações | 21 (sem risadas: só reações instrumentais) | 35 |
-| Impactos e efeitos cômicos | 34 | 35 |
-| Suspense e terror | 30 | 30 |
-| Anime e poderes | 37 | 35 |
-| Games e Roblox (estilo 8-bit, sem sons do Roblox) | 36 | 35 |
-| Sons aleatórios | 42 | 40 |
-| Vinhetas e músicas curtas | 41 | 40 |
+Memes virais (Vine Boom, Bruh, Metal Pipe, Discord, Windows, bordões do Faustão etc.) são gravações
+protegidas, sem versão com licença livre. Eles **não** estão no app: aparecem como **40 itens pendentes**
+em Meus áudios → "Memes aguardando arquivo", e você escolhe o arquivo de cada um.
 
-Por que memes e risadas ficam de fora: são gravações (falas, vozes, trechos de TV e internet)
-com direitos autorais. Síntese não reproduz voz humana de forma aceitável. Esses entram pela
-importação ("Meus áudios"), com arquivos que você tenha. A categorização automática coloca
-arquivos com nomes como "bruh", "vine boom", "faustão", "kkkk" nas categorias certas.
+As categorias "Memes clássicos" e "Memes brasileiros" incluem **gravações reais de palavras e interjeições**
+("Nope", "What?", "Nossa!", "Caramba!"…) feitas por voluntários do Lingua Libre. **Não são os áudios virais**;
+o nome de cada uma termina com "(voz)". O sotaque das gravações em português não foi verificado (pode ser de Portugal).
 
-Os sons foram verificados por medidas objetivas (duração, volume, silêncio, decodificação,
-espectrograma), mas **ninguém os ouviu antes da entrega** — o desenvolvedor não tem como ouvir áudio.
-Sua avaliação no celular é o teste de qualidade real.
+Os sons sintetizados e os baixados foram verificados por medidas (duração, volume, decodificação, licença),
+mas **ninguém os ouviu antes da entrega**.
 
 ## L3 — Painel flutuante pode ser ocultado pelo jogo
 
