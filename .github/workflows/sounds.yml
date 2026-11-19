@@ -23,10 +23,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Ferramentas
-        run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
-          python3 -m pip install --quiet numpy scipy
+      - name: ffmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
 
       - name: Descoberta
         if: ${{ contains(github.event.head_commit.message, '[discover]') }}
@@ -45,4 +43,8 @@ jobs:
           git add -A tools/candidates app/src/main/assets docs || true
           git diff --cached --quiet && echo "Nada mudou." && exit 0
           git commit -m "Sons: resultado automático (${{ github.run_number }})"
-          git push
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin meme-soundboard-x && git push && exit 0
+            sleep 10
+          done
+          exit 1
