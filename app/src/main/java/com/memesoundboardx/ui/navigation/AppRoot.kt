@@ -26,7 +26,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +47,9 @@ import com.memesoundboardx.ui.components.LocalPlayerUi
 import com.memesoundboardx.ui.components.PlayerBar
 import com.memesoundboardx.ui.components.PlayerUi
 import com.memesoundboardx.ui.components.PlayerViewModel
+import com.memesoundboardx.ui.components.SoundActionsViewModel
+import com.memesoundboardx.ui.components.SoundDetailsDialog
+import com.memesoundboardx.ui.screens.settings.CreditsScreen
 import com.memesoundboardx.ui.screens.categories.CategoriesScreen
 import com.memesoundboardx.ui.screens.categories.CategoryDetailScreen
 import com.memesoundboardx.ui.screens.favorites.FavoritesScreen
@@ -63,6 +68,7 @@ object Routes {
     const val MY_AUDIO = "my_audio"
     const val SEARCH = "search"
     const val SETTINGS = "settings"
+    const val CREDITS = "credits"
     const val CATEGORY_DETAIL = "category/{categoryId}"
     const val ARG_CATEGORY_ID = "categoryId"
 
@@ -87,6 +93,7 @@ private fun titleFor(route: String?): String = when (route) {
     Routes.MY_AUDIO -> "Meus áudios"
     Routes.SETTINGS -> "Configurações"
     Routes.CATEGORY_DETAIL -> "Categoria"
+    Routes.CREDITS -> "Créditos e licenças"
     else -> "MEME SOUNDBOARD X"
 }
 
@@ -100,7 +107,10 @@ fun AppRoot() {
 
     val playerVm: PlayerViewModel = hiltViewModel()
     val playerState by playerVm.state.collectAsStateWithLifecycle()
-    val playerUi = PlayerUi(playerState, playerVm::toggle, playerVm::stop)
+    val actionsVm: SoundActionsViewModel = hiltViewModel()
+    val catNames by actionsVm.categoryNames.collectAsStateWithLifecycle()
+    var details by remember { mutableStateOf<com.memesoundboardx.domain.model.Sound?>(null) }
+    val playerUi = PlayerUi(playerState, playerVm::toggle, playerVm::stop, onDetails = { details = it })
     val snackbar = remember { SnackbarHostState() }
     LaunchedEffect(playerState.lastError) {
         playerState.lastError?.let {
@@ -190,8 +200,18 @@ fun AppRoot() {
             composable(Routes.FAVORITES) { FavoritesScreen() }
             composable(Routes.SEARCH) { SearchScreen() }
             composable(Routes.MY_AUDIO) { MyAudioScreen() }
-            composable(Routes.SETTINGS) { SettingsScreen() }
+            composable(Routes.SETTINGS) { SettingsScreen(onOpenCredits = { nav.navigate(Routes.CREDITS) }) }
+            composable(Routes.CREDITS) { CreditsScreen() }
         }
+    }
+    details?.let { s ->
+        SoundDetailsDialog(
+            sound = s,
+            categoryName = s.categoryId?.let { catNames[it] },
+            onToggleFavorite = { actionsVm.toggleFavorite(s); details = null },
+            onRemove = { actionsVm.remove(s) },
+            onDismiss = { details = null },
+        )
     }
     }
 }

@@ -44,7 +44,9 @@ import androidx.lifecycle.viewModelScope
 import com.memesoundboardx.domain.model.Category
 import com.memesoundboardx.domain.model.ImportReport
 import com.memesoundboardx.domain.model.Sound
+import com.memesoundboardx.domain.model.PendingItem
 import com.memesoundboardx.domain.repository.AudioImporter
+import com.memesoundboardx.domain.repository.LibrarySyncer
 import com.memesoundboardx.domain.repository.CategoryRepository
 import com.memesoundboardx.domain.repository.SoundPlayer
 import com.memesoundboardx.domain.repository.SoundRepository
@@ -63,6 +65,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -81,7 +84,21 @@ class MyAudioViewModel @Inject constructor(
     private val renameSound: RenameSoundUseCase,
     private val importer: AudioImporter,
     private val player: SoundPlayer,
+    syncer: LibrarySyncer,
 ) : SoundListViewModel(sounds.observeImported(), categories, toggleFavorite) {
+
+    /** Memes conhecidos ainda sem arquivo (some da lista quando você importa o arquivo dele). */
+    val pending: StateFlow<List<PendingItem>> = combine(syncer.pending, sounds.observeFulfilledPending()) { all, done ->
+        all.filter { it.id !in done }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
+    fun importForPending(uri: String, item: PendingItem) {
+        if (_import.value is ImportUiState.Running) return
+        viewModelScope.launch {
+            _import.value = ImportUiState.Running(1)
+            _import.value = ImportUiState.Done(importer.importForPending(uri, item))
+        }
+    }
 
     val categoryList: StateFlow<List<Category>> = categories.observeCategories()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
@@ -132,6 +149,13 @@ fun MyAudioScreen(viewModel: MyAudioViewModel = hiltViewModel()) {
     var renaming by remember { mutableStateOf<Sound?>(null) }
     var moving by remember { mutableStateOf<Sound?>(null) }
     var deleting by remember { mutableStateOf<Sound?>(null) }
+    val pending by viewModel.pending.collectAsStateWithLifecycle()
+    var pendingTarget by remember { mutableStateOf<PendingItem?>(null) }
+    val pendingPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        val target = pendingTarget
+        if (uri != null && target != null) viewModel.importForPending(uri.toString(), target)
+        pendingTarget = null
+    }
 
     // Storage Access Framework: seletor de arquivos do sistema, sem permissão de armazenamento.
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
@@ -158,18 +182,32 @@ fun MyAudioScreen(viewModel: MyAudioViewModel = hiltViewModel()) {
         }
 
         Box(Modifier.weight(1f)) {
-            if (!state.loading && state.sounds.isEmpty()) {
-                EmptyState(
-                    Icons.Filled.AccountCircle,
-                    "Nenhum áudio importado",
-                    "Toque em Importar e escolha um ou vários arquivos. O app guarda uma cópia, " +
-                        "então o som continua funcionando mesmo se o original for movido. O arquivo original nunca é apagado.",
-                )
-            } else {
+            run {
                 SoundList(
                     sounds = state.sounds,
                     categoryNames = state.categoryNames,
                     onToggleFavorite = viewModel::onToggleFavorite,
+                    header = {
+                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            if (pending.isNotEmpty()) {
+                                PendingSection(pending, state.categoryNames) { item ->
+                                    pendingTarget = item
+                                    pendingPicker.launch(IMPORT_MIME_TYPES)
+                                }
+                            }
+                            if (!state.loading && state.sounds.isEmpty()) {
+                                Text(
+                                    "Nenhum áudio importado ainda. Toque em Importar e escolha um ou vários arquivos. " +
+                                        "O app guarda uma cópia, então o som continua funcionando mesmo se o original for movido. " +
+                                        "O arquivo original nunca é apagado.",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = NeonColors.TextDim,
+                                )
+                            } else {
+                                com.memesoundboardx.ui.components.SectionTitle("Meus áudios (${state.sounds.size})")
+                            }
+                        }
+                    },
                     trailing = { sound ->
                         var menu by remember { mutableStateOf(false) }
                         Box {
@@ -291,4 +329,34 @@ private fun ImportReportDialog(report: ImportReport, onDismiss: () -> Unit) {
         },
         confirmButton = { TextButton(onClick = onDismiss) { Text("OK") } },
     )
+}
+
+/** Memes conhecidos que não têm fonte autorizada: você escolhe o arquivo e ele entra com nome e categoria certos. */
+@Composable
+private fun PendingSection(items: List<PendingItem>, categoryNames: Map<String, String>, onPick: (PendingItem) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    com.memesoundboardx.ui.components.NeonCard(Modifier.fillMaxWidth(), onClick = { expanded = !expanded }) {
+        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text("Memes aguardando arquivo (${items.size})", style = MaterialTheme.typography.titleMedium, color = NeonColors.Warning)
+            Text(
+                "Sem fonte com licença que permita incluir no app. Se você tiver o arquivo, toque em Escolher arquivo. " +
+                    if (expanded) "" else "Toque para ver a lista.",
+                style = MaterialTheme.typography.bodySmall, color = NeonColors.TextDim,
+            )
+            if (expanded) {
+                items.forEach { item ->
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(item.name, style = MaterialTheme.typography.titleSmall)
+                            Text(
+                                listOfNotNull(categoryNames[item.categoryId], item.hint, item.reason).joinToString(" · "),
+                                style = MonoLabel, color = NeonColors.TextDim,
+                            )
+                        }
+                        TextButton(onClick = { onPick(item) }) { Text("Escolher arquivo") }
+                    }
+                }
+            }
+        }
+    }
 }

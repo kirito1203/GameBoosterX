@@ -20,6 +20,8 @@ interface SoundRepository {
     suspend fun rename(soundId: Long, newName: String)
     suspend fun setCategory(soundId: Long, categoryId: String?)
     suspend fun delete(soundId: Long)
+    /** Ids de itens pendentes que já receberam arquivo do usuário. */
+    fun observeFulfilledPending(): Flow<Set<String>>
 }
 
 interface CategoryRepository {
@@ -36,10 +38,16 @@ interface SettingsRepository {
     suspend fun setMaxSimultaneous(count: Int)
     suspend fun setRequestAudioFocus(enabled: Boolean)
     suspend fun setOnboardingDone(done: Boolean)
+    suspend fun hideBundled(key: String)
+    suspend fun restoreBundled()
 }
 
 interface LibrarySyncer {
     val lastReport: StateFlow<LibrarySyncReport?>
+    /** Memes conhecidos aguardando arquivo do usuário (do manifesto). */
+    val pending: StateFlow<List<com.memesoundboardx.domain.model.PendingItem>>
+    /** Créditos dos sons de terceiros embutidos no APK. */
+    val credits: StateFlow<List<com.memesoundboardx.domain.model.CreditEntry>>
     /** Lê o manifesto embutido e sincroniza com o banco, preservando favoritos. */
     suspend fun syncBundled(): LibrarySyncReport
 }

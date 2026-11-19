@@ -16,6 +16,7 @@ import com.memesoundboardx.data.local.db.SoundEntity
 import com.memesoundboardx.di.IoDispatcher
 import com.memesoundboardx.domain.model.ImportFailure
 import com.memesoundboardx.domain.model.ImportReport
+import com.memesoundboardx.domain.model.PendingItem
 import com.memesoundboardx.domain.model.SoundLicense
 import com.memesoundboardx.domain.model.SoundSource
 import com.memesoundboardx.domain.repository.AudioImporter
@@ -138,6 +139,17 @@ class SafAudioImporter @Inject constructor(
         ImportReport(imported, duplicates, failures)
     }
 
+    override suspend fun importForPending(uri: String, item: PendingItem): ImportReport = withContext(io) {
+        val u = Uri.parse(uri)
+        val (fileName, declaredSize) = queryNameAndSize(u)
+        val valid = categoryDao.getAllWithCounts().map { it.category.id }.toSet()
+        when (val r = importOne(u, fileName, declaredSize, item.categoryId, valid, nameOverride = item.name, tag = "pending:${item.id}")) {
+            is One.Ok -> ImportReport(listOf(r.name), emptyList(), emptyList())
+            is One.Duplicate -> ImportReport(emptyList(), listOf(fileName), emptyList())
+            is One.Fail -> ImportReport(emptyList(), emptyList(), listOf(ImportFailure(fileName, r.reason)))
+        }
+    }
+
     private sealed interface One {
         data class Ok(val name: String) : One
         data object Duplicate : One
@@ -150,6 +162,8 @@ class SafAudioImporter @Inject constructor(
         declaredSize: Long?,
         categoryOverride: String?,
         validCategories: Set<String>,
+        nameOverride: String? = null,
+        tag: String? = null,
     ): One {
         val mime = runCatching { context.contentResolver.getType(uri) }.getOrNull()
         val ext = ImportNaming.extensionFor(fileName, mime)
@@ -205,7 +219,8 @@ class SafAudioImporter @Inject constructor(
             return One.Fail("áudio com mais de ${MAX_DURATION_MS / 60_000} minutos")
         }
 
-        val name = ImportNaming.displayName(fileName)
+        val name = nameOverride ?: ImportNaming.displayName(fileName)
+        val tags = listOfNotNull(tag)
         val category = categoryOverride?.takeIf { it in validCategories }
             ?: CategoryAutoMatcher.match(fileName).takeIf { it in validCategories }
         return try {
@@ -213,7 +228,7 @@ class SafAudioImporter @Inject constructor(
                 SoundEntity(
                     key = key,
                     name = name,
-                    searchName = TextNormalizer.searchIndex(name, emptyList()),
+                    searchName = TextNormalizer.searchIndex(name, tags),
                     categoryId = category,
                     source = SoundSource.IMPORTED.name,
                     uri = store.uriFor(dest),
@@ -223,7 +238,7 @@ class SafAudioImporter @Inject constructor(
                     license = SoundLicense.USER_FILE.name,
                     author = null,
                     sourceUrl = null,
-                    tags = "",
+                    tags = tags.joinToString("|"),
                     addedAt = System.currentTimeMillis(),
                     isAvailable = true,
                 ),

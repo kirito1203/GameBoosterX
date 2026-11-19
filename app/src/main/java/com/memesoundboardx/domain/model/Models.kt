@@ -4,7 +4,34 @@ package com.memesoundboardx.domain.model
 enum class SoundSource { BUNDLED, IMPORTED }
 
 /** Licenças aceitas para sons embutidos no APK. */
-enum class SoundLicense { CC0, PUBLIC_DOMAIN, CC_BY, ORIGINAL, LICENSED, USER_FILE }
+enum class SoundLicense(val label: String, val requiresAttribution: Boolean) {
+    CC0("CC0 (domínio público)", false),
+    PUBLIC_DOMAIN("Domínio público", false),
+    CC_BY("CC BY", true),
+    CC_BY_SA("CC BY-SA", true),
+    ORIGINAL("Original do app", false),
+    LICENSED("Licenciado", true),
+    USER_FILE("Arquivo do usuário", false),
+}
+
+/** Crédito de um som de terceiros incluído no APK (exigido por CC BY / CC BY-SA). */
+data class CreditEntry(
+    val name: String,
+    val author: String?,
+    val license: SoundLicense,
+    val sourceUrl: String?,
+)
+
+/** Meme conhecido sem fonte autorizada: fica como vaga esperando o arquivo do usuário. */
+data class PendingItem(
+    val id: String,
+    val name: String,
+    val categoryId: String,
+    /** Por que não foi incluído (ex.: "música protegida por direitos autorais"). */
+    val reason: String,
+    /** Dica de identificação (frase, origem). */
+    val hint: String?,
+)
 
 data class Sound(
     val id: Long,
@@ -48,6 +75,7 @@ data class LibraryStats(
 data class LibrarySyncReport(
     val validSounds: Int,
     val rejected: List<String>,
+    val hidden: Int = 0,
     val finishedAt: Long,
 )
 
@@ -57,6 +85,8 @@ data class AppSettings(
     /** Se true, o app pede foco de áudio e pode abaixar o Roblox. Padrão: false. */
     val requestAudioFocus: Boolean = false,
     val onboardingDone: Boolean = false,
+    /** Chaves de sons embutidos que o usuário removeu da biblioteca. */
+    val hiddenBundled: Set<String> = emptySet(),
 ) {
     companion object {
         const val DEFAULT_VOLUME = 0.8f

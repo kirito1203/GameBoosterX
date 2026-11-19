@@ -61,6 +61,8 @@ class PlayerUi(
     val state: PlayerState,
     val onToggle: (Sound) -> Unit,
     val onStop: (Sound) -> Unit,
+    /** Toque longo: detalhes, licença, remover. */
+    val onDetails: (Sound) -> Unit = {},
 )
 
 val LocalPlayerUi = compositionLocalOf { PlayerUi(PlayerState(), {}, {}) }

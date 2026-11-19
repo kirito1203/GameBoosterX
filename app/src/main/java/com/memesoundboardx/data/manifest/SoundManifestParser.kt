@@ -26,9 +26,18 @@ data class ManifestSound(
     val tags: List<String>,
 )
 
+data class ManifestPending(
+    val id: String,
+    val name: String,
+    val categoryId: String,
+    val reason: String,
+    val hint: String?,
+)
+
 data class ManifestParseResult(
     val categories: List<ManifestCategory>,
     val sounds: List<ManifestSound>,
+    val pending: List<ManifestPending> = emptyList(),
     /** Uma mensagem por entrada rejeitada. Vazio = tudo válido. */
     val errors: List<String>,
 )
@@ -63,7 +72,8 @@ object SoundManifestParser {
         val categories = parseCategories(root.optJSONArray("categories") ?: JSONArray(), errors)
         val categoryIds = categories.map { it.id }.toSet()
         val sounds = parseSounds(root.optJSONArray("sounds") ?: JSONArray(), categoryIds, errors)
-        return ManifestParseResult(categories, sounds, errors)
+        val pending = parsePending(root.optJSONArray("pending") ?: JSONArray(), categoryIds, errors)
+        return ManifestParseResult(categories, sounds, pending, errors)
     }
 
     private fun parseCategories(arr: JSONArray, errors: MutableList<String>): List<ManifestCategory> {
@@ -133,6 +143,28 @@ object SoundManifestParser {
                 sourceUrl = o.optString("sourceUrl").trim().ifEmpty { null },
                 tags = o.optJSONArray("tags").toStringList(),
             )
+        }
+        return out
+    }
+
+    private fun parsePending(arr: JSONArray, categoryIds: Set<String>, errors: MutableList<String>): List<ManifestPending> {
+        val out = mutableListOf<ManifestPending>()
+        val seen = mutableSetOf<String>()
+        for (i in 0 until arr.length()) {
+            val o = arr.optJSONObject(i) ?: continue
+            val id = o.optString("id").trim()
+            val name = o.optString("name").trim()
+            val cat = o.optString("categoryId").trim()
+            when {
+                !idRegex.matches(id) || !seen.add(id) -> errors += "pendente[$i]: id inválido ou repetido '$id'"
+                name.isEmpty() -> errors += "pendente '$id': nome vazio"
+                cat !in categoryIds -> errors += "pendente '$id': categoria inexistente '$cat'"
+                else -> out += ManifestPending(
+                    id, name, cat,
+                    reason = o.optString("reason").trim().ifEmpty { "sem fonte autorizada" },
+                    hint = o.optString("hint").trim().ifEmpty { null },
+                )
+            }
         }
         return out
     }

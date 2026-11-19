@@ -17,6 +17,7 @@ import javax.inject.Singleton
 class SoundRepositoryImpl @Inject constructor(
     private val dao: SoundDao,
     private val importedFiles: ImportedFileStore,
+    private val settings: com.memesoundboardx.domain.repository.SettingsRepository,
 ) : SoundRepository {
 
     override fun observeAll(): Flow<List<Sound>> =
@@ -46,18 +47,26 @@ class SoundRepositoryImpl @Inject constructor(
         dao.rename(soundId, newName, TextNormalizer.searchIndex(newName, tags))
     }
 
+    override fun observeFulfilledPending(): Flow<Set<String>> =
+        dao.observePendingTags().map { rows ->
+            rows.flatMap { it.split(TAG_SEPARATOR) }
+                .filter { it.startsWith("pending:") }
+                .map { it.removePrefix("pending:") }
+                .toSet()
+        }
+
     override suspend fun setCategory(soundId: Long, categoryId: String?) =
         dao.setCategory(soundId, categoryId)
 
     /**
-     * Remove o som da biblioteca e apaga a CÓPIA interna (pasta privada do app).
-     * O arquivo original do usuário, de onde o som foi importado, nunca é tocado.
-     * Sons embutidos não podem ser excluídos (voltariam na próxima sincronização).
+     * Importado: remove da biblioteca e apaga a CÓPIA interna (o original do usuário nunca é tocado).
+     * Embutido: remove da biblioteca e lembra a escolha, para não voltar na próxima sincronização.
+     * Pode ser restaurado em Configurações.
      */
     override suspend fun delete(soundId: Long) {
         val s = dao.getById(soundId) ?: return
-        if (s.source != SoundSource.IMPORTED.name) return
+        if (s.source == SoundSource.BUNDLED.name) settings.hideBundled(s.key)
         dao.deleteById(soundId)
-        importedFiles.delete(s.uri)
+        if (s.source == SoundSource.IMPORTED.name) importedFiles.delete(s.uri)
     }
 }

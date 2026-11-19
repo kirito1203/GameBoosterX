@@ -123,7 +123,7 @@ def discover_commons():
             try:
                 titles = commons_search(f"{q} filetype:audio", 30)
             except Exception as e:  # noqa: BLE001
-                print("busca falhou", q, e)
+                print("busca falhou", q, repr(e))
                 continue
             new = [t for t in titles if t not in seen]
             seen.update(new)
@@ -239,5 +239,6 @@ def discover_zips():
 
 
 if __name__ == "__main__":
-    discover_zips()
+    if not os.path.exists(os.path.join(OUT, "packs.json")):
+        discover_zips()
     discover_commons()

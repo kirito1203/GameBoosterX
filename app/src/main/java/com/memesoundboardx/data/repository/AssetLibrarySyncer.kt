@@ -11,6 +11,11 @@ import com.memesoundboardx.data.importer.ImportedFileStore
 import com.memesoundboardx.data.manifest.SoundManifestParser
 import com.memesoundboardx.di.IoDispatcher
 import com.memesoundboardx.domain.model.LibrarySyncReport
+import com.memesoundboardx.domain.model.CreditEntry
+import com.memesoundboardx.domain.model.PendingItem
+import com.memesoundboardx.domain.model.SoundLicense
+import com.memesoundboardx.domain.repository.SettingsRepository
+import kotlinx.coroutines.flow.first
 import com.memesoundboardx.domain.model.SoundSource
 import com.memesoundboardx.domain.repository.LibrarySyncer
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -38,12 +43,17 @@ class AssetLibrarySyncer @Inject constructor(
     @ApplicationContext private val context: Context,
     private val db: AppDatabase,
     private val importedFiles: ImportedFileStore,
+    private val settings: SettingsRepository,
     @IoDispatcher private val io: CoroutineDispatcher,
 ) : LibrarySyncer {
 
     private val mutex = Mutex()
     private val _lastReport = MutableStateFlow<LibrarySyncReport?>(null)
     override val lastReport: StateFlow<LibrarySyncReport?> = _lastReport.asStateFlow()
+    private val _pending = MutableStateFlow<List<PendingItem>>(emptyList())
+    override val pending: StateFlow<List<PendingItem>> = _pending.asStateFlow()
+    private val _credits = MutableStateFlow<List<CreditEntry>>(emptyList())
+    override val credits: StateFlow<List<CreditEntry>> = _credits.asStateFlow()
 
     override suspend fun syncBundled(): LibrarySyncReport = mutex.withLock {
         withContext(io) {
@@ -56,6 +66,13 @@ class AssetLibrarySyncer @Inject constructor(
             }
 
             val parsed = SoundManifestParser.parse(json)
+            _pending.value = parsed.pending.map { PendingItem(it.id, it.name, it.categoryId, it.reason, it.hint) }
+            _credits.value = parsed.sounds
+                .filter { it.license != SoundLicense.ORIGINAL }
+                .map { CreditEntry(it.name, it.author, it.license, it.sourceUrl) }
+                .sortedBy { it.name.lowercase() }
+            val hidden = settings.settings.first().hiddenBundled
+            var hiddenCount = 0
             val errors = parsed.errors.toMutableList()
             val bundledFiles = context.assets.list(SOUNDS_DIR)?.toSet().orEmpty()
 
@@ -81,6 +98,7 @@ class AssetLibrarySyncer @Inject constructor(
                         continue
                     }
                     val key = "bundled:${s.id}"
+                    if (key in hidden) { hiddenCount++; continue } // removido pelo usuário
                     val old = existing[key]
                     keep += key
                     toUpsert += SoundEntity(
@@ -119,7 +137,7 @@ class AssetLibrarySyncer @Inject constructor(
             }
 
             errors.forEach { Log.w(TAG, it) }
-            val report = LibrarySyncReport(validCount, errors, System.currentTimeMillis())
+            val report = LibrarySyncReport(validCount, errors, System.currentTimeMillis(), hiddenCount)
             _lastReport.value = report
             report
         }

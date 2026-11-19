@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.memesoundboardx.domain.model.AppSettings
 import com.memesoundboardx.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +28,7 @@ class SettingsDataStore @Inject constructor(
         val MAX_SIMULTANEOUS = intPreferencesKey("max_simultaneous")
         val AUDIO_FOCUS = booleanPreferencesKey("request_audio_focus")
         val ONBOARDING = booleanPreferencesKey("onboarding_done")
+        val HIDDEN = stringSetPreferencesKey("hidden_bundled")
     }
 
     override val settings: Flow<AppSettings> = dataStore.data
@@ -39,6 +41,7 @@ class SettingsDataStore @Inject constructor(
                 ),
                 requestAudioFocus = p[Keys.AUDIO_FOCUS] ?: false,
                 onboardingDone = p[Keys.ONBOARDING] ?: false,
+                hiddenBundled = p[Keys.HIDDEN] ?: emptySet(),
             )
         }
         .distinctUntilChanged()
@@ -57,5 +60,13 @@ class SettingsDataStore @Inject constructor(
 
     override suspend fun setOnboardingDone(done: Boolean) {
         dataStore.edit { it[Keys.ONBOARDING] = done }
+    }
+
+    override suspend fun hideBundled(key: String) {
+        dataStore.edit { it[Keys.HIDDEN] = (it[Keys.HIDDEN] ?: emptySet()) + key }
+    }
+
+    override suspend fun restoreBundled() {
+        dataStore.edit { it.remove(Keys.HIDDEN) }
     }
 }

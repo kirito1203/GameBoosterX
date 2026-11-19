@@ -29,4 +29,7 @@ interface SoundPlayer {
 /** Importação via Storage Access Framework. [uris] são content:// (ou file:// em testes). */
 interface AudioImporter {
     suspend fun import(uris: List<String>, categoryOverride: String? = null): ImportReport
+
+    /** Importa um arquivo para preencher um item pendente (usa nome e categoria do item). */
+    suspend fun importForPending(uri: String, item: com.memesoundboardx.domain.model.PendingItem): ImportReport
 }

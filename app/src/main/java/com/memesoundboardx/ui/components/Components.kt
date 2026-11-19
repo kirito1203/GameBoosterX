@@ -4,7 +4,9 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -122,9 +124,11 @@ fun EmptyState(icon: ImageVector, title: String, message: String, modifier: Modi
 }
 
 /**
- * Linha de som: toque na linha ou no botão grande para tocar/pausar/continuar.
+ * Linha de som: toque longo abre detalhes (fonte, autor, licença, remover).
+ * Toque na linha ou no botão grande para tocar/pausar/continuar.
  * O botão quadrado (parar) aparece só enquanto o som está ativo.
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SoundRow(
     sound: Sound,
@@ -151,7 +155,11 @@ fun SoundRow(
             .clip(shape)
             .background(NeonColors.Surface)
             .border(if (active) 1.5.dp else 1.dp, borderColor, shape)
-            .clickable(enabled = sound.isAvailable) { player.onToggle(sound) }
+            .combinedClickable(
+                enabled = true,
+                onClick = { if (sound.isAvailable) player.onToggle(sound) },
+                onLongClick = { player.onDetails(sound) },
+            )
             .padding(start = 8.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

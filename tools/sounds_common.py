@@ -35,8 +35,8 @@ def allowed_by_robots(url):
     return rp.can_fetch(UA, url)
 
 
-def http_get(url, binary=False, pause=1.0, retries=3):
-    if not allowed_by_robots(url):
+def http_get(url, binary=False, pause=1.0, retries=3, respect_robots=True):
+    if respect_robots and not allowed_by_robots(url):
         raise PermissionError(f"robots.txt não permite: {url}")
     last = None
     for attempt in range(retries):
@@ -53,8 +53,11 @@ def http_get(url, binary=False, pause=1.0, retries=3):
 
 
 def commons_api(params):
-    params = dict(params, format="json", formatversion="2")
-    return json.loads(http_get(COMMONS_API + "?" + urllib.parse.urlencode(params), pause=0.5))
+    params = dict(params, format="json", formatversion="2", maxlag="5")
+    # O robots.txt da Wikimedia bloqueia /w/ para rastreadores; o uso da API é regido pela
+    # política própria (https://www.mediawiki.org/wiki/Wikimedia_APIs/Access_policy):
+    # User-Agent identificado, uma requisição por vez, respeitar maxlag. É o que fazemos aqui.
+    return json.loads(http_get(COMMONS_API + "?" + urllib.parse.urlencode(params), pause=0.5, respect_robots=False))
 
 
 def strip_html(s):

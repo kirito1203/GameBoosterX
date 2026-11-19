@@ -98,6 +98,13 @@ class SettingsViewModel @Inject constructor(
     fun setAudioFocus(on: Boolean) {
         viewModelScope.launch { settingsRepo.setRequestAudioFocus(on) }
     }
+    fun restoreHidden() {
+        viewModelScope.launch {
+            settingsRepo.restoreBundled()
+            resync()
+        }
+    }
+
     fun freeMemory() {
         player.trimMemory()
         refreshDiagnostics()
@@ -105,7 +112,7 @@ class SettingsViewModel @Inject constructor(
 }
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen(onOpenCredits: () -> Unit = {}, viewModel: SettingsViewModel = hiltViewModel()) {
     val report by viewModel.report.collectAsStateWithLifecycle()
     val syncing by viewModel.syncing.collectAsStateWithLifecycle()
     val settings by viewModel.settings.collectAsStateWithLifecycle()
@@ -204,11 +211,21 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                     )
                 }
                 Text(
-                    "Os sons embutidos são originais, criados por síntese sonora para este app.",
+                    "Sons originais (síntese) + gravações de fontes livres com licença registrada. " +
+                        "Toque longo em qualquer som mostra fonte, autor e licença.",
                     style = MaterialTheme.typography.bodySmall, color = NeonColors.TextDim,
                 )
-                OutlinedButton(onClick = viewModel::resync, enabled = !syncing) {
-                    Text(if (syncing) "Verificando…" else "Verificar novamente")
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedButton(onClick = viewModel::resync, enabled = !syncing) {
+                        Text(if (syncing) "Verificando…" else "Verificar novamente")
+                    }
+                    OutlinedButton(onClick = onOpenCredits) { Text("Créditos") }
+                }
+                val hidden = settings.hiddenBundled.size
+                if (hidden > 0) {
+                    OutlinedButton(onClick = viewModel::restoreHidden, enabled = !syncing) {
+                        Text("Restaurar $hidden som(ns) removido(s)")
+                    }
                 }
             }
         }

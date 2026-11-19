@@ -50,6 +50,9 @@ interface SoundDao {
     @Query("SELECT * FROM sounds WHERE source = :source")
     suspend fun getBySource(source: String): List<SoundEntity>
 
+    @Query("SELECT tags FROM sounds WHERE source = 'IMPORTED' AND tags LIKE 'pending:%'")
+    fun observePendingTags(): Flow<List<String>>
+
     @Query("SELECT * FROM sounds WHERE id = :id")
     suspend fun getById(id: Long): SoundEntity?
 
