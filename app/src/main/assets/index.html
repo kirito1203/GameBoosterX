@@ -450,10 +450,10 @@ h2,.cz,.banner .lbl,.tabs button,.pagehd,.ttl,.sname,.cname,.ename,.att small,.a
 .apar.esp .veil{background:radial-gradient(circle at 50% 50%,rgba(170,230,255,.35),rgba(10,30,50,.75) 60%,rgba(0,0,0,.85));animation:vin 2.9s ease forwards}
 .apar.dem .veil{background:radial-gradient(circle at 50% 55%,rgba(255,30,30,.35),rgba(60,0,0,.8) 55%,rgba(0,0,0,.92));animation:vin 2.9s ease forwards}
 @keyframes vin{0%{opacity:0}12%{opacity:1}80%{opacity:1}100%{opacity:0}}
-.apar svg{position:relative;width:min(78vw,340px);height:auto}
-.apar.esp svg{filter:drop-shadow(0 0 18px #9fe6ff) drop-shadow(0 0 40px rgba(120,210,255,.8));animation:espUp 2.9s ease-in-out forwards}
+.apar svg.fig{position:relative;width:min(78vw,340px);height:auto}
+.apar.esp svg.fig{filter:drop-shadow(0 0 18px #9fe6ff) drop-shadow(0 0 40px rgba(120,210,255,.8));animation:espUp 2.9s ease-in-out forwards}
 @keyframes espUp{0%{opacity:0;transform:translateY(60px) scale(.7)}18%{opacity:.95;transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}80%{opacity:.9;transform:translateY(-6px)}100%{opacity:0;transform:translateY(-120px) scale(1.15)}}
-.apar.dem svg{filter:drop-shadow(0 0 16px #ff1a1a) drop-shadow(0 0 40px rgba(255,0,0,.6));animation:demIn 2.9s cubic-bezier(.2,.9,.2,1) forwards}
+.apar.dem svg.fig{filter:drop-shadow(0 0 16px #ff1a1a) drop-shadow(0 0 40px rgba(255,0,0,.6));animation:demIn 2.9s cubic-bezier(.2,.9,.2,1) forwards}
 @keyframes demIn{0%{opacity:0;transform:translateY(160px) scale(.6)}16%{opacity:1;transform:translateY(0) scale(1.08)}22%{transform:scale(1)}80%{opacity:1;transform:scale(1.02)}100%{opacity:0;transform:scale(1.4)}}
 .apar .atxt{position:relative;margin-top:10px;font-family:"Special Elite",monospace;font-size:34px;letter-spacing:.12em;text-align:center;animation:txt 2.9s ease forwards}
 .apar.esp .atxt{color:#eafaff;text-shadow:0 0 12px #7fd8ff,0 0 30px #3fb0ff}
@@ -465,6 +465,25 @@ h2,.cz,.banner .lbl,.tabs button,.pagehd,.ttl,.sname,.cname,.ename,.att small,.a
 .shake{animation:shake .5s cubic-bezier(.36,.07,.19,.97) 2}
 @keyframes shake{10%,90%{transform:translate(-2px,1px)}20%,80%{transform:translate(4px,-2px)}30%,50%,70%{transform:translate(-7px,3px)}40%,60%{transform:translate(7px,-3px)}}
 .apar .eye{animation:blink 2.9s steps(1) forwards}
+
+/* ===== Aparições v2: mais assustador ===== */
+.apar.esp .veil{background:radial-gradient(circle at 50% 45%,rgba(200,230,235,.25),rgba(5,15,20,.88) 55%,#000);animation:flick 3.3s steps(1) forwards!important}
+.apar.dem .veil{background:radial-gradient(circle at 50% 50%,rgba(140,0,0,.55),rgba(30,0,0,.92) 55%,#000);animation:flick2 3.3s steps(1) forwards!important}
+@keyframes flick{0%{opacity:0}6%{opacity:1}9%{opacity:.2}12%{opacity:1}55%{opacity:1}57%{opacity:.4}59%{opacity:1}88%{opacity:1}100%{opacity:0}}
+@keyframes flick2{0%{opacity:0}4%{opacity:1;background-color:#fff}7%{opacity:1;background-color:transparent}30%{opacity:.6}32%{opacity:1}70%{opacity:.7}72%{opacity:1}90%{opacity:1}100%{opacity:0}}
+.apar.esp svg.fig{animation:espV2 3.3s ease-in-out forwards,glitch .18s steps(2) infinite!important;filter:drop-shadow(0 0 14px #cfe9ee) drop-shadow(-3px 0 0 rgba(0,255,255,.35)) drop-shadow(3px 0 0 rgba(255,0,0,.35))!important}
+@keyframes espV2{0%{opacity:0;transform:scale(.4) translateY(40px)}10%{opacity:.9;transform:scale(1.05)}14%{opacity:.2}17%{opacity:.95;transform:scale(1.1)}60%{transform:scale(1.08) translateY(-10px)}85%{opacity:.95;transform:scale(1.18) translateY(-20px)}100%{opacity:0;transform:scale(1.7) translateY(-40px)}}
+.apar.dem svg.fig{animation:demV2 3.3s cubic-bezier(.2,.9,.2,1) forwards,glitch .14s steps(2) infinite!important;filter:drop-shadow(0 0 18px #ff0000) drop-shadow(-4px 0 0 rgba(0,255,200,.25)) drop-shadow(4px 0 0 rgba(255,0,0,.5))!important}
+@keyframes demV2{0%{opacity:0;transform:translateY(200px) scale(.5) rotate(-6deg)}12%{opacity:1;transform:translateY(0) scale(1.25) rotate(3deg)}16%{transform:scale(1) rotate(-2deg)}50%{transform:scale(1.08) rotate(1deg)}86%{opacity:1;transform:scale(1.3)}100%{opacity:0;transform:scale(2.4)}}
+@keyframes glitch{0%{translate:0 0;skew:0deg}50%{translate:-3px 1px;skew:2deg}100%{translate:2px -1px;skew:-1deg}}
+.apar .drips{position:absolute;left:0;top:0;width:100%;height:55%;transform-origin:top;animation:drip 3.3s ease-in forwards;pointer-events:none}
+@keyframes drip{0%{transform:scaleY(0);opacity:0}10%{opacity:1;transform:scaleY(.25)}80%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1.15);opacity:0}}
+.apar .spl{position:absolute;pointer-events:none;animation:spl 3.3s ease-out forwards}
+@keyframes spl{0%{opacity:0;transform:scale(.2) rotate(var(--r))}6%{opacity:0}9%{opacity:.95;transform:scale(1.1) rotate(var(--r))}14%{transform:scale(1) rotate(var(--r))}85%{opacity:.9}100%{opacity:0}}
+.apar .atxt{font-size:38px!important;letter-spacing:.14em}
+.apar.dem .atxt{color:#b00000!important;text-shadow:0 0 2px #ff0000,0 0 18px #ff0000,3px 3px 0 #000!important;animation:txt 3.3s ease forwards,glitch .12s steps(2) infinite!important}
+.apar.esp .atxt{color:#e9f4f5!important;text-shadow:0 0 10px #9fd,-2px 0 rgba(255,0,0,.6),2px 0 rgba(0,255,255,.5)!important;animation:txt 3.3s ease forwards,glitch .2s steps(2) infinite!important}
+.apar .tdrip{display:block;height:34px;margin-top:-6px}
 </style>
 </head>
 <body>
@@ -874,36 +893,52 @@ function diceActive(on){if(on){initDice();diceResize();if(!DS.loop){DS.loop=true
 
 
 /* ---------- Aparições: espírito (crítico) e demônio (falha crítica) ---------- */
-const ESPIRITO=`<svg viewBox="0 0 200 240">
- <defs><radialGradient id="eg" cx="50%" cy="35%" r="65%"><stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset=".55" stop-color="#bdefff" stop-opacity=".7"/><stop offset="1" stop-color="#5ab8ff" stop-opacity="0"/></radialGradient>
- <linearGradient id="et" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8f6ff" stop-opacity=".8"/><stop offset="1" stop-color="#7fd8ff" stop-opacity="0"/></linearGradient></defs>
- <path d="M100 18c-40 0-62 32-62 70 0 26 8 40 4 62-3 16-14 30-6 40 10 12 22-10 32-4 10 6 6 30 20 34 12 3 14-22 24-24 10-2 14 18 26 14 12-4 6-26 14-34 8-8 22 6 26-8 4-14-12-26-14-46-2-18 8-30 8-56 0-36-24-52-72-52z" fill="url(#eg)"/>
- <path d="M60 150c10 30 20 70 40 86M100 160c2 30 0 56 4 76M140 150c-8 30-14 64-30 86" stroke="url(#et)" stroke-width="10" fill="none" stroke-linecap="round" opacity=".6"/>
- <path d="M44 110c-24 6-34 24-36 40 14-12 26-16 40-14M156 110c24 6 34 24 36 40-14-12-26-16-40-14" fill="#d8f6ff" opacity=".55"/>
- <ellipse cx="78" cy="84" rx="11" ry="15" fill="#0a2a44"/><ellipse cx="122" cy="84" rx="11" ry="15" fill="#0a2a44"/>
- <circle cx="80" cy="80" r="4" fill="#ffffff"/><circle cx="124" cy="80" r="4" fill="#ffffff"/>
- <path d="M86 116q14 10 28 0" stroke="#0a2a44" stroke-width="4" fill="none" stroke-linecap="round"/>
- <circle cx="100" cy="40" r="20" fill="none" stroke="#fff8c0" stroke-width="3" opacity=".8" transform="matrix(1 0 0 .3 0 -4)"/></svg>`;
-const DEMONIO=`<svg viewBox="0 0 220 240">
- <defs><radialGradient id="dg" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#5a0000"/><stop offset=".7" stop-color="#1a0000"/><stop offset="1" stop-color="#000"/></radialGradient></defs>
- <path d="M10 120C20 70 60 60 74 90 60 70 30 80 26 120 40 100 60 104 66 120 52 116 40 130 44 150zM210 120c-10-50-50-60-64-30 14-20 44-10 48 30-14-20-34-16-40 0 14-4 26 10 22 30z" fill="#2a0000" stroke="#ff2a2a" stroke-width="1.5"/>
- <path d="M70 70C58 40 48 20 30 8c22 4 44 22 56 50zM150 70c12-30 22-50 40-62-22 4-44 22-56 50z" fill="#3a0000" stroke="#ff3b3b" stroke-width="2"/>
- <path d="M110 40c-44 0-64 34-62 72 2 30 14 52 26 66 10 12 20 30 36 30s26-18 36-30c12-14 24-36 26-66 2-38-18-72-62-72z" fill="url(#dg)" stroke="#ff2a2a" stroke-width="2"/>
- <path d="M70 100l30 12-30 4zM150 100l-30 12 30 4z" fill="#ff1a1a" class="eye"/>
- <path d="M76 104l18 8M144 104l-18 8" stroke="#ffd0a0" stroke-width="2"/>
- <path d="M76 160q34 22 68 0q-34 10-68 0z" fill="#ff2a2a"/>
- <path d="M84 160l6 10 6-8 6 10 6-10 6 10 6-10 6 8 6-10" stroke="#ffe0d0" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
- <path d="M104 128l6 12 6-12" stroke="#ff2a2a" stroke-width="2" fill="none"/></svg>`;
+const ESPIRITO=`<svg class="fig" viewBox="0 0 200 270">
+ <defs><radialGradient id="eg2" cx="50%" cy="30%" r="70%"><stop offset="0" stop-color="#f4fbfc" stop-opacity=".97"/><stop offset=".6" stop-color="#b9cfd4" stop-opacity=".75"/><stop offset="1" stop-color="#6d8a91" stop-opacity="0"/></radialGradient></defs>
+ <path d="M100 8C66 8 50 40 50 86c0 30 6 50-2 74-6 20-22 34-14 52 6 14 18-8 24 6 6 16 0 40 14 44 10 3 10-24 20-26 10-2 6 32 18 30 12-2 6-30 16-32 10-2 12 22 22 16 10-6-2-30 6-40 10-12 24 2 26-14 2-18-16-28-18-52-2-22 6-40 6-60 0-46-16-78-50-78z" fill="url(#eg2)"/>
+ <path d="M48 120c-18 4-30 24-40 50-3 8-2 16 4 12l8-10-2 14c0 6 6 6 8 0l6-14v16c2 6 8 4 8-2l2-18 6 10c4 4 8 0 6-6l-6-22" fill="#e4eef0" opacity=".85" stroke="#9fb6bb" stroke-width="1"/>
+ <path d="M152 120c18 4 30 24 40 50 3 8 2 16-4 12l-8-10 2 14c0 6-6 6-8 0l-6-14v16c-2 6-8 4-8-2l-2-18-6 10c-4 4-8 0-6-6l6-22" fill="#e4eef0" opacity=".85" stroke="#9fb6bb" stroke-width="1"/>
+ <path d="M70 60c-8 4-12 18-8 34 4 14 20 16 26 4 6-14 2-36-18-38z" fill="#020202"/><path d="M130 60c8 4 12 18 8 34-4 14-20 16-26 4-6-14-2-36 18-38z" fill="#020202"/>
+ <circle cx="76" cy="80" r="2.2" fill="#fff"/><circle cx="124" cy="80" r="2.2" fill="#fff"/>
+ <path d="M74 98c-2 14 2 30-2 46 0 6 6 6 6 0 0-18 4-30 0-46zM126 98c2 14-2 30 2 50 0 6-6 6-6 0 0-20-4-32 0-50z" fill="#8a0000"/>
+ <ellipse cx="100" cy="132" rx="14" ry="34" fill="#030303"/>
+ <path d="M90 108l4 8 4-6 4 6 4-6 4 6M88 156l4-8 4 6 4-6 4 6 4-6" stroke="#cfd8da" stroke-width="2" fill="none"/>
+ <path d="M96 164c0 10-2 20 0 30 1 4 5 4 5 0 0-10-1-20 1-30z" fill="#8a0000"/>
+ <path d="M60 40l10 8M140 40l-10 8M84 30l4 10M116 30l-4 10" stroke="#8a9ea3" stroke-width="1.5" opacity=".7"/></svg>`;
+const DEMONIO=`<svg class="fig" viewBox="0 0 240 270">
+ <defs><radialGradient id="dg2" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#4a0000"/><stop offset=".7" stop-color="#160000"/><stop offset="1" stop-color="#000"/></radialGradient></defs>
+ <path d="M78 70C60 40 58 20 34 4c6 18 4 30 12 44-14-6-22-2-30-12 4 22 22 34 42 40zM162 70c18-30 20-50 44-66-6 18-4 30-12 44 14-6 22-2 30-12-4 22-22 34-42 40z" fill="#2a0000" stroke="#ff2a2a" stroke-width="2"/>
+ <path d="M48 34l8 6M196 30l-8 8M40 22l6 2" stroke="#ff5a5a" stroke-width="1.5"/>
+ <path d="M120 36c-52 0-76 40-74 84 2 34 16 58 30 76 12 16 24 40 44 40s32-24 44-40c14-18 28-42 30-76 2-44-22-84-74-84z" fill="url(#dg2)" stroke="#ff2a2a" stroke-width="2.5"/>
+ <path d="M84 58l12 20-6 14M150 54l-8 18 10 10M120 40v18l-6 10" stroke="#ff3b3b" stroke-width="1.5" fill="none" opacity=".8"/>
+ <path d="M70 104l34 10-34 8zM170 104l-34 10 34 8z" fill="#ff1010"/><path d="M78 110l18 4M162 110l-18 4" stroke="#ffe08a" stroke-width="2.5"/>
+ <ellipse cx="120" cy="82" rx="9" ry="6" fill="#ffd000"/><ellipse cx="120" cy="82" rx="2" ry="5" fill="#000"/>
+ <ellipse cx="96" cy="88" rx="5" ry="3.5" fill="#ffd000"/><ellipse cx="96" cy="88" rx="1.4" ry="3" fill="#000"/>
+ <ellipse cx="144" cy="88" rx="5" ry="3.5" fill="#ffd000"/><ellipse cx="144" cy="88" rx="1.4" ry="3" fill="#000"/>
+ <path d="M66 150c18 40 90 40 108 0-14 52-94 52-108 0z" fill="#120000" stroke="#ff2a2a" stroke-width="2"/>
+ <path d="M68 152l8 18 6-14 7 20 6-18 7 22 6-20 6 22 6-20 7 20 6-18 7 18 6-16 8 14" stroke="#f3e6d8" stroke-width="3" fill="none" stroke-linejoin="round"/>
+ <path d="M76 176l6 14 6-12 6 16 6-14 6 16 6-14 6 16 6-14 6 14 6-12 6 12" stroke="#f3e6d8" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+ <path d="M82 170c0 14-2 30 0 46 1 6 6 6 6 0 0-16-2-30 0-46zM118 176c0 18-2 40 0 60 1 7 7 7 7 0 0-20-2-40 0-60zM152 168c0 12-2 26 0 40 1 6 6 6 6 0 0-14-2-26 0-40z" fill="#b00000"/>
+ <circle cx="85" cy="218" r="4" fill="#b00000"/><circle cx="121.5" cy="240" r="5" fill="#b00000"/><circle cx="155" cy="210" r="3.5" fill="#b00000"/>
+ <path d="M100 124l8 10 4-8 4 8 8-10" stroke="#ff2a2a" stroke-width="2" fill="none"/></svg>`;
+function dripsSVG(){let d="M0 0H400V18";const n=26;for(let i=n;i>=0;i--){const x=i/n*400,l=14+Math.random()*(Math.random()<.35?220:90),w=4+Math.random()*7;
+  d+=`L${x+w} 18Q${x+w*.6} ${l*.6} ${x+w*.9} ${l}A${w*.9} ${w*.9} 0 1 1 ${x-w*.9} ${l}Q${x-w*.6} ${l*.6} ${x-w} 18`}
+ return `<svg class="drips" viewBox="0 0 400 300" preserveAspectRatio="none"><path d="${d}L0 18Z" fill="#7a0000"/><path d="${d}L0 18Z" fill="#b00000" transform="translate(0,-6)" opacity=".9"/></svg>`}
+function splat(){let p="";const k=9+Math.random()*5|0;for(let i=0;i<k;i++){const a=i/k*6.28+Math.random()*.4,r=34+Math.random()*16;p+=(i?"L":"M")+(50+Math.cos(a)*r)+" "+(50+Math.sin(a)*r)+"L"+(50+Math.cos(a+.25)*(r*.6))+" "+(50+Math.sin(a+.25)*(r*.6))}
+ let drops="";for(let i=0;i<7;i++){const a=Math.random()*6.28,r=46+Math.random()*30;drops+=`<circle cx="${50+Math.cos(a)*r}" cy="${50+Math.sin(a)*r}" r="${1.5+Math.random()*4}"/>`}
+ const s=70+Math.random()*120,x=Math.random()*100,y=Math.random()*100;
+ return `<svg class="spl" viewBox="-30 -30 160 160" style="left:calc(${x}% - ${s/2}px);top:calc(${y}% - ${s/2}px);width:${s}px;height:${s}px;--r:${Math.random()*360|0}deg;animation-delay:${Math.random()*.5}s" fill="#9a0000"><path d="${p}Z"/><circle cx="50" cy="50" r="24"/>${drops}</svg>`}
 let aparT=null;
 function aparicao(tipo){if(S.dados&&S.dados.aparicoes===false)return;
  const old=document.querySelector(".apar");if(old)old.remove();clearTimeout(aparT);
  const esp=tipo==="crit",d=document.createElement("div");d.className="apar "+(esp?"esp":"dem");
- let ws="";for(let i=0;i<(esp?18:22);i++){const a=Math.random()*6.28,r=120+Math.random()*180;ws+=`<i class="wisp" style="left:${45+Math.random()*10}%;top:${45+Math.random()*10}%;--x:${Math.cos(a)*r}px;--y:${Math.sin(a)*r-(esp?80:-20)}px;animation-delay:${Math.random()*.8}s"></i>`}
- d.innerHTML=`<div class="veil"></div>${ws}${esp?ESPIRITO:DEMONIO}<div class="atxt">${esp?"CRÍTICO!":"FALHA CRÍTICA"}</div>`;
+ let ws="";for(let i=0;i<(esp?14:26);i++){const a=Math.random()*6.28,r=120+Math.random()*200;ws+=`<i class="wisp" style="left:${45+Math.random()*10}%;top:${45+Math.random()*10}%;--x:${Math.cos(a)*r}px;--y:${Math.sin(a)*r-(esp?80:-20)}px;animation-delay:${Math.random()*.8}s"></i>`}
+ let sp="";for(let i=0;i<(esp?3:8);i++)sp+=splat();
+ d.innerHTML=`<div class="veil"></div>${dripsSVG()}${sp}${ws}${esp?ESPIRITO:DEMONIO}<div class="atxt">${esp?"CRÍTICO":"FALHA CRÍTICA"}</div>`;
  d.onclick=()=>d.remove();document.body.appendChild(d);
- if(!esp){document.querySelector(".wrap").classList.remove("shake");void document.body.offsetWidth;document.querySelector(".wrap").classList.add("shake")}
- try{navigator.vibrate&&navigator.vibrate(esp?[40,60,40]:[120,40,200])}catch(e){}
- aparT=setTimeout(()=>{d.remove();document.querySelector(".wrap").classList.remove("shake")},2950)}
+ const w=document.querySelector(".wrap");w.classList.remove("shake");void document.body.offsetWidth;w.classList.add("shake");
+ try{navigator.vibrate&&navigator.vibrate(esp?[60,80,60,80,200]:[200,60,300,60,400])}catch(e){}
+ aparT=setTimeout(()=>{d.remove();w.classList.remove("shake")},3350)}
 /* ---------- Abas ---------- */
 function showTab(t){if(!["ficha","pericias","grimorio","inv","dados","elenco"].includes(t))t="ficha";
  document.querySelectorAll(".tab").forEach(e=>e.classList.toggle("on",e.id==="tab-"+t));document.querySelectorAll(".tabs button").forEach(b=>{b.classList.toggle("on",b.dataset.tab===t);if(b.dataset.tab===t)try{b.scrollIntoView({inline:"nearest",block:"nearest"})}catch(e){}});
