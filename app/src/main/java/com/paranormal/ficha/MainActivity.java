@@ -1,4 +1,4 @@
-package com.grimorio.app;
+package com.paranormal.ficha;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,10 +19,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle b) {
         super.onCreate(b);
-        getWindow().setStatusBarColor(Color.parseColor("#140402"));
-        getWindow().setNavigationBarColor(Color.parseColor("#140402"));
+        getWindow().setStatusBarColor(Color.parseColor("#050505"));
+        getWindow().setNavigationBarColor(Color.parseColor("#050505"));
         web = new WebView(this);
-        web.setBackgroundColor(Color.parseColor("#140402"));
+        web.setBackgroundColor(Color.parseColor("#050505"));
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
                 i.addCategory(Intent.CATEGORY_OPENABLE);
                 i.setType("image/*");
                 try {
-                    startActivityForResult(Intent.createChooser(i, "Foto do personagem"), PICK);
+                    startActivityForResult(Intent.createChooser(i, "Foto do agente"), PICK);
                 } catch (Exception e) {
                     fileCb = null;
                     return false;

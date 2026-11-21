@@ -1,8 +1,5 @@
-# Meu Grimório
+# Ficha Paranormal
 
-App Android do grimório para o RPG de Black Clover (WebView, funciona offline).
+App Android de ficha de agente para RPG de Ordem Paranormal (WebView, offline): ficha, perícias, rituais, inventário, dados 3D e NPCs.
 
-- `app/src/main/assets/index.html`: o app inteiro (ficha, perícias, grimório de magias e dados 3D)
-- `app/src/main/assets/img/`: capa e ilustrações
-
-O APK é gerado pelo GitHub Actions e publicado em Releases (tag `meu-grimorio-vN`).
+APK em Releases (tag `ficha-paranormal-vN`).

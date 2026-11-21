@@ -1,13 +1,13 @@
 plugins { id 'com.android.application' }
 android {
-    namespace 'com.grimorio.app'
+    namespace 'com.paranormal.ficha'
     compileSdk 34
     defaultConfig {
-        applicationId 'com.grimorio.app'
+        applicationId 'com.paranormal.ficha'
         minSdk 24
         targetSdk 34
-        versionCode 7
-        versionName '2.3'
+        versionCode 1
+        versionName '1.0'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

@@ -1,8 +1,8 @@
-name: Gerar APK - Meu Grimório
+name: Gerar APK - Ficha Paranormal
 
 on:
   push:
-    branches: [ meu-grimorio ]
+    branches: [ ficha-paranormal ]
   workflow_dispatch:
 
 permissions:
@@ -28,19 +28,19 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.android/debug.keystore
-          key: grimorio-debug-keystore-v1
+          key: paranormal-debug-keystore-v1
 
       - name: Compilar APK
         run: gradle assembleDebug --no-daemon
 
       - name: Renomear
-        run: cp app/build/outputs/apk/debug/app-debug.apk MeuGrimorio.apk
+        run: cp app/build/outputs/apk/debug/app-debug.apk FichaParanormal.apk
 
       - name: Publicar para download
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: meu-grimorio-v${{ github.run_number }}
-          name: Meu Grimório v${{ github.run_number }}
-          files: MeuGrimorio.apk
+          tag_name: ficha-paranormal-v${{ github.run_number }}
+          name: Ficha Paranormal v${{ github.run_number }}
+          files: FichaParanormal.apk
           make_latest: false
           target_commitish: ${{ github.sha }}
