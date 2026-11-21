@@ -484,6 +484,46 @@ h2,.cz,.banner .lbl,.tabs button,.pagehd,.ttl,.sname,.cname,.ename,.att small,.a
 .apar.dem .atxt{color:#b00000!important;text-shadow:0 0 2px #ff0000,0 0 18px #ff0000,3px 3px 0 #000!important;animation:txt 3.3s ease forwards,glitch .12s steps(2) infinite!important}
 .apar.esp .atxt{color:#e9f4f5!important;text-shadow:0 0 10px #9fd,-2px 0 rgba(255,0,0,.6),2px 0 rgba(0,255,255,.5)!important;animation:txt 3.3s ease forwards,glitch .2s steps(2) infinite!important}
 .apar .tdrip{display:block;height:34px;margin-top:-6px}
+
+/* ===== Tema sangrento ===== */
+.bdrip{position:absolute;left:6px;right:6px;top:0;height:70px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='70' viewBox='0 0 160 70'%3E%3Cpath fill='%238a0000' d='M0 0h160v8c-4 0-5 4-6 10s-1 14-4 14-3-8-4-14-2-10-6-10-5 3-6 7-1 30-5 30-4-26-5-30-3-7-7-7-5 2-6 6-1 10-4 10-3-6-4-10-3-6-8-6-6 3-7 9-1 40-6 40-5-34-6-40-3-9-8-9-5 3-6 7-2 16-5 16-3-12-4-16-3-7-7-7-6 2-7 6 0 11-4 11-3-7-4-11-3-6-7-6z'/%3E%3Cpath fill='%23b00000' d='M0 0h160v4c-4 0-5 3-6 8s-1 10-3 10-3-6-4-10-2-8-6-8-6 2-7 5-1 20-4 20-3-18-4-20-3-5-8-5-5 2-6 5 0 6-3 6-2-4-3-6-3-5-8-5-6 2-7 7-1 28-5 28-4-24-5-28-3-7-8-7-5 2-6 5-1 10-4 10-3-8-4-10-3-5-7-5-6 2-7 5z'/%3E%3C/svg%3E") repeat-x 0 0/160px 70px;z-index:3;pointer-events:none;border-radius:10px 10px 0 0;filter:drop-shadow(0 2px 2px rgba(0,0,0,.6));opacity:.92}
+.bsplat{position:absolute;right:-10px;bottom:-10px;width:200px;height:200px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='%237a0000' fill-opacity='.55'%3E%3Cpath d='M100 60l8 22 22-14-10 24 26 2-24 12 18 18-26-6 2 26-16-20-14 22-2-26-24 10 16-20-24-8 26-6-14-22 22 12z'/%3E%3Ccircle cx='150' cy='50' r='5'/%3E%3Ccircle cx='160' cy='70' r='3'/%3E%3Ccircle cx='40' cy='150' r='6'/%3E%3Ccircle cx='60' cy='170' r='3'/%3E%3Ccircle cx='170' cy='150' r='4'/%3E%3C/g%3E%3C/svg%3E") no-repeat center/contain;z-index:1;pointer-events:none;opacity:.7;transform:rotate(var(--r,0deg))}
+.frame{padding-top:46px!important}
+.tabs{border-bottom:none!important}
+.tabs::after{content:"";position:absolute;left:0;right:0;top:100%;height:44px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='70' viewBox='0 0 160 70'%3E%3Cpath fill='%238a0000' d='M0 0h160v8c-4 0-5 4-6 10s-1 14-4 14-3-8-4-14-2-10-6-10-5 3-6 7-1 30-5 30-4-26-5-30-3-7-7-7-5 2-6 6-1 10-4 10-3-6-4-10-3-6-8-6-6 3-7 9-1 40-6 40-5-34-6-40-3-9-8-9-5 3-6 7-2 16-5 16-3-12-4-16-3-7-7-7-6 2-7 6 0 11-4 11-3-7-4-11-3-6-7-6z'/%3E%3Cpath fill='%23b00000' d='M0 0h160v4c-4 0-5 3-6 8s-1 10-3 10-3-6-4-10-2-8-6-8-6 2-7 5-1 20-4 20-3-18-4-20-3-5-8-5-5 2-6 5 0 6-3 6-2-4-3-6-3-5-8-5-6 2-7 7-1 28-5 28-4-24-5-28-3-7-8-7-5 2-6 5-1 10-4 10-3-8-4-10-3-5-7-5-6 2-7 5z'/%3E%3C/svg%3E") repeat-x 0 0/160px 70px;background-size:120px 52px;pointer-events:none}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:35;background:radial-gradient(ellipse at center,transparent 45%,rgba(120,0,0,.55) 100%);animation:heart 1.6s ease-in-out infinite}
+@keyframes heart{0%,100%{opacity:.55}12%{opacity:1}24%{opacity:.6}36%{opacity:.95}50%{opacity:.55}}
+.ttl,.sname,.cname,.pct{color:#e8d6d0!important;-webkit-text-fill-color:#e8d6d0;text-shadow:0 0 6px #ff0000,0 0 18px #8a0000,0 3px 0 #5a0000,0 6px 6px #000!important}
+.banner .lbl{border-color:#8a0000!important;box-shadow:0 0 12px rgba(160,0,0,.6),inset 0 0 10px rgba(120,0,0,.5)!important}
+.frame::before{border-color:rgba(160,0,0,.7)!important}
+body.flk .wrap,body.flk .tabs{filter:brightness(.25) contrast(1.8) sepia(1) hue-rotate(-30deg) saturate(4)}
+body.inv .wrap{filter:invert(1) hue-rotate(180deg)}
+body.glt .wrap{animation:glitch .1s steps(2) 4}
+.eyes{position:fixed;inset:0;pointer-events:none;z-index:-1}
+.eyes .ey{position:absolute;width:46px;height:24px;opacity:.28;animation:blinkE var(--b) ease-in-out infinite;animation-delay:var(--d)}
+.eyes .ey svg{width:100%;height:100%}
+@keyframes blinkE{0%,44%,52%,100%{transform:scaleY(1)}48%{transform:scaleY(.05)}}
+.whisper{position:fixed;z-index:36;pointer-events:none;font-family:"Special Elite",monospace;color:#b00000;letter-spacing:.3em;font-size:16px;text-shadow:0 0 8px #ff0000;opacity:0;animation:wh 2.4s ease forwards;white-space:nowrap}
+@keyframes wh{0%{opacity:0;filter:blur(6px)}25%{opacity:.85;filter:blur(0)}70%{opacity:.7}100%{opacity:0;filter:blur(8px);transform:translateY(-20px)}}
+.rsvg,.bigsig{animation:heart2 1.6s ease-in-out infinite!important}
+@keyframes heart2{0%,100%{transform:scale(1)}12%{transform:scale(1.08)}24%{transform:scale(.98)}36%{transform:scale(1.06)}}
+.sacts .cast,.btns .pri,.dctl .roll{background:linear-gradient(180deg,#9a0000,#3a0000)!important;border-color:#ff1a1a!important;text-shadow:0 0 6px #ff0000!important}
+/* aparições extras */
+.apar .hands{position:absolute;bottom:-10px;width:46vw;max-width:220px;animation:hand 3.3s cubic-bezier(.2,.9,.2,1) forwards;pointer-events:none}
+.apar .hands.l{left:-4vw}.apar .hands.r{right:-4vw;transform:scaleX(-1)}
+@keyframes hand{0%{translate:0 100%}22%{translate:0 10%}30%{translate:0 16%}45%{translate:0 4%}85%{translate:0 8%;opacity:1}100%{translate:0 100%;opacity:0}}
+.apar .pool{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(180deg,#a00000,#3a0000);animation:pool 3.3s ease-in forwards;pointer-events:none}
+.apar .pool::before{content:"";position:absolute;left:0;right:0;top:-18px;height:20px;background:radial-gradient(ellipse 22px 12px at 22px 20px,#a00000 98%,transparent) repeat-x 0 0/44px 20px}
+@keyframes pool{0%,15%{height:0}80%{height:24%}100%{height:24%;opacity:0}}
+.apar.esp svg.fig{animation:espV2 3.3s ease-in-out forwards,twitch .9s steps(1) infinite!important}
+@keyframes twitch{0%{rotate:0deg}20%{rotate:-9deg}24%{rotate:7deg}28%{rotate:0deg}60%{rotate:0deg}62%{rotate:14deg}66%{rotate:-4deg}70%{rotate:0deg}}
+.apar.esp.inv .veil{animation:none;opacity:1;background:#fff}
+.apar .jaw{animation:jaw .35s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:top}
+@keyframes jaw{to{transform:translateY(12px) scaleY(1.15)}}
+.apar .eyeb{animation:eyb 1.2s steps(1) infinite;transform-box:fill-box;transform-origin:center}
+@keyframes eyb{0%,70%,100%{transform:scaleY(1)}75%{transform:scaleY(.1)}}
+.page.cover{padding:0!important}.bigsig{display:block;margin:0 auto;height:auto;aspect-ratio:1}
+.eyes .ey{opacity:.42!important}
 </style>
 </head>
 <body>
@@ -569,7 +609,7 @@ const LEAF="M0 0C-3-5-13-7-13-15C-13-21-5-23 0-17C5-23 13-21 13-15C13-7 3-5 0 0Z
 function clover(n=3,cls="clv"){return `<svg class="${cls}" viewBox="0 0 40 40" fill="none" stroke="#d0142f" stroke-width="2"><circle cx="20" cy="20" r="17"/><path d="M20 5L33 28H7z"/><circle cx="20" cy="21" r="3" fill="#d0142f"/></svg>`}
 const ORN=`<svg viewBox="0 0 64 64" fill="none" stroke="#d8d0c4" stroke-width="1.1"><path d="M4 60V18Q4 4 18 4h42"/><path d="M10 60V22q0-12 12-12h38" stroke-opacity=".5"/><path d="M4 30q10-2 12-14 12-2 14-12" stroke-width="1.3"/><path d="M14 14q-6 6 0 12 6-6 12 0-6-6 0-12-6 6-12 0z" fill="#c8102e" fill-opacity=".25"/><path d="M20 20l-4-14 4 6 4-6zM20 20l-14-4 6 4-6 4z" fill="#f2ece2" stroke="none"/><circle cx="20" cy="20" r="2" fill="#fff" stroke="none"/><path d="M4 44q6-4 6-10M44 4q-4 6-10 6" stroke-opacity=".8"/><circle cx="4" cy="44" r="1.6" fill="#f2ece2" stroke="none"/><circle cx="44" cy="4" r="1.6" fill="#f2ece2" stroke="none"/></svg>`;
 const ORNM=`<svg viewBox="0 0 120 22" fill="none" stroke="#d8d0c4" stroke-width="1.1"><path d="M0 4h40q8 0 12 8M120 4H80q-8 0-12 8"/><path d="M60 1l4 9-4 11-4-11z" fill="#f2ece2" stroke="none"/><circle cx="46" cy="8" r="1.5" fill="#f2ece2" stroke="none"/><circle cx="74" cy="8" r="1.5" fill="#f2ece2" stroke="none"/></svg>`;
-const FRAME=`<span class="orn tl">${ORN}</span><span class="orn tr">${ORN}</span><span class="orn bl">${ORN}</span><span class="orn br">${ORN}</span><span class="ornmid t">${ORNM}</span><span class="ornmid b">${ORNM}</span>`;
+const FRAME=`<span class="bdrip"></span><span class="bsplat" style="--r:${(Math.random()*360)|0}deg"></span><span class="orn tl">${ORN}</span><span class="orn tr">${ORN}</span><span class="orn bl">${ORN}</span><span class="orn br">${ORN}</span><span class="ornmid t">${ORNM}</span><span class="ornmid b">${ORNM}</span>`;
 const banner=t=>`<div class="banner"><span class="ln"></span><span class="lbl">${clover(3)}${esc(t)}</span><span class="ln"></span></div>`;
 function magicCircle(){
   const P=Array.from({length:6},(_,i)=>{const a=-Math.PI/2+i*Math.PI/3;return[75+46*Math.cos(a),75+46*Math.sin(a)]});
@@ -623,7 +663,7 @@ function filtered(){let L=[...S.magias];
 const pnum=(m,i)=>m.pagina||i+2;
 const lines=t=>String(t||"").split(/\n+/).map(s=>s.replace(/^[\s•\-*]+/,"").trim()).filter(Boolean);
 function renderPage(){const L=filtered(),pg=$("page");if(cur>L.length+1)cur=L.length+1;
-  if(cur===0){pg.className="page cover frame";pg.innerHTML=`<div class="pcover"><div class="pcs">${sigil("Medo","bigsig","#c8102e")}</div><div class="pct">RITUAIS</div>
+  if(cur===0){pg.className="page cover frame";pg.innerHTML=`<div class="pcover"><span class="bdrip" style="left:0;right:0;height:90px;background-size:140px 90px"></span><span class="bsplat" style="--r:40deg;opacity:.85"></span><div class="pcs">${sigil("Medo","bigsig","#c8102e")}</div><div class="pct">RITUAIS</div>
      <div class="pcn">Arquivo de ${esc(S.perfil.nome||"agente desconhecido")}</div><div class="pcl">CONFIDENCIAL</div><div class="open">toque para abrir</div></div>`;pg.onclick=()=>go(1)}
   else if(cur===1){pg.className="page frame";pg.onclick=null;
     const grp=LEVELS.map(l=>[l,L.filter(m=>m.nivel===l)]).filter(g=>g[1].length);
@@ -912,14 +952,14 @@ const DEMONIO=`<svg class="fig" viewBox="0 0 240 270">
  <path d="M120 36c-52 0-76 40-74 84 2 34 16 58 30 76 12 16 24 40 44 40s32-24 44-40c14-18 28-42 30-76 2-44-22-84-74-84z" fill="url(#dg2)" stroke="#ff2a2a" stroke-width="2.5"/>
  <path d="M84 58l12 20-6 14M150 54l-8 18 10 10M120 40v18l-6 10" stroke="#ff3b3b" stroke-width="1.5" fill="none" opacity=".8"/>
  <path d="M70 104l34 10-34 8zM170 104l-34 10 34 8z" fill="#ff1010"/><path d="M78 110l18 4M162 110l-18 4" stroke="#ffe08a" stroke-width="2.5"/>
- <ellipse cx="120" cy="82" rx="9" ry="6" fill="#ffd000"/><ellipse cx="120" cy="82" rx="2" ry="5" fill="#000"/>
+ <ellipse class="eyeb" cx="120" cy="82" rx="9" ry="6" fill="#ffd000"/><ellipse cx="120" cy="82" rx="2" ry="5" fill="#000"/>
  <ellipse cx="96" cy="88" rx="5" ry="3.5" fill="#ffd000"/><ellipse cx="96" cy="88" rx="1.4" ry="3" fill="#000"/>
  <ellipse cx="144" cy="88" rx="5" ry="3.5" fill="#ffd000"/><ellipse cx="144" cy="88" rx="1.4" ry="3" fill="#000"/>
  <path d="M66 150c18 40 90 40 108 0-14 52-94 52-108 0z" fill="#120000" stroke="#ff2a2a" stroke-width="2"/>
  <path d="M68 152l8 18 6-14 7 20 6-18 7 22 6-20 6 22 6-20 7 20 6-18 7 18 6-16 8 14" stroke="#f3e6d8" stroke-width="3" fill="none" stroke-linejoin="round"/>
- <path d="M76 176l6 14 6-12 6 16 6-14 6 16 6-14 6 16 6-14 6 14 6-12 6 12" stroke="#f3e6d8" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+ <g class="jaw"><path d="M76 176l6 14 6-12 6 16 6-14 6 16 6-14 6 16 6-14 6 14 6-12 6 12" stroke="#f3e6d8" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
  <path d="M82 170c0 14-2 30 0 46 1 6 6 6 6 0 0-16-2-30 0-46zM118 176c0 18-2 40 0 60 1 7 7 7 7 0 0-20-2-40 0-60zM152 168c0 12-2 26 0 40 1 6 6 6 6 0 0-14-2-26 0-40z" fill="#b00000"/>
- <circle cx="85" cy="218" r="4" fill="#b00000"/><circle cx="121.5" cy="240" r="5" fill="#b00000"/><circle cx="155" cy="210" r="3.5" fill="#b00000"/>
+ <circle cx="85" cy="218" r="4" fill="#b00000"/><circle cx="121.5" cy="240" r="5" fill="#b00000"/><circle cx="155" cy="210" r="3.5" fill="#b00000"/></g>
  <path d="M100 124l8 10 4-8 4 8 8-10" stroke="#ff2a2a" stroke-width="2" fill="none"/></svg>`;
 function dripsSVG(){let d="M0 0H400V18";const n=26;for(let i=n;i>=0;i--){const x=i/n*400,l=14+Math.random()*(Math.random()<.35?220:90),w=4+Math.random()*7;
   d+=`L${x+w} 18Q${x+w*.6} ${l*.6} ${x+w*.9} ${l}A${w*.9} ${w*.9} 0 1 1 ${x-w*.9} ${l}Q${x-w*.6} ${l*.6} ${x-w} 18`}
@@ -934,11 +974,28 @@ function aparicao(tipo){if(S.dados&&S.dados.aparicoes===false)return;
  const esp=tipo==="crit",d=document.createElement("div");d.className="apar "+(esp?"esp":"dem");
  let ws="";for(let i=0;i<(esp?14:26);i++){const a=Math.random()*6.28,r=120+Math.random()*200;ws+=`<i class="wisp" style="left:${45+Math.random()*10}%;top:${45+Math.random()*10}%;--x:${Math.cos(a)*r}px;--y:${Math.sin(a)*r-(esp?80:-20)}px;animation-delay:${Math.random()*.8}s"></i>`}
  let sp="";for(let i=0;i<(esp?3:8);i++)sp+=splat();
- d.innerHTML=`<div class="veil"></div>${dripsSVG()}${sp}${ws}${esp?ESPIRITO:DEMONIO}<div class="atxt">${esp?"CRÍTICO":"FALHA CRÍTICA"}</div>`;
+ d.innerHTML=`<div class="veil"></div>${dripsSVG()}${sp}${ws}<div class="pool"></div>${MAO.replace("HL","l")}${MAO.replace("HL","r")}${esp?ESPIRITO:DEMONIO}<div class="atxt"></div>`;scramble(d.querySelector(".atxt"),esp?"CRÍTICO":"FALHA CRÍTICA");if(esp){setTimeout(()=>d.classList.add("inv"),280);setTimeout(()=>d.classList.remove("inv"),360)}
  d.onclick=()=>d.remove();document.body.appendChild(d);
  const w=document.querySelector(".wrap");w.classList.remove("shake");void document.body.offsetWidth;w.classList.add("shake");
  try{navigator.vibrate&&navigator.vibrate(esp?[60,80,60,80,200]:[200,60,300,60,400])}catch(e){}
  aparT=setTimeout(()=>{d.remove();w.classList.remove("shake")},3350)}
+
+/* ---------- Tema sangrento: olhos, sussurros, falhas de luz ---------- */
+const EYE='<svg viewBox="0 0 46 24"><path d="M2 12Q23-6 44 12Q23 30 2 12z" fill="#e8d6d0" stroke="#5a0000" stroke-width="1.5"/><path d="M8 12h30M23 4v-2M14 6l-2-3M32 6l2-3" stroke="#b00000" stroke-width=".8"/><circle class="pp" cx="23" cy="12" r="6.5" fill="#6a0000"/><circle class="pp" cx="23" cy="12" r="3" fill="#000"/></svg>';
+(function(){const box=document.createElement("div");box.className="eyes";let s="";
+ for(let i=0;i<7;i++)s+=`<div class="ey" style="left:${4+Math.random()*86}%;top:${8+Math.random()*84}%;--b:${4+Math.random()*5}s;--d:${-Math.random()*6}s;transform:rotate(${(Math.random()-.5)*30}deg)">${EYE}</div>`;
+ box.innerHTML=s;document.body.appendChild(box);
+ addEventListener("pointermove",e=>{document.querySelectorAll(".eyes .ey").forEach(ey=>{const r=ey.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),a=Math.atan2(dy,dx);
+  ey.querySelectorAll(".pp").forEach(p=>p.setAttribute("transform",`translate(${Math.cos(a)*5} ${Math.sin(a)*3})`))})},{passive:true});
+ const W=["ELE ESTÁ AQUI","NÃO OLHE PRA TRÁS","O OUTRO LADO TE VÊ","VOCÊ OUVIU ISSO?","A MEMBRANA ESTÁ FINA","CONTINUE ROLANDO","TEM ALGUÉM ATRÁS DE VOCÊ","SANGUE CHAMA SANGUE"];
+ function whisper(){const w=document.createElement("div");w.className="whisper";w.textContent=W[Math.random()*W.length|0];w.style.left=(5+Math.random()*40)+"%";w.style.top=(15+Math.random()*70)+"%";w.style.transform=`rotate(${(Math.random()-.5)*16}deg)`;document.body.appendChild(w);setTimeout(()=>w.remove(),2500)}
+ function scare(){const r=Math.random(),c=r<.45?"flk":r<.75?"glt":r<.9?"inv":"";if(c){document.body.classList.add(c);setTimeout(()=>document.body.classList.remove(c),c==="glt"?420:c==="inv"?90:260)}
+  if(Math.random()<.6)setTimeout(whisper,300);setTimeout(scare,9000+Math.random()*16000)}
+ setTimeout(scare,7000)})();
+const MAO=`<svg class="hands HL" viewBox="0 0 120 220"><path d="M30 220L40 120 22 70c-3-8 6-12 10-4l14 34 2-74c0-9 10-9 11 0l3 66 8-80c1-9 11-8 11 1l-2 82 12-70c2-8 11-6 10 2l-8 82 14-46c3-8 12-5 10 3l-14 64-6 60z" fill="#d9cfc4" stroke="#3a0000" stroke-width="2"/>
+ <path d="M48 26v-6M60 22v-8M72 18v-8M86 36v-6" stroke="#3a0000" stroke-width="1.5"/><path d="M40 120c10 20 40 20 60 8M44 160c14 6 34 6 50-4" stroke="#8a0000" stroke-width="5" fill="none"/>
+ <path d="M50 60c-2 20 2 40 0 70 2 4 6 4 6 0 0-30 2-50-2-70zM78 50c0 30 2 50-2 80 2 4 6 4 6 0 2-30 0-50-2-80z" fill="#9a0000"/></svg>`;
+function scramble(el,final){let n=0;const G="█▓▒░#@$%&¥Ж฿ΣΨ†‡";const iv=setInterval(()=>{n++;el.textContent=[...final].map((c,i)=>c===" "?" ":i<n/2?c:G[Math.random()*G.length|0]).join("");if(n>final.length*2){clearInterval(iv);el.textContent=final}},45)}
 /* ---------- Abas ---------- */
 function showTab(t){if(!["ficha","pericias","grimorio","inv","dados","elenco"].includes(t))t="ficha";
  document.querySelectorAll(".tab").forEach(e=>e.classList.toggle("on",e.id==="tab-"+t));document.querySelectorAll(".tabs button").forEach(b=>{b.classList.toggle("on",b.dataset.tab===t);if(b.dataset.tab===t)try{b.scrollIntoView({inline:"nearest",block:"nearest"})}catch(e){}});
