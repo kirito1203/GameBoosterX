@@ -431,6 +431,40 @@ h2,.cz,.banner .lbl,.tabs button,.pagehd,.ttl,.sname,.cname,.ename,.att small,.a
 .prow div{font-size:15px;color:var(--muted);margin-top:3px;white-space:pre-wrap}
 .prow b{font-family:"Special Elite",monospace;font-weight:400;color:#ece6dc}
 .mvbar i{background:linear-gradient(90deg,#4a0a12,#c8102e,#ff5a6e)!important;box-shadow:0 0 10px #c8102e!important}
+
+/* ===== Dinheiro ===== */
+.money{text-align:center;margin:6px 0 4px}
+.money b{display:block;font-family:"Special Elite",monospace;font-size:38px;color:#e9d8a6;text-shadow:0 0 12px rgba(233,216,166,.45),2px 2px 0 #3d060c}
+.money span{font-size:13px;color:var(--muted);font-family:"Special Elite",monospace}
+.mrow{display:flex;gap:6px;margin-top:8px}
+.mrow input{flex:1;min-width:0}
+.mrow button{padding:0 14px;border-radius:6px;border:1px solid var(--line);background:rgba(20,20,20,.8);font-family:"Special Elite",monospace;font-size:14px}
+.mrow .gan{border-color:#3fa06a;color:#7fe0a6}.mrow .gas{border-color:#c8102e;color:#ff8a9a}
+.mlist{margin-top:8px;font-size:15px}
+.mlist div{display:flex;justify-content:space-between;gap:8px;padding:5px 2px;border-bottom:1px dotted rgba(236,230,220,.12)}
+.mlist .p{color:#7fe0a6}.mlist .n{color:#ff8a9a}
+.mlist small{color:var(--dim)}
+/* ===== Aparições de crítico ===== */
+.apar{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;overflow:hidden}
+.apar .veil{position:absolute;inset:0}
+.apar.esp .veil{background:radial-gradient(circle at 50% 50%,rgba(170,230,255,.35),rgba(10,30,50,.75) 60%,rgba(0,0,0,.85));animation:vin 2.9s ease forwards}
+.apar.dem .veil{background:radial-gradient(circle at 50% 55%,rgba(255,30,30,.35),rgba(60,0,0,.8) 55%,rgba(0,0,0,.92));animation:vin 2.9s ease forwards}
+@keyframes vin{0%{opacity:0}12%{opacity:1}80%{opacity:1}100%{opacity:0}}
+.apar svg{position:relative;width:min(78vw,340px);height:auto}
+.apar.esp svg{filter:drop-shadow(0 0 18px #9fe6ff) drop-shadow(0 0 40px rgba(120,210,255,.8));animation:espUp 2.9s ease-in-out forwards}
+@keyframes espUp{0%{opacity:0;transform:translateY(60px) scale(.7)}18%{opacity:.95;transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}80%{opacity:.9;transform:translateY(-6px)}100%{opacity:0;transform:translateY(-120px) scale(1.15)}}
+.apar.dem svg{filter:drop-shadow(0 0 16px #ff1a1a) drop-shadow(0 0 40px rgba(255,0,0,.6));animation:demIn 2.9s cubic-bezier(.2,.9,.2,1) forwards}
+@keyframes demIn{0%{opacity:0;transform:translateY(160px) scale(.6)}16%{opacity:1;transform:translateY(0) scale(1.08)}22%{transform:scale(1)}80%{opacity:1;transform:scale(1.02)}100%{opacity:0;transform:scale(1.4)}}
+.apar .atxt{position:relative;margin-top:10px;font-family:"Special Elite",monospace;font-size:34px;letter-spacing:.12em;text-align:center;animation:txt 2.9s ease forwards}
+.apar.esp .atxt{color:#eafaff;text-shadow:0 0 12px #7fd8ff,0 0 30px #3fb0ff}
+.apar.dem .atxt{color:#ff3b3b;text-shadow:0 0 12px #ff0000,3px 3px 0 #300}
+@keyframes txt{0%,15%{opacity:0;transform:scale(1.6)}28%{opacity:1;transform:scale(1)}82%{opacity:1}100%{opacity:0}}
+.apar .wisp{position:absolute;width:8px;height:8px;border-radius:50%;background:#dff7ff;box-shadow:0 0 12px #7fd8ff;animation:wisp 2.6s ease-out forwards}
+.apar.dem .wisp{background:#ff6a3a;box-shadow:0 0 12px #ff2200;width:6px;height:6px}
+@keyframes wisp{0%{opacity:0;transform:translate(0,0)}20%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y))}}
+.shake{animation:shake .5s cubic-bezier(.36,.07,.19,.97) 2}
+@keyframes shake{10%,90%{transform:translate(-2px,1px)}20%,80%{transform:translate(4px,-2px)}30%,50%,70%{transform:translate(-7px,3px)}40%,60%{transform:translate(7px,-3px)}}
+.apar .eye{animation:blink 2.9s steps(1) forwards}
 </style>
 </head>
 <body>
@@ -631,7 +665,7 @@ function attrSheet(k){const n=ATTRS.find(x=>x[0]===k)[1],v=S.ficha.attrs[k];
   <div class="btns"><button onclick="close_()">Fechar</button><button class="pri" onclick="rollTest('${n}',S.ficha.attrs['${k}'],0)">🎲 Rolar ${k}</button></div>`)}
 function setAttr(k,d){const A=S.ficha.attrs;A[k]=Math.max(0,Math.min(10,(+A[k]||0)+d));$("avv").textContent=A[k];save();renderFicha();renderInv()}
 function rollTest(nome,n,bonus){n=+n||0;const q=n>0?n:2,rs=Array.from({length:q},()=>1+Math.floor(Math.random()*20)),best=n>0?Math.max(...rs):Math.min(...rs),tot=best+(+bonus||0);
- const crit=best===20?" · CRÍTICO!":best===1?" · desastre":"";
+ const crit=best===20?" · CRÍTICO!":best===1?" · falha crítica":"";if(best===20||best===1)setTimeout(()=>aparicao(best===20?"crit":"fail"),350);
  openSheet(`<div class="cast-res"><div class="name">${esc(nome)}</div><div class="big">${tot}</div>
   <div class="det">${q}d20 (${n>0?"maior":"menor"}) → [${rs.map(r=>r===best?`<b style="color:#fff">${r}</b>`:r).join(", ")}]${bonus?` ${bonus>0?"+":"−"} ${Math.abs(bonus)}`:""}${crit}</div>
   <div class="btns"><button onclick="rollTest('${esc(nome).replace(/'/g,"")}',${n},${+bonus||0})">Rolar de novo</button><button class="pri" onclick="close_()">OK</button></div></div>`)}
@@ -793,7 +827,7 @@ function finishRoll(){const D=DS.dice,mod=+DS.mod||0;let total,parts=[],expr;
     expr=Object.entries(DS.sel).filter(e=>e[1]).map(([t,n])=>`${n}${t}`).join(" + ")+(DS.modo==="adv"?" (vantagem)":DS.modo==="dis"?" (desvantagem)":"")}
   if(mod)expr+=` ${mod>0?"+":"−"} ${Math.abs(mod)}`;
   const d20=DS.dice.find(d=>d.t==="d20"&&!d.dim),crit=d20&&DS.dice.filter(d=>d.t==="d20").length&&DS.modo!=="pct"?(d20.val===20?"crit":d20.val===1?"fail":""):"";
-  DS.last={total,expr};
+  DS.last={total,expr};if(crit)setTimeout(()=>aparicao(crit),250);
   $("dRes").innerHTML=`<div class="dtot ${crit}">${total}</div><div class="dexp">${esc(expr)}</div><div class="ddet">${parts.join(" · ")}${mod?` · mod ${mod>0?"+":""}${mod}`:""}${crit==="crit"?" · <b>CRÍTICO!</b>":crit==="fail"?" · <b>falha crítica</b>":""}</div>`;
   const ds=dSet();ds.hist.unshift({t:Date.now(),expr,total,det:parts.join(" · ").replace(/<\/?s>/g,"~")});ds.hist=ds.hist.slice(0,40);save();
   try{navigator.vibrate&&navigator.vibrate(25)}catch(e){}
@@ -824,6 +858,9 @@ function saveRoll(){const n=$("svN").value.trim();if(!n){toast("Dê um nome");re
  dSet().salvos.push({nome:n,sel:{...DS.sel},mod:DS.mod,modo:DS.modo,expr});save();dSaved();toast("Rolagem salva")}
 function useSaved(i){const x=dSet().salvos[i];DS.sel={...x.sel};DS.mod=x.mod||0;DS.modo=x.modo||"";close_();afterSel();setTimeout(rollDice,150)}
 function dColors(){const cur=dSet().cor;openSheet(`<h2>Cor dos dados</h2><div class="arts" style="grid-template-columns:repeat(4,1fr)">${Object.entries(DCOL).map(([k,c])=>`<button class="${k===cur?"on":""}" style="aspect-ratio:1;background:radial-gradient(circle at 40% 35%,${c[1]},${c[0]} 60%,#000);color:#fff;text-shadow:0 0 4px #000" onclick="dSet().cor='${k}';save();dColors()">${k}</button>`).join("")}</div>
+ <h2 style="margin-top:18px">Aparições</h2>
+ <label class="chk" style="font-family:inherit;color:var(--ink);font-size:17px"><input type="checkbox" ${dSet().aparicoes!==false?"checked":""} onchange="dSet().aparicoes=this.checked;save()"> Espírito no crítico e demônio na falha crítica</label>
+ <button class="chip" style="margin:6px 4px 0 0" onclick="close_();aparicao('crit')">Testar espírito</button><button class="chip" style="margin-top:6px" onclick="close_();aparicao('fail')">Testar demônio</button>
  <h2 style="margin-top:18px">Resultado mínimo</h2>
  <label class="chk" style="font-family:inherit;color:var(--ink);font-size:17px"><input type="checkbox" id="sOn" ${dSet().sorte?"checked":""} onchange="dSet().sorte=this.checked;save();renderDiceBar()"> Dados só caem acima de</label>
  <input class="f" id="sLim" type="number" inputmode="numeric" value="${dSet().limite||10}" onchange="dSet().limite=Math.max(1,Math.floor(+this.value)||10);save();renderDiceBar()" style="max-width:120px">
@@ -835,6 +872,38 @@ function initDice(){if(DS.canvas)return;DS.canvas=$("dCanvas");DS.ctx=DS.canvas.
   DS.canvas.onclick=rollDice;renderDiceBar();buildDice();$("dRes").innerHTML=selText()}
 function diceActive(on){if(on){initDice();diceResize();if(!DS.loop){DS.loop=true;requestAnimationFrame(diceLoop)}}else DS.loop=false}
 
+
+/* ---------- Aparições: espírito (crítico) e demônio (falha crítica) ---------- */
+const ESPIRITO=`<svg viewBox="0 0 200 240">
+ <defs><radialGradient id="eg" cx="50%" cy="35%" r="65%"><stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset=".55" stop-color="#bdefff" stop-opacity=".7"/><stop offset="1" stop-color="#5ab8ff" stop-opacity="0"/></radialGradient>
+ <linearGradient id="et" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8f6ff" stop-opacity=".8"/><stop offset="1" stop-color="#7fd8ff" stop-opacity="0"/></linearGradient></defs>
+ <path d="M100 18c-40 0-62 32-62 70 0 26 8 40 4 62-3 16-14 30-6 40 10 12 22-10 32-4 10 6 6 30 20 34 12 3 14-22 24-24 10-2 14 18 26 14 12-4 6-26 14-34 8-8 22 6 26-8 4-14-12-26-14-46-2-18 8-30 8-56 0-36-24-52-72-52z" fill="url(#eg)"/>
+ <path d="M60 150c10 30 20 70 40 86M100 160c2 30 0 56 4 76M140 150c-8 30-14 64-30 86" stroke="url(#et)" stroke-width="10" fill="none" stroke-linecap="round" opacity=".6"/>
+ <path d="M44 110c-24 6-34 24-36 40 14-12 26-16 40-14M156 110c24 6 34 24 36 40-14-12-26-16-40-14" fill="#d8f6ff" opacity=".55"/>
+ <ellipse cx="78" cy="84" rx="11" ry="15" fill="#0a2a44"/><ellipse cx="122" cy="84" rx="11" ry="15" fill="#0a2a44"/>
+ <circle cx="80" cy="80" r="4" fill="#ffffff"/><circle cx="124" cy="80" r="4" fill="#ffffff"/>
+ <path d="M86 116q14 10 28 0" stroke="#0a2a44" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <circle cx="100" cy="40" r="20" fill="none" stroke="#fff8c0" stroke-width="3" opacity=".8" transform="matrix(1 0 0 .3 0 -4)"/></svg>`;
+const DEMONIO=`<svg viewBox="0 0 220 240">
+ <defs><radialGradient id="dg" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#5a0000"/><stop offset=".7" stop-color="#1a0000"/><stop offset="1" stop-color="#000"/></radialGradient></defs>
+ <path d="M10 120C20 70 60 60 74 90 60 70 30 80 26 120 40 100 60 104 66 120 52 116 40 130 44 150zM210 120c-10-50-50-60-64-30 14-20 44-10 48 30-14-20-34-16-40 0 14-4 26 10 22 30z" fill="#2a0000" stroke="#ff2a2a" stroke-width="1.5"/>
+ <path d="M70 70C58 40 48 20 30 8c22 4 44 22 56 50zM150 70c12-30 22-50 40-62-22 4-44 22-56 50z" fill="#3a0000" stroke="#ff3b3b" stroke-width="2"/>
+ <path d="M110 40c-44 0-64 34-62 72 2 30 14 52 26 66 10 12 20 30 36 30s26-18 36-30c12-14 24-36 26-66 2-38-18-72-62-72z" fill="url(#dg)" stroke="#ff2a2a" stroke-width="2"/>
+ <path d="M70 100l30 12-30 4zM150 100l-30 12 30 4z" fill="#ff1a1a" class="eye"/>
+ <path d="M76 104l18 8M144 104l-18 8" stroke="#ffd0a0" stroke-width="2"/>
+ <path d="M76 160q34 22 68 0q-34 10-68 0z" fill="#ff2a2a"/>
+ <path d="M84 160l6 10 6-8 6 10 6-10 6 10 6-10 6 8 6-10" stroke="#ffe0d0" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+ <path d="M104 128l6 12 6-12" stroke="#ff2a2a" stroke-width="2" fill="none"/></svg>`;
+let aparT=null;
+function aparicao(tipo){if(S.dados&&S.dados.aparicoes===false)return;
+ const old=document.querySelector(".apar");if(old)old.remove();clearTimeout(aparT);
+ const esp=tipo==="crit",d=document.createElement("div");d.className="apar "+(esp?"esp":"dem");
+ let ws="";for(let i=0;i<(esp?18:22);i++){const a=Math.random()*6.28,r=120+Math.random()*180;ws+=`<i class="wisp" style="left:${45+Math.random()*10}%;top:${45+Math.random()*10}%;--x:${Math.cos(a)*r}px;--y:${Math.sin(a)*r-(esp?80:-20)}px;animation-delay:${Math.random()*.8}s"></i>`}
+ d.innerHTML=`<div class="veil"></div>${ws}${esp?ESPIRITO:DEMONIO}<div class="atxt">${esp?"CRÍTICO!":"FALHA CRÍTICA"}</div>`;
+ d.onclick=()=>d.remove();document.body.appendChild(d);
+ if(!esp){document.querySelector(".wrap").classList.remove("shake");void document.body.offsetWidth;document.querySelector(".wrap").classList.add("shake")}
+ try{navigator.vibrate&&navigator.vibrate(esp?[40,60,40]:[120,40,200])}catch(e){}
+ aparT=setTimeout(()=>{d.remove();document.querySelector(".wrap").classList.remove("shake")},2950)}
 /* ---------- Abas ---------- */
 function showTab(t){if(!["ficha","pericias","grimorio","inv","dados","elenco"].includes(t))t="ficha";
  document.querySelectorAll(".tab").forEach(e=>e.classList.toggle("on",e.id==="tab-"+t));document.querySelectorAll(".tabs button").forEach(b=>{b.classList.toggle("on",b.dataset.tab===t);if(b.dataset.tab===t)try{b.scrollIntoView({inline:"nearest",block:"nearest"})}catch(e){}});
@@ -926,9 +995,22 @@ function saveEl(id){const nome=$("elNome").value.trim();if(!nome){toast("Dê um 
 function delEl(id){const e=S.elenco.find(x=>x.id===id);openSheet(`<h2>Apagar ${esc(e.nome)}?</h2><div class="btns"><button onclick="viewEl('${id}')">Voltar</button><button class="del" style="flex:1" onclick="S.elenco=S.elenco.filter(x=>x.id!=='${id}');save();renderElenco();close_()">Apagar</button></div>`)}
 
 /* ---------- Inventário ---------- */
+function fmtR(v){return "R$ "+(+v||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function moneyHTML(){const I=S.inv;I.dinheiro=+I.dinheiro||0;I.mov=I.mov||[];
+ return banner("Dinheiro")+`<div class="money"><b>${fmtR(I.dinheiro)}</b><span>toque em Ganhar ou Gastar</span></div>
+  <input class="f" id="dVal" type="number" inputmode="decimal" placeholder="Valor (ex.: 150)">
+  <input class="f" id="dDesc" placeholder="Motivo (opcional)" style="margin-top:6px">
+  <div class="mrow"><button class="gan" style="flex:1;padding:10px" onclick="moneyMov(1)">+ Ganhar</button><button class="gas" style="flex:1;padding:10px" onclick="moneyMov(-1)">− Gastar</button></div>
+  ${I.mov.length?`<div class="mlist">${I.mov.slice(0,8).map(m=>`<div><span>${esc(m.d||(m.v>0?"Ganho":"Gasto"))}<br><small>${new Date(m.t).toLocaleDateString("pt-BR")}</small></span><span class="${m.v>0?"p":"n"}">${m.v>0?"+":"−"} ${fmtR(Math.abs(m.v))}</span></div>`).join("")}</div>
+   <div style="text-align:center;margin-top:6px"><button class="chip" onclick="editMoney()">Ajustar saldo</button></div>`:`<div style="text-align:center;margin-top:8px"><button class="chip" onclick="editMoney()">Definir saldo</button></div>`}`}
+function moneyMov(s){const v=Math.round((+String($("dVal").value).replace(",","."))*100)/100;if(!v||v<0){toast("Digite um valor");return}
+ const I=S.inv;if(s<0&&v>I.dinheiro)toast("Saldo ficou negativo");I.dinheiro=Math.round((I.dinheiro+s*v)*100)/100;I.mov.unshift({v:s*v,d:$("dDesc").value.trim(),t:Date.now()});I.mov=I.mov.slice(0,40);save();renderInv();toast(s>0?`+ ${fmtR(v)}`:`− ${fmtR(v)}`)}
+function editMoney(){openSheet(`<h2>Saldo</h2><label>Dinheiro atual (R$)</label><input class="f" id="sV" type="number" inputmode="decimal" value="${S.inv.dinheiro}">
+ <div class="btns">${S.inv.mov.length?`<button class="del" onclick="S.inv.mov=[];save();renderInv();close_()">Limpar histórico</button>`:""}<button onclick="close_()">Cancelar</button><button class="pri" onclick="S.inv.dinheiro=Math.round((+$('sV').value||0)*100)/100;save();renderInv();close_()">Salvar</button></div>`)}
+
 function carga(){const f=+S.ficha.attrs.FOR||0;return f>0?f*5:2}
 function renderInv(){const I=S.inv,used=I.itens.reduce((s,x)=>s+(+x.espaco||0)*(+x.qtd||1),0),lim=carga(),pct=Math.min(100,used/lim*100);
- $("invBox").innerHTML=FRAME+`<div class="c">${banner("Inventário")}
+ $("invBox").innerHTML=FRAME+`<div class="c">${moneyHTML()}${banner("Inventário")}
   <div class="mv"><span>Carga</span><span><b style="color:${used>lim?"#ff5a6e":"#fff"}">${used}</b> / ${lim} espaços</span></div>
   <div class="mvbar"><i style="width:${pct}%;${used>lim?"background:#ff2a40":""}"></i></div>${used>lim?`<div class="hint" style="color:#ff5a6e">Sobrecarregado!</div>`:""}
   <div class="ihead"><span>Item</span><span>Cat.</span><span>Esp.</span></div>
