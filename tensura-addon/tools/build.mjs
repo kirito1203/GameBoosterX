@@ -139,6 +139,7 @@ async function main() {
     const cardsPath = join(DIST, 'race_cards.json');
     writeFileSync(cardsPath, JSON.stringify(RACE_CARDS.map(([id, , , portrait]) => ({ id, portrait }))));
     execFileSync('python3', [join(ROOT, 'tools', 'gen_race_textures.py'), cardsPath, RP], { stdio: 'inherit' });
+    execFileSync('python3', [join(ROOT, 'tools', 'gen_sage_model.py'), RP], { stdio: 'inherit' });
   }
   // Verifica se todas as texturas exigidas existem.
   const missing = [];

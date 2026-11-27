@@ -1,0 +1,17 @@
+{
+  "format_version": "1.8.0",
+  "render_controllers": {
+    "controller.render.tensura.great_sage": {
+      "geometry": "Geometry.default",
+      "materials": [{ "*": "Material.default" }, { "ring*": "Material.ring" }],
+      "textures": ["Texture.default"],
+      "ignore_lighting": true,
+      "overlay_color": {
+        "r": 0.45,
+        "g": 0.8,
+        "b": 1.0,
+        "a": "0.10 + math.sin(query.life_time * 120) * 0.04"
+      }
+    }
+  }
+}

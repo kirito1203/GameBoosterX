@@ -68,18 +68,48 @@ test('texturas da tela existem (retratos, molduras, estrelas, Grande Sábio)', (
   assert.ok(existsSync(new URL('textures/entity/tensura/great_sage.png', RP)));
 });
 
-test('Grande Sábio: entidade, modelo, animação e cliente consistentes', () => {
-  const bp = JSON.parse(readFileSync(new URL('../BP/entities/great_sage.json', import.meta.url), 'utf8'));
-  assert.equal(bp['minecraft:entity'].description.identifier, 'tensura:great_sage');
-  const cl = JSON.parse(readFileSync(new URL('entity/great_sage.entity.json', RP), 'utf8'))['minecraft:client_entity'].description;
-  const geo = JSON.parse(readFileSync(new URL('models/entity/great_sage.geo.json', RP), 'utf8'))['minecraft:geometry'][0];
-  const anim = JSON.parse(readFileSync(new URL('animations/great_sage.animation.json', RP), 'utf8'));
+test('Grande Sábio: modelo, textura, animações, controlador e propriedade consistentes', () => {
+  const read = (u) => JSON.parse(readFileSync(new URL(u, RP), 'utf8'));
+  const bp = JSON.parse(readFileSync(new URL('../BP/entities/great_sage.json', import.meta.url), 'utf8'))['minecraft:entity'];
+  const cl = read('entity/great_sage.entity.json')['minecraft:client_entity'].description;
+  const geo = read('models/entity/great_sage.geo.json')['minecraft:geometry'][0];
+  const anims = read('animations/great_sage.animation.json').animations;
+  const ctrls = read('animation_controllers/great_sage.animation_controllers.json').animation_controllers;
+  const rc = read('render_controllers/great_sage.render_controllers.json').render_controllers;
+  assert.equal(bp.description.identifier, cl.identifier);
   assert.equal(cl.geometry.default, geo.description.identifier);
-  assert.ok(anim.animations[cl.animations.float]);
-  const bones = new Set(geo.bones.map((b) => b.name));
-  for (const b of Object.keys(anim.animations[cl.animations.float].bones)) assert.ok(bones.has(b), `osso ${b}`);
+  assert.ok(rc[cl.render_controllers[0]], 'render controller existe');
+  // Modelo humanoide com partes separadas e anéis como elementos à parte.
+  const bones = new Map(geo.bones.map((b) => [b.name, b]));
+  for (const b of ['head', 'hair_back', 'body', 'coat_lower', 'rightArm', 'leftArm', 'rightLeg', 'leftLeg', 'ring_halo', 'ring_waist', 'ring_base']) {
+    assert.ok(bones.has(b), `osso ${b}`);
+  }
+  for (const b of geo.bones) if (b.parent) assert.ok(bones.has(b.parent), `pai ${b.parent}`);
+  // Toda animação referenciada existe, e todo osso animado existe na geometria.
+  for (const [short, full] of Object.entries(cl.animations)) {
+    const def = anims[full] ?? ctrls[full];
+    assert.ok(def, `animação ${short} → ${full}`);
+    for (const b of Object.keys(def.bones ?? {})) assert.ok(bones.has(b), `${full}: osso ${b}`);
+  }
+  const ctrl = ctrls[cl.animations.controller];
+  const propValues = bp.description.properties['tensura:state'].values;
+  for (const st of Object.values(ctrl.states)) {
+    for (const a of st.animations) assert.ok(cl.animations[a], `controlador usa ${a}`);
+    for (const tr of st.transitions ?? []) for (const cond of Object.values(tr)) {
+      for (const m of cond.matchAll(/'([a-z]+)'/g)) assert.ok(propValues.includes(m[1]), `estado ${m[1]} não existe na propriedade`);
+    }
+  }
+  const script = readFileSync(new URL('../BP/scripts/systems/sageEntity.js', import.meta.url), 'utf8');
+  for (const v of ["'talk'", "'idle'", "'vanish'"]) assert.ok(script.includes(v));
+  for (const m of rc[cl.render_controllers[0]].materials) for (const k of Object.values(m)) assert.ok(cl.materials[k.replace('Material.', '')], k);
+  // Sem colisão e sem dano (não atrapalha combate nem bloqueia passagens).
+  assert.ok(bp.components['minecraft:collision_box'].width <= 0.05);
+  assert.equal(bp.components['minecraft:physics'].has_collision, false);
+  assert.equal(bp.components['minecraft:damage_sensor'].triggers[0].deals_damage, 'no');
+  // Textura cobre todas as UVs.
+  assert.equal(geo.description.texture_width, 128);
+  assert.ok(existsSync(new URL('textures/entity/tensura/great_sage.png', RP)));
   assert.equal(INTRO_LINES.length, 6);
-  assert.equal(INTRO_LINES[0], 'Saudações, viajante.');
 });
 
 test('primeira entrada: apresentação salva; quem já tinha raça não a vê de novo', () => {

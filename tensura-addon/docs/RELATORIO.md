@@ -150,3 +150,36 @@ Quem já tinha raça em versões anteriores não vê a apresentação.
 - Testado: 45 testes automáticos (dados, regras, salvamento, telas simuladas) e o type-check.
   **Não testado no jogo:** a apresentação (câmera, fade, bloqueio de movimento, entidade) e a tela nova.
   Além disso, a correção 0.2.1 (ligação por `grid_position`), que essas telas usam, ainda não foi confirmada no jogo.
+
+## Versão 0.3.1 — Sistema definitivo do Grande Sábio: etapas 1 e 2 (modelo 3D)
+
+**Etapa 1 — análise:** o Grande Sábio já existia como uma figura encapuzada simples usada na
+apresentação (`systems/intro.js`). O pedido completo, com 11 painéis, análise, síntese, memória,
+notificações e evolução para Raphael e Ciel, será feito em etapas. Estrutura planejada:
+
+```
+BP/items/sage_core.json                          etapa 3 — Núcleo do Grande Sábio
+BP/scripts/sage/assistente.js, analise.js,       etapas 3–7
+  sintese.js, memoria.js, notificacoes.js, evolucao.js
+RP/sounds/ + RP/sounds/sound_definitions.json    etapa 6 — sons próprios
+```
+
+**Etapa 2 — modelo 3D feminino (feito):**
+- `tools/gen_sage_model.py` gera a geometria e a textura juntas, então a UV sempre bate:
+  13 ossos e 17 cubos (cabeça, camada de cabelo com franja, mechas laterais, cabelo longo, tronco,
+  casaco aberto com barra, braços finos com mangas, pernas com meias) e 3 anéis mágicos separados
+  (auréola, cintura inclinada e base). A textura é 128×128 em pixel art.
+- `RP/animations/great_sage.animation.json`: flutuação (cabelo e casaco balançam, anéis giram, base pulsa),
+  fala (cabeça e gesto do braço), aparição (cresce de baixo para cima) e desaparecimento (sobe e encolhe).
+- `RP/animation_controllers/...`: aparição → parada ⇄ falando → desaparecendo, guiado pela propriedade
+  `tensura:state` (enum sincronizado com o cliente), que o script muda com `setProperty`.
+- `RP/render_controllers/...`: holograma. Ignora a iluminação (brilha no escuro), tem um tom ciano pulsante
+  (`overlay_color`) e anéis translúcidos (`entity_alphablend`).
+- `BP/entities/great_sage.json`: sem colisão (caixa 0,01), sem física, imune a dano e fogo, some sozinho
+  em 5 min se perder o controle.
+- `systems/sageEntity.js`: aparecer, falar, desaparecer e partículas leves (3 a cada 6 ticks).
+  A apresentação usa a fala durante o texto e o desaparecimento no fim.
+- Testes: consistência entre geometria, animações, controlador, propriedade e script; UVs dentro da
+  textura; visões ortográficas geradas por `tools/sage_preview.py` (`docs/img/grande_sabio_modelo.png`).
+- **Não testado no jogo.** Este ambiente não tem o Minecraft. Falta confirmar o modelo, a transparência
+  dos anéis, o brilho e a troca de animação pela propriedade.

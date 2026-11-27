@@ -3,15 +3,18 @@
   "minecraft:client_entity": {
     "description": {
       "identifier": "tensura:great_sage",
-      "materials": { "default": "entity_alphatest" },
+      "materials": { "default": "entity_alphatest", "ring": "entity_alphablend" },
       "textures": { "default": "textures/entity/tensura/great_sage" },
       "geometry": { "default": "geometry.tensura.great_sage" },
-      "render_controllers": ["controller.render.default"],
-      "animations": { "float": "animation.tensura.great_sage.float" },
-      "scripts": {
-        "animate": ["float"],
-        "scale": "math.min(1.15, query.life_time * 0.9)"
-      }
+      "render_controllers": ["controller.render.tensura.great_sage"],
+      "animations": {
+        "float": "animation.tensura.great_sage.float",
+        "talk": "animation.tensura.great_sage.talk",
+        "appear": "animation.tensura.great_sage.appear",
+        "vanish": "animation.tensura.great_sage.vanish",
+        "controller": "controller.animation.tensura.great_sage"
+      },
+      "scripts": { "animate": ["controller"] }
     }
   }
 }

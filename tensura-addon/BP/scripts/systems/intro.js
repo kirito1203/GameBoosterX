@@ -11,6 +11,7 @@ import { RACES } from '../data/registry.js';
 import { getData, saveNow } from './storage.js';
 import { V, particle } from './util.js';
 import { selectRace } from '../ui/raceUI.js';
+import { spawnSage, sageTalk, vanishSage, sageAura } from './sageEntity.js';
 
 const running = new Set();
 
@@ -101,23 +102,11 @@ export async function runIntro(player, onFinished) {
     const side = { x: -dir.z, y: 0, z: dir.x };
     const at = V.add(player.location, V.add(V.mul(dir, 4), { x: 0, y: 0.4, z: 0 }));
     const dim = player.dimension;
-    sage = dim.spawnEntity('tensura:great_sage', at);
-    sage.nameTag = '§bGrande Sábio';
-    try { sage.teleport(at, { facingLocation: player.getHeadLocation() }); } catch { /* */ }
-    ringParticles(dim, V.add(at, { x: 0, y: 0.2, z: 0 }), 1.6, 18, 'minecraft:endrod');
+    sage = spawnSage(player, at);
     particle(dim, 'minecraft:totem_particle', V.add(at, { x: 0, y: 1.5, z: 0 }));
     try { player.playSound('random.totem', { volume: 0.5, pitch: 1.4 }); } catch { /* */ }
-    // Partículas leves enquanto ele estiver presente (a cada 6 ticks, 3 partículas).
-    let t = 0;
-    aura = system.runInterval(() => {
-      if (!sage?.isValid) return;
-      t++;
-      const c = sage.location;
-      const a = t * 0.6;
-      particle(dim, 'minecraft:basic_portal_particle', { x: c.x + Math.cos(a) * 1.2, y: c.y + 0.4 + (t % 10) * 0.18, z: c.z + Math.sin(a) * 1.2 });
-      particle(dim, 'minecraft:endrod', { x: c.x - Math.cos(a) * 1.0, y: c.y + 1.2, z: c.z - Math.sin(a) * 1.0 });
-      if (t % 3 === 0) particle(dim, 'minecraft:electric_spark_particle', V.add(c, { x: 0, y: 2.3, z: 0 }));
-    }, 6);
+    // Partículas leves enquanto ele estiver presente (3 a cada 6 ticks).
+    aura = sageAura(sage);
     // Câmera aproxima e enquadra o Grande Sábio.
     try {
       const cam = V.add(player.getHeadLocation(), V.add(V.mul(dir, 1.2), V.add(V.mul(side, 1.3), { x: 0, y: 0.2, z: 0 })));
@@ -131,11 +120,15 @@ export async function runIntro(player, onFinished) {
     // ETAPA 2 — diálogo.
     for (let i = 0; i < INTRO_LINES.length - 1; i++) {
       if (!player.isValid) return;
+      sageTalk(sage, true);
       await typeLine(player, INTRO_LINES[i]);
+      sageTalk(sage, false);
       await waitAdvance(player, 110);
     }
     // ETAPA 3 — apresenta a escolha e abre a tela de raças.
+    sageTalk(sage, true);
     await typeLine(player, INTRO_LINES[INTRO_LINES.length - 1]);
+    sageTalk(sage, false);
     await system.waitTicks(25);
     try { player.onScreenDisplay.setTitle(' ', { fadeInDuration: 0, stayDuration: 1, fadeOutDuration: 5 }); } catch { /* */ }
     const race = await selectRace(player, { sageText: INTRO_LINES[INTRO_LINES.length - 1], mandatory: true });
@@ -146,7 +139,7 @@ export async function runIntro(player, onFinished) {
     for (let k = 0; k < 3; k++) ringParticles(player.dimension, V.add(player.location, { x: 0, y: 0.3 + k * 0.8, z: 0 }), 1.2, 14, 'minecraft:totem_particle');
     await system.waitTicks(10);
     try { player.onScreenDisplay.setTitle('§6§lReencarnação concluída', { subtitle: `§bVocê renasceu como ${RACES[race].name}`, fadeInDuration: 10, stayDuration: 60, fadeOutDuration: 20 }); } catch { /* */ }
-    if (sage?.isValid) { ringParticles(dim, sage.location, 1.0, 16, 'minecraft:basic_portal_particle'); }
+    if (sage?.isValid) await vanishSage(sage);
     d.introDone = true;
     saveNow(player);
     onFinished?.(player);

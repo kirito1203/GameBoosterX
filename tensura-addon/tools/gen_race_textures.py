@@ -191,21 +191,6 @@ def lock_overlay(n=32):
     d.point((15, 18), fill=(40, 40, 50, 255))
     return im
 
-# ── Grande Sábio: textura do modelo 3D (64x64) ──
-def sage_skin():
-    im = Image.new('RGBA', (64, 64), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
-    robe = (205, 230, 255, 255); robe2 = (150, 190, 245, 255); face = (24, 30, 60, 255); glow = (110, 235, 255, 255)
-    d.rectangle([0, 0, 31, 15], fill=robe)          # cabeça/capuz (cubo 8x8x8 em 0,0)
-    d.rectangle([8, 8, 15, 15], fill=face)          # frente da cabeça
-    d.rectangle([9, 11, 10, 12], fill=glow); d.rectangle([13, 11, 14, 12], fill=glow)
-    d.rectangle([0, 16, 39, 47], fill=robe)          # corpo/manto (cubo 8x16x6 em 0,16)
-    d.rectangle([6, 22, 9, 37], fill=(40, 70, 140, 255))
-    for y in range(24, 36, 4): d.rectangle([7, y, 8, y + 1], fill=glow)
-    d.rectangle([40, 16, 63, 31], fill=robe2)        # braços (40,16)
-    # anel mágico (face superior/inferior de um plano 24x24, UV 0,48 com 16x16)
-    d.ellipse([0, 48, 15, 63], outline=glow); d.ellipse([1, 49, 14, 62], outline=(80, 150, 255, 200))
-    return im
-
 def main():
     cards = json.load(open(sys.argv[1]))
     rp = sys.argv[2]
@@ -236,8 +221,7 @@ def main():
     nine(os.path.join(R, 'btn_stone'), stone_frame(16, 16, *stone, seed=9), 4)
     nine(os.path.join(R, 'btn_stone_hover'), stone_frame(16, 16, (70, 78, 92, 255), (150, 220, 255, 255), (30, 34, 44, 255), seed=9), 4)
     save(Image.new('RGBA', (4, 2), (70, 110, 160, 255)), os.path.join(R, 'line.png'))
-    # Textura do modelo 3D do Grande Sábio.
-    save(sage_skin(), os.path.join(rp, 'textures', 'entity', 'tensura', 'great_sage.png'))
+    # (o modelo 3D do Grande Sábio e sua textura vêm de tools/gen_sage_model.py)
     print(f'texturas da raça: {len(cards)} retratos')
 
 if __name__ == '__main__':

@@ -1,0 +1,34 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.tensura.great_sage": {
+      "initial_state": "appear",
+      "states": {
+        "appear": {
+          "animations": ["float", "appear"],
+          "transitions": [{ "idle": "query.life_time >= 1.25" }],
+          "blend_transition": 0.2
+        },
+        "idle": {
+          "animations": ["float"],
+          "transitions": [
+            { "talk": "query.property('tensura:state') == 'talk'" },
+            { "vanish": "query.property('tensura:state') == 'vanish'" }
+          ],
+          "blend_transition": 0.2
+        },
+        "talk": {
+          "animations": ["float", "talk"],
+          "transitions": [
+            { "idle": "query.property('tensura:state') == 'idle'" },
+            { "vanish": "query.property('tensura:state') == 'vanish'" }
+          ],
+          "blend_transition": 0.2
+        },
+        "vanish": {
+          "animations": ["float", "vanish"]
+        }
+      }
+    }
+  }
+}
