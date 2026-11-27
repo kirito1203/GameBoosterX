@@ -3,7 +3,7 @@
 import { SKILLS, TREES, RACES, SECTORS, ABSORPTION, MISSIONS } from '../data/registry.js';
 import { masteryLevel, masteryMax, usesForNext } from './mastery.js';
 import { evaluate } from './progression.js';
-import { getMap, getSupremeMap, DIRS8 } from './map.js';
+import { getMap, getSupremeMap, getRaceMap, DIRS8 } from './map.js';
 import { fxOf } from './progression.js';
 import { describeFx } from './describe.js';
 import { rarityInfo, CONFIG } from '../config.js';
@@ -82,13 +82,15 @@ export function categoryName(cat, lineage) {
  * @param {string[]} [p.equipped]
  * @param {number} [p.zoom]  1 = normal; ZOOM_OUT = visão geral
  * @param {boolean} [p.supreme] Árvore Suprema (mapa próprio)
+ * @param {boolean} [p.race]    Árvore Racial (mapa próprio da raça)
  */
 export function buildTreeForm(p) {
   if (p.zoom && p.zoom > 1) return buildOverviewForm(p);
   const { state, view, focus = null, mp, equipped = [] } = p;
   const lineage = RACES[state.race].lineage;
   const supreme = !!p.supreme && !!getSupremeMap(lineage);
-  const map = supreme ? getSupremeMap(lineage) : getMap(lineage);
+  const raceMode = !supreme && !!p.race;
+  const map = supreme ? getSupremeMap(lineage) : raceMode ? getRaceMap(lineage) : getMap(lineage);
   const { cols, rows, n } = gridOf();
   const base = layerBase();
   const buttons = new Array(base.total);
@@ -100,13 +102,22 @@ export function buildTreeForm(p) {
   const bar = (k) => `§a${'▮'.repeat(Math.round(k * 10))}§8${'▮'.repeat(10 - Math.round(k * 10))}`;
   const title = supreme
     ? `${MARK}§l§6Árvore Suprema§r  §7${race.name}  §ePontos ${state.points}  ${bar(owned / Math.max(1, total))} §a${owned}/${total}  §dMagículas ${Math.floor(mp.cur)}/${mp.max}`
-    : `${MARK}§l§bÁrvore de Habilidades§r  §7${race.name}  §ePontos ${state.points}  §fNv ${state.level}  §a${owned}/${total}  §dMagículas ${Math.floor(mp.cur)}/${mp.max}`;
+    : raceMode ? `${MARK}§l§aÁrvore Racial§r  §7${race.name}  §ePontos ${state.points}  §fNv ${state.level}  ${bar(owned / Math.max(1, total))} §a${owned}/${total}  §dMagículas ${Math.floor(mp.cur)}/${mp.max}`
+      : `${MARK}§l§bÁrvores Universais§r  §7${race.name}  §ePontos ${state.points}  §fNv ${state.level}  §a${owned}/${total}  §dMagículas ${Math.floor(mp.cur)}/${mp.max}`;
 
   const set = (i, text, icon = '') => { buttons[i] = { text, icon }; };
   for (let i = 0; i < base.node; i++) set(i, ''); // controles + preenchimento
   set(CTRL.back, 'Voltar', `${TEX.ui}btn_back`); hit[CTRL.back] = { type: 'back' };
   set(CTRL.close, '', `${TEX.ui}btn_close`); hit[CTRL.close] = { type: 'close' };
-  if (supreme) {
+  if (raceMode) {
+    // Saltos por categoria (ícone-cristal da cabeça da categoria) + botão das árvores universais.
+    Object.keys(map.roots).slice(0, CATEGORY_ORDER.length - 1).forEach((sid, i) => {
+      set(CTRL.cat0 + i, '', `${TEX.icon}${iconName(sid)}`);
+      hit[CTRL.cat0 + i] = { type: 'jump', pos: map.roots[sid], cat: sid };
+    });
+    const last = CTRL.cat0 + CATEGORY_ORDER.length - 1;
+    set(last, '', `${TEX.ui}tab_elemental`); hit[last] = { type: 'universal' };
+  } else if (supreme) {
     Object.keys(map.roots).forEach((sid, i) => {
       set(CTRL.cat0 + i, '', `${TEX.icon}${iconName(sid)}`);
       hit[CTRL.cat0 + i] = { type: 'jump', pos: map.roots[sid], cat: sid };
@@ -246,7 +257,7 @@ function buildOverviewForm(p) {
   const { state, view, mp } = p;
   const Z = ZOOM_OUT;
   const lineage = RACES[state.race].lineage;
-  const map = getMap(lineage);
+  const map = p.race ? getRaceMap(lineage) : getMap(lineage);
   const { cols, rows, n } = gridOf();
   const base = layerBase();
   const buttons = Array.from({ length: base.total }, () => ({ text: '', icon: '' }));

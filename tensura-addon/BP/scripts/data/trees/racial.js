@@ -415,4 +415,93 @@ export const RACIAL_TREES = [
       cost: 90, lvl: 32, req: ['r.giant.evo_elder_giant'], origin: OR, cat: `${RC} · Corpo`,
       desc: '+4 corações e regeneração permanentes.', fx: { k: 'p_effect', eff: [['health_boost', 1], ['regeneration', 0]] } }),
   ]),
+
+  // ── FADA ─────────────────────────────────────────────────────
+  lineageTree('fairy', [
+    S('r.fairy.fairy_wings', 'Asas de Fada', 'Fairy Wings', 'common', {
+      cost: 10, req: ['r.fairy.root'], arm: 'N', initial: 'fairy', origin: A, cat: `${RC} · Corpo`,
+      desc: 'Voo curto: queda lenta e salto alto permanentes.', fx: { k: 'p_effect', eff: [['slow_falling', 0], ['jump_boost', 1]] } }),
+    S('r.fairy.glamour', 'Encanto Feérico', 'Fairy Glamour', 'common', {
+      cost: 15, req: ['r.fairy.root'], arm: 'S', initial: 'fairy', origin: A, mp: 12, cd: 15, cat: `${RC} · Ilusão`,
+      desc: 'Confunde as criaturas próximas (raio 7): náusea e lentidão.', fx: { k: 'debuff', el: 'illusion', r: 7, self: true, eff: [['nausea', 6, 0], ['slowness', 6, 1]] } }),
+    T.spiritAffinity('r.fairy', { req: ['r.fairy.fairy_wings'] }),
+    S('r.fairy.pixie_dust', 'Pó de Fada', 'Fairy Dust', 'rare', {
+      cost: 35, lvl: 8, req: ['r.fairy.glamour'], origin: OR, mp: 20, cd: 30, cat: `${RC} · Bênção`,
+      desc: 'Abençoa você e aliados (8 blocos) por 30 s: velocidade e regeneração.', fx: { k: 'buff', allies: 8, eff: [['speed', 30, 1], ['regeneration', 30, 0]] } }),
+    S('r.fairy.labyrinth', 'Criação de Labirinto', 'Labyrinth Creation', 'epic', {
+      cost: 90, lvl: 24, req: ['r.fairy.pixie_dust'], origin: A, mp: 80, cd: 120, cat: `${RC} · Espaço`,
+      desc: 'Prende os inimigos num campo labiríntico (raio 10, 12 s): lentos e confusos.',
+      fx: { k: 'field', el: 'illusion', r: 10, dur: 12, self: true, confine: true, enemyEff: [['slowness', 2, 2], ['nausea', 2, 0]] } }),
+    evo('r.fairy', 'fairy_queen', 'legendary', { cost: 150, lvl: 30, req: ['r.fairy.root'], arm: 'E', needCount: 4 }),
+  ]),
+
+  // ── HOMEM-FERA / LICANTROPO ──────────────────────────────────
+  lineageTree('beastman', [
+    S('r.beastman.beast_instinct', 'Instinto de Fera', 'Beast Instinct', 'common', {
+      cost: 10, req: ['r.beastman.root'], arm: 'N', initial: 'beastman', origin: A, cat: `${RC} · Sentidos`,
+      desc: 'Reflexos de caçador: 10% de chance de lentidão no alvo a cada golpe.', fx: { k: 'p_onhit', chance: 0.1, eff: [['slowness', 3, 1]] } }),
+    T.ultraSmell('r.beastman', { req: ['r.beastman.root'], arm: 'S', initial: 'beastman' }),
+    T.physEnhance('r.beastman', { req: ['r.beastman.beast_instinct'] }),
+    T.coercion('r.beastman', { req: ['r.beastman.ultra_smell'] }),
+    S('r.beastman.beastification', 'Bestificação', 'Beastification', 'epic', {
+      cost: 70, lvl: 15, req: ['r.beastman.physical_enhancement'], origin: 'obra', mp: 40, cd: 90, cat: `${RC} · Transformação`,
+      desc: 'Assume a forma de besta por 40 s: força II, velocidade II e resistência.', fx: { k: 'buff', eff: [['strength', 40, 1], ['speed', 40, 1], ['resistance', 40, 0]] } }),
+    evo('r.beastman', 'lycanthrope', 'legendary', { cost: 140, lvl: 28, req: ['r.beastman.root'], arm: 'E', needCount: 4 }),
+  ]),
+
+  // ── MORTO-VIVO ───────────────────────────────────────────────
+  lineageTree('undead', [
+    S('r.undead.deathless', 'Corpo sem Vida', 'Deathless Body', 'common', {
+      cost: 10, req: ['r.undead.root'], arm: 'N', initial: 'skeleton', origin: A, cat: `${RC} · Corpo`,
+      desc: 'Não respira nem é envenenado: imunidade a veneno e fome.', fx: { k: 'p_cleanse', eff: ['poison', 'hunger'] } }),
+    S('r.undead.bone_spear', 'Lança de Osso', 'Bone Spear', 'common', {
+      cost: 15, req: ['r.undead.root'], arm: 'S', initial: 'skeleton', origin: OR, mp: 8, cd: 2, cat: `${RC} · Combate`,
+      desc: 'Dispara uma lança de osso (7 de dano).', fx: { k: 'bolt', el: 'physical', dmg: 7 } }),
+    S('r.undead.raise_dead', 'Erguer os Mortos', 'Raise Dead', 'rare', {
+      cost: 40, lvl: 10, req: ['r.undead.deathless'], origin: A, mp: 40, cd: 60, cat: `${RC} · Necromancia`,
+      desc: 'Ergue 2 guerreiros mortos-vivos por 45 s.', fx: { k: 'summon', entity: 'tensura:undead_warrior', count: 2, dur: 45 } }),
+    T.magicResist('r.undead', { req: ['r.undead.bone_spear'] }),
+    S('r.undead.life_drain', 'Dreno Vital', 'Life Drain', 'epic', {
+      cost: 80, lvl: 20, req: ['r.undead.raise_dead'], origin: A, mp: 50, cd: 25, cat: `${RC} · Necromancia`,
+      desc: 'Drena a vida de todos num raio de 7 (10 de dano, cura metade).', fx: { k: 'drain', el: 'dark', r: 7, dmg: 10, heal: 0.5, mpGain: 10 } }),
+    evo('r.undead', 'wight', 'legendary', { cost: 140, lvl: 26, req: ['r.undead.root'], arm: 'E', needCount: 4 }),
+    evo('r.undead', 'wight_king', 'supreme', { cost: 280, lvl: 55, req: ['r.undead.evo_wight'], needCount: 7, flags: ['killed_wither'] }),
+  ]),
+
+  // ── GOLEM ────────────────────────────────────────────────────
+  lineageTree('golem', [
+    S('r.golem.stone_body', 'Corpo de Pedra', 'Stone Body', 'common', {
+      cost: 10, req: ['r.golem.root'], arm: 'N', initial: 'golem', origin: A, cat: `${RC} · Corpo`,
+      desc: 'Imune a veneno e afogamento; 10% menos dano físico.', fx: [{ k: 'p_cleanse', eff: ['poison'] }, { k: 'p_resist', groups: { drowning: 1, physical: 0.1 } }] }),
+    S('r.golem.ground_slam', 'Pancada no Solo', 'Ground Slam', 'common', {
+      cost: 15, req: ['r.golem.root'], arm: 'S', initial: 'golem', origin: OR, mp: 10, cd: 8, cat: `${RC} · Combate`,
+      desc: 'Golpeia o chão (raio 5): 8 de dano e arremesso.', fx: { k: 'nova', el: 'earth', r: 5, dmg: 8, self: true, knock: 2 } }),
+    T.physResist('r.golem', { req: ['r.golem.stone_body'], amount: 0.25 }),
+    S('r.golem.core_overload', 'Sobrecarga do Núcleo', 'Core Overload', 'epic', {
+      cost: 75, lvl: 18, req: ['r.golem.ground_slam'], origin: OR, mp: 60, cd: 90, cat: `${RC} · Núcleo`,
+      desc: 'Sobrecarrega o núcleo por 30 s: força II, resistência II e pressa.', fx: { k: 'buff', eff: [['strength', 30, 1], ['resistance', 30, 1], ['haste', 30, 1]] } }),
+    S('r.golem.rock_wall', 'Muralha de Rocha', 'Rock Wall', 'rare', {
+      cost: 35, lvl: 10, req: ['r.golem.physical_resist'], origin: OR, mp: 25, cd: 30, cat: `${RC} · Defesa`,
+      desc: 'Ergue uma muralha de pedra temporária à frente.', fx: { k: 'wall', block: 'minecraft:cobblestone', len: 5, h: 3, dist: 3, dur: 15 } }),
+    evo('r.golem', 'magic_golem', 'legendary', { cost: 140, lvl: 26, req: ['r.golem.root'], arm: 'E', needCount: 4 }),
+    evo('r.golem', 'arch_doll', 'supreme', { cost: 280, lvl: 52, req: ['r.golem.evo_magic_golem'], needCount: 6 }),
+  ]),
+
+  // ── DRAGÃO ───────────────────────────────────────────────────
+  lineageTree('dragon', [
+    S('r.dragon.dragon_scales', 'Escamas de Dragão', 'Dragon Scales', 'common', {
+      cost: 10, req: ['r.dragon.root'], arm: 'N', initial: 'dragon', origin: 'obra', cat: `${RC} · Corpo`,
+      desc: 'Escamas duras: 15% menos dano físico e 20% menos de fogo.', fx: { k: 'p_resist', groups: { physical: 0.15, fire: 0.2 } } }),
+    T.breath('r.dragon', 'fire', 'Sopro de Fogo', 'Fire Breath', { req: ['r.dragon.root'], arm: 'S', initial: 'dragon', rarity: 'common', cost: 15, lvl: 1, dmg: 7 }),
+    S('r.dragon.dragon_wings', 'Asas de Dragão', 'Dragon Wings', 'rare', {
+      cost: 45, lvl: 12, req: ['r.dragon.dragon_scales'], origin: 'obra', mp: 0, cd: 2, cat: `${RC} · Asas`,
+      desc: 'Liga/desliga o voo (consome 3 Magicules/s).', fx: { k: 'flight', drain: 3 } }),
+    S('r.dragon.dragon_aura', 'Aura Dracônica', 'Dragon Aura', 'epic', {
+      cost: 80, lvl: 20, req: ['r.dragon.fire_breath'], origin: A, mp: 40, cd: 40, cat: `${RC} · Energia`,
+      desc: 'Pressão dracônica (raio 10): inimigos fracos e lentos por 10 s.', fx: { k: 'debuff', el: 'dragon', r: 10, self: true, eff: [['weakness', 10, 1], ['slowness', 10, 1]] } }),
+    T.breath('r.dragon', 'lightning', 'Sopro de Trovão', 'Thunder Breath', { req: ['r.dragon.dragon_aura'], lvl: 26, cost: 60, rarity: 'rare', dmg: 12 }),
+    evo('r.dragon', 'elder_dragon', 'legendary', { cost: 200, lvl: 35, req: ['r.dragon.root'], arm: 'E', needCount: 4 }),
+    evo('r.dragon', 'true_dragon', 'supreme', { cost: 400, lvl: 80, req: ['r.dragon.evo_elder_dragon'], needCount: 6,
+      flags: ['killed_ender_dragon', 'killed_wither', 'killed_warden'] }),
+  ]),
 ];

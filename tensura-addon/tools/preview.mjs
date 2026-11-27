@@ -252,7 +252,7 @@ import { buildMenuForm } from '../BP/scripts/core/menuView.js';
 import { buildRaceForm } from '../BP/scripts/core/raceView.js';
 import { buildSageForm } from '../BP/scripts/core/sageView.js';
 import { freshSage, addXp } from '../BP/scripts/core/sage.js';
-import { getMap, getSupremeMap } from '../BP/scripts/core/map.js';
+import { getMap, getSupremeMap, getRaceMap } from '../BP/scripts/core/map.js';
 import { computeStats } from '../BP/scripts/core/stats.js';
 import { viewAt } from '../BP/scripts/core/view.js';
 
@@ -281,13 +281,14 @@ export function scenario(name) {
   const map = getMap('slime');
   switch (name) {
     case 'tree-center': return { kind: 'tree', p: { state, view: centeredView(), mp } };
-    case 'tree-slime': return { kind: 'tree', p: { state: { ...state, discovered: new Set(['r.slime.sticky_thread']), missions: new Set(), mastery: { 'r.slime.predation': 35 }, maxMp: d.stats.maxMp, absorbed: new Set(d.absorbed) }, view: viewAt([-14, 2]), mp } };
+    case 'tree-slime': return { kind: 'tree', p: { state: { ...state, discovered: new Set(['r.slime.sticky_thread']), missions: new Set(), mastery: { 'r.slime.predation': 35 }, maxMp: d.stats.maxMp, absorbed: new Set(d.absorbed) }, view: viewAt([-10, 2]), mp, race: true } };
     case 'tree-slime-sel': {
       const st = { ...state, discovered: new Set(), missions: new Set(), mastery: { 'r.slime.predation': 35 }, maxMp: d.stats.maxMp, absorbed: new Set(d.absorbed) };
-      const view = viewAt([-14, 2]);
-      const pos = map.pos['r.slime.gluttony'];
+      const rm = getRaceMap('slime');
+      const view = viewAt(rm.pos['r.slime.gluttony']);
+      const pos = rm.pos['r.slime.gluttony'];
       const i = (pos[1] - view.y) * 13 + (pos[0] - view.x);
-      return { kind: 'tree', p: { state: st, view, mp }, toggles: [`tg_${i}`], cell: i };
+      return { kind: 'tree', p: { state: st, view, mp, race: true }, toggles: [`tg_${i}`], cell: i };
     }
     case 'tree-supreme': {
       const sm = getSupremeMap('slime');
@@ -298,6 +299,7 @@ export function scenario(name) {
       const i = (pos[1] - view.y) * 13 + (pos[0] - view.x);
       return { kind: 'tree', p: { state: st, view, mp, supreme: true }, toggles: [`tg_${i}`], cell: i };
     }
+    case 'tree-combat': return { kind: 'tree', p: { state, view: viewAt(map.roots.combat), mp } };
     case 'tree-overview': return { kind: 'tree', p: { state, view: { x: -19, y: -16 }, mp, zoom: 3 } };
     case 'tree-elemental': return { kind: 'tree', p: { state, view: viewAt(map.roots.elemental), mp } };
     case 'tree-unique-sel': {

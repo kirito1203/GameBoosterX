@@ -103,6 +103,9 @@ export function describeFx(fx) {
       case 'p_absorb': parts.push(`Passiva: Magicules por absorção x${f.mult}`); break;
       case 'p_mimic': parts.push(`Passiva: formas da Imitação +${f.amp ?? 0} nível${f.noDrain ? ', sem gasto' : ''}`); break;
       case 'p_op': parts.push(`Libera a operação "${({ library: 'Biblioteca', create: 'Criar', duplicate: 'Duplicar', grant: 'Conceder', storage: 'Armazenar barra' })[f.op] ?? f.op}" na tela de Ciel`); break;
+      case 'dash': parts.push(f.dmg ? `Investida: ${f.dmg} de dano no caminho` : 'Avanço rápido'); break;
+      case 'p_dodge': parts.push(`Passiva: ${pct(f.chance)} de chance de esquiva`); break;
+      case 'p_counter': parts.push(`Passiva: ${pct(f.chance)} de chance de devolver ${pct(f.mult)} do dano`); break;
       case 'convert': parts.push(`Converte ${pct(f.pct)} da Aura em Magicules`); break;
       case 'mana': parts.push(`Restaura ${pct(f.pct)} das Magicules`); break;
       default: parts.push(f.k);

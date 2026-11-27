@@ -14,7 +14,7 @@ import { fresh, serialize, deserialize } from '../BP/scripts/core/save.js';
 import { freshSage } from '../BP/scripts/core/sage.js';
 import { ask } from '../BP/scripts/core/sageAsk.js';
 import { buildTreeForm, toOverview, fromOverview, acquisition } from '../BP/scripts/core/view.js';
-import { getMap } from '../BP/scripts/core/map.js';
+import { getMap, getRaceMap } from '../BP/scripts/core/map.js';
 import { layerBase, CTRL } from '../BP/scripts/core/uiSpec.js';
 
 const TREE = TREES['race.slime'];
@@ -209,7 +209,7 @@ test('Grande Sábio conhece a árvore: absorções, missões, combinações e do
 });
 
 test('interface: setores separados, método de aquisição e visão geral (zoom)', () => {
-  const map = getMap('slime');
+  const map = getRaceMap('slime');
   const xs = {};
   for (const s of TREE.skills) if (s.sector && map.pos[s.id]) (xs[s.sector] ??= []).push(map.pos[s.id][0]);
   const ranges = SECTORS.slime.order.map((k) => [Math.min(...xs[k]), Math.max(...xs[k])]);

@@ -84,6 +84,8 @@ export function computeStats(d) {
     absorbMult: 1,                  // Magicules ganhas por absorção
     mimicAmp: 0,                    // níveis extras nas formas da Imitação
     mimicNoDrain: false,
+    dodge: 0,                       // chance de esquiva (anula o dano)
+    counter: null,                  // { chance, mult } contra-ataque corpo a corpo
   };
   const addEff = (id, amp) => s.effects.set(id, Math.max(s.effects.get(id) ?? -1, amp));
   if (race.hp >= 0) addEff('health_boost', race.hp);
@@ -129,6 +131,8 @@ function applyPassive(s, f, addEff) {
     case 'p_cd': s.cdMultSkills *= f.mult; break;
     case 'p_slots': s.extraSlots += f.n; break;
     case 'p_absorb': s.absorbMult *= f.mult; break;
+    case 'p_dodge': s.dodge = Math.min(0.35, s.dodge + f.chance); break;
+    case 'p_counter': s.counter = { chance: Math.max(s.counter?.chance ?? 0, f.chance), mult: Math.max(s.counter?.mult ?? 0, f.mult) }; break;
     case 'p_op': break; // libera uma operação na tela de Ciel (ui/cielUI.js)
     case 'p_mimic': s.mimicAmp += f.amp ?? 0; if (f.noDrain) s.mimicNoDrain = true; break;
     case 'p_lifesteal': s.lifesteal += f.pct; break;

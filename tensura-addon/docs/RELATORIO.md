@@ -614,3 +614,59 @@ Decisões aprovadas:
 - A energia "correndo" nas linhas virou pulso de brilho.
 - Sem transição contínua entre telas (cada ação que salva reabre a tela).
 - Sem arrastar para os lados.
+
+## Versão 0.9.0 — Todas as raças: fases 1, 2, 3 e 9
+
+Decisões aprovadas:
+- 5 linhagens novas; Insectar fica para depois.
+- Espírito e Elemental viram uma linhagem só.
+- Majin e "monstro mágico" são classificações, não raças.
+- Cada raça tem mapa racial próprio.
+- Sem wiki por enquanto (bloqueada na rede desta sessão).
+
+**FASE 2 — Catálogo:** 24 linhagens e 63 raças.
+- Linhagens novas:
+  - **Fada** → Rainha das Fadas;
+  - **Homem-Fera** → Licantropo;
+  - **Morto-vivo** (Esqueleto → Wight → Rei Wight);
+  - **Golem** → Golem Mágico → Arch Doll;
+  - **Dragão** → Dragão Ancião → **Dragão Verdadeiro**. Esta forma jogável é criação do addon: nível 80 e Ender
+    Dragon, Wither e Warden derrotados.
+- Cada linhagem nova tem cards na tela de raças e uma árvore inicial (7 ou 8 nós) com efeitos reais.
+
+**FASE 3 — Arquitetura:**
+- **Mapa racial próprio para cada linhagem:** cabeçalho "Árvore Racial", saltos por categoria com o ícone-cristal da
+  categoria, botão para as "Árvores Universais" e Visão Geral.
+- O mapa universal mostra a raça no centro e as 14 árvores universais em volta. O botão Racial volta para a árvore
+  da raça.
+- **Rank e origem em todas as habilidades** (515):
+  - as do padrão antigo receberam rank pela raridade e pelo custo;
+  - "obra" virou LIGHT_NOVEL **marcada como não verificada** (aviso na tela: precisa de verificação canônica);
+  - "adaptado" e "original" viraram MOD_EXPANSION.
+- Mapas separados: as peças de linha não se multiplicam entre raças.
+
+**FASE 9 — Árvore universal "Combate e Armas"** (30 nós, MOD_EXPANSION, aberta a todas as raças):
+- Corpo: força, velocidade, resistência, aprimoramento físico, regeneração, corpo de ferro.
+- Percepção: percepção, visão noturna, sentido de batalha.
+- Defesa: esquiva, passo rápido, postura de defesa, contra-ataque, defesa perfeita.
+- Técnicas: investida, golpe giratório, golpes sucessivos, sangramento, golpe vital, fúria.
+- Armas: técnica com armas, aura da lâmina, onda cortante, arco, chuva de flechas, mestre de armas.
+- Energia: controle de energia, controle de mana, explosão de aura.
+- **Efeitos novos reais:**
+  - **investida** (avanço com dano no caminho);
+  - **esquiva** (chance de anular o dano, máx. 35%);
+  - **contra-ataque** (devolve dano corpo a corpo);
+  - bônus de projéteis.
+
+**Estado:**
+- IMPLEMENTADO / TESTADO (testes automáticos e simulador): fases 2, 3 e 9. 85 testes passando.
+- **PENDENTE:**
+  - fases 4 a 8: árvores grandes por raça (categorias próprias, raciais, físicas, magias, resistências, únicas,
+    Supremas onde a obra justifica);
+  - fase 10: integração final no menu;
+  - fases 11 e 12: balanceamento e testes.
+- **PRECISA DE VERIFICAÇÃO CANÔNICA:**
+  - todas as habilidades "obra" fora do Slime;
+  - estágios Rainha das Fadas, Golem Mágico, Arch Doll e Dragão Ancião;
+  - Orc Disaster, que está marcado como do addon mas aparece na obra.
+- **Não testado no jogo:** navegação entre mapas, investida, esquiva e contra-ataque no combate real.

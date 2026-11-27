@@ -23,6 +23,17 @@ export function startCombat() {
       const d = getData(victim);
       const g = causeGroup(src.cause);
       if (d.stats && g) {
+        // Esquiva (Técnica de Esquiva / Sentido de Batalha): anula o dano deste golpe.
+        if (d.stats.dodge > 0 && Math.random() < d.stats.dodge && src.cause !== EntityDamageCause.override) {
+          const hp = victim.getComponent('minecraft:health');
+          if (hp && hp.currentValue > 0) hp.setCurrentValue(Math.min(hp.effectiveMax, hp.currentValue + ev.damage));
+          try { /** @type {any} */ (victim).onScreenDisplay.setActionBar('§bEsquiva!'); } catch { /* */ }
+          return;
+        }
+        // Contra-ataque: devolve parte do dano corpo a corpo ao atacante.
+        if (d.stats.counter && attacker?.isValid && src.cause === EntityDamageCause.entityAttack && Math.random() < d.stats.counter.chance) {
+          system.run(() => { if (attacker.isValid) dealDamage(victim, attacker, ev.damage * d.stats.counter.mult, 'physical'); });
+        }
         const r = d.stats.resist[g] ?? 0;
         if (r > 0) {
           const h = victim.getComponent('minecraft:health');

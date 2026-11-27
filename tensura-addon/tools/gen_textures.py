@@ -147,12 +147,12 @@ ELEMENT_COLORS = {}
 TREE_COLORS = {
     'elemental': '#ff8a30', 'aspect': '#5aa8ff', 'holy': '#ffe27a', 'summon': '#b878ff', 'illusion': '#ff78d0',
     'spirit': '#50f0b8', 'necromancy': '#9ad070', 'dark': '#8a58ff', 'advanced': '#ff4060', 'racial': '#ffb040',
-    'unique': '#40d8ff', 'ultimate': '#ffd000', 'extra': '#78c8ff', 'resist': '#c8c8d0',
+    'unique': '#40d8ff', 'ultimate': '#ffd000', 'extra': '#78c8ff', 'resist': '#c8c8d0', 'combat': '#e8a060',
 }
 RARITY_COLORS = {1: '#9aa4b8', 2: '#3fa9ff', 3: '#b860ff', 4: '#ffb020', 5: '#ff3050'}
 TAB_GLYPH = {'racial': 'race', 'elemental': 'bolt', 'aspect': 'buff', 'holy': 'heal', 'summon': 'summon', 'illusion': 'debuff',
              'spirit': 'flight', 'necromancy': 'bind', 'dark': 'drain', 'advanced': 'nova', 'unique': 'analyze',
-             'ultimate': 'evolve', 'extra': 'blink', 'resist': 'passive'}
+             'ultimate': 'evolve', 'extra': 'blink', 'resist': 'passive', 'combat': 'strike'}
 
 
 def pixel(img_small, scale):

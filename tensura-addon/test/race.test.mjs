@@ -11,13 +11,13 @@ import { previewHtml, scenario, modelFor } from '../tools/preview.mjs';
 
 const RP = new URL('../RP/', import.meta.url);
 
-test('os 26 cards pedidos existem, na ordem, e só raças iniciais podem ser escolhidas', () => {
+test('os cards pedidos existem, na ordem, e só raças iniciais podem ser escolhidas', () => {
   const names = CARD_ORDER.map((id) => RACES[id].original);
   assert.deepEqual(names, ['Slime', 'Human', 'Goblin', 'Hobgoblin', 'Ogre', 'Kijin', 'Mystic Oni', 'Wicked Oni', 'Lizardman', 'Dragonewt',
     'Orc', 'High Orc', 'Lesser Demon', 'Angel', 'Fallen', 'Dragonoid', 'Vampire', 'Elemental', 'Elf', 'Dwarf', 'Dryad', 'Direwolf', 'Harpy',
-    'Merfolk', 'Ghoul', 'Giant']);
+    'Merfolk', 'Ghoul', 'Giant', 'Fairy', 'Beastman', 'Lycanthrope', 'Skeleton', 'Wight King', 'Golem', 'Dragon', 'True Dragon']);
   const locked = CARD_ORDER.filter((id) => !isSelectable(id));
-  assert.deepEqual(locked, ['hobgoblin', 'kijin', 'mystic_oni', 'wicked_oni', 'dragonewt', 'high_orc', 'fallen_angel'], 'evoluções não são escolha inicial');
+  assert.deepEqual(locked, ['hobgoblin', 'kijin', 'mystic_oni', 'wicked_oni', 'dragonewt', 'high_orc', 'fallen_angel', 'lycanthrope', 'wight_king', 'true_dragon'], 'evoluções não são escolha inicial');
   for (const id of locked) assert.ok(RACES[id].stage > 0);
   for (const [id, diff] of RACE_CARDS) assert.ok(diff >= 1 && diff <= 5, id);
 });
@@ -48,7 +48,7 @@ test('todas as raças aparecem em alguma página e a navegação percorre as pá
     for (const h of Object.values(f.hit)) if (h.type === 'select') seen.add(h.race);
     assert.equal(f.hit[RACE.next].page, (p + 1) % PAGE_COUNT);
   }
-  assert.equal(seen.size, 26);
+  assert.equal(seen.size, CARD_ORDER.length);
   for (const id of CARD_ORDER) assert.ok(pageOf(id) < PAGE_COUNT && CARD_ORDER.slice(pageOf(id) * RACE_PAGE_SIZE).includes(id));
 });
 

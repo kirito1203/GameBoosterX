@@ -19,7 +19,7 @@ const DIST = join(ROOT, 'dist');
 const ELEMENT_FROM_TREE = {
   elemental: '#ff9a40', aspect: '#6ab0ff', holy: '#ffe680', summon: '#c080ff', illusion: '#ff80d0',
   spirit: '#60ffc0', necromancy: '#90e070', dark: '#9060ff', advanced: '#ff4060',
-  unique: '#40d8ff', ultimate: '#ffd000', extra: '#78c8ff', resist: '#c8c8d0',
+  unique: '#40d8ff', ultimate: '#ffd000', extra: '#78c8ff', resist: '#c8c8d0', combat: '#e8a060',
 };
 const EL_COLORS = {
   fire: '#ff6a2a', water: '#2a9dff', ice: '#9fe8ff', earth: '#c09050', wind: '#8cf0a8', lightning: '#ffe14a',
@@ -120,11 +120,11 @@ function walk(dir, base = dir, out = []) {
 }
 
 async function lineCodes() {
-  const { getMap, getSupremeMap } = await import('../BP/scripts/core/map.js?' + Date.now());
+  const { getMap, getSupremeMap, getRaceMap } = await import('../BP/scripts/core/map.js?' + Date.now());
   const { LINEAGES } = await import('../BP/scripts/data/registry.js');
   const set = new Set();
   const maps = [];
-  for (const lin in LINEAGES) { maps.push(getMap(lin)); const s = getSupremeMap(lin); if (s) maps.push(s); }
+  for (const lin in LINEAGES) { maps.push(getMap(lin), getRaceMap(lin)); const s = getSupremeMap(lin); if (s) maps.push(s); }
   for (const m of maps) {
     for (const st of m.stubs.values()) {
       const dirs = [];

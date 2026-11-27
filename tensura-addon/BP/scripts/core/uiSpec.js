@@ -13,20 +13,20 @@ export const menuMark = (tab) => `${MENU_MARK}§${tab}`;
 // detalhes na hora: cada nó é um "toggle" de um grupo de rádio que existe só no cliente.
 // Só ações que mudam o progresso (desbloquear, barra) e a troca de região voltam ao script.
 export const CATEGORY_ORDER = ['racial', 'elemental', 'aspect', 'holy', 'summon', 'illusion', 'spirit', 'necromancy', 'dark',
-  'advanced', 'unique', 'ultimate', 'extra', 'resist'];
+  'advanced', 'unique', 'ultimate', 'extra', 'resist', 'combat'];
 export const CTRL = {
   back: 0,
   close: 1,
-  cat0: 2, // 2..15 = 14 categorias (leva a câmera até elas)
-  panLeft: 16,
-  panRight: 17,
-  pageUp: 18,
-  pageDown: 19,
-  center: 20,
-  zoom: 21, // visão geral (zoom afastado) ⇄ visão normal
+  cat0: 2, // 2..16 = 15 categorias (leva a câmera até elas)
+  panLeft: 17,
+  panRight: 18,
+  pageUp: 19,
+  pageDown: 20,
+  center: 21,
+  zoom: 22, // visão geral (zoom afastado) ⇄ visão normal
 };
 export const CAT_COUNT = CATEGORY_ORDER.length;
-export const CTRL_COUNT = 22;
+export const CTRL_COUNT = 23;
 // Visão geral: cada célula representa um bloco ZOOM_OUT x ZOOM_OUT do mapa.
 export const ZOOM_OUT = 3;
 export const TREE_COLS = CONFIG.ui.treeGrid[0];

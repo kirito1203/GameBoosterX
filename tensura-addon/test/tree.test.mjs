@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { TREES, SKILLS, LINEAGES, UNIVERSAL_TREES, initialSkillsFor } from '../BP/scripts/data/registry.js';
-import { getMap, DIRS8 } from '../BP/scripts/core/map.js';
+import { getMap, getRaceMap, DIRS8 } from '../BP/scripts/core/map.js';
 import { computeStats } from '../BP/scripts/core/stats.js';
 import { buildTreeForm, centeredView, viewAt, pan, ensureVisible } from '../BP/scripts/core/view.js';
 import { buildMenuForm, evolutionProgress } from '../BP/scripts/core/menuView.js';
@@ -12,15 +12,18 @@ import { previewHtml, scenario, modelFor } from '../tools/preview.mjs';
 
 const RP = new URL('../RP/', import.meta.url);
 
-test('mapa: cada habilidade aparece uma única vez (por linhagem) e nada se sobrepõe', () => {
+test('mapas: universal (com a raça no centro) e racial próprio; cada habilidade uma vez e nada se sobrepõe', () => {
   for (const lin in LINEAGES) {
     const m = getMap(lin);
     assert.equal(m.nodeAt.size, Object.keys(m.pos).length, `${lin}: nós sobrepostos`);
-    const expected = new Set([...UNIVERSAL_TREES.flatMap((t) => t.skills.map((s) => s.id)), ...TREES[`race.${lin}`].skills.map((s) => s.id)]);
+    const expected = new Set([...UNIVERSAL_TREES.flatMap((t) => t.skills.map((s) => s.id)), `r.${lin}.root`]);
     const own = Object.keys(m.pos).filter((k) => !m.isLink.has(k));
     assert.equal(own.length, expected.size, `${lin}: ${own.length} nós para ${expected.size} habilidades`);
     for (const k of own) assert.ok(expected.has(k), `${lin}: nó estranho ${k}`);
     assert.deepEqual(m.pos[m.centerId], [0, 0], 'a raça fica no centro');
+    const r = getRaceMap(lin);
+    assert.equal(r.nodeAt.size, Object.keys(r.pos).length, `${lin}: nós raciais sobrepostos`);
+    assert.deepEqual(Object.keys(r.pos).sort(), TREES[`race.${lin}`].skills.map((s) => s.id).sort(), `${lin}: árvore racial completa`);
   }
 });
 

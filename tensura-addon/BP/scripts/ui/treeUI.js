@@ -12,7 +12,7 @@ import { unlock } from '../core/progression.js';
 import { buildTreeForm, viewAt, centeredView, pan, ensureVisible, toOverview, fromOverview } from '../core/view.js';
 import { evaluate } from '../core/progression.js';
 import { buildMenuForm } from '../core/menuView.js';
-import { getMap, getSupremeMap } from '../core/map.js';
+import { getMap, getSupremeMap, getRaceMap } from '../core/map.js';
 import { getData, progressionState, saveNow, refreshStats, markDirty } from '../systems/storage.js';
 import { particle, sound, msg, V } from '../systems/util.js';
 
@@ -144,16 +144,19 @@ export async function openSupremeTree(player, menus) {
 
 async function treeLoop(player, menus, focus = {}) {
   const d = getData(player);
-  const supreme = !!focus.supreme && !!getSupremeMap(RACES[d.race].lineage);
-  const map = supreme ? getSupremeMap(RACES[d.race].lineage) : getMap(RACES[d.race].lineage);
-  let view = supreme ? viewAt(map.roots[map.centerId]) : d.ui.view && Number.isFinite(d.ui.view.x) && Number.isFinite(d.ui.view.y) ? { x: d.ui.view.x, y: d.ui.view.y } : centeredView();
+  const lin = RACES[d.race].lineage;
+  const supreme = !!focus.supreme && !!getSupremeMap(lin);
+  // Padrão: árvore racial (mapa próprio). focus.universal abre o mapa das árvores universais.
+  const race = !supreme && !focus.universal && !(focus.key && !getRaceMap(lin).pos[focus.key]);
+  const map = supreme ? getSupremeMap(lin) : race ? getRaceMap(lin) : getMap(lin);
+  let view = supreme || race ? viewAt(map.roots[map.centerId]) : d.ui.view && Number.isFinite(d.ui.view.x) && Number.isFinite(d.ui.view.y) ? { x: d.ui.view.x, y: d.ui.view.y } : centeredView();
   let highlight = null;
   if (focus.key && map.pos[focus.key]) { highlight = focus.key; view = viewAt(map.pos[focus.key]); }
   if (focus.pos) view = viewAt(focus.pos);
   let result = 'back';
   let zoom = 1;
   for (;;) {
-    const model = buildTreeForm({ state: progressionState(d), view, focus: highlight, mp: { cur: d.mp, max: d.stats.maxMp }, equipped: d.equipped, zoom, supreme });
+    const model = buildTreeForm({ state: progressionState(d), view, focus: highlight, mp: { cur: d.mp, max: d.stats.maxMp }, equipped: d.equipped, zoom, supreme, race });
     const res = await showForm(player, formOf(model));
     if (!player.isValid) return 'close';
     if (!res || res.canceled || res.selection === undefined) { result = 'close'; break; }
@@ -166,7 +169,12 @@ async function treeLoop(player, menus, focus = {}) {
         highlight = null;
         let pos = act.pos;
         // Árvore racial com setores: escolher o setor (ou a visão geral).
-        if (!supreme && act.cat === 'racial' && SECTORS[map.lineage ?? RACES[d.race].lineage]) {
+        if (!supreme && !race && act.cat === 'racial') {
+          // Mapa universal → árvore racial (mapa próprio).
+          if ((await treeLoop(player, menus, {})) === 'close') { result = 'close'; return finish(); }
+          break;
+        }
+        if (race && act.cat === map.centerId && SECTORS[lin]) {
           const r = await pickSector(player, d, map);
           if (r === 'overview') { zoom = 3; view = toOverview(viewAt([0, 0])); break; }
           if (r === 'supreme') {
@@ -183,6 +191,9 @@ async function treeLoop(player, menus, focus = {}) {
       case 'center': highlight = null; view = supreme ? viewAt(map.roots[map.centerId]) : zoom > 1 ? toOverview(viewAt([0, 0])) : viewAt([0, 0]); break;
       case 'zoom': view = act.zoom > 1 ? toOverview(view) : fromOverview(view); zoom = act.zoom; break;
       case 'zoomin': zoom = 1; view = viewAt(act.pos); break;
+      case 'universal':
+        if ((await treeLoop(player, menus, { universal: true })) === 'close') { result = 'close'; return finish(); }
+        break;
       case 'unlock': doUnlock(player, d, act.id); highlight = act.id; break;
       case 'equip': toggleEquip(player, d, act.id); highlight = act.id; break;
       case 'goto': highlight = act.key; view = viewAt(map.pos[act.key] ?? [0, 0]); break;
@@ -191,7 +202,7 @@ async function treeLoop(player, menus, focus = {}) {
   }
   return finish();
   function finish() {
-    if (!supreme) d.ui.view = zoom > 1 ? fromOverview(view) : view;
+    if (!supreme && !race) d.ui.view = zoom > 1 ? fromOverview(view) : view;
     markDirty(player);
     return result;
   }

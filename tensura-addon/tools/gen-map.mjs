@@ -19,7 +19,7 @@ const OUT = join(ROOT, 'BP/scripts/data/generated/map.js');
 const PLACEMENT = [
   ['elemental', 270], ['unique', 235], ['dark', 205], ['illusion', 180], ['necromancy', 150], ['summon', 125],
   ['ultimate', 305], ['aspect', 335], ['holy', 0], ['spirit', 25], ['extra', 55],
-  ['advanced', 250], ['resist', 290],
+  ['advanced', 250], ['resist', 290], ['combat', 90],
 ];
 
 const DIRS8 = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]]; // n ne e se s sw w nw
@@ -53,9 +53,9 @@ for (const lin in LINEAGES) {
     }
   }
   racial[lin] = L.pos;
-  const b = bboxOf(L.pos);
-  reserved = { minX: Math.min(reserved.minX, b.minX), maxX: Math.max(reserved.maxX, b.maxX), minY: 1, maxY: Math.max(reserved.maxY, b.maxY) };
 }
+// Cada raça tem MAPA PRÓPRIO (abaixo); no mapa principal fica só a raiz da raça, no centro.
+reserved = { minX: -3, maxX: 3, minY: 1, maxY: 3 };
 
 // ── Posiciona as árvores universais ──
 // Pré-requisitos de outra categoria viram "nós compartilhados" (cópia ao lado, com selo),
@@ -175,13 +175,15 @@ for (const [a, b] of uniEdgesWanted) {
   uniEdges.push([a, b, flat(path)]);
 }
 
-// Arestas raciais (por linhagem).
+// Mapas raciais (um por linhagem, coordenadas próprias).
 const racialOut = {};
 for (const lin in racial) {
   const pos = racial[lin];
-  const nodes = new Set([...uniNodes, ...Object.values(pos).map(([x, y]) => key(x, y))]);
-  const u = new Map(usage);
-  const route = makeRouter(nodes, () => false, u, B);
+  const nodes = new Set(Object.values(pos).map(([x, y]) => key(x, y)));
+  const u = new Map();
+  const rb = bboxOf(pos);
+  const RB = { minX: rb.minX - 3, maxX: rb.maxX + 3, minY: rb.minY - 3, maxY: rb.maxY + 3 };
+  const route = makeRouter(nodes, () => false, u, RB);
   const edges = [];
   for (const id in pos) for (const r of SKILLS[id].requires) {
     if (!pos[r]) continue;
@@ -190,7 +192,10 @@ for (const lin in racial) {
     addUsage(u, path);
     edges.push([r, id, flat(path)]);
   }
-  racialOut[lin] = { pos, edges };
+  // Cabeças das categorias (saltos): primeiro nó de cada categoria (ou a raiz).
+  const heads = {};
+  for (const id of Object.keys(pos)) { const sec = SKILLS[id].sector; if (sec && !heads[sec]) heads[sec] = id; }
+  racialOut[lin] = { pos, edges, bounds: RB, heads };
 }
 
 // ── Árvores Supremas (tela própria por linhagem): uma coluna por Suprema, sub-habilidades abaixo

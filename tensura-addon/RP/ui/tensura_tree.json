@@ -1710,11 +1710,11 @@
         ],
         "layer": 1,
         "size": [
-         "12.8143%",
+         "11.9%",
          "84%"
         ],
         "offset": [
-         "-8.0429%",
+         "-7.4333%",
          "8%"
         ],
         "controls": [
@@ -1751,11 +1751,11 @@
         ],
         "layer": 1,
         "size": [
-         "17.0857%",
+         "15.8667%",
          "84%"
         ],
         "offset": [
-         "-7.7429%",
+         "-7.1333%",
          "8%"
         ],
         "controls": [
@@ -1792,11 +1792,11 @@
         ],
         "layer": 1,
         "size": [
-         "21.3571%",
+         "19.8333%",
          "84%"
         ],
         "offset": [
-         "-7.4429%",
+         "-6.8333%",
          "8%"
         ],
         "controls": [
@@ -1833,11 +1833,11 @@
         ],
         "layer": 1,
         "size": [
-         "25.6286%",
+         "23.8%",
          "84%"
         ],
         "offset": [
-         "-7.1429%",
+         "-6.5333%",
          "8%"
         ],
         "controls": [
@@ -1874,11 +1874,11 @@
         ],
         "layer": 1,
         "size": [
-         "29.9%",
+         "27.7667%",
          "84%"
         ],
         "offset": [
-         "-6.8429%",
+         "-6.2333%",
          "8%"
         ],
         "controls": [
@@ -1915,11 +1915,11 @@
         ],
         "layer": 1,
         "size": [
-         "34.1714%",
+         "31.7333%",
          "84%"
         ],
         "offset": [
-         "-6.5429%",
+         "-5.9333%",
          "8%"
         ],
         "controls": [
@@ -1956,11 +1956,11 @@
         ],
         "layer": 1,
         "size": [
-         "38.4429%",
+         "35.7%",
          "84%"
         ],
         "offset": [
-         "-6.2429%",
+         "-5.6333%",
          "8%"
         ],
         "controls": [
@@ -1997,11 +1997,11 @@
         ],
         "layer": 1,
         "size": [
-         "42.7143%",
+         "39.6667%",
          "84%"
         ],
         "offset": [
-         "-5.9429%",
+         "-5.3333%",
          "8%"
         ],
         "controls": [
@@ -2038,11 +2038,11 @@
         ],
         "layer": 1,
         "size": [
-         "46.9857%",
+         "43.6333%",
          "84%"
         ],
         "offset": [
-         "-5.6429%",
+         "-5.0333%",
          "8%"
         ],
         "controls": [
@@ -2079,11 +2079,11 @@
         ],
         "layer": 1,
         "size": [
-         "51.2571%",
+         "47.6%",
          "84%"
         ],
         "offset": [
-         "-5.3429%",
+         "-4.7333%",
          "8%"
         ],
         "controls": [
@@ -2120,11 +2120,11 @@
         ],
         "layer": 1,
         "size": [
-         "55.5286%",
+         "51.5667%",
          "84%"
         ],
         "offset": [
-         "-5.0429%",
+         "-4.4333%",
          "8%"
         ],
         "controls": [
@@ -2161,11 +2161,11 @@
         ],
         "layer": 1,
         "size": [
-         "59.8%",
+         "55.5333%",
          "84%"
         ],
         "offset": [
-         "-4.7429%",
+         "-4.1333%",
          "8%"
         ],
         "controls": [
@@ -2202,11 +2202,11 @@
         ],
         "layer": 1,
         "size": [
-         "64.0714%",
+         "59.5%",
          "84%"
         ],
         "offset": [
-         "-4.4429%",
+         "-3.8333%",
          "8%"
         ],
         "controls": [
@@ -2243,11 +2243,11 @@
         ],
         "layer": 1,
         "size": [
-         "68.3429%",
+         "63.4667%",
          "84%"
         ],
         "offset": [
-         "-4.1429%",
+         "-3.5333%",
          "8%"
         ],
         "controls": [
@@ -2273,7 +2273,7 @@
        }
       },
       {
-       "g_pan_l": {
+       "g_cat14": {
         "type": "grid",
         "anchor_from": "top_left",
         "anchor_to": "top_left",
@@ -2284,16 +2284,16 @@
         ],
         "layer": 1,
         "size": [
-         "90.95%",
+         "67.4333%",
          "84%"
         ],
         "offset": [
-         "-20.6%",
+         "-3.2333%",
          "8%"
         ],
         "controls": [
          {
-          "pan_l@tensura_tree.ctl": {
+          "cat14@tensura_tree.ctl": {
            "grid_position": [
             16,
             0
@@ -2303,43 +2303,10 @@
            "size": [
             "5.8824%",
             "100%"
-           ]
-          }
-         }
-        ]
-       }
-      },
-      {
-       "g_page_up": {
-        "type": "grid",
-        "anchor_from": "top_left",
-        "anchor_to": "top_left",
-        "collection_name": "form_buttons",
-        "grid_dimensions": [
-         19,
-         1
-        ],
-        "layer": 1,
-        "size": [
-         "101.65%",
-         "84%"
-        ],
-        "offset": [
-         "-25.55%",
-         "8%"
-        ],
-        "controls": [
-         {
-          "page_up@tensura_tree.ctl": {
-           "grid_position": [
-            18,
-            0
            ],
-           "anchor_from": "top_left",
-           "anchor_to": "top_left",
-           "size": [
-            "5.2632%",
-            "100%"
+           "$ctl_icon_size": [
+            "100%y",
+            "78%"
            ]
           }
          }
@@ -2347,44 +2314,7 @@
        }
       },
       {
-       "g_page_down": {
-        "type": "grid",
-        "anchor_from": "top_left",
-        "anchor_to": "top_left",
-        "collection_name": "form_buttons",
-        "grid_dimensions": [
-         20,
-         1
-        ],
-        "layer": 1,
-        "size": [
-         "107%",
-         "84%"
-        ],
-        "offset": [
-         "-25.15%",
-         "8%"
-        ],
-        "controls": [
-         {
-          "page_down@tensura_tree.ctl": {
-           "grid_position": [
-            19,
-            0
-           ],
-           "anchor_from": "top_left",
-           "anchor_to": "top_left",
-           "size": [
-            "5%",
-            "100%"
-           ]
-          }
-         }
-        ]
-       }
-      },
-      {
-       "g_pan_r": {
+       "g_pan_l": {
         "type": "grid",
         "anchor_from": "top_left",
         "anchor_to": "top_left",
@@ -2399,12 +2329,12 @@
          "84%"
         ],
         "offset": [
-         "-8.7%",
+         "-25.95%",
          "8%"
         ],
         "controls": [
          {
-          "pan_r@tensura_tree.ctl": {
+          "pan_l@tensura_tree.ctl": {
            "grid_position": [
             17,
             0
@@ -2421,7 +2351,44 @@
        }
       },
       {
-       "g_center": {
+       "g_page_up": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         20,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "107%",
+         "84%"
+        ],
+        "offset": [
+         "-30.9%",
+         "8%"
+        ],
+        "controls": [
+         {
+          "page_up@tensura_tree.ctl": {
+           "grid_position": [
+            19,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "5%",
+            "100%"
+           ]
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_page_down": {
         "type": "grid",
         "anchor_from": "top_left",
         "anchor_to": "top_left",
@@ -2436,12 +2403,12 @@
          "84%"
         ],
         "offset": [
-         "-19%",
+         "-30.5%",
          "8%"
         ],
         "controls": [
          {
-          "center@tensura_tree.ctl": {
+          "page_down@tensura_tree.ctl": {
            "grid_position": [
             20,
             0
@@ -2458,7 +2425,44 @@
        }
       },
       {
-       "g_zoom": {
+       "g_pan_r": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         19,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "101.65%",
+         "84%"
+        ],
+        "offset": [
+         "-14.05%",
+         "8%"
+        ],
+        "controls": [
+         {
+          "pan_r@tensura_tree.ctl": {
+           "grid_position": [
+            18,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "5.2632%",
+            "100%"
+           ]
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_center": {
         "type": "grid",
         "anchor_from": "top_left",
         "anchor_to": "top_left",
@@ -2473,12 +2477,12 @@
          "84%"
         ],
         "offset": [
-         "-18.6%",
+         "-24.35%",
          "8%"
         ],
         "controls": [
          {
-          "zoom@tensura_tree.ctl": {
+          "center@tensura_tree.ctl": {
            "grid_position": [
             21,
             0
@@ -2487,6 +2491,43 @@
            "anchor_to": "top_left",
            "size": [
             "4.5455%",
+            "100%"
+           ]
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_zoom": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         23,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "123.05%",
+         "84%"
+        ],
+        "offset": [
+         "-23.95%",
+         "8%"
+        ],
+        "controls": [
+         {
+          "zoom@tensura_tree.ctl": {
+           "grid_position": [
+            22,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "4.3478%",
             "100%"
            ]
           }

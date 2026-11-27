@@ -201,6 +201,55 @@ export const RACES = {
   elder_giant: { name: 'Gigante Ancestral', original: 'Elder Giant', lineage: 'giant', stage: 1, origin: 'original',
     desc: 'Evolução criada pelo addon: titã das montanhas, já sem a lentidão.',
     mp: 260, regen: 5, hp: 5, eff: [['strength', 1], ['resistance', 0]], resist: { physical: 0.35, fall: 0.4, explosion: 0.3 }, weak: {}, aff: {}, power: { physical: 1.3, earth: 1.2 } },
+
+  // ── FADA ── (Ramiris é uma fada na obra; estágio superior precisa de verificação)
+  fairy: { name: 'Fada', original: 'Fairy', lineage: 'fairy', stage: 0, origin: 'obra', start: true,
+    desc: 'Pequena, rápida e cheia de magia espiritual. Pouca vida, muita mobilidade.',
+    mp: 260, regen: 7, hp: -1, eff: [['speed', 0], ['slow_falling', 0]], resist: { fall: 1, magic: 0.2 }, weak: { physical: 0.25 }, aff: { spirit: 0.75, illusion: 0.8 }, power: { illusion: 1.15 } },
+  fairy_queen: { name: 'Rainha das Fadas', original: 'Fairy Queen', lineage: 'fairy', stage: 1, origin: 'adaptado',
+    desc: 'Senhora das fadas: magia espiritual e labirínticas ilusões. (Estágio a verificar na obra.)',
+    mp: 620, regen: 12, hp: 0, eff: [['speed', 1], ['slow_falling', 0]], resist: { fall: 1, magic: 0.4, dark: 0.2 }, weak: { physical: 0.15 }, aff: { spirit: 0.6, illusion: 0.65 }, power: { illusion: 1.3, spirit: 1.2 } },
+
+  // ── BEASTMAN ── (povo de Eurazania na obra)
+  beastman: { name: 'Homem-Fera', original: 'Beastman', lineage: 'beastman', stage: 0, origin: 'obra', start: true,
+    desc: 'Instintos de fera: força, velocidade e faro. Pouca magia.',
+    mp: 90, regen: 2, hp: 1, eff: [['speed', 0], ['strength', 0], ['night_vision', 0]], resist: { physical: 0.15 }, weak: { magic: 0.15 }, aff: {}, power: { physical: 1.15 } },
+  lycanthrope: { name: 'Licantropo', original: 'Lycanthrope', lineage: 'beastman', stage: 1, origin: 'obra',
+    desc: 'Desperta a forma de besta (Beastification): força e velocidade enormes.',
+    mp: 280, regen: 5, hp: 3, eff: [['speed', 1], ['strength', 1], ['night_vision', 0]], resist: { physical: 0.3, fall: 0.3 }, weak: { magic: 0.1 }, aff: {}, power: { physical: 1.35 } },
+
+  // ── MORTO-VIVO ── (Adalman e Alberto são mortos-vivos na obra)
+  skeleton: { name: 'Esqueleto', original: 'Skeleton', lineage: 'undead', stage: 0, origin: 'obra', start: true,
+    desc: 'Ossos animados por Magicules. Não precisa respirar, mas teme o sagrado.',
+    mp: 140, regen: 3, hp: -1, eff: [['night_vision', 0]], resist: { drowning: 1, dark: 0.5 }, weak: { holy: 0.5, fire: 0.15 }, aff: { necromancy: 0.75, dark: 0.85 }, power: { dark: 1.1 }, special: ['undead'] },
+  wight: { name: 'Wight', original: 'Wight', lineage: 'undead', stage: 1, origin: 'obra',
+    desc: 'Morto-vivo consciente com grande poder necromântico.',
+    mp: 420, regen: 7, hp: 1, eff: [['night_vision', 0], ['resistance', 0]], resist: { drowning: 1, dark: 0.7, physical: 0.2 }, weak: { holy: 0.4 }, aff: { necromancy: 0.6, dark: 0.75 }, power: { dark: 1.25, soul: 1.2 }, special: ['undead'] },
+  wight_king: { name: 'Rei Wight', original: 'Wight King', lineage: 'undead', stage: 2, origin: 'obra',
+    desc: 'Soberano dos mortos (título de Adalman). Domina a necromancia.',
+    mp: 900, regen: 12, hp: 3, eff: [['night_vision', 0], ['resistance', 1]], resist: { drowning: 1, dark: 0.85, physical: 0.35, magic: 0.3 }, weak: { holy: 0.3 }, aff: { necromancy: 0.45, dark: 0.6 }, power: { dark: 1.4, soul: 1.35 }, special: ['undead'] },
+
+  // ── GOLEM ──
+  golem: { name: 'Golem', original: 'Golem', lineage: 'golem', stage: 0, origin: 'obra', start: true,
+    desc: 'Corpo de pedra e metal movido por um núcleo mágico. Muito resistente e lento.',
+    mp: 100, regen: 2, hp: 3, eff: [['resistance', 0], ['slowness', 0]], resist: { physical: 0.35, fall: 0.5, drowning: 1 }, weak: { lightning: 0.3 }, aff: {}, power: { physical: 1.1, earth: 1.2 } },
+  magic_golem: { name: 'Golem Mágico', original: 'Magic Golem', lineage: 'golem', stage: 1, origin: 'adaptado',
+    desc: 'Núcleo refinado: já não é lento e canaliza magia de terra.',
+    mp: 320, regen: 5, hp: 4, eff: [['resistance', 1]], resist: { physical: 0.45, fall: 0.7, drowning: 1, explosion: 0.3 }, weak: { lightning: 0.2 }, aff: {}, power: { earth: 1.35, physical: 1.2 } },
+  arch_doll: { name: 'Arch Doll', original: 'Arch Doll', lineage: 'golem', stage: 2, origin: 'adaptado',
+    desc: 'Corpo artificial de altíssimo nível (relacionado a Beretta na obra; a verificar).',
+    mp: 760, regen: 10, hp: 5, eff: [['resistance', 1], ['strength', 1]], resist: { physical: 0.5, fall: 1, drowning: 1, explosion: 0.5, magic: 0.3 }, weak: {}, aff: { '*': 0.9 }, power: { earth: 1.5, physical: 1.3 } },
+
+  // ── DRAGÃO ── (Dragão Verdadeiro jogável é expansão do mod: na obra existem só quatro)
+  dragon: { name: 'Dragão', original: 'Dragon', lineage: 'dragon', stage: 0, origin: 'obra', start: true,
+    desc: 'Filhote de dragão: escamas, sopro e asas ainda fracas. Difícil no início.',
+    mp: 220, regen: 4, hp: 2, eff: [['fire_resistance', 0]], resist: { fire: 0.4, fall: 0.3, physical: 0.15 }, weak: { freezing: 0.2 }, aff: { advanced: 0.9 }, power: { fire: 1.2, dragon: 1.2 } },
+  elder_dragon: { name: 'Dragão Ancião', original: 'Elder Dragon', lineage: 'dragon', stage: 1, origin: 'adaptado',
+    desc: 'Dragão maduro com voo e sopros poderosos.',
+    mp: 700, regen: 10, hp: 5, eff: [['fire_resistance', 0], ['strength', 1]], resist: { fire: 0.7, fall: 0.6, physical: 0.35, magic: 0.25 }, weak: {}, aff: { advanced: 0.8 }, power: { fire: 1.4, dragon: 1.4, lightning: 1.2 } },
+  true_dragon: { name: 'Dragão Verdadeiro', original: 'True Dragon', lineage: 'dragon', stage: 2, origin: 'original',
+    desc: 'Forma jogável criada pelo addon a partir do conceito da obra (onde só existem quatro Dragões Verdadeiros).',
+    mp: 1600, regen: 20, hp: 8, eff: [['fire_resistance', 0], ['strength', 2], ['resistance', 1]], resist: { fire: 0.9, fall: 1, physical: 0.5, magic: 0.5, dark: 0.4, holy: 0.4 }, weak: {}, aff: { '*': 0.8 }, power: { '*': 1.3, dragon: 1.6 } },
 };
 
 export const LINEAGES = {
@@ -223,6 +272,11 @@ export const LINEAGES = {
   merfolk: { name: 'Merfolk', base: 'merfolk' },
   ghoul: { name: 'Ghoul', base: 'ghoul' },
   giant: { name: 'Gigante', base: 'giant' },
+  fairy: { name: 'Fada', base: 'fairy' },
+  beastman: { name: 'Homem-Fera / Licantropo', base: 'beastman' },
+  undead: { name: 'Morto-vivo', base: 'skeleton' },
+  golem: { name: 'Golem', base: 'golem' },
+  dragon: { name: 'Dragão', base: 'dragon' },
 };
 
 for (const id in RACES) RACES[id].id = id;

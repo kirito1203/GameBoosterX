@@ -110,7 +110,7 @@ export function SR(id, name, original, rank, src, ranks, o = {}) {
 
 const PASSIVE_KINDS = new Set(['p_effect', 'p_mp', 'p_resist', 'p_lifesteal', 'p_onhit', 'p_affinity',
   'p_power', 'p_starved', 'p_xp', 'p_points', 'p_regen_env', 'p_race', 'p_aura',
-  'p_cleanse', 'p_cd', 'p_slots', 'p_absorb', 'p_mimic', 'p_op']);
+  'p_cleanse', 'p_cd', 'p_slots', 'p_absorb', 'p_mimic', 'p_op', 'p_dodge', 'p_counter']);
 
 export function isPassiveFx(fx) {
   const list = Array.isArray(fx) ? fx : [fx];

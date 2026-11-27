@@ -575,6 +575,27 @@ const HANDLERS = {
     world.sendMessage(`§5${player.name} inverteu o dia e a noite.`);
   },
 
+  dash(player, f) {
+    // Investida: impulso na direção do olhar; golpeia (uma vez cada) quem estiver perto durante o avanço.
+    const dir = V.flat(player.getViewDirection());
+    try { player.applyKnockback({ x: dir.x * f.power, z: dir.z * f.power }, 0.12); } catch { return false; }
+    if (!f.dmg) return true;
+    const hit = new Set();
+    for (let t = 2; t <= 10; t += 2) {
+      system.runTimeout(() => {
+        if (!player.isValid) return;
+        for (const e of enemiesAround(player, player.location, f.r)) {
+          if (hit.has(e.id) || e.id === player.id) continue;
+          hit.add(e.id);
+          dealDamage(player, e, f.dmg, 'physical');
+          if (f.knock) knockFrom(e, player.location, f.knock, 0.3);
+        }
+      }, t);
+    }
+    sound(player.dimension, 'mob.ravager.roar', player.location, { volume: 0.4, pitch: 1.6 });
+    return true;
+  },
+
   convert(player, f) {
     const d = getData(player);
     const amount = Math.floor(d.aura * f.pct);

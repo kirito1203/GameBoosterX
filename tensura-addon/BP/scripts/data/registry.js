@@ -12,12 +12,13 @@ import unique from './trees/unique.js';
 import ultimate from './trees/ultimate.js';
 import extra from './trees/extra.js';
 import resist from './trees/resist.js';
+import combat from './trees/combat.js';
 import { RACIAL_TREES } from './trees/racial.js';
 import { RACES, LINEAGES } from './races.js';
 import { SLIME_REPLACES, SLIME_SUPREME_ORDER, MISSIONS as SLIME_MISSIONS, ABSORPTION as SLIME_ABSORPTION, SECTORS as SLIME_SECTORS, SECTOR_ORDER as SLIME_SECTOR_ORDER, SECTOR_COLORS as SLIME_SECTOR_COLORS } from './skill_trees/slime/index.js';
 
 // Ordem das abas na interface. A primeira aba é sempre a árvore racial do jogador.
-export const UNIVERSAL_TREES = [elemental, aspect, holy, summon, illusion, spirit, necromancy, dark, advanced, unique, ultimate, extra, resist];
+export const UNIVERSAL_TREES = [elemental, aspect, holy, summon, illusion, spirit, necromancy, dark, advanced, unique, ultimate, extra, resist, combat];
 export const TAB_ORDER = ['racial', ...UNIVERSAL_TREES.map((t) => t.id)];
 
 export const TREES = {};
@@ -28,6 +29,27 @@ for (const t of [...UNIVERSAL_TREES, ...RACIAL_TREES]) {
   for (const s of t.skills) {
     if (SKILLS[s.id]) throw new Error(`ID de habilidade duplicado: ${s.id}`);
     SKILLS[s.id] = s;
+  }
+}
+
+// ── Rank e origem para as habilidades que ainda não declaram (padrão antigo) ──
+// Rank: derivado da raridade e do custo (classificação do addon). Origem: 'obra' vira LIGHT_NOVEL marcada como
+// NÃO verificada (precisa de verificação canônica); 'adaptado'/'original' viram MOD_EXPANSION.
+const RANK_BY = (s) => {
+  if (s.rarity === 'common') return s.cost <= 12 ? 'F' : 'E';
+  if (s.rarity === 'rare') return s.cost < 45 ? 'D' : 'C';
+  if (s.rarity === 'epic') return s.cost < 90 ? 'B' : 'A';
+  if (s.rarity === 'legendary') return 'S';
+  return s.cost >= 300 ? 'EX' : 'SS';
+};
+for (const t of [...UNIVERSAL_TREES, ...RACIAL_TREES]) {
+  for (const s of t.skills) {
+    if (!s.rank) s.rank = RANK_BY(s);
+    if (!s.src) {
+      s.src = s.origin === 'obra' ? 'ln' : 'mod';
+      if (s.origin === 'obra') s.verified = false;
+      if (s.origin === 'adaptado' && !s.limits) s.limits = 'Adaptação do addon a partir de um conceito da obra.';
+    }
   }
 }
 

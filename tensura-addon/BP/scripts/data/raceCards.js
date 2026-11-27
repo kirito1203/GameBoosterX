@@ -32,6 +32,14 @@ export const RACE_CARDS = [
   ['merfolk', 3, 'Água · Gelo', { kind: 'face', skin: '#a0d8e8', hair: '#2060c0', eyes: '#40e0ff', fins: true }],
   ['ghoul', 4, 'Necromancia', { kind: 'face', skin: '#8a9a88', hair: '#3a3a3a', eyes: '#c0ff40', stitches: true }],
   ['giant', 2, 'Terra · Força', { kind: 'face', skin: '#b08060', hair: '#6a6a6a', eyes: '#2a1a10', beard: '#8a8a8a', scar: true }],
+  ['fairy', 3, 'Espírito · Ilusão', { kind: 'face', skin: '#f8e0d0', hair: '#90e0ff', eyes: '#40c0ff', ears: true, halo: true }],
+  ['beastman', 2, 'Força · Velocidade', { kind: 'wolf', skin: '#a07040', eyes: '#ffd040' }],
+  ['lycanthrope', 3, 'Força · Velocidade', { kind: 'wolf', skin: '#6a4a30', eyes: '#ff8020' }],
+  ['skeleton', 3, 'Trevas · Necromancia', { kind: 'face', skin: '#e8e4d8', hair: null, eyes: '#40ffd0', stitches: true, teeth: true }],
+  ['wight_king', 5, 'Necromancia · Alma', { kind: 'face', skin: '#d8d4c8', hair: null, eyes: '#c040ff', horns: '#ffd060', teeth: true }],
+  ['golem', 2, 'Terra · Defesa', { kind: 'face', skin: '#8a8a90', hair: null, eyes: '#40c0ff', scar: true }],
+  ['dragon', 5, 'Fogo · Dracônica', { kind: 'dragon', skin: '#2a8a3a', eyes: '#ffb000' }],
+  ['true_dragon', 5, 'Dracônica (forma final)', { kind: 'dragon', skin: '#d0a020', eyes: '#ffffff' }],
 ];
 
 export const CARD_ORDER = RACE_CARDS.map(([id]) => id);
