@@ -20,6 +20,7 @@ import { setEffectMenus } from './systems/effects.js';
 import { cast } from './systems/casting.js';
 import { openMenu } from './ui/treeUI.js';
 import { MENUS, mimicMenu, storageMenu } from './ui/menus.js';
+import { runIntro, restoreControls, introRunning } from './systems/intro.js';
 
 const TOME = 'tensura:great_sage_tome';
 const CRYSTAL = 'tensura:magic_crystal';
@@ -29,6 +30,7 @@ setEffectMenus({ mimic: mimicMenu, storage: storageMenu });
 world.afterEvents.itemUse.subscribe((ev) => {
   const player = ev.source;
   const id = ev.itemStack?.typeId;
+  if (introRunning(player)) return;
   if (id === TOME) {
     openMenu(player, MENUS);
   } else if (id === CRYSTAL) {
@@ -56,11 +58,21 @@ function giveStarterItems(player) {
   }
   d.gifted = true;
   saveNow(player);
-  player.sendMessage('§6§lTensura RPG:§r você recebeu o §bGrimório do Grande Sábio§r (abre o menu e a árvore de habilidades) e o §dCristal de Magicules§r (conjura magias). Use o Grimório para escolher sua raça.');
+  player.sendMessage('§6§lTensura RPG:§r você recebeu o §bGrimório do Grande Sábio§r (abre o menu e a árvore de habilidades) e o §dCristal de Magicules§r (usa as habilidades da barra; agachado + usar troca de espaço).');
+}
+
+// Primeira entrada: apresentação do Grande Sábio → escolha de raça → itens iniciais.
+// Se o jogador sair no meio, a apresentação recomeça na próxima entrada (sem duplicar itens).
+function onJoin(player) {
+  if (!player.isValid) return;
+  const d = getData(player);
+  restoreControls(player);
+  if (!d.introDone && !d.race) runIntro(player, giveStarterItems);
+  else giveStarterItems(player);
 }
 
 world.afterEvents.playerSpawn.subscribe((ev) => {
-  if (ev.initialSpawn) system.runTimeout(() => { if (ev.player.isValid) giveStarterItems(ev.player); }, 40);
+  if (ev.initialSpawn) system.runTimeout(() => onJoin(ev.player), 60);
 });
 
 world.beforeEvents.playerLeave.subscribe((ev) => {
@@ -78,7 +90,7 @@ world.afterEvents.worldLoad.subscribe(() => {
   startSummons();
   startFields();
   startBolts();
-  for (const p of world.getAllPlayers()) giveStarterItems(p);
+  for (const p of world.getAllPlayers()) system.runTimeout(() => onJoin(p), 60);
   console.log(`[Tensura] Carregado: ${Object.keys(SKILLS).length} habilidades.`);
 });
 

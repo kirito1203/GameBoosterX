@@ -55,6 +55,7 @@ function writeTexts() {
     'entity.tensura:undead_warrior.name': ['Guerreiro Morto-vivo', 'Undead Warrior'],
     'entity.tensura:undead_archer.name': ['Arqueiro Morto-vivo', 'Undead Archer'],
     'entity.tensura:doppelganger.name': ['Cópia', 'Doppelganger'],
+    'entity.tensura:great_sage.name': ['Grande Sábio', 'Great Sage'],
     'pack.name': ['Tensura RPG', 'Tensura RPG'],
     'pack.description': ['Raças, magias e árvore de habilidades inspiradas em Tensura', 'Races, magic and skill trees inspired by Tensura'],
   };
@@ -134,6 +135,10 @@ async function main() {
     const specPath = join(DIST, 'texture_spec.json');
     writeFileSync(specPath, JSON.stringify(spec));
     execFileSync('python3', [join(ROOT, 'tools', 'gen_textures.py'), specPath, RP, join(BP, 'pack_icon.png')], { stdio: 'inherit' });
+    const { RACE_CARDS } = await import('../BP/scripts/data/raceCards.js');
+    const cardsPath = join(DIST, 'race_cards.json');
+    writeFileSync(cardsPath, JSON.stringify(RACE_CARDS.map(([id, , , portrait]) => ({ id, portrait }))));
+    execFileSync('python3', [join(ROOT, 'tools', 'gen_race_textures.py'), cardsPath, RP], { stdio: 'inherit' });
   }
   // Verifica se todas as texturas exigidas existem.
   const missing = [];

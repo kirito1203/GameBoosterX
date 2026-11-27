@@ -10,5 +10,6 @@ entity.tensura:familiar.name=Familiar
 entity.tensura:undead_warrior.name=Guerreiro Morto-vivo
 entity.tensura:undead_archer.name=Arqueiro Morto-vivo
 entity.tensura:doppelganger.name=Cópia
+entity.tensura:great_sage.name=Grande Sábio
 pack.name=Tensura RPG
 pack.description=Raças, magias e árvore de habilidades inspiradas em Tensura

@@ -32,6 +32,16 @@ ative os dois pacotes (comportamento e recursos).
 
 Não é preciso ativar experimentos.
 
+## Primeira entrada: o Grande Sábio
+
+Ao entrar num mundo pela primeira vez, o **Grande Sábio** surge diante do jogador:
+- a tela tinge de azul/roxo, a câmera se aproxima dele e as falas aparecem letra a letra
+  (agache para avançar);
+- em seguida abre a tela **Escolha sua Raça**, com 26 cards (as 7 evoluções aparecem bloqueadas),
+  painel de informações e o botão **CONFIRMAR RAÇA**.
+
+![Escolha sua Raça](docs/img/race-slime.jpg)
+
 ## Como jogar (sem comandos)
 
 1. Ao entrar no mundo você recebe dois itens (também fabricáveis na bancada):

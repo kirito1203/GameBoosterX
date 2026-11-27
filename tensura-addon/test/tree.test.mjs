@@ -212,7 +212,7 @@ test('JSON UI gerado: cada célula fica na posição cujo índice (linha*colunas
   assert.ok(ui.menu_root, 'tela do menu existe');
   const sf = JSON.parse(readFileSync(new URL('ui/server_form.json', RP), 'utf8').replace(/^\/\/.*$/m, ''));
   const names = sf.tensura_long_form_router.controls.map((c) => Object.keys(c)[0]);
-  assert.deepEqual(names, ['vanilla_wrap', 'tensura_tree_wrap', 'tensura_menu_wrap']);
+  assert.deepEqual(names, ['vanilla_wrap', 'tensura_tree_wrap', 'tensura_menu_wrap', 'tensura_race_wrap']);
   assert.equal(sf.main_screen_content.controls[0].server_form_factory.control_ids.custom_form, '@server_form.custom_form');
 });
 

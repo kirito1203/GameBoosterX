@@ -1,0 +1,17 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "tensura:great_sage",
+      "materials": { "default": "entity_alphatest" },
+      "textures": { "default": "textures/entity/tensura/great_sage" },
+      "geometry": { "default": "geometry.tensura.great_sage" },
+      "render_controllers": ["controller.render.default"],
+      "animations": { "float": "animation.tensura.great_sage.float" },
+      "scripts": {
+        "animate": ["float"],
+        "scale": "math.min(1.15, query.life_time * 0.9)"
+      }
+    }
+  }
+}

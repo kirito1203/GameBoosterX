@@ -424,6 +424,488 @@
   "keep_ratio": false,
   "bilinear": false
  },
+ "race_card": {
+  "type": "panel",
+  "anchor_from": "top_left",
+  "anchor_to": "top_left",
+  "bindings": [
+   {
+    "binding_name": "#form_button_text",
+    "binding_type": "collection",
+    "binding_collection_name": "form_buttons"
+   },
+   {
+    "binding_name": "#form_button_texture",
+    "binding_type": "collection",
+    "binding_collection_name": "form_buttons"
+   },
+   {
+    "binding_type": "view",
+    "source_property_name": "(not (#form_button_text = ''))",
+    "target_property_name": "#visible"
+   }
+  ],
+  "controls": [
+   {
+    "bg": {
+     "type": "image",
+     "texture": "textures/tensura/race/card",
+     "size": [
+      "100%",
+      "100%"
+     ],
+     "keep_ratio": false,
+     "bilinear": false,
+     "layer": 1
+    }
+   },
+   {
+    "glow": {
+     "type": "image",
+     "texture": "textures/tensura/race/card_glow",
+     "size": [
+      "100%",
+      "100%"
+     ],
+     "keep_ratio": false,
+     "bilinear": false,
+     "layer": 2,
+     "anims": [
+      "@tensura_tree.anim_pulse_a"
+     ],
+     "bindings": [
+      {
+       "binding_name": "#form_button_text",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons"
+      },
+      {
+       "binding_type": "view",
+       "source_property_name": "(not ((#form_button_text - '§t§c§s') = #form_button_text))",
+       "target_property_name": "#visible"
+      }
+     ]
+    }
+   },
+   {
+    "portrait": {
+     "type": "image",
+     "layer": 3,
+     "size": [
+      "100%y",
+      "54%"
+     ],
+     "anchor_from": "top_middle",
+     "anchor_to": "top_middle",
+     "offset": [
+      0,
+      "8%"
+     ],
+     "bilinear": false,
+     "bindings": [
+      {
+       "binding_name": "#form_button_texture",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons",
+       "binding_name_override": "#texture"
+      },
+      {
+       "binding_name": "#form_button_texture_file_system",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons",
+       "binding_name_override": "#texture_file_system"
+      }
+     ]
+    }
+   },
+   {
+    "name": {
+     "type": "label",
+     "layer": 4,
+     "anchor_from": "bottom_middle",
+     "anchor_to": "bottom_middle",
+     "offset": [
+      0,
+      "-5%"
+     ],
+     "size": [
+      "96%",
+      "default"
+     ],
+     "max_size": [
+      "96%",
+      "30%"
+     ],
+     "text_alignment": "center",
+     "shadow": true,
+     "color": [
+      1,
+      1,
+      1
+     ],
+     "font_scale_factor": 0.62,
+     "text": "#card_name",
+     "bindings": [
+      {
+       "binding_name": "#form_button_text",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons"
+      },
+      {
+       "binding_type": "view",
+       "source_property_name": "((#form_button_text - '§t§c§s') - '§t§c§l')",
+       "target_property_name": "#card_name"
+      }
+     ]
+    }
+   },
+   {
+    "locked": {
+     "type": "image",
+     "texture": "textures/tensura/race/card_locked",
+     "size": [
+      "100%",
+      "100%"
+     ],
+     "keep_ratio": false,
+     "bilinear": false,
+     "layer": 5,
+     "bindings": [
+      {
+       "binding_name": "#form_button_text",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons"
+      },
+      {
+       "binding_type": "view",
+       "source_property_name": "(not ((#form_button_text - '§t§c§l') = #form_button_text))",
+       "target_property_name": "#visible"
+      }
+     ]
+    }
+   },
+   {
+    "selected": {
+     "type": "image",
+     "texture": "textures/tensura/race/card_sel",
+     "size": [
+      "100%",
+      "100%"
+     ],
+     "keep_ratio": false,
+     "bilinear": false,
+     "layer": 6,
+     "bindings": [
+      {
+       "binding_name": "#form_button_text",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons"
+      },
+      {
+       "binding_type": "view",
+       "source_property_name": "(not ((#form_button_text - '§t§c§s') = #form_button_text))",
+       "target_property_name": "#visible"
+      }
+     ]
+    }
+   },
+   {
+    "hit@common.button": {
+     "layer": 7,
+     "$pressed_button_name": "button.form_button_click",
+     "size": [
+      "100%",
+      "100%"
+     ],
+     "default_control": "default",
+     "hover_control": "hover",
+     "pressed_control": "pressed",
+     "bindings": [
+      {
+       "binding_type": "collection_details",
+       "binding_collection_name": "form_buttons"
+      }
+     ],
+     "controls": [
+      {
+       "default": {
+        "type": "panel"
+       }
+      },
+      {
+       "hover": {
+        "type": "image",
+        "texture": "textures/tensura/race/card_hover",
+        "size": [
+         "100%",
+         "100%"
+        ],
+        "keep_ratio": false,
+        "bilinear": false
+       }
+      },
+      {
+       "pressed": {
+        "type": "image",
+        "texture": "textures/tensura/race/card_hover",
+        "size": [
+         "100%",
+         "100%"
+        ],
+        "keep_ratio": false,
+        "bilinear": false,
+        "alpha": 0.6
+       }
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "race_text": {
+  "type": "label",
+  "anchor_from": "top_left",
+  "anchor_to": "top_left",
+  "layer": 3,
+  "size": [
+   "100%",
+   "default"
+  ],
+  "max_size": [
+   "100%",
+   "100%"
+  ],
+  "text": "#form_button_text",
+  "shadow": true,
+  "color": [
+   1,
+   1,
+   1
+  ],
+  "text_alignment": "$rt_align",
+  "font_scale_factor": "$rt_font",
+  "bindings": [
+   {
+    "binding_name": "#form_button_text",
+    "binding_type": "collection",
+    "binding_collection_name": "form_buttons"
+   }
+  ],
+  "$rt_align|default": "left",
+  "$rt_font|default": 0.75
+ },
+ "race_stars": {
+  "type": "panel",
+  "anchor_from": "top_left",
+  "anchor_to": "top_left",
+  "controls": [
+   {
+    "lbl": {
+     "type": "label",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "size": [
+      "100%",
+      "default"
+     ],
+     "text": "#form_button_text",
+     "shadow": true,
+     "color": [
+      1,
+      1,
+      1
+     ],
+     "font_scale_factor": 0.72,
+     "bindings": [
+      {
+       "binding_name": "#form_button_text",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons"
+      }
+     ]
+    }
+   },
+   {
+    "stars": {
+     "type": "image",
+     "anchor_from": "bottom_left",
+     "anchor_to": "bottom_left",
+     "size": [
+      "100%",
+      "50%"
+     ],
+     "keep_ratio": true,
+     "bilinear": false,
+     "bindings": [
+      {
+       "binding_name": "#form_button_texture",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons",
+       "binding_name_override": "#texture"
+      },
+      {
+       "binding_name": "#form_button_texture_file_system",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons",
+       "binding_name_override": "#texture_file_system"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "anim_float_a": {
+  "anim_type": "offset",
+  "easing": "in_out_sine",
+  "duration": 1.6,
+  "from": [
+   0,
+   0
+  ],
+  "to": [
+   0,
+   "-3%"
+  ],
+  "next": "@tensura_tree.anim_float_b"
+ },
+ "anim_float_b": {
+  "anim_type": "offset",
+  "easing": "in_out_sine",
+  "duration": 1.6,
+  "from": [
+   0,
+   "-3%"
+  ],
+  "to": [
+   0,
+   0
+  ],
+  "next": "@tensura_tree.anim_float_a"
+ },
+ "anim_float2_a": {
+  "anim_type": "offset",
+  "easing": "in_out_sine",
+  "duration": 2.3,
+  "from": [
+   0,
+   0
+  ],
+  "to": [
+   0,
+   "-9%"
+  ],
+  "next": "@tensura_tree.anim_float2_b"
+ },
+ "anim_float2_b": {
+  "anim_type": "offset",
+  "easing": "in_out_sine",
+  "duration": 2.3,
+  "from": [
+   0,
+   "-9%"
+  ],
+  "to": [
+   0,
+   0
+  ],
+  "next": "@tensura_tree.anim_float2_a"
+ },
+ "anim_float3_a": {
+  "anim_type": "offset",
+  "easing": "in_out_sine",
+  "duration": 1.9,
+  "from": [
+   0,
+   "-6%"
+  ],
+  "to": [
+   0,
+   "4%"
+  ],
+  "next": "@tensura_tree.anim_float3_b"
+ },
+ "anim_float3_b": {
+  "anim_type": "offset",
+  "easing": "in_out_sine",
+  "duration": 1.9,
+  "from": [
+   0,
+   "4%"
+  ],
+  "to": [
+   0,
+   "-6%"
+  ],
+  "next": "@tensura_tree.anim_float3_a"
+ },
+ "anim_pulse_a": {
+  "anim_type": "alpha",
+  "easing": "in_out_sine",
+  "duration": 1.1,
+  "from": 0.35,
+  "to": 1,
+  "next": "@tensura_tree.anim_pulse_b"
+ },
+ "anim_pulse_b": {
+  "anim_type": "alpha",
+  "easing": "in_out_sine",
+  "duration": 1.1,
+  "from": 1,
+  "to": 0.35,
+  "next": "@tensura_tree.anim_pulse_a"
+ },
+ "anim_glow_a": {
+  "anim_type": "alpha",
+  "easing": "in_out_sine",
+  "duration": 1.8,
+  "from": 0.55,
+  "to": 0.95,
+  "next": "@tensura_tree.anim_glow_b"
+ },
+ "anim_glow_b": {
+  "anim_type": "alpha",
+  "easing": "in_out_sine",
+  "duration": 1.8,
+  "from": 0.95,
+  "to": 0.55,
+  "next": "@tensura_tree.anim_glow_a"
+ },
+ "anim_blink_a": {
+  "anim_type": "alpha",
+  "easing": "linear",
+  "duration": 0.55,
+  "from": 1,
+  "to": 0.15,
+  "next": "@tensura_tree.anim_blink_b"
+ },
+ "anim_blink_b": {
+  "anim_type": "alpha",
+  "easing": "linear",
+  "duration": 0.55,
+  "from": 0.15,
+  "to": 1,
+  "next": "@tensura_tree.anim_blink_a"
+ },
+ "anim_fade_in": {
+  "anim_type": "alpha",
+  "easing": "out_cubic",
+  "duration": 0.7,
+  "from": 0,
+  "to": 1
+ },
+ "anim_slide_in": {
+  "anim_type": "offset",
+  "easing": "out_cubic",
+  "duration": 0.6,
+  "from": [
+   "-8%",
+   0
+  ],
+  "to": [
+   0,
+   0
+  ]
+ },
  "root": {
   "type": "panel",
   "size": [
@@ -3707,6 +4189,1520 @@
           }
          }
         ]
+       }
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "race_root": {
+  "type": "panel",
+  "size": [
+   "100%",
+   "100%"
+  ],
+  "controls": [
+   {
+    "bg": {
+     "type": "image",
+     "texture": "textures/tensura/race/bg",
+     "size": [
+      "100%",
+      "100%"
+     ],
+     "keep_ratio": false,
+     "bilinear": false,
+     "layer": 0
+    }
+   },
+   {
+    "sage_glow": {
+     "type": "image",
+     "texture": "textures/tensura/race/sage_glow",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "2%",
+      "4%"
+     ],
+     "size": [
+      "42%",
+      "58%"
+     ],
+     "layer": 1,
+     "keep_ratio": false,
+     "bilinear": true,
+     "anims": [
+      "@tensura_tree.anim_glow_a"
+     ]
+    }
+   },
+   {
+    "sage_box": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "10%",
+      "5%"
+     ],
+     "size": [
+      "26%",
+      "56%"
+     ],
+     "layer": 3,
+     "anims": [
+      "@tensura_tree.anim_slide_in"
+     ],
+     "controls": [
+      {
+       "sage": {
+        "type": "image",
+        "texture": "textures/tensura/race/sage",
+        "size": [
+         "100%",
+         "100%"
+        ],
+        "keep_ratio": true,
+        "bilinear": false,
+        "anims": [
+         "@tensura_tree.anim_float_a"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "cube1": {
+     "type": "image",
+     "texture": "textures/tensura/race/cube",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "6%",
+      "14%"
+     ],
+     "size": [
+      "100%y",
+      "7%"
+     ],
+     "layer": 4,
+     "bilinear": false,
+     "alpha": 0.9,
+     "anims": [
+      "@tensura_tree.anim_float2_a"
+     ]
+    }
+   },
+   {
+    "cube2": {
+     "type": "image",
+     "texture": "textures/tensura/race/cube",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "36%",
+      "10%"
+     ],
+     "size": [
+      "100%y",
+      "5%"
+     ],
+     "layer": 4,
+     "bilinear": false,
+     "alpha": 0.9,
+     "anims": [
+      "@tensura_tree.anim_float3_a"
+     ]
+    }
+   },
+   {
+    "cube3": {
+     "type": "image",
+     "texture": "textures/tensura/race/cube",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "38%",
+      "40%"
+     ],
+     "size": [
+      "100%y",
+      "6%"
+     ],
+     "layer": 4,
+     "bilinear": false,
+     "alpha": 0.9,
+     "anims": [
+      "@tensura_tree.anim_float2_b"
+     ]
+    }
+   },
+   {
+    "cube4": {
+     "type": "image",
+     "texture": "textures/tensura/race/cube",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "5%",
+      "44%"
+     ],
+     "size": [
+      "100%y",
+      "5%"
+     ],
+     "layer": 4,
+     "bilinear": false,
+     "alpha": 0.9,
+     "anims": [
+      "@tensura_tree.anim_float3_b"
+     ]
+    }
+   },
+   {
+    "dialog": {
+     "type": "image",
+     "texture": "textures/tensura/race/dialog",
+     "size": [
+      "44%",
+      "34%"
+     ],
+     "keep_ratio": false,
+     "bilinear": false,
+     "layer": 5,
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "1%",
+      "63%"
+     ]
+    }
+   },
+   {
+    "name_tab": {
+     "type": "image",
+     "texture": "textures/tensura/race/tab",
+     "size": [
+      "17%",
+      "7.5%"
+     ],
+     "keep_ratio": false,
+     "bilinear": false,
+     "layer": 6,
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "2.5%",
+      "58.5%"
+     ]
+    }
+   },
+   {
+    "name": {
+     "type": "label",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "3.5%",
+      "60.2%"
+     ],
+     "size": [
+      "15%",
+      "default"
+     ],
+     "text": "§bGrande Sábio",
+     "shadow": true,
+     "color": [
+      1,
+      1,
+      1
+     ],
+     "font_scale_factor": 1.05,
+     "text_alignment": "center",
+     "layer": 7
+    }
+   },
+   {
+    "g_sage_text": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      4,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "156%",
+      "24%"
+     ],
+     "offset": [
+      "-113.5%",
+      "68%"
+     ],
+     "controls": [
+      {
+       "sage_text@tensura_tree.race_text": {
+        "grid_position": [
+         3,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "25%",
+         "100%"
+        ],
+        "$rt_font": 0.85,
+        "layer": 7
+       }
+      }
+     ]
+    }
+   },
+   {
+    "blink": {
+     "type": "image",
+     "texture": "textures/tensura/race/arrow_down",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "41%",
+      "91%"
+     ],
+     "size": [
+      "100%y",
+      "3.5%"
+     ],
+     "layer": 7,
+     "anims": [
+      "@tensura_tree.anim_blink_a"
+     ]
+    }
+   },
+   {
+    "title_box": {
+     "type": "image",
+     "texture": "textures/tensura/race/title",
+     "size": [
+      "44%",
+      "9.5%"
+     ],
+     "keep_ratio": false,
+     "bilinear": false,
+     "layer": 5,
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "52%",
+      "1%"
+     ]
+    }
+   },
+   {
+    "title": {
+     "type": "label",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "52%",
+      "3.4%"
+     ],
+     "size": [
+      "44%",
+      "default"
+     ],
+     "text": "§lESCOLHA SUA RAÇA",
+     "shadow": true,
+     "color": [
+      1,
+      1,
+      1
+     ],
+     "font_scale_factor": 1.6,
+     "text_alignment": "center",
+     "layer": 6
+    }
+   },
+   {
+    "subtitle": {
+     "type": "label",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "48%",
+      "11.2%"
+     ],
+     "size": [
+      "52%",
+      "default"
+     ],
+     "text": "§7Cada raça possui habilidades únicas, afinidades e caminhos de evolução diferentes.",
+     "shadow": true,
+     "color": [
+      1,
+      1,
+      1
+     ],
+     "font_scale_factor": 0.7,
+     "text_alignment": "center",
+     "layer": 6
+    }
+   },
+   {
+    "cards_bg": {
+     "type": "image",
+     "texture": "textures/tensura/race/panel",
+     "size": [
+      "51%",
+      "47.5%"
+     ],
+     "keep_ratio": false,
+     "bilinear": false,
+     "layer": 1,
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "48.5%",
+      "15.5%"
+     ]
+    }
+   },
+   {
+    "g_card0": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      14,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "108.2667%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-51.3333%",
+      "16.5%"
+     ],
+     "controls": [
+      {
+       "card0@tensura_tree.race_card": {
+        "grid_position": [
+         13,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "7.1429%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card1": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      15,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "116%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-50.7333%",
+      "16.5%"
+     ],
+     "controls": [
+      {
+       "card1@tensura_tree.race_card": {
+        "grid_position": [
+         14,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "6.6667%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card2": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      16,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "123.7333%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-50.1333%",
+      "16.5%"
+     ],
+     "controls": [
+      {
+       "card2@tensura_tree.race_card": {
+        "grid_position": [
+         15,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "6.25%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card3": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      17,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "131.4667%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-49.5333%",
+      "16.5%"
+     ],
+     "controls": [
+      {
+       "card3@tensura_tree.race_card": {
+        "grid_position": [
+         16,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "5.8824%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card4": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      18,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "139.2%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-48.9333%",
+      "16.5%"
+     ],
+     "controls": [
+      {
+       "card4@tensura_tree.race_card": {
+        "grid_position": [
+         17,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "5.5556%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card5": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      19,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "146.9333%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-48.3333%",
+      "16.5%"
+     ],
+     "controls": [
+      {
+       "card5@tensura_tree.race_card": {
+        "grid_position": [
+         18,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "5.2632%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card6": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      20,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "154.6667%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-97.7333%",
+      "31.8333%"
+     ],
+     "controls": [
+      {
+       "card6@tensura_tree.race_card": {
+        "grid_position": [
+         19,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "5%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card7": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      21,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "162.4%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-97.1333%",
+      "31.8333%"
+     ],
+     "controls": [
+      {
+       "card7@tensura_tree.race_card": {
+        "grid_position": [
+         20,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "4.7619%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card8": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      22,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "170.1333%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-96.5333%",
+      "31.8333%"
+     ],
+     "controls": [
+      {
+       "card8@tensura_tree.race_card": {
+        "grid_position": [
+         21,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "4.5455%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card9": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      23,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "177.8667%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-95.9333%",
+      "31.8333%"
+     ],
+     "controls": [
+      {
+       "card9@tensura_tree.race_card": {
+        "grid_position": [
+         22,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "4.3478%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card10": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      24,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "185.6%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-95.3333%",
+      "31.8333%"
+     ],
+     "controls": [
+      {
+       "card10@tensura_tree.race_card": {
+        "grid_position": [
+         23,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "4.1667%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card11": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      25,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "193.3333%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-94.7333%",
+      "31.8333%"
+     ],
+     "controls": [
+      {
+       "card11@tensura_tree.race_card": {
+        "grid_position": [
+         24,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "4%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card12": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      26,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "201.0667%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-144.1333%",
+      "47.1667%"
+     ],
+     "controls": [
+      {
+       "card12@tensura_tree.race_card": {
+        "grid_position": [
+         25,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "3.8462%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card13": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      27,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "208.8%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-143.5333%",
+      "47.1667%"
+     ],
+     "controls": [
+      {
+       "card13@tensura_tree.race_card": {
+        "grid_position": [
+         26,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "3.7037%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card14": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      28,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "216.5333%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-142.9333%",
+      "47.1667%"
+     ],
+     "controls": [
+      {
+       "card14@tensura_tree.race_card": {
+        "grid_position": [
+         27,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "3.5714%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card15": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      29,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "224.2667%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-142.3333%",
+      "47.1667%"
+     ],
+     "controls": [
+      {
+       "card15@tensura_tree.race_card": {
+        "grid_position": [
+         28,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "3.4483%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card16": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      30,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "232%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-141.7333%",
+      "47.1667%"
+     ],
+     "controls": [
+      {
+       "card16@tensura_tree.race_card": {
+        "grid_position": [
+         29,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "3.3333%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_card17": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      31,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "239.7333%",
+      "14.3333%"
+     ],
+     "offset": [
+      "-141.1333%",
+      "47.1667%"
+     ],
+     "controls": [
+      {
+       "card17@tensura_tree.race_card": {
+        "grid_position": [
+         30,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "3.2258%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "info_bg": {
+     "type": "image",
+     "texture": "textures/tensura/race/panel",
+     "size": [
+      "51%",
+      "27%"
+     ],
+     "keep_ratio": false,
+     "bilinear": false,
+     "layer": 1,
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "48.5%",
+      "63.5%"
+     ]
+    }
+   },
+   {
+    "g_info_portrait": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      6,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "48%",
+      "13%"
+     ],
+     "offset": [
+      "9.5%",
+      "65%"
+     ],
+     "controls": [
+      {
+       "info_portrait@tensura_tree.ctl": {
+        "grid_position": [
+         5,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "16.6667%",
+         "100%"
+        ],
+        "$ctl_bg": "textures/tensura/race/card",
+        "$ctl_bg_hover": "textures/tensura/race/card",
+        "$ctl_bg_pressed": "textures/tensura/race/card",
+        "$ctl_icon_size": [
+         "100%y",
+         "86%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_info_name": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      5,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "110%",
+      "5%"
+     ],
+     "offset": [
+      "-29.5%",
+      "64.5%"
+     ],
+     "controls": [
+      {
+       "info_name@tensura_tree.race_text": {
+        "grid_position": [
+         4,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "20%",
+         "100%"
+        ],
+        "$rt_font": 1
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_info_desc": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      7,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "154%",
+      "10%"
+     ],
+     "offset": [
+      "-73.5%",
+      "69.5%"
+     ],
+     "controls": [
+      {
+       "info_desc@tensura_tree.race_text": {
+        "grid_position": [
+         6,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "14.2857%",
+         "100%"
+        ],
+        "$rt_font": 0.62
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_info_initial": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      8,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "140%",
+      "15%"
+     ],
+     "offset": [
+      "-41%",
+      "64.5%"
+     ],
+     "controls": [
+      {
+       "info_initial@tensura_tree.race_text": {
+        "grid_position": [
+         7,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "12.5%",
+         "100%"
+        ],
+        "$rt_font": 0.65
+       }
+      }
+     ]
+    }
+   },
+   {
+    "sep": {
+     "type": "image",
+     "texture": "textures/tensura/race/line",
+     "size": [
+      "49%",
+      "0.5%"
+     ],
+     "keep_ratio": false,
+     "bilinear": false,
+     "layer": 2,
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "offset": [
+      "49.5%",
+      "79.5%"
+     ]
+    }
+   },
+   {
+    "g_info_aff": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      9,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "153%",
+      "10%"
+     ],
+     "offset": [
+      "-86.5%",
+      "80.5%"
+     ],
+     "controls": [
+      {
+       "info_aff@tensura_tree.race_text": {
+        "grid_position": [
+         8,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "11.1111%",
+         "100%"
+        ],
+        "$rt_font": 0.6
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_info_evo": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      10,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "180%",
+      "10%"
+     ],
+     "offset": [
+      "-95%",
+      "80.5%"
+     ],
+     "controls": [
+      {
+       "info_evo@tensura_tree.race_text": {
+        "grid_position": [
+         9,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "10%",
+         "100%"
+        ],
+        "$rt_font": 0.6
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_info_diff": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      11,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "143%",
+      "9%"
+     ],
+     "offset": [
+      "-44.5%",
+      "80.5%"
+     ],
+     "controls": [
+      {
+       "info_diff@tensura_tree.race_stars": {
+        "grid_position": [
+         10,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "9.0909%",
+         "100%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_confirm": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      1,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "28%",
+      "8%"
+     ],
+     "offset": [
+      "60%",
+      "91.3%"
+     ],
+     "controls": [
+      {
+       "confirm@tensura_tree.ctl": {
+        "grid_position": [
+         0,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "100%",
+         "100%"
+        ],
+        "$ctl_bg": "textures/tensura/race/btn_green",
+        "$ctl_bg_hover": "textures/tensura/race/btn_green_hover",
+        "$ctl_bg_pressed": "textures/tensura/race/btn_green_pressed",
+        "$ctl_font": 1.15
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_prev": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      2,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "10%",
+      "8%"
+     ],
+     "offset": [
+      "49%",
+      "91.3%"
+     ],
+     "controls": [
+      {
+       "prev@tensura_tree.ctl": {
+        "grid_position": [
+         1,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "50%",
+         "100%"
+        ],
+        "$ctl_bg": "textures/tensura/race/btn_stone",
+        "$ctl_bg_hover": "textures/tensura/race/btn_stone_hover",
+        "$ctl_bg_pressed": "textures/tensura/race/btn_stone_hover",
+        "$ctl_font": 1.3
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_next": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      3,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "15%",
+      "8%"
+     ],
+     "offset": [
+      "79%",
+      "91.3%"
+     ],
+     "controls": [
+      {
+       "next@tensura_tree.ctl": {
+        "grid_position": [
+         2,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "33.3333%",
+         "100%"
+        ],
+        "$ctl_bg": "textures/tensura/race/btn_stone",
+        "$ctl_bg_hover": "textures/tensura/race/btn_stone_hover",
+        "$ctl_bg_pressed": "textures/tensura/race/btn_stone_hover",
+        "$ctl_font": 1.3
+       }
+      }
+     ]
+    }
+   },
+   {
+    "g_page": {
+     "type": "grid",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "grid_dimensions": [
+      13,
+      1
+     ],
+     "layer": 1,
+     "size": [
+      "71.5%",
+      "5%"
+     ],
+     "offset": [
+      "28.5%",
+      "93.5%"
+     ],
+     "controls": [
+      {
+       "page@tensura_tree.race_text": {
+        "grid_position": [
+         12,
+         0
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "size": [
+         "7.6923%",
+         "100%"
+        ],
+        "$rt_font": 0.55
        }
       }
      ]

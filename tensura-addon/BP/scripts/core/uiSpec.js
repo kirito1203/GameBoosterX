@@ -94,6 +94,7 @@ export const TEX = {
   icon: 'textures/tensura/icons/',
   ui: 'textures/tensura/ui/',
   menu: 'textures/tensura/menu/',
+  race: 'textures/tensura/race/',
 };
 
 export function frameCode(state, rarity, major, link, selected) {
@@ -125,3 +126,29 @@ export function lineCodesForCell(dirs) {
 export function iconName(skillId) {
   return skillId.replace(/[^a-z0-9]+/gi, '_').toLowerCase();
 }
+
+// ── Tela "Escolha sua Raça" ──
+export const RACE_MARK = '§t§n§r';
+export const RACE = {
+  confirm: 0,
+  prev: 1,
+  next: 2,
+  sageText: 3,
+  infoName: 4,
+  infoPortrait: 5,
+  infoDesc: 6,
+  infoInitial: 7,
+  infoAffinity: 8,
+  infoEvolutions: 9,
+  infoDifficulty: 10,
+  infoTraits: 11,
+  page: 12,
+  card0: 13, // 13..30 = 18 cards (6 x 3)
+};
+export const RACE_CARD_COLS = 6;
+export const RACE_CARD_ROWS = 3;
+export const RACE_PAGE_SIZE = RACE_CARD_COLS * RACE_CARD_ROWS;
+export const RACE_COUNT = RACE.card0 + RACE_PAGE_SIZE;
+// Marcadores dentro do texto do card (removidos na exibição do nome).
+export const CARD_SELECTED = '§t§c§s';
+export const CARD_LOCKED = '§t§c§l';

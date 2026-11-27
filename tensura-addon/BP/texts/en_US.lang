@@ -10,5 +10,6 @@ entity.tensura:familiar.name=Familiar
 entity.tensura:undead_warrior.name=Undead Warrior
 entity.tensura:undead_archer.name=Undead Archer
 entity.tensura:doppelganger.name=Doppelganger
+entity.tensura:great_sage.name=Great Sage
 pack.name=Tensura RPG
 pack.description=Races, magic and skill trees inspired by Tensura

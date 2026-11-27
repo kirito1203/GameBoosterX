@@ -11,39 +11,14 @@ import { TEX, iconName } from '../core/uiSpec.js';
 import { getData, saveNow, refreshStats, getStorage, setStorage, markDirty } from '../systems/storage.js';
 import { cast } from '../systems/casting.js';
 import { showForm } from './treeUI.js';
+import { selectRace } from './raceUI.js';
 import { msg, sound } from '../systems/util.js';
 
 const icon = (id) => `${TEX.icon}${iconName(id)}`;
 
+// A escolha de raça agora é a tela própria (ui/raceUI.js), também usada pela apresentação.
 export async function chooseRace(player) {
-  const starts = Object.values(RACES).filter((r) => r.start);
-  const f = new ActionFormData().title('§lEscolha sua raça')
-    .body('Escolha a raça com que você renasceu neste mundo. A escolha é §lpermanente§r: depois você só muda evoluindo pela Árvore Racial.\n\n§7Raças marcadas como (original) são criações do addon.');
-  for (const r of starts) f.button(`${r.name}${r.origin === 'original' ? ' §8(original)' : ''}\n§8MP ${r.mp} · ${LINEAGES[r.lineage].name}`, icon(`r.${r.lineage}.root`));
-  const res = await showForm(player, f);
-  if (!res || res.canceled || res.selection === undefined) return;
-  const race = starts[res.selection];
-  const initial = initialSkillsFor(race.id).map((id) => `• ${SKILLS[id].name}`).join('\n');
-  const evos = TREES[`race.${race.lineage}`].skills.filter((s) => s.type === 'evolution').map((s) => RACES[s.evolveTo].name).join(', ');
-  const m = new MessageFormData().title(`§l${race.name}`)
-    .body(`${race.desc}\n\n${raceSummary(race.id)}\n\n§eHabilidades iniciais:§r\n${initial}\n\n§eEvoluções possíveis:§r ${evos}\n\n§7Origem: ${race.origin === 'obra' ? 'Tensura' : race.origin === 'adaptado' ? 'inspirada em Tensura' : 'original do addon'}`)
-    .button1('§cVoltar').button2('§aEscolher esta raça');
-  const ok = await showForm(player, m);
-  if (!ok || ok.canceled || ok.selection !== 1) return chooseRace(player);
-  const d = getData(player);
-  d.race = race.id;
-  d.level = 1;
-  d.ep = 0;
-  d.points = CONFIG.leveling.startingPoints;
-  for (const id of initialSkillsFor(race.id)) d.unlocked.add(id);
-  refreshStats(d);
-  d.mp = d.stats.maxMp;
-  d.aura = d.stats.maxAura;
-  d.ui.tab = 'racial';
-  for (const id of d.unlocked) if (SKILLS[id].type === 'active' && !d.equipped.includes(id) && d.equipped.length < CONFIG.ui.barSlots) d.equipped.push(id);
-  saveNow(player);
-  sound(player.dimension, 'random.totem', player.location);
-  msg(player, `§6§lVocê renasceu como ${race.name}!§r Você tem §e${d.points} pontos§r. Toque nos nós da árvore para desbloquear habilidades.`);
+  return selectRace(player, {});
 }
 
 export async function grimoire(player) {

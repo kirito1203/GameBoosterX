@@ -235,6 +235,7 @@ body{margin:0;background:#000;font-family:'DejaVu Sans',sans-serif}
 
 // ── Cenários de teste ──
 import { buildMenuForm } from '../BP/scripts/core/menuView.js';
+import { buildRaceForm } from '../BP/scripts/core/raceView.js';
 import { getMap } from '../BP/scripts/core/map.js';
 import { computeStats } from '../BP/scripts/core/stats.js';
 import { viewAt } from '../BP/scripts/core/view.js';
@@ -261,12 +262,15 @@ export function scenario(name) {
     case 'tree-z1-pan': return { kind: 'tree', p: { state, view: pan(viewAt(map.roots.extra, 1), 0, -1, map), selected: null, mp } };
     case 'menu-status': return { kind: 'menu', p: { tab: 'status', d, state } };
     case 'menu-evolution': return { kind: 'menu', p: { tab: 'evolution', d, state } };
+    case 'race-slime': return { kind: 'race', p: { page: 0, selected: 'slime', sageText: 'Agora, escolha a raça que definirá sua existência neste mundo.' } };
+    case 'race-kijin': return { kind: 'race', p: { page: 0, selected: 'kijin', sageText: 'Kijin não pode ser escolhido agora. Essa forma é alcançada evoluindo a partir de Ogro.' } };
+    case 'race-page2': return { kind: 'race', p: { page: 1, selected: 'giant', sageText: 'Gigante... Afinidade: Terra · Força. Dificuldade 2 de 5.' } };
     default: throw new Error(`cenário desconhecido ${name}`);
   }
 }
 
 export function modelFor(sc) {
-  return sc.kind === 'menu' ? buildMenuForm(sc.p) : buildTreeForm(sc.p);
+  return sc.kind === 'menu' ? buildMenuForm(sc.p) : sc.kind === 'race' ? buildRaceForm(sc.p) : buildTreeForm(sc.p);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
@@ -274,7 +278,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const name = process.argv[3] ?? 'tree-z2-sel';
   const sc = scenario(name);
   const model = modelFor(sc);
-  const { page, stats } = previewHtml(model, { root: sc.kind === 'menu' ? 'menu_root' : 'root', label: `cenário: ${name} — simulação do JSON UI gerado (não é o jogo)` });
+  const { page, stats } = previewHtml(model, { root: sc.kind === 'menu' ? 'menu_root' : sc.kind === 'race' ? 'race_root' : 'root', label: `cenário: ${name} — simulação do JSON UI gerado (não é o jogo)` });
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, page);
   console.log(JSON.stringify({ out, nodes: stats.nodes, lines: stats.pipes, buttons: stats.ctl }));

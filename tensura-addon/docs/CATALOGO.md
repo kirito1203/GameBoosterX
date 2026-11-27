@@ -311,7 +311,7 @@ Nós compartilhados exibidos aqui: Invocar Mortos-vivos (de Árvore de Necromanc
 | **Slime** *(inicial)* | Slime | Raça | Comum | 0 | — | — | 1 | — | Tensura | Atributos da raça |
 | Absorção *(inicial)* | Absorption | Ativa | Comum | 10 | 10 | 4s | 1 | Slime | Tensura | Absorve alvo com até 35% de vida (alcance 6): +2 Magicules máx. (limite +200) |
 | Dissolução *(inicial)* | Dissolve | Ativa | Comum | 15 | 6 | 1s | 1 | Slime | Tensura | Dissolve bloco ou causa 6 de dano ácido (alcance 5), Veneno II (4s) |
-| Autorregeneração | Self-Regeneration | Passiva | Comum | 25 | — | — | 5 | Absorção | Tensura | Passiva: Regeneração I |
+| Autorregeneração *(inicial)* | Self-Regeneration | Passiva | Comum | 25 | — | — | 5 | Absorção | Tensura | Passiva: Regeneração I |
 | Transformação | Shape-shifting | Ativa | Rara | 40 | 10 | 3s | 10 | Absorção | Tensura | Transformação: consome 1 Magicule/s |
 | Análise | Analyze | Ativa | Comum | 10 | 2 | 1s | 1 | Dissolução | Adaptado | Analisa alvo até 32 blocos |
 | Adaptação Mágica | Magic Adaptation | Passiva | Rara | 45 | — | — | 12 | Análise | Adaptado | Passiva: resistência Mágico 30%, Fogo 20%, Gelo 30% + Passiva: custo de Magicules x0.95 em todas as árvores |

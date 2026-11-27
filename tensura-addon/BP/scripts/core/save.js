@@ -25,6 +25,7 @@ export function fresh() {
     flightDrain: 3,
     warp: null,          // { x, y, z, dim }
     gifted: false,
+    introDone: false,    // apresentação do Grande Sábio concluída
     kills: {},           // registros: criaturas derrotadas por tipo
     ui: { tab: 'racial', views: {}, selected: null },
     // memória de execução (não salva)
@@ -40,7 +41,7 @@ export function serialize(d) {
     v: VERSION, race: d.race, level: d.level, ep: d.ep, points: d.points,
     unlocked: [...d.unlocked], flags: [...d.flags], mp: Math.floor(d.mp), aura: Math.floor(d.aura), epTotal: d.epTotal, kills: d.kills, mpBonus: d.mpBonus,
     equipped: d.equipped, slot: d.slot, absorbed: d.absorbed, mimic: d.mimic, flying: d.flying, flightDrain: d.flightDrain,
-    warp: d.warp, gifted: d.gifted, ui: { tab: d.ui.tab, views: d.ui.views, view: d.ui.view ?? null },
+    warp: d.warp, gifted: d.gifted, introDone: d.introDone, ui: { tab: d.ui.tab, views: d.ui.views, view: d.ui.view ?? null },
   });
 }
 
@@ -70,6 +71,8 @@ export function deserialize(raw) {
       flightDrain: o.flightDrain ?? 3,
       warp: o.warp ?? null,
       gifted: o.gifted ?? false,
+      // quem já tinha raça (versões anteriores) não vê a apresentação
+      introDone: o.introDone ?? !!(o.race && RACES[o.race]),
     });
     d.ui.tab = o.ui?.tab ?? 'racial';
     d.ui.views = o.ui?.views ?? {};

@@ -15,6 +15,7 @@ import { fileURLToPath } from 'node:url';
 import {
   MARK, MENU_MARK, ZOOMS, CTRL, CAT_COUNT, gridOf, layerBase, hasLabels, SCREEN, TEX,
   MENU, MENU_TABS, ACTIVE_ROWS, BAR_SLOTS, ACTION_COUNT,
+  RACE_MARK, RACE, RACE_CARD_COLS, RACE_CARD_ROWS, CARD_SELECTED, CARD_LOCKED,
 } from '../BP/scripts/core/uiSpec.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -333,10 +334,127 @@ function menuRoot() {
   };
 }
 
+// ── Animações (cadeias com "next", como as do próprio jogo) ──
+function animations() {
+  const loop = (a, b, type, from, to, dur, easing = 'in_out_sine') => ({
+    [a]: { anim_type: type, easing, duration: dur, from, to, next: `@${NS}.${b}` },
+    [b]: { anim_type: type, easing, duration: dur, from: to, to: from, next: `@${NS}.${a}` },
+  });
+  return {
+    ...loop('anim_float_a', 'anim_float_b', 'offset', [0, 0], [0, '-3%'], 1.6),
+    ...loop('anim_float2_a', 'anim_float2_b', 'offset', [0, 0], [0, '-9%'], 2.3),
+    ...loop('anim_float3_a', 'anim_float3_b', 'offset', [0, '-6%'], [0, '4%'], 1.9),
+    ...loop('anim_pulse_a', 'anim_pulse_b', 'alpha', 0.35, 1.0, 1.1),
+    ...loop('anim_glow_a', 'anim_glow_b', 'alpha', 0.55, 0.95, 1.8),
+    ...loop('anim_blink_a', 'anim_blink_b', 'alpha', 1.0, 0.15, 0.55, 'linear'),
+    anim_fade_in: { anim_type: 'alpha', easing: 'out_cubic', duration: 0.7, from: 0.0, to: 1.0 },
+    anim_slide_in: { anim_type: 'offset', easing: 'out_cubic', duration: 0.6, from: ['-8%', 0], to: [0, 0] },
+  };
+}
+
+function raceTemplates() {
+  const hasTok = (tok) => `(not ((#form_button_text - '${tok}') = #form_button_text))`;
+  return {
+    race_card: {
+      type: 'panel', ...TL,
+      bindings: [colText, colTex, view("(not (#form_button_text = ''))", '#visible')],
+      controls: [
+        { bg: img(`${TEX.race}card`, { layer: 1 }) },
+        { glow: { ...img(`${TEX.race}card_glow`, { layer: 2 }), anims: [`@${NS}.anim_pulse_a`],
+          bindings: [colText, view(hasTok(CARD_SELECTED), '#visible')] } },
+        { portrait: { type: 'image', layer: 3, size: ['100%y', '54%'], anchor_from: 'top_middle', anchor_to: 'top_middle', offset: [0, '8%'],
+          bilinear: false, bindings: [{ ...colTex, binding_name_override: '#texture' }, { ...colTexFs, binding_name_override: '#texture_file_system' }] } },
+        { name: { type: 'label', layer: 4, anchor_from: 'bottom_middle', anchor_to: 'bottom_middle', offset: [0, '-5%'],
+          size: ['96%', 'default'], max_size: ['96%', '30%'], text_alignment: 'center', shadow: true, color: [1, 1, 1], font_scale_factor: 0.62, text: '#card_name',
+          bindings: [colText, view(`((#form_button_text - '${CARD_SELECTED}') - '${CARD_LOCKED}')`, '#card_name')] } },
+        { locked: { ...img(`${TEX.race}card_locked`, { layer: 5 }), bindings: [colText, view(hasTok(CARD_LOCKED), '#visible')] } },
+        { selected: { ...img(`${TEX.race}card_sel`, { layer: 6 }), bindings: [colText, view(hasTok(CARD_SELECTED), '#visible')] } },
+        { 'hit@common.button': { layer: 7, ...buttonBody(), controls: [
+          { default: { type: 'panel' } },
+          { hover: img(`${TEX.race}card_hover`) },
+          { pressed: img(`${TEX.race}card_hover`, { alpha: 0.6 }) },
+        ] } },
+      ],
+    },
+    race_text: {
+      type: 'label', ...TL, layer: 3, size: ['100%', 'default'], max_size: ['100%', '100%'], text: '#form_button_text', shadow: true,
+      color: [1, 1, 1], text_alignment: '$rt_align', font_scale_factor: '$rt_font', bindings: [colText],
+      '$rt_align|default': 'left', '$rt_font|default': 0.75,
+    },
+    race_stars: {
+      type: 'panel', ...TL,
+      controls: [
+        { lbl: { type: 'label', ...TL, size: ['100%', 'default'], text: '#form_button_text', shadow: true, color: [1, 1, 1], font_scale_factor: 0.72, bindings: [colText] } },
+        { stars: { type: 'image', anchor_from: 'bottom_left', anchor_to: 'bottom_left', size: ['100%', '50%'], keep_ratio: true, bilinear: false,
+          bindings: [{ ...colTex, binding_name_override: '#texture' }, { ...colTexFs, binding_name_override: '#texture_file_system' }] } },
+      ],
+    },
+  };
+}
+
+function raceRoot() {
+  const stxt = (key, text, x, y, w, font = 1.0, align = 'left', extra = {}) => ({ [key]: {
+    type: 'label', ...TL, offset: [pct(x), pct(y)], size: [pct(w), 'default'], text, shadow: true, color: [1, 1, 1],
+    font_scale_factor: font, text_alignment: align, layer: 6, ...extra } });
+  const GREEN = { $ctl_bg: `${TEX.race}btn_green`, $ctl_bg_hover: `${TEX.race}btn_green_hover`, $ctl_bg_pressed: `${TEX.race}btn_green_pressed`, $ctl_font: 1.15 };
+  const STONE = { $ctl_bg: `${TEX.race}btn_stone`, $ctl_bg_hover: `${TEX.race}btn_stone_hover`, $ctl_bg_pressed: `${TEX.race}btn_stone_hover`, $ctl_font: 1.3 };
+  const cardW = 50 / RACE_CARD_COLS;
+  const cardH = 46 / RACE_CARD_ROWS;
+  const cards = [];
+  for (let i = 0; i < RACE_CARD_COLS * RACE_CARD_ROWS; i++) {
+    const c = i % RACE_CARD_COLS, r = Math.floor(i / RACE_CARD_COLS);
+    cards.push(slot(`card${i}`, RACE.card0 + i, 49.2 + c * cardW, 16.5 + r * cardH, cardW - 0.6, cardH - 1, 'race_card'));
+  }
+  const cube = (k, x, y, s, anim) => ({ [`cube${k}`]: { type: 'image', texture: `${TEX.race}cube`, ...TL, offset: [pct(x), pct(y)],
+    size: ['100%y', pct(s)], layer: 4, bilinear: false, alpha: 0.9, anims: [`@${NS}.${anim}`] } });
+  return {
+    type: 'panel', size: ['100%', '100%'],
+    controls: [
+      { bg: img(`${TEX.race}bg`, { layer: 0 }) },
+      // Grande Sábio (esquerda): brilho pulsante, figura flutuando e cubos mágicos.
+      { sage_glow: { type: 'image', texture: `${TEX.race}sage_glow`, ...TL, offset: ['2%', '4%'], size: ['42%', '58%'], layer: 1,
+        keep_ratio: false, bilinear: true, anims: [`@${NS}.anim_glow_a`] } },
+      { sage_box: { type: 'panel', ...TL, offset: ['10%', '5%'], size: ['26%', '56%'], layer: 3, anims: [`@${NS}.anim_slide_in`],
+        controls: [{ sage: { type: 'image', texture: `${TEX.race}sage`, size: ['100%', '100%'], keep_ratio: true, bilinear: false,
+          anims: [`@${NS}.anim_float_a`] } }] } },
+      cube(1, 6, 14, 7, 'anim_float2_a'), cube(2, 36, 10, 5, 'anim_float3_a'), cube(3, 38, 40, 6, 'anim_float2_b'), cube(4, 5, 44, 5, 'anim_float3_b'),
+      // Caixa de diálogo.
+      { dialog: { ...img(`${TEX.race}dialog`, { layer: 5 }), ...at(1, 63, 44, 34) } },
+      { name_tab: { ...img(`${TEX.race}tab`, { layer: 6 }), ...at(2.5, 58.5, 17, 7.5) } },
+      stxt('name', '§bGrande Sábio', 3.5, 60.2, 15, 1.05, 'center', { layer: 7 }),
+      slot('sage_text', RACE.sageText, 3.5, 68, 39, 24, 'race_text', { $rt_font: 0.85, layer: 7 }),
+      { blink: { type: 'image', texture: `${TEX.race}arrow_down`, ...TL, offset: ['41%', '91%'], size: ['100%y', '3.5%'], layer: 7,
+        anims: [`@${NS}.anim_blink_a`] } },
+      // Título.
+      { title_box: { ...img(`${TEX.race}title`, { layer: 5 }), ...at(52, 1, 44, 9.5) } },
+      stxt('title', '§lESCOLHA SUA RAÇA', 52, 3.4, 44, 1.6, 'center'),
+      stxt('subtitle', '§7Cada raça possui habilidades únicas, afinidades e caminhos de evolução diferentes.', 48, 11.2, 52, 0.7, 'center'),
+      // Cards.
+      { cards_bg: { ...img(`${TEX.race}panel`, { layer: 1 }), ...at(48.5, 15.5, 51, 47.5) } },
+      ...cards,
+      // Painel de informações.
+      { info_bg: { ...img(`${TEX.race}panel`, { layer: 1 }), ...at(48.5, 63.5, 51, 27) } },
+      ctl('info_portrait', RACE.infoPortrait, 49.5, 65, 8, 13, { $ctl_bg: `${TEX.race}card`, $ctl_bg_hover: `${TEX.race}card`, $ctl_bg_pressed: `${TEX.race}card`, $ctl_icon_size: ['100%y', '86%'] }),
+      slot('info_name', RACE.infoName, 58.5, 64.5, 22, 5, 'race_text', { $rt_font: 1.0 }),
+      slot('info_desc', RACE.infoDesc, 58.5, 69.5, 22, 10, 'race_text', { $rt_font: 0.62 }),
+      slot('info_initial', RACE.infoInitial, 81.5, 64.5, 17.5, 15, 'race_text', { $rt_font: 0.65 }),
+      { sep: { ...img(`${TEX.race}line`, { layer: 2 }), ...at(49.5, 79.5, 49, 0.5) } },
+      slot('info_aff', RACE.infoAffinity, 49.5, 80.5, 17, 10, 'race_text', { $rt_font: 0.6 }),
+      slot('info_evo', RACE.infoEvolutions, 67, 80.5, 18, 10, 'race_text', { $rt_font: 0.6 }),
+      slot('info_diff', RACE.infoDifficulty, 85.5, 80.5, 13, 9, 'race_stars'),
+      // Botões.
+      ctl('confirm', RACE.confirm, 60, 91.3, 28, 8, GREEN),
+      ctl('prev', RACE.prev, 54, 91.3, 5, 8, STONE),
+      ctl('next', RACE.next, 89, 91.3, 5, 8, STONE),
+      slot('page', RACE.page, 94.5, 93.5, 5.5, 5, 'race_text', { $rt_font: 0.55 }),
+    ],
+  };
+}
+
 export function buildUi(outDir = join(ROOT, 'RP', 'ui')) {
   mkdirSync(outDir, { recursive: true });
   const tree = {
-    namespace: NS, ...templates(), root: treeRoot(), menu_root: menuRoot(),
+    namespace: NS, ...templates(), ...raceTemplates(), ...animations(), root: treeRoot(), menu_root: menuRoot(), race_root: raceRoot(),
     details_text: {
       type: 'stack_panel', size: ['100% - 4px', '100%c'], orientation: 'vertical', ...TL,
       controls: [{ body: { type: 'label', size: ['100%', 'default'], ...TL,
@@ -345,7 +463,7 @@ export function buildUi(outDir = join(ROOT, 'RP', 'ui')) {
   };
   for (const z of ZOOMS) tree[`grid_z${z}`] = gridPanel(z);
 
-  const notMarked = `(((#title_text - '${MARK}') = #title_text) and ((#title_text - '${MENU_MARK}') = #title_text))`;
+  const notMarked = `((((#title_text - '${MARK}') = #title_text) and ((#title_text - '${MENU_MARK}') = #title_text)) and ((#title_text - '${RACE_MARK}') = #title_text))`;
   const serverForm = {
     namespace: 'server_form',
     main_screen_content: {
@@ -365,6 +483,9 @@ export function buildUi(outDir = join(ROOT, 'RP', 'ui')) {
         { tensura_menu_wrap: { type: 'panel', size: ['100%', '100%'],
           bindings: [{ binding_name: '#title_text' }, view(has(MENU_MARK), '#visible')],
           controls: [{ [`menu@${NS}.menu_root`]: {} }] } },
+        { tensura_race_wrap: { type: 'panel', size: ['100%', '100%'],
+          bindings: [{ binding_name: '#title_text' }, view(has(RACE_MARK), '#visible')],
+          controls: [{ [`race@${NS}.race_root`]: {} }] } },
       ],
     },
   };

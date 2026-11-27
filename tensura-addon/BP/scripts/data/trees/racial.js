@@ -102,7 +102,7 @@ export const RACIAL_TREES = [
       cost: 15, req: ['r.slime.root'], arm: 'S', initial: 'slime', mp: 6, cd: 1, cat: `${RC} · Predação`,
       desc: 'Dissolve o bloco mirado (até 5 blocos, exceto blocos indestrutíveis) ou corrói a criatura mirada com ácido.',
       fx: { k: 'dissolve', range: 5, dmg: 6, eff: [['poison', 4, 1]] } }),
-    T.selfRegen('r.slime', { req: ['r.slime.absorb'] }),
+    T.selfRegen('r.slime', { req: ['r.slime.absorb'], initial: 'slime' }),
     S('r.slime.shapeshift', 'Transformação', 'Shape-shifting', 'rare', {
       cost: 40, lvl: 10, req: ['r.slime.absorb'], mp: 10, cd: 3, cat: `${RC} · Predação`,
       desc: 'Assume a forma de uma espécie absorvida e ganha suas características (ex.: lobo = velocidade, blaze = imunidade ao fogo, peixe = respiração aquática). Use de novo para trocar ou desfazer. Consome 1 Magicule/s.',

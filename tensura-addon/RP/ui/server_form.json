@@ -39,7 +39,7 @@
       },
       {
        "binding_type": "view",
-       "source_property_name": "(((#title_text - '§t§n§s') = #title_text) and ((#title_text - '§t§n§m') = #title_text))",
+       "source_property_name": "((((#title_text - '§t§n§s') = #title_text) and ((#title_text - '§t§n§m') = #title_text)) and ((#title_text - '§t§n§r') = #title_text))",
        "target_property_name": "#visible"
       }
      ],
@@ -94,6 +94,30 @@
      "controls": [
       {
        "menu@tensura_tree.menu_root": {}
+      }
+     ]
+    }
+   },
+   {
+    "tensura_race_wrap": {
+     "type": "panel",
+     "size": [
+      "100%",
+      "100%"
+     ],
+     "bindings": [
+      {
+       "binding_name": "#title_text"
+      },
+      {
+       "binding_type": "view",
+       "source_property_name": "(not ((#title_text - '§t§n§r') = #title_text))",
+       "target_property_name": "#visible"
+      }
+     ],
+     "controls": [
+      {
+       "race@tensura_tree.race_root": {}
       }
      ]
     }

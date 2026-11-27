@@ -109,3 +109,44 @@ O print do jogo mostrou o que funcionava e o que não:
 - O boneco era desenhado com ~1,9× a altura do quadro e saía dele: o quadro foi reduzido para caber.
 - O simulador e os testes passaram a usar a regra da grade e a verificar que cada valor (EP, nomes
   das habilidades, textos das abas) aparece no lugar certo.
+
+## Versão 0.3.0 — Grande Sábio, reencarnação e tela de raças
+
+**Arquivos criados:** `BP/scripts/systems/intro.js`, `BP/scripts/ui/raceUI.js`, `BP/scripts/core/raceView.js`,
+`BP/scripts/data/raceCards.js`, `BP/entities/great_sage.json`, `RP/entity/great_sage.entity.json`,
+`RP/models/entity/great_sage.geo.json`, `RP/animations/great_sage.animation.json`, `tools/gen_race_textures.py`,
+`test/race.test.mjs`, texturas em `RP/textures/tensura/race/` e `RP/textures/entity/tensura/`.
+**Arquivos modificados:** `main.js` (primeira entrada), `core/save.js` (`introDone`), `ui/menus.js` (escolha de raça
+usa a tela nova), `core/uiSpec.js`, `tools/build-ui.mjs` (tela + animações), `tools/build.mjs`, `tools/preview.mjs`,
+`data/trees/racial.js` (Autorregeneração passa a ser inicial do Slime).
+
+**Apresentação (na primeira entrada):**
+1. A tela ganha um tom azul/roxo (fade colorido da câmera) e soa o beacon.
+2. O Grande Sábio surge à frente do jogador. É uma entidade própria com modelo 3D, anel mágico girando,
+   flutuação e animação de entrada (cresce do zero), com partículas leves (3 a cada 6 ticks).
+3. A câmera se aproxima e enquadra o Grande Sábio enquanto o movimento fica bloqueado.
+4. As 6 falas aparecem letra a letra no título/subtítulo. Agachar completa a fala ou avança;
+   sem interação, avança sozinho após ~5 s.
+5. Abre a tela "Escolha sua Raça", que é obrigatória: fechar reabre.
+6. Ao confirmar, a tela clareia, surgem partículas e o título "Reencarnação concluída".
+   A câmera e os controles voltam, e o jogador recebe o Grimório e o Cristal.
+
+Ao sair no meio, a apresentação recomeça na próxima entrada, e os itens não são duplicados (`gifted`).
+Quem já tinha raça em versões anteriores não vê a apresentação.
+
+**Tela de raças:**
+- O Grande Sábio à esquerda, com flutuação, brilho pulsante e cubos mágicos animados (animações do
+  JSON UI encadeadas, como as do próprio jogo), e uma caixa de diálogo cuja fala muda conforme a seleção.
+- Título e subtítulo; 26 cards em 2 páginas (6×3), com retrato em pixel art de cada raça.
+- O card selecionado ganha borda azul e brilho pulsante. As 7 evoluções aparecem bloqueadas, com cadeado e explicação.
+- Painel com descrição, habilidades iniciais, afinidade, resistências, fraquezas, evoluções,
+  especializações e dificuldade (estrelas).
+- Botão verde "CONFIRMAR RAÇA" e as setas « ».
+
+**Limitações honestas:**
+- O efeito "letra a letra" é real, mas acontece no título/subtítulo do jogo, no mundo, e não dentro da tela de raças:
+  um formulário não pode ser atualizado enquanto está aberto.
+- Cada toque num card reabre a tela, com uma breve transição. É a mesma limitação dos outros menus.
+- Testado: 45 testes automáticos (dados, regras, salvamento, telas simuladas) e o type-check.
+  **Não testado no jogo:** a apresentação (câmera, fade, bloqueio de movimento, entidade) e a tela nova.
+  Além disso, a correção 0.2.1 (ligação por `grid_position`), que essas telas usam, ainda não foi confirmada no jogo.
