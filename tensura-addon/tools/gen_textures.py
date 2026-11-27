@@ -231,8 +231,45 @@ def frame(code, n=32, scale=2):
             x = c + (R + 0) * math.cos(math.radians(ang)) * 0.98
             y = c + (R + 0) * math.sin(math.radians(ang)) * 0.98
             d.ellipse([x - SS, y - SS, x + SS, y + SS], fill=(255, 255, 255, 255))
+    im = _sphere_shade(im, c, R, r_in, ring)
     small = im.resize((n, n), Image.LANCZOS)
     return pixel(small, scale)
+
+
+def _sphere_shade(im, c, R, r_in, ring):
+    """Iluminação 3D: luz vinda de cima-esquerda no anel (tubo), brilho especular e sombra interna."""
+    import numpy as np
+    a = np.asarray(im).astype(np.float32)
+    N = a.shape[0]
+    yy, xx = np.mgrid[0:N, 0:N]
+    dx, dy = (xx - c) / R, (yy - c) / R
+    dist = np.sqrt(dx * dx + dy * dy)
+    band = (dist * R >= r_in) & (dist <= 1.0) & (a[..., 3] > 0)
+    # luz direcional + curvatura do tubo (meio do anel mais claro)
+    mid = (1.0 + r_in / R) / 2
+    tube = 1.0 - np.clip(np.abs(dist - mid) / (1.0 - r_in / R + 1e-6) * 1.6, 0, 1) * 0.45
+    light = 1.0 + (-dx - dy) * 0.55
+    k = np.where(band, tube * light, 1.0)[..., None]
+    a[..., :3] = np.clip(a[..., :3] * k, 0, 255)
+    # sombra interna na janela do ícone (parte de cima-esquerda)
+    win = dist * R < r_in
+    sh = np.clip((-dx - dy) * 0.9 + 0.15, 0, 1) * np.clip((r_in / R - dist) / 0.08, 0, 1)
+    sh = np.where(win, np.clip(1 - (dist * R) / r_in, 0, 1) < 0.25, False) * sh
+    a[..., 3] = np.where(win & (a[..., 3] < 255), np.maximum(a[..., 3], sh * 150), a[..., 3])
+    out = Image.fromarray(a.astype(np.uint8), 'RGBA')
+    d = ImageDraw.Draw(out)
+    # brilho especular
+    hx, hy = c - R * 0.62, c - R * 0.62
+    s = R * 0.16
+    d.ellipse([hx - s, hy - s * 0.6, hx + s, hy + s * 0.6], fill=(255, 255, 255, 170))
+    return out
+
+
+def node_shadow(n=64):
+    im = Image.new('RGBA', (n, n), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.ellipse([n * 0.12, n * 0.55, n * 0.88, n * 0.95], fill=(0, 0, 0, 150))
+    return im.filter(ImageFilter.GaussianBlur(n * 0.06))
 
 
 # ── Linhas: 8 direções (n ne e se s sw w nw), 2 estados ──
@@ -254,11 +291,23 @@ def line_tile(code, n=48):
         if ch == '2':
             gd.line([c, c, c + dx * c, c + dy * c], fill=(70, 170, 255, 110), width=wl * 3)
     im.alpha_composite(g.filter(ImageFilter.GaussianBlur(n * SS * 0.03)))
+    sh = Image.new('RGBA', im.size, (0, 0, 0, 0))                     # sombra das linhas (profundidade)
+    sd = ImageDraw.Draw(sh)
+    off = n * SS * 0.03
+    for ch, (dx, dy) in zip(code, DIR8):
+        if ch != '0':
+            sd.line([c + off, c + off * 1.4, c + dx * c + off, c + dy * c + off * 1.4], fill=(0, 0, 0, 120), width=wl)
+    im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(n * SS * 0.012)))
     for state in ('1', '2'):  # apagadas por baixo, acesas por cima
         for ch, (dx, dy) in zip(code, DIR8):
             if ch == state:
                 col, w = (dim, wd) if state == '1' else (lit, wl)
-                d.line([c, c, c + dx * c * 1.02, c + dy * c * 1.02], fill=col, width=w)
+                dark = tuple(int(v * 0.55) for v in col[:3]) + (col[3],)
+                light = tuple(min(255, int(v * 1.35 + 30)) for v in col[:3]) + (col[3],)
+                end = (c + dx * c * 1.02, c + dy * c * 1.02)
+                d.line([c, c, *end], fill=dark, width=w)                          # borda escura do tubo
+                d.line([c, c, *end], fill=col, width=max(1, int(w * 0.7)))
+                d.line([c - w * 0.15, c - w * 0.15, end[0] - w * 0.15, end[1] - w * 0.15], fill=light, width=max(1, int(w * 0.25)))  # brilho
     top = '2' if '2' in code else '1'
     w = wl if top == '2' else wd
     d.ellipse([c - w / 2, c - w / 2, c + w / 2, c + w / 2], fill=lit if top == '2' else dim)
@@ -570,7 +619,67 @@ def item_sage_core(size=32):
     return finish(img, size)
 
 
+def _shade(c, k):
+    return (max(0, min(255, int(c[0] * k))), max(0, min(255, int(c[1] * k))), max(0, min(255, int(c[2] * k))), c[3])
+
+
+def raised(face, border, n=24, depth=4, pressed=False):
+    """Bloco em relevo (3D): face com degradê, luz em cima/esquerda, sombra e "espessura" embaixo.
+    Pressionado: a face desce (sem espessura) e ganha sombra interna no topo."""
+    im = Image.new('RGBA', (n, n), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    dep = 1 if pressed else depth
+    top = dep - 1 if pressed else 0
+    bot = n - 1 - (0 if pressed else 0)
+    # espessura (lado do bloco)
+    d.rectangle([0, top + 2, n - 1, bot], fill=_shade(border, 0.45))
+    d.rectangle([0, top, n - 1, bot - dep], fill=border)                       # contorno
+    fh = bot - dep - 2 - (top + 2)
+    for y in range(top + 2, bot - dep - 1):                                   # face com degradê vertical
+        k = 1.45 - 0.7 * (y - top - 2) / max(1, fh)
+        d.line([2, y, n - 3, y], fill=_shade(face, k))
+    if pressed:
+        d.line([2, top + 2, n - 3, top + 2], fill=_shade(face, 0.45))          # sombra interna
+        d.line([2, top + 3, n - 3, top + 3], fill=_shade(face, 0.7))
+    else:
+        d.line([2, top + 2, n - 3, top + 2], fill=_shade(face, 2.4))           # brilho do topo
+        d.line([3, top + 3, n - 4, top + 3], fill=_shade(face, 1.8))
+        d.line([2, top + 2, 2, bot - dep - 2], fill=_shade(face, 1.4))         # luz à esquerda
+        d.line([n - 3, top + 3, n - 3, bot - dep - 2], fill=_shade(face, 0.7)) # sombra à direita
+    d.point([(0, top), (n - 1, top), (0, bot), (n - 1, bot)], fill=(0, 0, 0, 0))  # cantos arredondados
+    return im, [4, 4 + top, 4, 4 + dep]
+
+
+def inset(face, border, n=24):
+    """Caixa rebaixada (conteúdo "dentro" da janela): sombra no topo/esquerda, luz embaixo/direita."""
+    im = Image.new('RGBA', (n, n), face)
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 0, n - 1, n - 1], outline=border)
+    d.line([1, 1, n - 2, 1], fill=_shade(face, 0.35)); d.line([1, 2, n - 2, 2], fill=_shade(face, 0.6))
+    d.line([1, 1, 1, n - 2], fill=_shade(face, 0.45))
+    d.line([1, n - 2, n - 2, n - 2], fill=_shade(border, 1.3)); d.line([n - 2, 1, n - 2, n - 2], fill=_shade(border, 1.1))
+    return im, [4, 4, 4, 4]
+
+
+def window3d(face, border, glow=None, n=32):
+    """Janela com sombra projetada (embaixo/direita), moldura em relevo e brilho interno."""
+    im = Image.new('RGBA', (n, n), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rectangle([3, 3, n - 1, n - 1], fill=(0, 0, 0, 120))                    # sombra projetada
+    d.rectangle([0, 0, n - 4, n - 4], fill=border)
+    d.rectangle([1, 1, n - 5, n - 5], fill=_shade(border, 1.35))              # bisel claro
+    d.rectangle([2, 2, n - 6, n - 6], fill=_shade(border, 0.6))               # bisel escuro
+    d.rectangle([3, 3, n - 7, n - 7], fill=face)
+    if glow:
+        d.rectangle([3, 3, n - 7, n - 7], outline=glow[:3] + (150,))
+    for y in range(4, 10):                                                     # luz suave no alto da janela
+        d.line([4, y, n - 8, y], fill=(150, 200, 255, 10 - (y - 4) * 2))
+    return im, [7, 7, 9, 9]
+
+
 def nine(path, im, n=3):
+    if isinstance(im, tuple):
+        im, n = im
     save(im, path + '.png')
     with open(path + '.json', 'w') as fh:
         json.dump({'nineslice_size': n, 'base_size': [im.width, im.height]}, fh)
@@ -591,12 +700,13 @@ def main():
     for code in spec['lines']:
         save(line_tile(code), os.path.join(T, 'ui', 'line', code + '.png'))
     save(landscape(), os.path.join(T, 'ui', 'bg.png'))
+    save(node_shadow(), os.path.join(T, 'ui', 'node_shadow.png'))
     U = os.path.join(T, 'ui')
-    nine(os.path.join(U, 'bar'), box(16, (8, 10, 20, 200), (60, 120, 170, 255)))
-    nine(os.path.join(U, 'panel'), box(16, (10, 12, 24, 238), (60, 170, 230, 255), (20, 40, 70, 255)))
-    nine(os.path.join(U, 'ctl'), box(16, (24, 30, 48, 225), (80, 100, 140, 255)))
-    nine(os.path.join(U, 'ctl_hover'), box(16, (40, 52, 82, 240), (100, 210, 255, 255)))
-    nine(os.path.join(U, 'ctl_pressed'), box(16, (18, 22, 36, 255), (160, 230, 255, 255)))
+    nine(os.path.join(U, 'bar'), window3d((8, 10, 20, 230), (40, 70, 110, 255)))
+    nine(os.path.join(U, 'panel'), window3d((10, 12, 24, 238), (40, 120, 180, 255), (60, 170, 230)))
+    nine(os.path.join(U, 'ctl'), raised((34, 42, 66, 255), (70, 90, 130, 255)))
+    nine(os.path.join(U, 'ctl_hover'), raised((46, 60, 96, 255), (100, 210, 255, 255)))
+    nine(os.path.join(U, 'ctl_pressed'), raised((30, 38, 60, 255), (160, 230, 255, 255), pressed=True))
     for n in ('btn_close', 'btn_back', 'btn_grimoire', 'btn_status', 'btn_unlock', 'btn_equip', 'btn_link', 'arrow_l', 'arrow_u', 'arrow_d',
               'arrow_r', 'zoom_in', 'zoom_out', 'zoom_in_off', 'zoom_out_off', 'center', 'hover', 'icon_slot', 'selected'):
         save(ui_icon(n), os.path.join(U, n + '.png'))
@@ -604,17 +714,17 @@ def main():
         save(tab_icon(tid), os.path.join(U, 'tab_' + tid + '.png'))
     # Menu principal
     M = os.path.join(T, 'menu')
-    nine(os.path.join(M, 'window'), box(24, (22, 27, 36, 245), (95, 105, 120, 255), (40, 48, 60, 255), 2), 4)
-    nine(os.path.join(M, 'box'), box(16, (17, 21, 29, 255), (58, 66, 80, 255)))
-    nine(os.path.join(M, 'row'), box(16, (28, 33, 43, 255), (70, 80, 96, 255)))
-    nine(os.path.join(M, 'row_hover'), box(16, (36, 44, 60, 255), (90, 200, 255, 255)))
-    nine(os.path.join(M, 'slot'), box(16, (14, 17, 24, 255), (78, 88, 104, 255), (30, 36, 46, 255), 2), 4)
-    nine(os.path.join(M, 'slot_hover'), box(16, (20, 26, 36, 255), (90, 200, 255, 255), (30, 36, 46, 255), 2), 4)
-    nine(os.path.join(M, 'button'), box(16, (40, 46, 56, 255), (110, 120, 136, 255), (60, 68, 80, 255), 2), 4)
-    nine(os.path.join(M, 'button_hover'), box(16, (52, 60, 74, 255), (90, 200, 255, 255), (60, 68, 80, 255), 2), 4)
-    nine(os.path.join(M, 'button_pressed'), box(16, (30, 36, 46, 255), (140, 220, 255, 255), (60, 68, 80, 255), 2), 4)
-    nine(os.path.join(M, 'tab_bg'), box(16, (34, 40, 50, 255), (80, 90, 104, 255), (48, 56, 68, 255), 2), 4)
-    nine(os.path.join(M, 'tab_bg_hover'), box(16, (40, 50, 66, 255), (90, 200, 255, 255), (48, 56, 68, 255), 2), 4)
+    nine(os.path.join(M, 'window'), window3d((22, 27, 36, 245), (95, 105, 120, 255)))
+    nine(os.path.join(M, 'box'), inset((17, 21, 29, 255), (58, 66, 80, 255)))
+    nine(os.path.join(M, 'row'), raised((40, 46, 58, 255), (80, 90, 108, 255), depth=3))
+    nine(os.path.join(M, 'row_hover'), raised((48, 58, 78, 255), (90, 200, 255, 255), depth=3))
+    nine(os.path.join(M, 'slot'), inset((14, 17, 24, 255), (78, 88, 104, 255)))
+    nine(os.path.join(M, 'slot_hover'), inset((20, 26, 36, 255), (90, 200, 255, 255)))
+    nine(os.path.join(M, 'button'), raised((52, 60, 74, 255), (110, 120, 136, 255)))
+    nine(os.path.join(M, 'button_hover'), raised((62, 74, 94, 255), (90, 200, 255, 255)))
+    nine(os.path.join(M, 'button_pressed'), raised((44, 52, 66, 255), (140, 220, 255, 255), pressed=True))
+    nine(os.path.join(M, 'tab_bg'), raised((44, 52, 64, 255), (80, 90, 104, 255)))
+    nine(os.path.join(M, 'tab_bg_hover'), raised((52, 64, 84, 255), (90, 200, 255, 255)))
     save(Image.new('RGBA', (4, 4), (0, 0, 0, 0)), os.path.join(M, 'none.png'))
     save(Image.new('RGBA', (4, 4), (0, 0, 0, 110)), os.path.join(M, 'shade.png'))
     save(Image.new('RGBA', (4, 2), (60, 70, 86, 255)), os.path.join(M, 'line.png'))
@@ -631,14 +741,14 @@ def main():
     G = os.path.join(T, 'sage')
     os.makedirs(G, exist_ok=True)
     glow = (80, 200, 255, 255)
-    nine(os.path.join(G, 'window'), box(24, (10, 16, 36, 248), glow, (30, 60, 120, 255), 2), 4)
-    nine(os.path.join(G, 'box'), box(16, (8, 14, 32, 255), (50, 120, 200, 255), (16, 28, 56, 255), 1), 3)
-    nine(os.path.join(G, 'button'), box(16, (20, 36, 72, 255), (70, 150, 230, 255), (34, 56, 100, 255), 2), 4)
-    nine(os.path.join(G, 'button_hover'), box(16, (30, 54, 104, 255), (140, 230, 255, 255), (40, 70, 130, 255), 2), 4)
-    nine(os.path.join(G, 'button_pressed'), box(16, (14, 26, 54, 255), (180, 240, 255, 255), (40, 70, 130, 255), 2), 4)
-    nine(os.path.join(G, 'cat'), box(16, (14, 24, 50, 255), (50, 100, 170, 255), (22, 36, 70, 255), 2), 4)
-    nine(os.path.join(G, 'cat_hover'), box(16, (24, 44, 88, 255), (120, 220, 255, 255), (30, 56, 100, 255), 2), 4)
-    nine(os.path.join(G, 'header'), box(16, (16, 30, 66, 255), glow, (40, 80, 150, 255), 2), 4)
+    nine(os.path.join(G, 'window'), window3d((10, 16, 36, 248), (50, 140, 230, 255), glow))
+    nine(os.path.join(G, 'box'), inset((8, 14, 32, 255), (50, 120, 200, 255)))
+    nine(os.path.join(G, 'button'), raised((28, 50, 98, 255), (70, 150, 230, 255)))
+    nine(os.path.join(G, 'button_hover'), raised((38, 66, 126, 255), (140, 230, 255, 255)))
+    nine(os.path.join(G, 'button_pressed'), raised((24, 42, 84, 255), (180, 240, 255, 255), pressed=True))
+    nine(os.path.join(G, 'cat'), raised((22, 38, 76, 255), (60, 120, 200, 255), depth=5))
+    nine(os.path.join(G, 'cat_hover'), raised((30, 54, 104, 255), (120, 220, 255, 255), depth=5))
+    nine(os.path.join(G, 'header'), raised((22, 40, 86, 255), glow, depth=4))
     for k in ('ask', 'analyses', 'level', 'skills', 'magic', 'intel', 'next', 'history', 'manifest', 'settings', 'missions', 'manas'):
         save(sage_icon(k, False), os.path.join(G, f'cat_{k}.png'))
         save(sage_icon(k, True), os.path.join(G, f'cat_{k}_on.png'))

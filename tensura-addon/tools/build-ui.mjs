@@ -58,6 +58,8 @@ function templates() {
       type: 'panel', ...TL,
       bindings: [colText, view("(not (#form_button_text = ''))", '#visible')],
       controls: [
+        // sombra no "chão" (profundidade): levemente abaixo e à direita do nó
+        { shadow: { type: 'image', layer: 2, texture: `${TEX.ui}node_shadow`, size: ['100%y', '80%'], offset: ['4%', '12%'], keep_ratio: false } },
         { icon: { type: 'image', layer: 3, size: ['100%y', '54%'], bilinear: false, bindings: [
           { ...colTex, binding_name_override: '#texture' }, { ...colTexFs, binding_name_override: '#texture_file_system' }] } },
         { frame: { type: 'image', layer: 4, size: ['100%y', '78%'], bilinear: false, bindings: [

@@ -184,8 +184,11 @@ function render(model, W, H, scale, rootName = 'root', toggles = new Set()) {
       const src = pathToFileURL(join(ROOT, 'RP', `${texture}.png`)).href;
       const nine = join(ROOT, 'RP', `${texture}.json`);
       if (existsSync(nine)) {
-        const n = JSON.parse(readFileSync(nine, 'utf8')).nineslice_size;
-        els.push(`<div style="${st};border:${n * scale}px solid transparent;box-sizing:border-box;border-image:url('${src}') ${n} fill stretch;image-rendering:pixelated"></div>`);
+        // nineslice_size: número ou [esquerda, cima, direita, baixo] (como no Bedrock)
+        const raw = JSON.parse(readFileSync(nine, 'utf8')).nineslice_size;
+        const [l, tp, r, b] = Array.isArray(raw) ? raw : [raw, raw, raw, raw];
+        const bw = [tp, r, b, l].map((v) => `${v * scale}px`).join(' ');
+        els.push(`<div style="${st};border-style:solid;border-color:transparent;border-width:${bw};box-sizing:border-box;border-image:url('${src}') ${tp} ${r} ${b} ${l} fill stretch;image-rendering:pixelated"></div>`);
       } else {
         els.push(`<img style="${st}" src="${src}">`);
       }

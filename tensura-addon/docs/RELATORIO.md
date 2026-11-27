@@ -527,3 +527,20 @@ Habilidades quando você tem Ciel. Operações reais, programadas (não é IA):
 - **PENDENTE (dados):** primeira aparição e confirmação das origens marcadas como não verificadas.
 - **NÃO SUPORTADO:** arrastar para os lados (Bedrock só rola na vertical); criar habilidades novas fora do
   catálogo; IA real.
+
+## Versão 0.7.1 — visual mais 3D (árvore e menus)
+
+O Bedrock não desenha 3D real em telas de formulário. A profundidade vem das texturas, sem custo extra de processamento.
+
+- **Botões e abas** (menu, painel do Sábio, barras da árvore): blocos em relevo.
+  - Face com degradê, brilho no topo, luz à esquerda, sombra à direita e "espessura" embaixo.
+  - Pressionado: o bloco afunda e ganha sombra interna.
+- **Janelas:** moldura com bisel duplo e sombra projetada.
+- **Caixas de conteúdo e espaços da barra:** rebaixados, com sombra interna.
+- **Nós da árvore:** iluminação de esfera no anel (luz de cima-esquerda e tubo mais claro no meio), brilho
+  especular, sombra interna na janela do ícone e **sombra no chão** embaixo de cada nó.
+- **Linhas:** sombreado de tubo (borda escura, brilho) e sombra projetada.
+- **Simulador:** passou a entender margens de 9-slice com 4 valores ([esquerda, cima, direita, baixo]), o mesmo
+  formato usado agora nas texturas.
+- **Não testado no jogo:** a ordem das 4 margens no 9-slice do Bedrock. Se algum botão aparecer esticado, troco
+  para margem única.

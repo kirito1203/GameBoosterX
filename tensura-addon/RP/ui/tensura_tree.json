@@ -44,6 +44,22 @@
   ],
   "controls": [
    {
+    "shadow": {
+     "type": "image",
+     "layer": 2,
+     "texture": "textures/tensura/ui/node_shadow",
+     "size": [
+      "100%y",
+      "80%"
+     ],
+     "offset": [
+      "4%",
+      "12%"
+     ],
+     "keep_ratio": false
+    }
+   },
+   {
     "icon": {
      "type": "image",
      "layer": 3,
