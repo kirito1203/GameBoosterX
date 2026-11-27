@@ -14,7 +14,7 @@ import {
 import { ask, INSUFFICIENT } from '../BP/scripts/core/sageAsk.js';
 import { buildSageForm } from '../BP/scripts/core/sageView.js';
 import { buildMenuForm } from '../BP/scripts/core/menuView.js';
-import { SAGE, SAGE_CATS, SAGE_COUNT, SAGE_MARK, MENU } from '../BP/scripts/core/uiSpec.js';
+import { SAGE, SAGE_CATS, SAGE_TILES, SAGE_COUNT, SAGE_MARK, MENU } from '../BP/scripts/core/uiSpec.js';
 import { previewHtml, scenario, modelFor } from '../tools/preview.mjs';
 
 const RP = new URL('../RP/', import.meta.url);
@@ -178,19 +178,38 @@ test('salvamento: tudo do Sábio volta igual, fica separado por jogador e cabe n
   assert.equal(deserialize(serialize(d)).race, 'slime');
 });
 
-test('painel: 8 categorias com botões ligados; botão GRANDE SÁBIO no menu principal', () => {
+test('painel: tela inicial 3x3 + Configurações; páginas com Voltar; botão GRANDE SÁBIO no menu', () => {
   const d = player();
+  const home = buildSageForm({ cat: 'home', d, sage: d.sage });
+  assert.equal(home.buttons.length, SAGE_COUNT);
+  assert.ok(home.title.startsWith(`${SAGE_MARK}§0`));
+  assert.equal(SAGE_TILES.length, 9);
+  SAGE_TILES.forEach((c, i) => {
+    assert.deepEqual(home.hit[SAGE.tile0 + i], c === 'manifest' ? { type: 'manifest' } : { type: 'cat', cat: c });
+    assert.ok(home.buttons[SAGE.tile0 + i].text, c);
+  });
+  assert.deepEqual(home.hit[SAGE.settings], { type: 'cat', cat: 'settings' });
+  assert.deepEqual(home.hit[SAGE.back], { type: 'back' });
+  assert.match(home.body, /Grande Sábio/);
   for (const cat of SAGE_CATS) {
     const m = buildSageForm({ cat, d, sage: d.sage });
     assert.equal(m.buttons.length, SAGE_COUNT);
-    assert.ok(m.title.startsWith(SAGE_MARK));
-    for (let i = 0; i < SAGE_CATS.length; i++) assert.deepEqual(m.hit[SAGE.cat0 + i], { type: 'cat', cat: SAGE_CATS[i] });
+    assert.ok(m.title.startsWith(`${SAGE_MARK}§${SAGE_CATS.indexOf(cat) + 1}`), cat);
+    assert.deepEqual(m.hit[SAGE.back], { type: 'cat', cat: 'home' }, 'Voltar leva à tela inicial');
+    assert.ok(!(SAGE.tile0 in m.hit), 'blocos só na tela inicial');
     assert.ok(m.body.length > 20, cat);
   }
   const lvl = buildSageForm({ cat: 'level', d, sage: d.sage });
   assert.match(lvl.body, /Requisitos para Raphael/);
   assert.ok(!Object.values(lvl.hit).some((a) => a.type === 'evolve'), 'sem botão de evoluir antes dos requisitos');
   assert.match(buildSageForm({ cat: 'next', d, sage: d.sage }).body, /Ciel[\s\S]*Condições de desbloqueio/);
+  assert.match(buildSageForm({ cat: 'magic', d, sage: d.sage }).body, /Suas magias/);
+  // Raphael muda a saudação, o retrato e o emblema
+  const r = { ...d.sage, stage: 'raphael' };
+  const rh = buildSageForm({ cat: 'home', d, sage: r });
+  assert.match(rh.body, /Raphael/);
+  assert.match(rh.buttons[SAGE.portrait].icon, /portrait_raphael/);
+  assert.match(rh.buttons[SAGE.emblem].icon, /icon_raphael/);
   const menu = buildMenuForm({ tab: 'status', d, state: stateOf(d) });
   assert.deepEqual(menu.hit[MENU.sage], { type: 'sage' });
   assert.match(menu.buttons[MENU.sage].text, /GRANDE SÁBIO/);
@@ -205,7 +224,7 @@ test('resource pack: tela do Sábio no roteador, texturas de estágio, item Núc
     assert.ok(existsSync(new URL(`textures/tensura/sage/portrait_${s}.png`, RP)), s);
     assert.ok(existsSync(new URL(`textures/tensura/sage/icon_${s}.png`, RP)), s);
   }
-  for (const c of SAGE_CATS) assert.ok(existsSync(new URL(`textures/tensura/sage/cat_${c}.png`, RP)), c);
+  for (const c of [...SAGE_CATS, ...SAGE_TILES]) assert.ok(existsSync(new URL(`textures/tensura/sage/cat_${c}_on.png`, RP)), c);
   assert.ok(existsSync(new URL('textures/entity/tensura/great_sage_raphael.png', RP)));
   assert.ok(existsSync(new URL('textures/entity/tensura/great_sage_ciel.png', RP)));
   const ent = JSON.parse(readFileSync(new URL('entities/great_sage.json', BP), 'utf8').replace(/^\/\/.*$/gm, ''));
@@ -215,6 +234,6 @@ test('resource pack: tela do Sábio no roteador, texturas de estágio, item Núc
   assert.ok(existsSync(new URL('items/sage_core.json', BP)));
   assert.ok(readFileSync(new URL('textures/item_texture.json', RP), 'utf8').includes('tensura_sage_core'));
   // simulação da tela: os 8 botões de categoria aparecem
-  const { page } = previewHtml(modelFor(scenario('sage-ask')), { root: 'sage_root' });
-  for (const label of ['Perguntar', 'Análises', 'Nível e evolução', 'Configurações']) assert.ok(page.includes(label), label);
+  const { page } = previewHtml(modelFor(scenario('sage-home')), { root: 'sage_root' });
+  for (const label of ['Conversar', 'Analisar', 'Status', 'Magias', 'Evolução', 'Memória', 'Configurações']) assert.ok(page.includes(label), label);
 });

@@ -479,9 +479,27 @@ def sage_icon(kind, on=False, size=48):
     d = ImageDraw.Draw(img)
     S = size * SS
     c = S / 2
-    col = (120, 230, 255, 255) if on else (205, 225, 245, 255)
+    TILE_COL = {'ask': (90, 210, 255), 'analyses': (150, 225, 255), 'level': (70, 170, 255), 'skills': (255, 210, 60),
+                'magic': (200, 130, 255), 'intel': (110, 240, 230), 'next': (90, 200, 255), 'history': (110, 220, 130),
+                'manifest': (130, 220, 255), 'settings': (200, 215, 235)}
+    col = (TILE_COL.get(kind, (120, 230, 255)) + (255,)) if on else (205, 225, 245, 255)
     w = int(S * 0.08)
-    if kind == 'ask':
+    if kind == 'magic':
+        import math
+        pts = []
+        for i in range(16):
+            r = S * (.44 if i % 2 == 0 else .14)
+            a = -math.pi / 2 + i * math.pi / 8
+            pts.append((c + r * math.cos(a), c + r * math.sin(a)))
+        d.polygon(pts, fill=col)
+        d.ellipse([c - S * .1, c - S * .1, c + S * .1, c + S * .1], fill=(255, 255, 255, 255))
+    elif kind == 'manifest':
+        u = S * .1
+        for (x0, y0, x1, y1) in ((-3, -1, 3, 1), (-1, -3, 1, 3), (-2, -2, 2, 2)):
+            d.rectangle([c + x0 * u, c + y0 * u, c + x1 * u, c + y1 * u], fill=col)
+        d.rectangle([c - u, c - u, c + u, c + u], fill=(255, 255, 255, 255))
+        d.ellipse([S * .06, S * .38, S * .94, S * .62], outline=col, width=max(2, w // 2))
+    elif kind == 'ask':
         d.rounded_rectangle([S * .12, S * .14, S * .88, S * .7], radius=S * .12, outline=col, width=w)
         d.polygon([(S * .3, S * .66), (S * .46, S * .66), (S * .26, S * .88)], fill=col)
         f = font(int(S * .42))
@@ -613,7 +631,7 @@ def main():
     nine(os.path.join(G, 'cat'), box(16, (14, 24, 50, 255), (50, 100, 170, 255), (22, 36, 70, 255), 2), 4)
     nine(os.path.join(G, 'cat_hover'), box(16, (24, 44, 88, 255), (120, 220, 255, 255), (30, 56, 100, 255), 2), 4)
     nine(os.path.join(G, 'header'), box(16, (16, 30, 66, 255), glow, (40, 80, 150, 255), 2), 4)
-    for k in ('ask', 'analyses', 'level', 'skills', 'intel', 'next', 'history', 'settings'):
+    for k in ('ask', 'analyses', 'level', 'skills', 'magic', 'intel', 'next', 'history', 'manifest', 'settings'):
         save(sage_icon(k, False), os.path.join(G, f'cat_{k}.png'))
         save(sage_icon(k, True), os.path.join(G, f'cat_{k}_on.png'))
     for k in ('ask', 'examples', 'target', 'item', 'skill'):

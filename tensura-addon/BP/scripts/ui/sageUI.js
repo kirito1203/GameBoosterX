@@ -114,7 +114,7 @@ function itemsText(d) {
  * @param {import('@minecraft/server').Player} player
  * @param {string} [startCat]
  */
-export async function openSage(player, startCat = 'ask', fromMenu = false) {
+export async function openSage(player, startCat = 'home', fromMenu = false) {
   if (openFor.has(player.id)) return 'close';
   const d0 = getData(player);
   if (!d0.race) { player.sendMessage('§7Escolha uma raça antes de consultar o Grande Sábio.'); return 'close'; }

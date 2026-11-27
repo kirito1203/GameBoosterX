@@ -1,21 +1,29 @@
 // Painel individual do Grande Sábio: monta título, corpo e botões de cada categoria.
 // Puro (testável em Node); o desenho é do resource pack (RP/ui/tensura_tree.json → sage_root).
 import { SKILLS, TREES } from '../data/registry.js';
+import { mpCost } from './stats.js';
+import { evaluate } from './progression.js';
 import { describeFx } from './describe.js';
 import { rarityInfo } from '../config.js';
 import {
   STAGES, STAGE_ORDER, CAPABILITIES, CAPABILITY_CATEGORIES, hasCapability, capabilityState, evolutionRequirements,
   levelCap, xpToNext, threatLevel, nextCapability,
 } from './sage.js';
-import { SAGE, SAGE_CATS, SAGE_COUNT, SAGE_ACTIONS, sageMark, TEX, iconName } from './uiSpec.js';
+import { SAGE, SAGE_CATS, SAGE_TILES, SAGE_COUNT, SAGE_ACTIONS, sageMark, TEX, iconName } from './uiSpec.js';
 
 export const CAT_LABEL = {
-  ask: 'Perguntar', analyses: 'Análises', level: 'Nível e evolução', skills: 'Habilidades do Sábio',
-  intel: 'Inteligência e capacidades', next: 'Próximas evoluções', history: 'Histórico', settings: 'Configurações',
+  ask: 'Conversar', analyses: 'Analisar', level: 'Status', skills: 'Habilidades', magic: 'Magias',
+  intel: 'Capacidades', next: 'Evolução', history: 'Memória', manifest: 'Manifestar', settings: 'Configurações',
 };
 const CAT_TITLE = {
-  ask: 'Perguntar ao Grande Sábio', analyses: 'Análises', level: 'Nível e evolução', skills: 'Habilidades do Grande Sábio',
-  intel: 'Inteligência e capacidades', next: 'Próximas evoluções', history: 'Histórico', settings: 'Configurações',
+  home: 'Menu do Grande Sábio', ask: 'Perguntar ao Grande Sábio', analyses: 'Análises', level: 'Nível e evolução',
+  skills: 'Habilidades do Grande Sábio', magic: 'Magias', intel: 'Inteligência e capacidades', next: 'Próximas evoluções',
+  history: 'Histórico e memória', settings: 'Configurações',
+};
+const GREETING = {
+  sage: ['Olá, viajante...', 'Eu sou o §bGrande Sábio§r.', '', 'Estou aqui para guiá-lo em sua jornada neste novo mundo.'],
+  raphael: ['Confirmado.', 'Eu sou §6Raphael§r, Senhor da Sabedoria.', '', 'Minha capacidade de processamento foi ampliada. Como posso ajudar?'],
+  ciel: ['Mestre, estou aqui.', 'Pode me chamar de §dCiel§r.', '', 'Cuidarei de tudo o que precisar.'],
 };
 export const ANALYSES_PAGE = 10;
 const FREQ = { normal: 'Todas', important: 'Só as importantes', off: 'Desligadas' };
@@ -77,7 +85,7 @@ function reqLines(ev) {
  * @param {string} [p.note]  mensagem curta no topo do painel (resultado da última ação)
  */
 export function buildSageForm({ cat, d, sage, page = 0, note = '' }) {
-  const ci = SAGE_CATS.indexOf(cat);
+  const ci = cat === 'home' ? -1 : SAGE_CATS.indexOf(cat);
   const buttons = Array.from({ length: SAGE_COUNT }, () => ({ text: '', icon: '' }));
   const hit = {};
   const set = (i, text, icon = '') => { buttons[i] = { text, icon }; };
@@ -87,12 +95,17 @@ export function buildSageForm({ cat, d, sage, page = 0, note = '' }) {
   const need = xpToNext(sage.level);
 
   set(SAGE.close, '', `${TEX.menu}close`); hit[SAGE.close] = { type: 'close' };
-  set(SAGE.back, '§fVoltar ao menu', `${TEX.menu}back`); hit[SAGE.back] = { type: 'back' };
-  SAGE_CATS.forEach((c, i) => {
-    const on = c === cat;
-    set(SAGE.cat0 + i, `${on ? '§b' : '§f'}${CAT_LABEL[c]}`, `${TEX.sage}cat_${c}${on ? '_on' : ''}`);
-    hit[SAGE.cat0 + i] = { type: 'cat', cat: c };
-  });
+  if (cat === 'home') {
+    set(SAGE.back, '§fVoltar ao menu', `${TEX.menu}back`); hit[SAGE.back] = { type: 'back' };
+    SAGE_TILES.forEach((c, i) => {
+      set(SAGE.tile0 + i, `§l${CAT_LABEL[c]}`, `${TEX.sage}cat_${c}_on`);
+      hit[SAGE.tile0 + i] = c === 'manifest' ? { type: 'manifest' } : { type: 'cat', cat: c };
+    });
+    set(SAGE.settings, '§lConfigurações', `${TEX.sage}cat_settings_on`); hit[SAGE.settings] = { type: 'cat', cat: 'settings' };
+  } else {
+    set(SAGE.back, '§fVoltar', `${TEX.menu}back`); hit[SAGE.back] = { type: 'cat', cat: 'home' };
+  }
+  set(SAGE.emblem, '', `${TEX.sage}icon_${sage.stage}`);
   set(SAGE.portrait, '', `${TEX.sage}portrait_${sage.stage}`);
   set(SAGE.stage, `${st.color}§l${st.name}`);
   set(SAGE.level, `§fNível §e${sage.level}§7/${cap}`);
@@ -106,7 +119,32 @@ export function buildSageForm({ cat, d, sage, page = 0, note = '' }) {
   if (note) lines.push(note, '');
   const ev = evolutionRequirements(sage, d);
 
-  if (cat === 'ask') {
+  if (cat === 'home') {
+    lines.push(...GREETING[sage.stage]);
+    const caps = CAPABILITIES.filter((c) => hasCapability(sage, c.id)).length;
+    lines.push('', `§7${caps} capacidades ativas · ${Object.keys(sage.analyses).length} espécies analisadas · ${sage.qa.length} conversas.§r`);
+    if (ev?.ready) lines.push(`§6§lUma evolução está disponível: ${stageName(ev.next)}.§r Toque em Status.`);
+  } else if (cat === 'magic') {
+    const mine = [...d.unlocked].map((id) => SKILLS[id]).filter((s) => s && s.type === 'active' && TREES[s.tree].kind === 'universal');
+    lines.push(`§lSuas magias (${mine.length}):§r`);
+    if (!mine.length) lines.push('Nenhuma magia aprendida ainda. Desbloqueie pela árvore de habilidades.');
+    for (const s of mine) {
+      const cost = d.stats ? mpCost(s, d.stats) : s.mp;
+      const cd = s.cooldown ? Math.round(s.cooldown * (d.stats?.cdMult ?? 1) * 10) / 10 : 0;
+      const slot = d.equipped.indexOf(s.id);
+      lines.push(`• §b${s.name}§r — ${TREES[s.tree].short} · Magículas §d${cost}§r${cd ? ` · ${cd}s` : ''}${slot >= 0 ? ` · §ebarra ${slot + 1}` : ''}§r`);
+    }
+    lines.push('');
+    if (hasCapability(sage, 'skill_query')) {
+      const state = { race: d.race, level: d.level, points: d.points, unlocked: d.unlocked, flags: d.flags };
+      const avail = Object.values(SKILLS).filter((s) => !d.unlocked.has(s.id) && s.type === 'active' && TREES[s.tree].kind === 'universal')
+        .map((s) => ({ s, ev: evaluate(s.id, state) })).filter((x) => x.ev.ok).sort((a, b) => a.ev.cost - b.ev.cost);
+      lines.push(`§lPode aprender agora (${avail.length}):§r`, ...avail.slice(0, 10).map(({ s, ev: e }) => `• ${s.name} — ${TREES[s.tree].short}, ${e.cost} pts`));
+      if (!avail.length) lines.push('Nenhuma magia disponível agora (pontos, nível ou requisitos).');
+    } else lines.push('§8Consulta de magias disponíveis: capacidade "Consulta de habilidades e magias" (nível 6).§r');
+    if (d.stats && (d.stats.sageMp ?? 1) < 1) lines.push('', `§7Otimização de Magicules ativa: custos -${Math.round((1 - d.stats.sageMp) * 100)}%.§r`);
+    actions.push(['Analisar magia', `${TEX.sage}btn_skill`, { type: 'analyze_skill' }]);
+  } else if (cat === 'ask') {
     lines.push('§7Respostas programadas a partir dos seus dados reais (não é IA generativa).§r', '');
     if (!sage.qa.length) lines.push('Nenhuma conversa ainda. Toque em §bEscrever pergunta§r.');
     for (const e of sage.qa.slice(-6).reverse()) lines.push(`§e» ${e.q}§r`, e.a, '');
@@ -152,7 +190,7 @@ export function buildSageForm({ cat, d, sage, page = 0, note = '' }) {
     }
     const earlier = CAPABILITIES.filter((x) => STAGE_ORDER.indexOf(x.stage) < STAGE_ORDER.indexOf(sage.stage));
     if (earlier.length) lines.push('', `§7Herdadas dos estágios anteriores: ${earlier.map((c) => c.name).join(', ')}`);
-    actions.push(['Perguntar', `${TEX.sage}btn_ask`, { type: 'cat', cat: 'ask' }]);
+    actions.push(['Conversar', `${TEX.sage}btn_ask`, { type: 'cat', cat: 'ask' }]);
     actions.push(['Analisar criatura', `${TEX.sage}btn_target`, { type: 'analyze_target' }]);
   } else if (cat === 'intel') {
     const on = CAPABILITIES.filter((c) => hasCapability(sage, c.id)).length;

@@ -323,3 +323,41 @@ Também não dava para arrastar a árvore com o dedo.
 - sons;
 - troca de textura da entidade;
 - funcionamento no celular.
+
+## Versão 0.5.1 — nova aparência do Grande Sábio (núcleo mágico)
+
+Seguindo a imagem de referência enviada, o Grande Sábio deixou de ser uma figura humana: agora é
+um **núcleo mágico** flutuante, sem corpo.
+
+**Modelo 3D** (`tools/gen_sage_model.py`, 13 ossos, 29 cubos):
+- núcleo em cruz brilhante com centro branco e uma casca de luz translúcida;
+- 3 anéis tracejados que giram em sentidos opostos (o do meio inclinado);
+- círculo mágico com hexagrama no chão;
+- 3 painéis holográficos orbitando e 8 fragmentos flutuantes.
+
+**Animações:**
+- **flutuar:** o núcleo gira e pulsa, os anéis e painéis giram;
+- **falar:** pulso forte e anéis acelerados;
+- **aparecer** e **desaparecer**.
+
+O controlador de estados e a propriedade `tensura:state` continuam os mesmos.
+
+**Aparência por estágio:** Grande Sábio azul, Raphael dourado, Ciel violeta. Isso vale para a entidade, os
+retratos, os ícones e a figura da tela de escolha de raça (`tools/sage_art.py`, a mesma arte para tudo).
+
+**Painel no estilo "Menu do Grande Sábio" da referência:**
+- **Tela inicial:**
+  - grade 3x3: Conversar, Analisar, Status, Habilidades, Magias, Capacidades, Evolução, Memória e Manifestar;
+  - barra **Configurações**;
+  - caixa de diálogo com a fala do Sábio, que muda por estágio.
+- **Páginas:** cada bloco abre a sua página, com **Voltar** para a tela inicial.
+- **Nova página Magias:** suas magias com custo e recarga reais (já com os bônus do Sábio), qual espaço da
+  barra ocupam e as que você pode aprender agora.
+- **Sem botões falsos:** "Síntese" e "Missões" da imagem não viraram botões, porque esses sistemas ainda
+  não existem.
+
+**Testes:** 57 passando. O teste do modelo agora exige as partes do núcleo, proíbe partes de corpo humano e
+confere as UVs dentro da textura. O teste da tela inicial confere 9 blocos, Configurações, Voltar e a troca de
+estágio. Prévia 3D: `docs/img/sabio_nucleo_3d.png`.
+
+**Não testado no jogo:** a transparência dos anéis e painéis, a rotação no jogo e o visual no celular.

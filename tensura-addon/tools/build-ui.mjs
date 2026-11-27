@@ -16,7 +16,7 @@ import {
   MARK, MENU_MARK, CTRL, CAT_COUNT, layerBase, TEX, TREE_COLS, TREE_ROWS, DETAIL_ROWS, NODE_TOGGLE_GROUP, detailPlacement,
   MENU, MENU_TABS, ACTIVE_ROWS, BAR_SLOTS, ACTION_COUNT,
   RACE_MARK, RACE, RACE_CARD_COLS, RACE_CARD_ROWS, CARD_SELECTED, CARD_LOCKED,
-  SAGE_MARK, SAGE, SAGE_CATS, SAGE_ACTIONS,
+  SAGE_MARK, SAGE, SAGE_TILES, SAGE_ACTIONS,
 } from '../BP/scripts/core/uiSpec.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -147,6 +147,12 @@ const ROW = {
 };
 const SAGE_BTN = {
   ...ICON_LEFT_TEXT, $ctl_bg: `${TEX.sage}button`, $ctl_bg_hover: `${TEX.sage}button_hover`, $ctl_bg_pressed: `${TEX.sage}button_pressed`,
+};
+// Bloco da tela inicial: ícone grande em cima, nome embaixo.
+const SAGE_TILE = {
+  $ctl_bg: `${TEX.sage}cat`, $ctl_bg_hover: `${TEX.sage}cat_hover`, $ctl_bg_pressed: `${TEX.sage}cat_hover`,
+  $ctl_icon_size: ['100%y', '52%'], $ctl_icon_anchor: 'top_middle', $ctl_icon_offset: [0, '9%'],
+  $ctl_text_size: ['94%', 'default'], $ctl_text_anchor: 'bottom_middle', $ctl_text_offset: [0, '-10%'], $ctl_font: 1.0,
 };
 const SAGE_CAT = {
   $ctl_bg: `${TEX.sage}cat`, $ctl_bg_hover: `${TEX.sage}cat_hover`, $ctl_bg_pressed: `${TEX.sage}cat_hover`,
@@ -393,17 +399,39 @@ function menuRoot() {
 }
 
 // ── Painel do Grande Sábio ──
+// Tela inicial (§0): grade 3x3 de blocos, barra Configurações e caixa de diálogo do Sábio.
+// Páginas (§1..§9): conteúdo com rolagem e botões de ação; "Voltar" leva à tela inicial.
 function sageRoot() {
   const box = (name, x, y, w, h, tex = `${TEX.sage}box`) => ({ [name]: { ...at(x, y, w, h), type: 'image', layer: 1, texture: tex, keep_ratio: false, bilinear: false } });
   const val = (name, idx, x, y, w, extra = {}) => slot(name, idx, x, y, w, 6, 'value', { $v_align: 'center', ...extra });
-  const catH = 9.6;
+  const scroll = (name, x, y, w, h) => ({ [name]: { type: 'panel', ...at(x, y, w, h), layer: 2, controls: [{ 'scroll@common.scrolling_panel': {
+    ...TL, size: ['100%', '100%'], $show_background: false,
+    $scrolling_content: `${NS}.details_text`, $scroll_size: [4, '100% - 2px'], $scrolling_pane_size: ['100% - 6px', '100%'],
+    $scrolling_pane_offset: [0, 0], $scroll_bar_right_padding_size: [0, 0],
+  } }] } });
+  const home = `(not ((#title_text - '${SAGE_MARK}§0') = #title_text))`;
+  const group = (name, visibleWhen, controls) => ({ [name]: {
+    type: 'panel', size: ['100%', '100%'], collection_name: COL,
+    bindings: [{ binding_name: '#title_text' }, view(visibleWhen, '#visible')], controls } });
+  const tileW = (74.5 - 2 * 1.2) / 3;
+  const hub = group('hub', home, [
+    ...SAGE_TILES.map((c, i) => ctl(`tile_${c}`, SAGE.tile0 + i, 24 + (i % 3) * (tileW + 1.2), 13.5 + Math.floor(i / 3) * 18, tileW, 17, SAGE_TILE)),
+    ctl('settings', SAGE.settings, 36, 68.3, 50.5, 8.5, { ...SAGE_BTN, $ctl_font: 1.0, $ctl_text_size: ['60%', 'default'], $ctl_align: 'center' }),
+    box('dialog_box', 24, 78.5, 74.5, 19, `${TEX.sage}header`),
+    scroll('dialog', 25.5, 79.8, 71.5, 16.5),
+  ]);
+  const page = group('page', `(not ${home})`, [
+    box('content_box', 24, 13.5, 74.5, 68),
+    scroll('content', 25.5, 14.5, 72, 66),
+    ...Array.from({ length: SAGE_ACTIONS }, (_, i) => ctl(`action${i}`, SAGE.action0 + i, 24 + (i % 3) * 25.1, 83 + Math.floor(i / 3) * 7.6, 24.4, 7, { ...SAGE_BTN, $ctl_font: 0.8 })),
+  ]);
   const ctrls = [
     { bg: img(`${TEX.sage}window`, { layer: 0 }) },
     box('header', 1, 1.5, 98, 10.5, `${TEX.sage}header`),
-    { title: { type: 'label', ...TL, offset: ['2.5%', '4.2%'], size: ['30%', 'default'], layer: 3, text: '§l§bGRANDE SÁBIO', shadow: true, font_scale_factor: 1.3 } },
-    slot('panel_title', SAGE.panelTitle, 30, 4.4, 56, 6, 'value', { $v_align: 'center', $v_font: 1.15 }),
+    slot('emblem', SAGE.emblem, 2, 2.5, 5, 8.5, 'picture', {}, ['100%y', '100%']),
+    slot('panel_title', SAGE.panelTitle, 9, 4.4, 76, 6, 'value', { $v_align: 'left', $v_font: 1.25 }),
     ctl('close', SAGE.close, 88.5, 2.5, 9.5, 8.5, { ...ICON_ONLY, $ctl_bg: `${TEX.sage}button`, $ctl_bg_hover: `${TEX.sage}button_hover`, $ctl_bg_pressed: `${TEX.sage}button_pressed` }),
-    // Coluna esquerda: retrato do estágio, nome, nível, XP e barra.
+    // Coluna esquerda: núcleo do estágio, nome, nível, XP e barra (todas as telas).
     box('portrait_box', 1.5, 13.5, 21, 45),
     slot('portrait', SAGE.portrait, 2.5, 14.5, 19, 43, 'picture', {}, ['100%y', '100%']),
     val('stage', SAGE.stage, 1.5, 60, 21, { $v_font: 1.1 }),
@@ -411,16 +439,8 @@ function sageRoot() {
     val('xp', SAGE.xp, 1.5, 73.5, 21, { $v_font: 0.85 }),
     slot('bar', SAGE.bar, 2.5, 80, 19, 4.5, 'picture'),
     ctl('back', SAGE.back, 1.5, 87, 21, 10, { ...SAGE_BTN, $ctl_font: 0.8 }),
-    // Categorias (8)
-    ...SAGE_CATS.map((c, i) => ctl(`cat_${c}`, SAGE.cat0 + i, 23.5, 13.5 + i * (catH + 0.9), 20, catH, SAGE_CAT)),
-    // Conteúdo com rolagem
-    box('content_box', 44.5, 13.5, 54, 68),
-    { content: { type: 'panel', ...at(45.5, 14.5, 52, 66), layer: 2, controls: [{ 'scroll@common.scrolling_panel': {
-      ...TL, size: ['100%', '100%'], $show_background: false,
-      $scrolling_content: `${NS}.details_text`, $scroll_size: [4, '100% - 2px'], $scrolling_pane_size: ['100% - 6px', '100%'],
-      $scrolling_pane_offset: [0, 0], $scroll_bar_right_padding_size: [0, 0],
-    } }] } },
-    ...Array.from({ length: SAGE_ACTIONS }, (_, i) => ctl(`action${i}`, SAGE.action0 + i, 44.5 + (i % 3) * 18.1, 83 + Math.floor(i / 3) * 7.6, 17.6, 7, { ...SAGE_BTN, $ctl_font: 0.75 })),
+    hub,
+    page,
   ];
   return {
     type: 'panel', size: ['100%', '100%'], collection_name: COL,

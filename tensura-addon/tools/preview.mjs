@@ -296,6 +296,8 @@ export function scenario(name) {
     case 'race-slime': return { kind: 'race', p: { page: 0, selected: 'slime', sageText: 'Agora, escolha a raça que definirá sua existência neste mundo.' } };
     case 'race-kijin': return { kind: 'race', p: { page: 0, selected: 'kijin', sageText: 'Kijin não pode ser escolhido agora. Essa forma é alcançada evoluindo a partir de Ogro.' } };
     case 'race-page2': return { kind: 'race', p: { page: 1, selected: 'giant', sageText: 'Gigante... Afinidade: Terra · Força. Dificuldade 2 de 5.' } };
+    case 'sage-home': return { kind: 'sage', p: { cat: 'home', d, sage: d.sage } };
+    case 'sage-magic': return { kind: 'sage', p: { cat: 'magic', d, sage: d.sage } };
     case 'sage-ask': return { kind: 'sage', p: { cat: 'ask', d, sage: d.sage } };
     case 'sage-level': return { kind: 'sage', p: { cat: 'level', d, sage: d.sage } };
     case 'sage-intel': return { kind: 'sage', p: { cat: 'intel', d, sage: d.sage } };

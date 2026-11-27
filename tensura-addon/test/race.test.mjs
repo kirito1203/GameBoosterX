@@ -79,10 +79,20 @@ test('Grande Sábio: modelo, textura, animações, controlador e propriedade con
   assert.equal(bp.description.identifier, cl.identifier);
   assert.equal(cl.geometry.default, geo.description.identifier);
   assert.ok(rc[cl.render_controllers[0]], 'render controller existe');
-  // Modelo humanoide com partes separadas e anéis como elementos à parte.
+  // Núcleo mágico (sem corpo humano): núcleo, brilho, anéis, círculo da base, painéis e fragmentos.
   const bones = new Map(geo.bones.map((b) => [b.name, b]));
-  for (const b of ['head', 'hair_back', 'body', 'coat_lower', 'rightArm', 'leftArm', 'rightLeg', 'leftLeg', 'ring_halo', 'ring_waist', 'ring_base']) {
+  for (const b of ['core', 'glow_core', 'ring_top', 'ring_mid', 'ring_low', 'ring_base', 'panel_orbit', 'panel_a', 'panel_b', 'panel_c', 'bits']) {
     assert.ok(bones.has(b), `osso ${b}`);
+  }
+  for (const b of ['head', 'body', 'rightArm', 'leftLeg']) assert.ok(!bones.has(b), `sem corpo humano: ${b}`);
+  // UVs dentro da textura 128x128.
+  for (const b of geo.bones) for (const c of b.cubes ?? []) {
+    const faces = Array.isArray(c.uv) ? [{ uv: c.uv, uv_size: [2 * (c.size[0] + c.size[2]), c.size[1] + c.size[2]] }] : Object.values(c.uv);
+    for (const f of faces) {
+      const xs = [f.uv[0], f.uv[0] + f.uv_size[0]];
+      const ys = [f.uv[1], f.uv[1] + f.uv_size[1]];
+      assert.ok(Math.min(...xs) >= 0 && Math.max(...xs) <= 128 && Math.min(...ys) >= 0 && Math.max(...ys) <= 128, `${b.name} UV fora`);
+    }
   }
   for (const b of geo.bones) if (b.parent) assert.ok(bones.has(b.parent), `pai ${b.parent}`);
   // Toda animação referenciada existe, e todo osso animado existe na geometria.

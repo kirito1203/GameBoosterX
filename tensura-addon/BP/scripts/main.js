@@ -42,7 +42,7 @@ world.afterEvents.itemUse.subscribe((ev) => {
   if (id === TOME) {
     openMenu(player, MENUS);
   } else if (id === CORE) {
-    openSage(player, 'ask', false);
+    openSage(player, 'home', false);
   } else if (id === CRYSTAL) {
     const d = getData(player);
     if (!d.race) { openMenu(player, MENUS); return; }

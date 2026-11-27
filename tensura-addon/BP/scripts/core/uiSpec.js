@@ -145,20 +145,25 @@ export const CARD_SELECTED = '§t§c§s';
 export const CARD_LOCKED = '§t§c§l';
 
 // ── Painel do Grande Sábio ──
+// Tela inicial (marcador §0): grade 3x3 de blocos + barra Configurações + caixa de diálogo.
+// Cada bloco abre a página da categoria (marcador §1..§9), com "Voltar" para a tela inicial.
 export const SAGE_MARK = '§t§n§g';
 export const sageMark = (cat) => `${SAGE_MARK}§${cat}`;
-export const SAGE_CATS = ['ask', 'analyses', 'level', 'skills', 'intel', 'next', 'history', 'settings'];
+export const SAGE_TILES = ['ask', 'analyses', 'level', 'skills', 'magic', 'intel', 'next', 'history', 'manifest'];
+export const SAGE_CATS = ['ask', 'analyses', 'level', 'skills', 'magic', 'intel', 'next', 'history', 'settings'];
 export const SAGE = {
   close: 0,
   back: 1,
-  cat0: 2, // 2..9 = 8 categorias
-  portrait: 10,
-  stage: 11,
-  level: 12,
-  xp: 13,
-  bar: 14,
-  panelTitle: 15,
-  action0: 16, // 16..21
+  tile0: 2, // 2..10 = 9 blocos da tela inicial
+  settings: 11,
+  portrait: 12,
+  stage: 13,
+  level: 14,
+  xp: 15,
+  bar: 16,
+  panelTitle: 17,
+  action0: 18, // 18..23
+  emblem: 24,
 };
 export const SAGE_ACTIONS = 6;
-export const SAGE_COUNT = SAGE.action0 + SAGE_ACTIONS;
+export const SAGE_COUNT = 25;

@@ -1,264 +1,81 @@
 #!/usr/bin/env python3
-"""Modelo 3D do Grande Sábio (figura feminina voxelizada) — geometria + textura geradas juntas.
+"""Modelo 3D do Grande Sábio como NÚCLEO MÁGICO (sem corpo humano) — geometria, texturas dos 3
+estágios, animações, retratos e ícones gerados juntos.
 
 Uso: python3 tools/gen_sage_model.py <pasta RP>
 
-Cada parte define o cubo (origem, tamanho, UV) e a pintura de cada face. Como a geometria e a
-textura saem do mesmo lugar, as regiões pintadas caem sempre nas faces certas (box UV do Bedrock).
+Partes (ossos):
+  core        núcleo em cruz (cubo central + braços + pontas), opaco e sem sombra (ignore_lighting)
+  glow_core   casca translúcida em volta do núcleo (brilho)
+  ring_top / ring_mid (inclinado) / ring_low   anéis horizontais tracejados que giram em sentidos opostos
+  ring_base   círculo mágico no chão
+  panel_orbit → panel_a/b/c   painéis holográficos orbitando
+  bits        fragmentos flutuantes
+Ossos ring*, panel* e glow* usam material translúcido (entity_alphablend).
 """
-import json, os, sys
+import json, math, os, sys
 from PIL import Image, ImageDraw
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from sage_art import PALETTES, portrait, icon  # noqa: E402
+
 TW, TH = 128, 128
-
-# ── Paleta ──
-SKIN = (255, 228, 214, 255); SKIN_S = (240, 200, 188, 255)
-HAIR = (168, 222, 255, 255); HAIR_S = (120, 186, 240, 255); HAIR_D = (86, 150, 220, 255); HAIR_L = (222, 246, 255, 255)
-EYE = (40, 150, 255, 255); EYE_L = (190, 240, 255, 255); LASH = (22, 30, 60, 255); BLUSH = (255, 180, 190, 255)
-WHITE = (242, 246, 255, 255); WHITE_S = (205, 216, 238, 255); WHITE_D = (170, 186, 220, 255)
-BLACK = (28, 30, 44, 255); BLACK_S = (44, 48, 68, 255)
-BLUE = (60, 170, 255, 255); CYAN = (120, 230, 255, 255)
-CLEAR = (0, 0, 0, 0)
+CORE_Y = 24  # centro do núcleo (pixels de modelo acima dos pés)
 
 
-def faces(u, v, w, h, d):
-    """Regiões da UV em caixa do Bedrock para um cubo (w,h,d) em (u,v)."""
+def box_uv(u, v, w, h, d):
+    """Regiões do box UV do Bedrock para um cubo w x h x d com UV em (u, v)."""
+    return {'up': (u + d, v, w, d), 'down': (u + d + w, v, w, d),
+            'east': (u, v + d, d, h), 'north': (u + d, v + d, w, h), 'west': (u + d + w, v + d, d, h), 'south': (u + 2 * d + w, v + d, w, h)}
+
+
+def cube(origin, size, uv):
+    return {'origin': origin, 'size': size, 'uv': uv}
+
+
+def plane_h(y, s, uv, uvs):
+    """Plano horizontal s x s na altura y (só faces de cima e de baixo)."""
+    return {'origin': [-s / 2, y, -s / 2], 'size': [s, 0, s],
+            'uv': {'up': {'uv': uv, 'uv_size': uvs}, 'down': {'uv': [uv[0], uv[1] + uvs[1]], 'uv_size': [uvs[0], -uvs[1]]}}}
+
+
+def plane_v(origin, w, h, uv, uvs):
+    """Plano vertical w x h voltado para ±Z (faces norte e sul)."""
+    return {'origin': origin, 'size': [w, h, 0],
+            'uv': {'north': {'uv': uv, 'uv_size': uvs}, 'south': {'uv': [uv[0] + uvs[0], uv[1]], 'uv_size': [uvs[0], uvs[1]]}}}
+
+
+def geometry():
+    y = CORE_Y
+    core = [cube([-4, y - 4, -4], [8, 8, 8], [0, 0])]
+    for o in ([4, y - 2.5, -2.5], [-9, y - 2.5, -2.5], [-2.5, y + 4, -2.5], [-2.5, y - 9, -2.5], [-2.5, y - 2.5, 4], [-2.5, y - 2.5, -9]):
+        core.append(cube(o, [5, 5, 5], [0, 16]))
+    for o in ([9, y - 1, -1], [-11, y - 1, -1], [-1, y + 9, -1], [-1, y - 11, -1], [-1, y - 1, 9], [-1, y - 1, -11]):
+        core.append(cube(o, [2, 2, 2], [0, 28]))
+    glow = [cube([-6, y - 6, -6], [12, 12, 12], [32, 0])]
+    bits = [cube([bx, by, bz], [1, 1, 1], [0, 34]) for (bx, by, bz) in
+            ((12, 8, 4), (-13, 12, -3), (9, 36, -8), (-8, 40, 7), (4, 4, -12), (-5, 30, -13), (14, 26, 10), (-14, 20, 9))]
+    pw, ph, R = 9, 12, 20
+
+    def panel(u):
+        return [plane_v([-pw / 2, y - ph / 2, -R], pw, ph, [u, 40], [16, 22])]
+
+    bones = [
+        {'name': 'root', 'pivot': [0, 0, 0]},
+        {'name': 'core', 'parent': 'root', 'pivot': [0, y, 0], 'cubes': core},
+        {'name': 'glow_core', 'parent': 'root', 'pivot': [0, y, 0], 'cubes': glow},
+        {'name': 'ring_top', 'parent': 'root', 'pivot': [0, y + 11, 0], 'cubes': [plane_h(y + 11, 24, [0, 64], [32, 32])]},
+        {'name': 'ring_mid_tilt', 'parent': 'root', 'pivot': [0, y, 0], 'rotation': [8, 0, -6]},
+        {'name': 'ring_mid', 'parent': 'ring_mid_tilt', 'pivot': [0, y, 0], 'cubes': [plane_h(y, 38, [32, 64], [32, 32])]},
+        {'name': 'ring_low', 'parent': 'root', 'pivot': [0, y - 11, 0], 'cubes': [plane_h(y - 11, 30, [0, 96], [32, 32])]},
+        {'name': 'ring_base', 'parent': 'root', 'pivot': [0, 0.5, 0], 'cubes': [plane_h(0.5, 38, [64, 64], [64, 64])]},
+        {'name': 'panel_orbit', 'parent': 'root', 'pivot': [0, y, 0]},
+        {'name': 'panel_a', 'parent': 'panel_orbit', 'pivot': [0, y, 0], 'rotation': [0, 60, 0], 'cubes': panel(64)},
+        {'name': 'panel_b', 'parent': 'panel_orbit', 'pivot': [0, y, 0], 'rotation': [0, 180, 0], 'cubes': panel(96)},
+        {'name': 'panel_c', 'parent': 'panel_orbit', 'pivot': [0, y, 0], 'rotation': [0, 300, 0], 'cubes': panel(64)},
+        {'name': 'bits', 'parent': 'root', 'pivot': [0, y, 0], 'cubes': bits},
+    ]
     return {
-        'up': (u + d, v, w, d), 'down': (u + d + w, v, w, d),
-        'side_r': (u, v + d, d, h), 'front': (u + d, v + d, w, h),
-        'side_l': (u + d + w, v + d, d, h), 'back': (u + 2 * d + w, v + d, w, h),
-    }
-
-
-def fill(im, rect, painter):
-    x0, y0, w, h = rect
-    px = im.load()
-    for y in range(h):
-        for x in range(w):
-            c = painter(x, y, w, h)
-            if c is not None:
-                px[x0 + x, y0 + y] = c
-
-
-def solid(c):
-    return lambda x, y, w, h: c
-
-
-def shaded(c1, c2, every=3):
-    return lambda x, y, w, h: c2 if (x + y) % every == 0 else c1
-
-
-# ── Pinturas por face ──
-def head_front(x, y, w, h):
-    if y in (4, 5) and x in (1, 2, 5, 6):          # olhos (2x2)
-        if y == 4 and x in (1, 5):
-            return EYE_L
-        return EYE
-    if y == 3 and x in (1, 2, 5, 6):
-        return LASH
-    if y == 6 and x in (1, 6):
-        return BLUSH
-    if y == 7 and x in (3, 4):
-        return SKIN_S
-    return SKIN
-
-
-def hair_full(x, y, w, h):
-    if y == 0 or x % 3 == 1:
-        return HAIR_S if (x + y) % 4 else HAIR_D
-    if (x + 2 * y) % 7 == 0:
-        return HAIR_L
-    return HAIR
-
-
-def hair_front(x, y, w, h):
-    # franja nas 3 primeiras linhas (bordas recortadas) e mechas emoldurando o rosto
-    if y <= 1:
-        return hair_full(x, y, w, h)
-    if y == 2 and x not in (3,):
-        return HAIR
-    if y == 3 and x in (0, 2, 5, 7):
-        return HAIR_S
-    if x in (0, 7):
-        return HAIR_S if y % 2 else HAIR
-    return CLEAR
-
-
-def hair_back_paint(x, y, w, h):
-    base = hair_full(x, y, w, h)
-    if y > h - 4:  # pontas mais escuras e recortadas
-        if (x + y) % 3 == 0:
-            return CLEAR
-        return HAIR_D
-    return base
-
-
-def body_front(x, y, w, h):
-    if y == 0 and 2 <= x <= 5:
-        return SKIN  # pescoço
-    if y == 2 and x in (3, 4):
-        return CYAN  # cristal no peito
-    if x in (0, 7):
-        return BLUE if y % 3 else BLACK_S
-    if y in (7, 8):
-        return BLUE  # faixa na cintura
-    return BLACK if (x + y) % 5 else BLACK_S
-
-
-def coat_front(x, y, w, h):
-    if 2 <= x <= 5:
-        return CLEAR  # casaco aberto na frente
-    if x in (2 - 1, 6) and y % 2 == 0:
-        return BLUE
-    return WHITE if (x + y) % 4 else WHITE_S
-
-
-def coat_back(x, y, w, h):
-    if y in (4, 5) and x in (3, 4):
-        return BLUE  # emblema
-    return WHITE if (x + y) % 4 else WHITE_S
-
-
-def coat_lower_front(x, y, w, h):
-    if 3 <= x <= 5:
-        return CLEAR
-    if y >= h - 2:
-        return BLUE if y == h - 1 else WHITE_D
-    return WHITE if (x + y) % 4 else WHITE_S
-
-
-def coat_lower_side(x, y, w, h):
-    if y >= h - 2:
-        return BLUE if y == h - 1 else WHITE_D
-    return WHITE if (x + y) % 5 else WHITE_S
-
-
-def arm_paint(x, y, w, h):
-    if y >= h - 3:
-        return SKIN  # mãos
-    return BLACK if y % 4 else BLACK_S
-
-
-def sleeve_paint(x, y, w, h):
-    if y >= h - 3:
-        return CLEAR  # mão aparece
-    if y in (h - 5, h - 4):
-        return BLUE if y == h - 4 else BLACK  # punho
-    return WHITE if (x + y) % 4 else WHITE_S
-
-
-def leg_paint(x, y, w, h):
-    if y <= 1:
-        return SKIN  # coxa
-    if y == 2:
-        return BLUE  # faixa da meia
-    if y >= h - 2:
-        return WHITE if y == h - 1 else WHITE_S  # botas
-    return BLACK if (x + y) % 6 else BLACK_S
-
-
-def strand_paint(x, y, w, h):
-    if y > h - 2 and x % 2:
-        return CLEAR
-    return HAIR if (x + y) % 3 else HAIR_S
-
-
-def ring(cx, cy, r, thick, col, dashed=False):
-    def p(x, y, w, h):
-        dx, dy = x - cx + 0.5, y - cy + 0.5
-        dist = (dx * dx + dy * dy) ** 0.5
-        if abs(dist - r) <= thick / 2:
-            if dashed and int((dx + 40) // 3 + (dy + 40) // 3) % 2:
-                return None
-            return col
-        return None
-    return p
-
-
-# ── Partes: (osso, origem, tamanho, uv, pinturas{face: painter} ou 'plane', extras) ──
-PARTS = [
-    # cabeça
-    dict(bone='head', origin=[-4, 24, -4], size=[8, 8, 8], uv=[0, 0],
-         paint={'front': head_front, 'up': hair_full, 'side_r': hair_full, 'side_l': hair_full, 'back': hair_full, 'down': solid(SKIN_S)}),
-    dict(bone='head', origin=[-4, 24, -4], size=[8, 8, 8], uv=[32, 0], inflate=0.5,
-         paint={'front': hair_front, 'up': hair_full, 'side_r': hair_full, 'side_l': hair_full, 'back': hair_full, 'down': solid(CLEAR)}),
-    dict(bone='head', origin=[-5, 15, -3], size=[1, 11, 3], uv=[96, 0],
-         paint={k: strand_paint for k in ('front', 'back', 'side_r', 'side_l', 'up', 'down')}),
-    dict(bone='head', origin=[4, 15, -3], size=[1, 11, 3], uv=[96, 0], mirror=True,
-         paint={k: strand_paint for k in ('front', 'back', 'side_r', 'side_l', 'up', 'down')}),
-    # cabelo longo (atrás)
-    dict(bone='hair_back', origin=[-4.5, 12, 3.5], size=[9, 19, 2], uv=[64, 0],
-         paint={k: hair_back_paint for k in ('front', 'back', 'side_r', 'side_l', 'up', 'down')}),
-    # tronco e casaco
-    dict(bone='body', origin=[-4, 12, -2], size=[8, 12, 4], uv=[0, 16],
-         paint={'front': body_front, 'back': solid(BLACK), 'side_r': solid(BLACK_S), 'side_l': solid(BLACK_S), 'up': solid(BLACK), 'down': solid(BLACK)}),
-    dict(bone='body', origin=[-4, 12, -2], size=[8, 12, 4], uv=[24, 16], inflate=0.45,
-         paint={'front': coat_front, 'back': coat_back, 'side_r': solid(WHITE), 'side_l': solid(WHITE), 'up': solid(WHITE_S), 'down': solid(CLEAR)}),
-    dict(bone='coat_lower', origin=[-4.5, 3, -2.5], size=[9, 9, 5], uv=[48, 16],
-         paint={'front': coat_lower_front, 'back': coat_lower_side, 'side_r': coat_lower_side, 'side_l': coat_lower_side, 'up': solid(CLEAR), 'down': solid(CLEAR)}),
-    # braços (finos) + mangas do casaco
-    dict(bone='rightArm', origin=[-7, 12, -2], size=[3, 12, 4], uv=[0, 32], paint={k: arm_paint for k in ('front', 'back', 'side_r', 'side_l', 'up', 'down')}),
-    dict(bone='rightArm', origin=[-7, 12, -2], size=[3, 12, 4], uv=[16, 32], inflate=0.5, paint={k: sleeve_paint for k in ('front', 'back', 'side_r', 'side_l', 'up')} | {'down': solid(CLEAR)}),
-    dict(bone='leftArm', origin=[4, 12, -2], size=[3, 12, 4], uv=[0, 32], mirror=True, paint={}),
-    dict(bone='leftArm', origin=[4, 12, -2], size=[3, 12, 4], uv=[16, 32], inflate=0.5, mirror=True, paint={}),
-    # pernas
-    dict(bone='rightLeg', origin=[-3.9, 0, -2], size=[4, 12, 4], uv=[32, 32], paint={k: leg_paint for k in ('front', 'back', 'side_r', 'side_l', 'up', 'down')}),
-    dict(bone='leftLeg', origin=[-0.1, 0, -2], size=[4, 12, 4], uv=[32, 32], mirror=True, paint={}),
-    # anéis mágicos (planos, translúcidos pelo material do render controller)
-    dict(bone='ring_halo', origin=[-6, 34, -6], size=[12, 0, 12], plane=[0, 64, 32, 32],
-         paint=[ring(16, 16, 13, 2.2, (150, 235, 255, 230)), ring(16, 16, 10, 1, (90, 190, 255, 170), dashed=True)]),
-    dict(bone='ring_waist', origin=[-12, 14, -12], size=[24, 0, 24], plane=[32, 64, 32, 32],
-         paint=[ring(16, 16, 15, 1.4, (120, 220, 255, 200)), ring(16, 16, 12.5, 1, (80, 170, 255, 140), dashed=True)]),
-    dict(bone='ring_base', origin=[-14, -2, -14], size=[28, 0, 28], plane=[64, 64, 32, 32],
-         paint=[ring(16, 16, 15, 1.6, (120, 230, 255, 220)), ring(16, 16, 11, 1, (90, 190, 255, 170)),
-                ring(16, 16, 6, 1, (150, 240, 255, 150), dashed=True)]),
-]
-
-BONES = [
-    {'name': 'root', 'pivot': [0, 0, 0]},
-    {'name': 'body', 'parent': 'root', 'pivot': [0, 24, 0]},
-    {'name': 'head', 'parent': 'body', 'pivot': [0, 24, 0]},
-    {'name': 'hair_back', 'parent': 'head', 'pivot': [0, 30, 4]},
-    {'name': 'coat_lower', 'parent': 'body', 'pivot': [0, 12, 0]},
-    {'name': 'rightArm', 'parent': 'body', 'pivot': [-5, 22, 0]},
-    {'name': 'leftArm', 'parent': 'body', 'pivot': [5, 22, 0]},
-    {'name': 'rightLeg', 'parent': 'root', 'pivot': [-1.9, 12, 0]},
-    {'name': 'leftLeg', 'parent': 'root', 'pivot': [1.9, 12, 0]},
-    {'name': 'ring_halo', 'parent': 'head', 'pivot': [0, 34, 0]},
-    {'name': 'ring_waist_tilt', 'parent': 'root', 'pivot': [0, 14, 0], 'rotation': [12, 0, -8]},
-    {'name': 'ring_waist', 'parent': 'ring_waist_tilt', 'pivot': [0, 14, 0]},
-    {'name': 'ring_base', 'parent': 'root', 'pivot': [0, -2, 0]},
-]
-
-
-def build(rp):
-    im = Image.new('RGBA', (TW, TH), CLEAR)
-    cubes = {b['name']: [] for b in BONES}
-    for part in PARTS:
-        cube = {'origin': part['origin'], 'size': part['size']}
-        if part.get('inflate'):
-            cube['inflate'] = part['inflate']
-        if part.get('mirror'):
-            cube['mirror'] = True
-        if 'plane' in part:
-            u, v, w, h = part['plane']
-            cube['uv'] = {'up': {'uv': [u, v], 'uv_size': [w, h]}, 'down': {'uv': [u, v], 'uv_size': [w, h]}}
-            for painter in part['paint']:
-                fill(im, (u, v, w, h), painter)
-        else:
-            cube['uv'] = part['uv']
-            w, h, d = part['size']
-            rects = faces(part['uv'][0], part['uv'][1], int(w), int(h), int(d))
-            for face, painter in part['paint'].items():
-                fill(im, rects[face], painter)
-        cubes[part['bone']].append(cube)
-    bones = []
-    for b in BONES:
-        bone = dict(b)
-        if cubes[b['name']]:
-            bone['cubes'] = cubes[b['name']]
-        bones.append(bone)
-    geo = {
         'format_version': '1.12.0',
         'minecraft:geometry': [{
             'description': {
@@ -268,79 +85,149 @@ def build(rp):
             'bones': bones,
         }],
     }
+
+
+def A(c, a=255):
+    return (c[0], c[1], c[2], a)
+
+
+def texture(stage):
+    c, l, dk = PALETTES[stage]
+    im = Image.new('RGBA', (TW, TH), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    for _, (x, y, w, h) in box_uv(0, 0, 8, 8, 8).items():          # núcleo central: claro com centro branco
+        d.rectangle([x, y, x + w - 1, y + h - 1], fill=A(l))
+        d.rectangle([x + 1, y + 1, x + w - 2, y + h - 2], fill=(235, 250, 255, 255))
+        d.rectangle([x + 2, y + 2, x + w - 3, y + h - 3], fill=(255, 255, 255, 255))
+        d.point([(x, y), (x + w - 1, y), (x, y + h - 1), (x + w - 1, y + h - 1)], fill=A(c))
+    for _, (x, y, w, h) in box_uv(0, 16, 5, 5, 5).items():         # braços
+        d.rectangle([x, y, x + w - 1, y + h - 1], fill=A(c))
+        d.rectangle([x + 1, y + 1, x + w - 2, y + h - 2], fill=A(l))
+        d.point((x + w // 2, y + h // 2), fill=(255, 255, 255, 255))
+    for _, (x, y, w, h) in box_uv(0, 28, 2, 2, 2).items():         # pontas
+        d.rectangle([x, y, x + w - 1, y + h - 1], fill=A(l))
+    for _, (x, y, w, h) in box_uv(0, 34, 1, 1, 1).items():         # fragmentos
+        d.rectangle([x, y, x + w - 1, y + h - 1], fill=A(l))
+    for _, (x, y, w, h) in box_uv(32, 0, 12, 12, 12).items():      # casca de brilho translúcida
+        d.rectangle([x, y, x + w - 1, y + h - 1], fill=A(c, 70), outline=A(l, 120))
+
+    def ring(x0, y0, n, dashes, inner):
+        S = n * 8
+        r = Image.new('RGBA', (S, S), (0, 0, 0, 0))
+        g = ImageDraw.Draw(r)
+        g.ellipse([12, 12, S - 13, S - 13], outline=A(c, 110), width=8)
+        for i in range(dashes):
+            a0 = 360 * i / dashes
+            g.arc([3, 3, S - 4, S - 4], a0, a0 + 360 / dashes * 0.6, fill=A(l, 240), width=12)
+        if inner:
+            g.ellipse([S * .22, S * .22, S * .78, S * .78], outline=A(l, 150), width=6)
+        im.alpha_composite(r.resize((n, n), Image.NEAREST), (x0, y0))
+
+    ring(0, 64, 32, 14, False)
+    ring(32, 64, 32, 20, True)
+    ring(0, 96, 32, 16, False)
+    S = 256                                                          # círculo mágico da base
+    m = Image.new('RGBA', (S, S), (0, 0, 0, 0))
+    g = ImageDraw.Draw(m)
+    g.ellipse([4, 4, S - 5, S - 5], outline=A(l, 230), width=8)
+    g.ellipse([30, 30, S - 31, S - 31], outline=A(c, 200), width=6)
+    g.ellipse([70, 70, S - 71, S - 71], outline=A(l, 180), width=5)
+    pts = [(S / 2 + 96 * math.cos(math.radians(90 + k * 60)), S / 2 + 96 * math.sin(math.radians(90 + k * 60))) for k in range(6)]
+    g.polygon(pts[0::2], outline=A(c, 200), width=4)
+    g.polygon(pts[1::2], outline=A(c, 200), width=4)
+    for k in range(24):
+        a = math.radians(k * 15)
+        g.line([S / 2 + 104 * math.cos(a), S / 2 + 104 * math.sin(a), S / 2 + 116 * math.cos(a), S / 2 + 116 * math.sin(a)], fill=A(l, 220), width=5)
+    im.alpha_composite(m.resize((64, 64), Image.NEAREST), (64, 64))
+    for x0, seed in ((64, 0), (96, 1)):                              # painéis 16x22 (frente e verso)
+        for half in (0, 16):
+            x = x0 + half
+            d.rectangle([x, 40, x + 15, 61], fill=A(dk, 120), outline=A(l, 230))
+            d.rectangle([x + 2, 42, x + 13, 45], fill=A(c, 200))
+            for k in range(5):
+                yy = 48 + k * 3
+                d.line([x + 2, yy, x + (9 if (k + seed) % 2 else 13), yy], fill=A(l, 200))
+    return im
+
+
+def animations():
+    lt = 'query.life_time'
+    return {
+        'format_version': '1.8.0',
+        'animations': {
+            'animation.tensura.great_sage.float': {
+                'loop': True,
+                'bones': {
+                    'root': {'position': [0, f'2 + math.sin({lt} * 110) * 1.0', 0]},
+                    'core': {'rotation': [0, f'{lt} * 40', 0], 'scale': f'1 + math.sin({lt} * 200) * 0.03'},
+                    'glow_core': {'rotation': [f'{lt} * 25', f'-{lt} * 30', 0], 'scale': f'1 + math.sin({lt} * 200) * 0.08'},
+                    'ring_top': {'rotation': [0, f'{lt} * 70', 0]},
+                    'ring_mid': {'rotation': [0, f'-{lt} * 50', 0]},
+                    'ring_low': {'rotation': [0, f'{lt} * 60', 0]},
+                    'ring_base': {'rotation': [0, f'-{lt} * 20', 0], 'scale': f'1 + math.sin({lt} * 150) * 0.05'},
+                    'panel_orbit': {'rotation': [0, f'{lt} * 25', 0]},
+                    'panel_a': {'position': [0, f'math.sin({lt} * 120) * 1.2', 0]},
+                    'panel_b': {'position': [0, f'math.sin({lt} * 120 + 120) * 1.2', 0]},
+                    'panel_c': {'position': [0, f'math.sin({lt} * 120 + 240) * 1.2', 0]},
+                    'bits': {'rotation': [0, f'-{lt} * 35', 0], 'position': [0, f'math.sin({lt} * 90) * 1.5', 0]},
+                },
+            },
+            'animation.tensura.great_sage.talk': {
+                'loop': True,
+                'bones': {
+                    'core': {'scale': f'1 + math.sin({lt} * 600) * 0.07'},
+                    'glow_core': {'scale': f'1.1 + math.sin({lt} * 600) * 0.12'},
+                    'ring_top': {'rotation': [0, f'{lt} * 90', 0]},
+                    'ring_low': {'rotation': [0, f'-{lt} * 70', 0]},
+                },
+            },
+            'animation.tensura.great_sage.appear': {
+                'animation_length': 1.2,
+                'loop': 'hold_on_last_frame',
+                'bones': {
+                    'root': {'scale': {'0.0': [0.01, 0.01, 0.01], '0.8': [1.1, 1.1, 1.1], '1.2': [1, 1, 1]},
+                             'position': {'0.0': [0, -12, 0], '1.2': [0, 0, 0]}},
+                    'ring_base': {'scale': {'0.0': [2.5, 2.5, 2.5], '1.0': [1, 1, 1]}},
+                    'panel_orbit': {'scale': {'0.0': [0.01, 0.01, 0.01], '0.6': [0.01, 0.01, 0.01], '1.2': [1, 1, 1]}},
+                },
+            },
+            'animation.tensura.great_sage.vanish': {
+                'animation_length': 0.8,
+                'loop': 'hold_on_last_frame',
+                'bones': {
+                    'root': {'scale': {'0.0': [1, 1, 1], '0.25': [1.15, 1.15, 1.15], '0.8': [0.01, 0.01, 0.01]},
+                             'position': {'0.0': [0, 0, 0], '0.8': [0, 18, 0]}},
+                    'core': {'rotation': {'0.0': [0, 0, 0], '0.8': [0, 540, 0]}},
+                    'ring_base': {'scale': {'0.0': [1, 1, 1], '0.8': [3, 3, 3]}},
+                },
+            },
+        },
+    }
+
+
+def build(rp):
+    geo = geometry()
     os.makedirs(os.path.join(rp, 'models', 'entity'), exist_ok=True)
     with open(os.path.join(rp, 'models', 'entity', 'great_sage.geo.json'), 'w') as f:
         json.dump(geo, f, indent=1)
-    out = os.path.join(rp, 'textures', 'entity', 'tensura', 'great_sage.png')
-    os.makedirs(os.path.dirname(out), exist_ok=True)
-    im.save(out, optimize=True)
-    # Aparência de cada estágio: mesma geometria, paleta trocada (cabelo, olhos e brilhos).
-    variants = {}
-    for stage, pal in STAGE_PALETTES.items():
-        v = recolor(im, pal)
-        v.save(os.path.join(os.path.dirname(out), f'great_sage_{stage}.png'), optimize=True)
-        variants[stage] = v
-    variants['sage'] = im
-    portraits(rp, geo['minecraft:geometry'][0], variants)
-    return geo, im
-
-
-STAGE_PALETTES = {
-    # Raphael: dourado (sabedoria). Ciel: prata e violeta. Cores escolhidas pelo addon.
-    'raphael': {HAIR: (255, 236, 170, 255), HAIR_S: (240, 200, 110, 255), HAIR_D: (205, 160, 70, 255), HAIR_L: (255, 250, 222, 255),
-                EYE: (255, 186, 50, 255), EYE_L: (255, 240, 190, 255), BLUE: (255, 196, 70, 255), CYAN: (255, 232, 150, 255)},
-    'ciel': {HAIR: (236, 226, 255, 255), HAIR_S: (205, 190, 245, 255), HAIR_D: (166, 146, 228, 255), HAIR_L: (255, 250, 255, 255),
-             EYE: (196, 100, 255, 255), EYE_L: (244, 214, 255, 255), BLUE: (190, 120, 255, 255), CYAN: (240, 186, 255, 255),
-             BLACK: (44, 30, 66, 255), BLACK_S: (62, 46, 90, 255)},
-}
-STAGE_GLOW = {'sage': (90, 200, 255), 'raphael': (255, 200, 90), 'ciel': (210, 140, 255)}
-
-
-def recolor(im, pal):
-    out = im.copy()
-    px = out.load()
-    for y in range(out.height):
-        for x in range(out.width):
-            c = px[x, y]
-            if c in pal:
-                px[x, y] = pal[c]
-    return out
-
-
-def portraits(rp, geo, variants):
-    """Retratos do painel (busto de frente) e ícones pequenos, um por estágio."""
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from sage_preview import view, S
-    from PIL import ImageFilter
-    outdir = os.path.join(rp, 'textures', 'tensura', 'sage')
-    os.makedirs(outdir, exist_ok=True)
-    for stage, tex in variants.items():
-        g = STAGE_GLOW[stage]
-        fig = view(geo, tex, 'front', rings=False, bg=(0, 0, 0, 0))
-        # busto: da cabeça até a cintura
-        bust = fig.crop((11 * S, 0, 35 * S, 21 * S)).resize((120, 105), Image.NEAREST)
-        W, H = 128, 128
-        pic = Image.new('RGBA', (W, H), (8, 14, 34, 255))
-        d = ImageDraw.Draw(pic)
-        for r in range(58, 0, -3):
-            k = 1 - r / 58
-            d.ellipse([W / 2 - r, 50 - r, W / 2 + r, 50 + r], fill=(int(8 + g[0] * .35 * k), int(14 + g[1] * .35 * k), int(34 + g[2] * .35 * k), 255))
-        glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-        ImageDraw.Draw(glow).ellipse([30, 8, 98, 20], outline=g + (220,), width=2)
-        pic.alpha_composite(glow.filter(ImageFilter.GaussianBlur(1)))
-        pic.alpha_composite(bust, (4, 21))
-        d = ImageDraw.Draw(pic)
-        d.rectangle([0, 0, W - 1, H - 1], outline=g + (255,), width=2)
-        d.rectangle([3, 3, W - 4, H - 4], outline=(g[0] // 2, g[1] // 2, g[2] // 2, 255), width=1)
-        pic.save(os.path.join(outdir, f'portrait_{stage}.png'))
-        head = fig.crop((16 * S, 1 * S, 30 * S, 13 * S)).resize((42, 36), Image.NEAREST)
-        ic = Image.new('RGBA', (48, 48), (0, 0, 0, 0))
-        ImageDraw.Draw(ic).ellipse([2, 2, 45, 45], fill=(10, 18, 40, 255), outline=g + (255,), width=2)
-        ic.alpha_composite(head, (3, 8))
-        ic.save(os.path.join(outdir, f'icon_{stage}.png'))
+    os.makedirs(os.path.join(rp, 'animations'), exist_ok=True)
+    with open(os.path.join(rp, 'animations', 'great_sage.animation.json'), 'w') as f:
+        json.dump(animations(), f, indent=2)
+    tdir = os.path.join(rp, 'textures', 'entity', 'tensura')
+    os.makedirs(tdir, exist_ok=True)
+    for stage in PALETTES:
+        name = 'great_sage.png' if stage == 'sage' else f'great_sage_{stage}.png'
+        texture(stage).save(os.path.join(tdir, name), optimize=True)
+    udir = os.path.join(rp, 'textures', 'tensura', 'sage')
+    os.makedirs(udir, exist_ok=True)
+    for stage in PALETTES:
+        portrait(stage).save(os.path.join(udir, f'portrait_{stage}.png'))
+        icon(stage).save(os.path.join(udir, f'icon_{stage}.png'))
+    return geo
 
 
 if __name__ == '__main__':
-    geo, _ = build(sys.argv[1])
-    n = sum(len(b.get('cubes', [])) for b in geo['minecraft:geometry'][0]['bones'])
-    print(f'Grande Sábio: {len(geo["minecraft:geometry"][0]["bones"])} ossos, {n} cubos, textura {TW}x{TH}')
+    geo = build(sys.argv[1])
+    bones = geo['minecraft:geometry'][0]['bones']
+    n = sum(len(b.get('cubes', [])) for b in bones)
+    print(f'Grande Sábio (núcleo mágico): {len(bones)} ossos, {n} cubos, textura {TW}x{TH}, 3 estágios')

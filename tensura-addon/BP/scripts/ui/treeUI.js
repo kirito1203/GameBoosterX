@@ -120,7 +120,7 @@ export async function openMenu(player, menus, startTab = 'status') {
         continue;
       }
       if (act.type === 'unlock') { doUnlock(player, d, act.id); d = getData(player); continue; }
-      if (act.type === 'sage') { if ((await menus.sage(player, 'ask', true)) === 'close') break; d = getData(player); continue; }
+      if (act.type === 'sage') { if ((await menus.sage(player, 'home', true)) === 'close') break; d = getData(player); continue; }
       if (act.type === 'mimic') { await menus.mimic(player); continue; }
       if (act.type === 'storage') { await menus.storage(player); continue; }
     }

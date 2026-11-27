@@ -111,26 +111,12 @@ def portrait(spec):
         d.line([9, 5, 11, 9], fill=sh(skin, 0.5))
     return up(im, 6)
 
-# ── Grande Sábio (figura encapuzada brilhante) ──
+# ── Grande Sábio: núcleo mágico (mesma arte do painel e do modelo 3D, ver tools/sage_art.py) ──
 def sage(w=40, h=64):
-    im = Image.new('RGBA', (w, h), (0, 0, 0, 0))
-    d = ImageDraw.Draw(im)
-    robe = (200, 228, 255, 255); robe2 = (150, 190, 245, 255); robe3 = (100, 140, 220, 255)
-    glow = (110, 230, 255, 255)
-    cx = w // 2
-    d.rectangle([cx - 8, 4, cx + 7, 19], fill=robe)              # capuz
-    d.rectangle([cx - 6, 8, cx + 5, 18], fill=(24, 30, 60, 255))  # rosto na sombra
-    d.rectangle([cx - 4, 12, cx - 2, 13], fill=glow); d.rectangle([cx + 1, 12, cx + 3, 13], fill=glow)
-    d.rectangle([cx - 10, 20, cx + 9, 50], fill=robe)            # corpo
-    d.rectangle([cx - 10, 50, cx + 9, 60], fill=robe2)
-    d.rectangle([cx - 2, 20, cx + 1, 58], fill=(40, 70, 140, 255))  # faixa central
-    for y in range(24, 56, 6): d.rectangle([cx - 1, y, cx, y + 2], fill=glow)
-    d.rectangle([cx - 15, 22, cx - 10, 42], fill=robe2); d.rectangle([cx + 9, 22, cx + 14, 42], fill=robe2)  # mangas
-    d.rectangle([cx - 15, 42, cx - 10, 45], fill=robe3); d.rectangle([cx + 9, 42, cx + 14, 45], fill=robe3)
-    for x in range(cx - 10, cx + 10, 3): d.point((x, 59), fill=robe3)
-    # anel mágico
-    d.ellipse([cx - 19, 56, cx + 18, 63], outline=glow)
-    return up(im, 6)
+    import sys as _s, os as _o
+    _s.path.insert(0, _o.path.dirname(_o.path.abspath(__file__)))
+    from sage_art import draw_core
+    return draw_core(w * 6, h * 6, 'sage', px=4)
 
 def sage_glow(w=128, h=160):
     im = Image.new('RGBA', (w, h), (0, 0, 0, 0))
