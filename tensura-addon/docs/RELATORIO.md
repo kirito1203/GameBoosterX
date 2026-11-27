@@ -670,3 +670,40 @@ Decisões aprovadas:
   - estágios Rainha das Fadas, Golem Mágico, Arch Doll e Dragão Ancião;
   - Orc Disaster, que está marcado como do addon mas aparece na obra.
 - **Não testado no jogo:** navegação entre mapas, investida, esquiva e contra-ataque no combate real.
+
+## Versão 0.9.1 — navegação da árvore, menos lag e ilustrações das habilidades
+
+**Correção do relatório da v0.8.0:** o brilho pulsante e a explosão de luz nos nós **não apareciam na árvore**. Eles
+foram colocados num modelo que a tela da árvore não usa. Só o pulso das linhas estava ativo (e foi retirado agora,
+para reduzir o lag).
+
+**Navegação (pedido: arrastar para os lados e para cima/baixo):**
+- O Bedrock **não tem rolagem horizontal** nas telas (o painel de rolagem do jogo só rola na vertical; conferido
+  nos arquivos de UI do próprio jogo).
+- Por isso a **árvore racial ficou vertical e estreita**: a raça no alto, cada categoria crescendo para a direita
+  e as categorias empilhadas para baixo, com corredor entre elas.
+  - A árvore do Slime cabe em 11 colunas (a tela mostra 13); as outras raças, em até 7.
+  - Ela é percorrida **arrastando o dedo para cima e para baixo**; não precisa mais ir para os lados.
+- A janela enviada à tela passou de 12 para **16 linhas** (mais arrasto antes de precisar reabrir).
+- As setas e a Visão Geral continuam para as árvores universais.
+- As linhas raiz → categoria deixaram de ser desenhadas (cruzavam a tela); o requisito continua valendo.
+
+**Lag:**
+- Saíram as animações das linhas (eram 156 imagens animadas ao mesmo tempo).
+- Os nós continuam com só 3 camadas (ícone, moldura, seleção).
+- O formulário ficou maior (16 linhas) para reduzir as reaberturas ao navegar.
+
+**Ilustrações:**
+- Cada uma das 515 habilidades ganhou uma **ilustração própria em pixel art (64×64)**: cena pelo tipo de efeito e
+  pela cor do elemento. Tipos: projétil com rastro, feixe, sopro, chuva de meteoros, onda de choque, domo, cura,
+  invocação, correntes, vórtice, olho de análise, investida, baú/forja, emblema. As Supremas usam o núcleo na cor
+  própria.
+- O **painel de detalhes** mostra a ilustração emoldurada em cima e, embaixo, o **nome**, rank, origem, custo,
+  requisitos, a **descrição** e o efeito.
+
+**Testes:** 85 passando e simulador de tela.
+
+**Não testado no jogo:**
+- rolagem com 16 linhas no celular;
+- ganho real de desempenho;
+- tamanho do pacote (cresce por causa das 515 ilustrações).

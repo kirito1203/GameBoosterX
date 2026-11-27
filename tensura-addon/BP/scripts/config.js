@@ -96,7 +96,7 @@ export const CONFIG = {
   ui: {
     // Grade da árvore (colunas x linhas). As linhas a mais rolam arrastando o dedo.
     // Deve coincidir com a interface gerada em RP/ui (tools/build-ui.mjs lê este arquivo).
-    treeGrid: [13, 12],
+    treeGrid: [13, 16],
     barSlots: 5,              // espaços da Barra de Habilidades (Cristal)
   },
 

@@ -211,9 +211,12 @@ test('Grande Sábio conhece a árvore: absorções, missões, combinações e do
 test('interface: setores separados, método de aquisição e visão geral (zoom)', () => {
   const map = getRaceMap('slime');
   const xs = {};
-  for (const s of TREE.skills) if (s.sector && map.pos[s.id]) (xs[s.sector] ??= []).push(map.pos[s.id][0]);
-  const ranges = SECTORS.slime.order.map((k) => [Math.min(...xs[k]), Math.max(...xs[k])]);
-  for (let i = 1; i < ranges.length; i++) assert.ok(ranges[i][0] > ranges[i - 1][1], 'setores lado a lado, sem sobrepor');
+  for (const s of TREE.skills) if (s.sector && map.pos[s.id]) (xs[s.sector] ??= []).push(map.pos[s.id][1]);
+  const ranges = Object.values(xs).map((v) => [Math.min(...v), Math.max(...v)]).sort((a, b) => a[0] - b[0]);
+  for (let i = 1; i < ranges.length; i++) assert.ok(ranges[i][0] > ranges[i - 1][1], 'categorias empilhadas, sem sobrepor');
+  // Árvore vertical e estreita: cabe na largura da tela (13 colunas).
+  const allX = Object.values(map.pos).map((p) => p[0]);
+  assert.ok(Math.max(...allX) - Math.min(...allX) < 13, 'cabe na largura da tela');
   assert.match(acquisition(SKILLS[P('sticky_thread')]), /absorver spider/);
   assert.match(acquisition(SKILLS[P('gluttony')]), /missão/);
   const d = slime();

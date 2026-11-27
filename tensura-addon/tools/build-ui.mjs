@@ -51,7 +51,7 @@ function templates() {
   return {
     // ── Árvore ──
     line: {
-      type: 'image', layer: 2, keep_ratio: false, bilinear: false, ...TL, anims: [`@${NS}.anim_line_a`],
+      type: 'image', layer: 2, keep_ratio: false, bilinear: false, ...TL,
       bindings: [colText, view(`('${TEX.line}' + #form_button_text)`, '#texture'), view("(not (#form_button_text = ''))", '#visible')],
     },
     node: {
@@ -266,8 +266,13 @@ function treeContent() {
         bindings: [toggleWatch(i)],
         controls: [
           { bg: img(`${TEX.ui}panel`, { layer: 0 }) },
-          { txt: { type: 'label', ...TL, offset: ['3%', '4%'], size: ['94%', 'default'], max_size: ['94%', '72%'], layer: 2,
-            text: '#form_button_text', color: [1, 1, 1], font_scale_factor: 0.62, shadow: true, bindings: [colText] } },
+          // Ilustração da habilidade em destaque, com moldura; nome e descrição embaixo.
+          { art_frame: { type: 'image', layer: 1, texture: `${TEX.ui}art_frame`, anchor_from: 'top_middle', anchor_to: 'top_middle',
+            offset: [0, '3%'], size: ['100%y', '33%'], keep_ratio: false, bilinear: false } },
+          { art: { type: 'image', layer: 2, anchor_from: 'top_middle', anchor_to: 'top_middle', offset: [0, '4.2%'], size: ['100%y', '30.6%'],
+            bilinear: false, bindings: [{ ...colTex, binding_name_override: '#texture' }, { ...colTexFs, binding_name_override: '#texture_file_system' }] } },
+          { txt: { type: 'label', ...TL, offset: ['3%', '38%'], size: ['94%', 'default'], max_size: ['94%', '48%'], layer: 2,
+            text: '#form_button_text', color: [1, 1, 1], font_scale_factor: 0.58, shadow: true, bindings: [colText] } },
         ],
       } }],
     }];

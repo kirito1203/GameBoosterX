@@ -40,14 +40,16 @@ function iconSpec(s) {
   // Cristal na cor da CATEGORIA: setor (árvores raciais com categorias) ou árvore universal.
   const sec = tree.kind === 'racial' && s.sector ? SECTORS[tree.lineage]?.colors?.[s.sector] : null;
   const color = sec ?? (tree.kind === 'racial' ? '#ffb040' : ELEMENT_FROM_TREE[s.tree] ?? (el ? EL_COLORS[el] : '#b0b0c0'));
-  if (SUP[s.id]) return { icon: iconName(s.id), color: SUP[s.id], glyph: 'core', abbr: '', core: true, manas: s.tier === 'manas' };
+  const kind = fx[0]?.k ?? 'passive';
+  const elc = el ? EL_COLORS[el] : color;
+  if (SUP[s.id]) return { icon: iconName(s.id), color: SUP[s.id], glyph: 'core', abbr: '', core: true, manas: s.tier === 'manas', kind, elc: SUP[s.id] };
   let glyph = fx[0]?.k ?? 'passive';
   if (s.type === 'passive') glyph = 'passive';
   if (s.type === 'evolution') glyph = 'evolve';
   if (s.type === 'race_root') glyph = 'race';
   const words = s.original.replace(/[^A-Za-z ]/g, ' ').split(/\s+/).filter((w) => w && !['of', 'the', 'Evolution'].includes(w));
   const abbr = (words.length >= 2 ? words[0][0] + words[1][0] : (words[0] ?? '?').slice(0, 2)).toUpperCase();
-  return { icon: iconName(s.id), color, glyph, abbr };
+  return { icon: iconName(s.id), color, glyph, abbr, kind, elc };
 }
 
 function writeTexts() {

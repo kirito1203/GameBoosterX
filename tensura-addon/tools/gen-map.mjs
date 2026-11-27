@@ -34,24 +34,31 @@ function overlap(a, b, m) {
   return !(a.maxX + m < b.minX || b.maxX + m < a.minX || a.maxY + m < b.minY || b.maxY + m < a.minY);
 }
 
-// ── Árvores raciais: tudo cresce para o sul a partir do centro ──
+// ── Árvores raciais (mapa próprio de cada raça) ──
+// Layout VERTICAL e estreito: a raiz fica no alto à esquerda, cada categoria cresce para a direita
+// (profundidade) e as categorias se empilham para baixo, com 2 linhas de corredor entre elas.
+// Assim a árvore inteira cabe na largura da tela e é percorrida arrastando o dedo para cima/baixo.
 const racial = {};
 let reserved = { minX: 0, maxX: 0, minY: 1, maxY: 1 };
 for (const lin in LINEAGES) {
-  const L = computeLayout(TREES[`race.${lin}`], { noLinks: true, forceArm: 'S' });
-  // Árvores com categorias: abre um corredor de 2 colunas entre as categorias (grupos visualmente separados).
+  const L = computeLayout(TREES[`race.${lin}`], { noLinks: true, forceArm: 'E' });
   const secOf = (id) => SKILLS[id].sector;
   const secs = [...new Set(Object.keys(L.pos).map(secOf).filter(Boolean))];
   if (secs.length > 1) {
-    const minX = (s) => Math.min(...Object.keys(L.pos).filter((id) => secOf(id) === s).map((id) => L.pos[id][0]));
-    secs.sort((a, b) => minX(a) - minX(b));
+    const minY = (s) => Math.min(...Object.keys(L.pos).filter((id) => secOf(id) === s).map((id) => L.pos[id][1]));
+    secs.sort((a, b) => minY(a) - minY(b));
     const GAP = 2;
-    const mid = Math.floor(((secs.length - 1) * GAP) / 2);
     for (const id in L.pos) {
       const i = secs.indexOf(secOf(id));
-      if (i >= 0) L.pos[id] = [L.pos[id][0] + i * GAP - mid, L.pos[id][1]];
+      if (i >= 0) L.pos[id] = [L.pos[id][0], L.pos[id][1] + i * GAP];
     }
   }
+  // raiz no topo: desloca tudo para que o menor y seja 0 e a raiz fique na coluna 0
+  const ys = Object.values(L.pos).map((p) => p[1]);
+  const y0 = Math.min(...ys);
+  const root = TREES[`race.${lin}`].root;
+  for (const id in L.pos) L.pos[id] = [L.pos[id][0], L.pos[id][1] - y0];
+  L.pos[root] = [0, 0];
   racial[lin] = L.pos;
 }
 // Cada raça tem MAPA PRÓPRIO (abaixo); no mapa principal fica só a raiz da raça, no centro.
@@ -185,8 +192,10 @@ for (const lin in racial) {
   const RB = { minX: rb.minX - 3, maxX: rb.maxX + 3, minY: rb.minY - 3, maxY: rb.maxY + 3 };
   const route = makeRouter(nodes, () => false, u, RB);
   const edges = [];
+  const rootId = TREES[`race.${lin}`].root;
   for (const id in pos) for (const r of SKILLS[id].requires) {
-    if (!pos[r]) continue;
+    // A ligação raiz → cabeça de categoria é óbvia (ser da raça): não desenha (evita linhas cruzando a árvore).
+    if (!pos[r] || (r === rootId && SKILLS[id].sector)) continue;
     const path = route(pos[r], pos[id]);
     if (!path) throw new Error(`sem rota ${lin}: ${r} → ${id}`);
     addUsage(u, path);

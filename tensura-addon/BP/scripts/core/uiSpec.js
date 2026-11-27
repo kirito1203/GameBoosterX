@@ -32,7 +32,7 @@ export const ZOOM_OUT = 3;
 export const TREE_COLS = CONFIG.ui.treeGrid[0];
 export const TREE_ROWS = CONFIG.ui.treeGrid[1];
 export const TREE_CELLS = TREE_COLS * TREE_ROWS;
-export const DETAIL_ROWS = 3;           // altura do painel de detalhes (em linhas da grade)
+export const DETAIL_ROWS = 6;           // altura do painel de detalhes (em linhas da grade)
 export const NODE_TOGGLE_GROUP = 'tensura_node';
 
 export function gridOf() {
@@ -83,6 +83,7 @@ export const NODE_STATES = { locked: 'l', reachable: 'r', special: 's', availabl
 export const EDGE = { none: 0, dim: 1, lit: 2 };
 
 export const TEX = {
+  art: 'textures/tensura/art/',
   node: 'textures/tensura/ui/node/f_',
   line: 'textures/tensura/ui/line/',
   icon: 'textures/tensura/icons/',

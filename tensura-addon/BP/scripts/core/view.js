@@ -14,6 +14,11 @@ import {
 
 const TYPE_NAMES = { active: 'Ativa', passive: 'Passiva', evolution: 'Evolução racial', race_root: 'Raça' };
 
+/** Câmera da árvore racial (vertical e estreita): coluna fixa, `pos` perto do topo. */
+export function raceViewAt(pos) {
+  return { x: -1, y: Math.max(-1, pos[1] - 1) };
+}
+
 /** Câmera com o ponto `pos` na coluna do meio e perto do topo da grade rolável. */
 export function viewAt(pos) {
   return { x: pos[0] - Math.floor(TREE_COLS / 2), y: pos[1] - 2 };
@@ -170,7 +175,8 @@ export function buildTreeForm(p) {
       const isLink = map.isLink.has(nodeKey);
       const major = s.major || nodeKey === map.centerId;
       buttons[base.node + i] = { text: frameCode(ev.state, s.rarity, major, isLink, nodeKey === focus), icon: `${TEX.icon}${iconName(sid)}` };
-      buttons[base.detail + i] = { text: detailsText(s, ev, state, isLink, equipped, supreme), icon: '' };
+      // Ilustração da habilidade (em cima do painel), nome e descrição embaixo.
+      buttons[base.detail + i] = { text: detailsText(s, ev, state, isLink, equipped, supreme), icon: `${TEX.art}${iconName(sid)}` };
       // Ação do painel: a única parte que volta ao script.
       if (isLink) {
         set(base.action + i, supreme ? '§9Ir para o nó principal' : `§9Ir para o original (${TREES[s.tree].short})`, `${TEX.ui}btn_link`);

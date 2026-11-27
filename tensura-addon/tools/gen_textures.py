@@ -195,6 +195,145 @@ def icon(skill, n=24, scale=4):
     return pixel(im.resize((n, n), Image.LANCZOS), scale)
 
 
+def art(skill, n=64):
+    """Ilustração da habilidade (cena em pixel art) para o painel de detalhes: tipo de efeito + cor do elemento."""
+    import math
+    rnd = random.Random(skill['icon'])
+    col = hexc(skill.get('elc') or skill['color'])
+    S = n * 4
+    im = Image.new('RGBA', (S, S), (0, 0, 0, 255))
+    d = ImageDraw.Draw(im)
+    for y in range(S):                                           # céu em degradê
+        k = y / S
+        d.line([0, y, S, y], fill=mix(shade(col, 0.10), shade(col, 0.32), k))
+    for _ in range(26):                                          # estrelas / partículas
+        x, y = rnd.random() * S, rnd.random() * S * 0.7
+        r = rnd.choice((1, 1, 2)) * 2
+        d.rectangle([x, y, x + r, y + r], fill=mix(col, (255, 255, 255, 255), 0.6)[:3] + (rnd.randint(90, 220),))
+    d.rectangle([0, S * 0.8, S, S], fill=shade(col, 0.16))      # chão
+    for x in range(0, S, 16):
+        d.line([x, S * 0.8, x + 8, S * 0.8], fill=shade(col, 0.35), width=3)
+    light = mix(col, (255, 255, 255, 255), 0.55)
+    core = mix(col, (255, 255, 255, 255), 0.85)
+    k = skill.get('kind', 'passive')
+    cx, cy = S / 2, S / 2
+
+    def glow(x, y, r, c=col, a=110):
+        g = Image.new('RGBA', (S, S), (0, 0, 0, 0))
+        ImageDraw.Draw(g).ellipse([x - r, y - r, x + r, y + r], fill=c[:3] + (a,))
+        im.alpha_composite(g.filter(ImageFilter.GaussianBlur(r * 0.45)))
+
+    def figure(x, y, h, c=(20, 20, 30, 255)):
+        d.ellipse([x - h * .12, y - h, x + h * .12, y - h * .76], fill=c)
+        d.polygon([(x - h * .2, y - h * .72), (x + h * .2, y - h * .72), (x + h * .14, y - h * .2), (x - h * .14, y - h * .2)], fill=c)
+        d.line([x - h * .1, y - h * .2, x - h * .16, y], fill=c, width=int(h * .1)); d.line([x + h * .1, y - h * .2, x + h * .16, y], fill=c, width=int(h * .1))
+
+    if skill.get('core'):
+        glow(cx, cy, S * .4, col, 140)
+        _core_icon(d, cx, S, col, skill.get('manas'))
+    elif k in ('bolt', 'beam', 'strike', 'streak'):
+        figure(S * .2, S * .8, S * .32)
+        if k == 'beam':
+            glow(S * .6, S * .5, S * .25)
+            d.line([S * .28, S * .55, S, S * .42], fill=light, width=int(S * .09)); d.line([S * .28, S * .55, S, S * .42], fill=core, width=int(S * .035))
+        else:
+            for i in range(5):
+                t = i / 5
+                d.ellipse([S * (.35 + t * .35) - 6, S * (.55 - t * .2) - 6, S * (.35 + t * .35) + 6, S * (.55 - t * .2) + 6], fill=light[:3] + (60 + i * 30,))
+            glow(S * .74, S * .33, S * .16, col, 160)
+            d.ellipse([S * .66, S * .25, S * .82, S * .41], fill=light); d.ellipse([S * .7, S * .29, S * .78, S * .37], fill=core)
+    elif k == 'cone':
+        figure(S * .2, S * .8, S * .34)
+        d.polygon([(S * .3, S * .52), (S, S * .25), (S, S * .82)], fill=col[:3] + (170,))
+        d.polygon([(S * .3, S * .52), (S * .85, S * .38), (S * .85, S * .66)], fill=light[:3] + (200,))
+        for _ in range(14):
+            x, y = S * (.45 + rnd.random() * .5), S * (.35 + rnd.random() * .4)
+            d.rectangle([x, y, x + 8, y + 8], fill=core)
+    elif k in ('rain', 'chain'):
+        for i in range(6):
+            x = S * (.15 + i * .14) + rnd.random() * 10
+            y = S * (.15 + rnd.random() * .35)
+            d.line([x - S * .12, y - S * .18, x, y], fill=light[:3] + (180,), width=int(S * .035))
+            d.ellipse([x - 9, y - 9, x + 9, y + 9], fill=core)
+        for i in range(3):
+            glow(S * (.25 + i * .25), S * .8, S * .1, col, 170)
+    elif k in ('nova', 'gravity', 'debuff', 'field', 'dominate', 'possess', 'marionette', 'swap'):
+        figure(cx, S * .8, S * .3)
+        for r, a in ((.42, 120), (.32, 170), (.22, 220)):
+            d.ellipse([cx - S * r, S * .8 - S * r * .35, cx + S * r, S * .8 + S * r * .35], outline=light[:3] + (a,), width=int(S * .02))
+        if k == 'field':
+            d.pieslice([cx - S * .42, S * .38, cx + S * .42, S * 1.22], 180, 360, fill=col[:3] + (70,), outline=light, width=int(S * .015))
+        else:
+            for ang in range(0, 360, 30):
+                a2 = math.radians(ang)
+                d.line([cx + math.cos(a2) * S * .16, S * .55 + math.sin(a2) * S * .16, cx + math.cos(a2) * S * .36, S * .55 + math.sin(a2) * S * .36], fill=light[:3] + (160,), width=int(S * .02))
+    elif k in ('buff', 'heal', 'cleanse', 'imbue', 'mana', 'convert'):
+        glow(cx, S * .55, S * .3, col, 150)
+        figure(cx, S * .8, S * .42)
+        for _ in range(10):
+            x, y = S * (.2 + rnd.random() * .6), S * (.15 + rnd.random() * .6)
+            if k == 'heal':
+                d.rectangle([x - 3, y - 10, x + 3, y + 10], fill=core); d.rectangle([x - 10, y - 3, x + 10, y + 3], fill=core)
+            else:
+                d.line([x, y, x, y - S * .08], fill=light[:3] + (200,), width=4)
+    elif k in ('summon',):
+        for r, a in ((.4, 200), (.3, 150)):
+            d.ellipse([cx - S * r, S * .82 - S * r * .3, cx + S * r, S * .82 + S * r * .3], outline=light[:3] + (a,), width=int(S * .02))
+        glow(cx, S * .6, S * .25, col, 160)
+        figure(cx, S * .8, S * .5, shade(col, 0.35))
+    elif k in ('bind',):
+        figure(cx, S * .8, S * .46)
+        for i in range(4):
+            y = S * (.4 + i * .1)
+            for x in range(int(S * .2), int(S * .8), 18):
+                d.ellipse([x, y - 7, x + 16, y + 7], outline=light, width=4)
+    elif k in ('absorb', 'drain', 'dissolve'):
+        for i in range(70):
+            a2 = i * 0.35
+            r = S * .02 * (i * .22 + 1)
+            d.ellipse([cx + math.cos(a2) * r - 5, cy + math.sin(a2) * r - 5, cx + math.cos(a2) * r + 5, cy + math.sin(a2) * r + 5], fill=light[:3] + (min(255, 60 + i * 3),))
+        glow(cx, cy, S * .12, (0, 0, 0), 200)
+    elif k in ('analyze', 'sense', 'ore_sense', 'comm'):
+        d.ellipse([S * .18, S * .34, S * .82, S * .66], fill=(240, 245, 255, 255), outline=light, width=int(S * .02))
+        d.ellipse([cx - S * .12, cy - S * .12, cx + S * .12, cy + S * .12], fill=col)
+        d.ellipse([cx - S * .05, cy - S * .05, cx + S * .05, cy + S * .05], fill=(10, 10, 20, 255))
+        for ang in range(0, 360, 24):
+            a2 = math.radians(ang)
+            d.rectangle([cx + math.cos(a2) * S * .4 - 4, cy + math.sin(a2) * S * .4 - 4, cx + math.cos(a2) * S * .4 + 4, cy + math.sin(a2) * S * .4 + 4], fill=light)
+    elif k in ('blink', 'dash', 'warp', 'flight', 'timeflip'):
+        for i, a in enumerate((60, 110, 255)):
+            figure(S * (.25 + i * .22), S * .8, S * .38, (20, 20, 30, a))
+        for y in (.45, .55, .65):
+            d.line([S * .05, S * y, S * .5, S * y], fill=light[:3] + (150,), width=4)
+    elif k in ('storage', 'create', 'enchant', 'repair', 'wall'):
+        d.rectangle([S * .28, S * .5, S * .72, S * .8], fill=shade(col, 0.6), outline=light, width=int(S * .02))
+        glow(cx, S * .45, S * .2, col, 170)
+        for _ in range(8):
+            x, y = S * (.25 + rnd.random() * .5), S * (.2 + rnd.random() * .3)
+            d.polygon([(x, y - 8), (x + 5, y), (x, y + 8), (x - 5, y)], fill=core)
+    else:  # passivas, evolução, raça: emblema/cristal em destaque
+        glow(cx, cy, S * .32, col, 150)
+        P = [(cx, S * .14), (cx + S * .2, S * .32), (cx + S * .2, S * .66), (cx, S * .84), (cx - S * .2, S * .66), (cx - S * .2, S * .32)]
+        d.polygon(P, fill=col, outline=core, width=int(S * .02))
+        d.polygon([P[0], P[1], (cx, cy)], fill=light); d.polygon([P[4], P[5], (cx, cy)], fill=shade(col, 0.6))
+        for side in (-1, 1):
+            for i in range(5):
+                y = S * (.3 + i * .1)
+                d.ellipse([cx + side * S * (.3 + i * .02) - 8, y - 5, cx + side * S * (.3 + i * .02) + 8, y + 5], fill=(240, 210, 90, 255))
+    d.rectangle([0, 0, S - 1, S - 1], outline=(0, 0, 0, 255), width=4)
+    return im.resize((n, n), Image.LANCZOS)
+
+
+def art_frame(n=72):
+    im = Image.new('RGBA', (n, n), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 0, n - 1, n - 1], fill=(10, 14, 28, 255), outline=(120, 200, 255, 255), width=2)
+    d.rectangle([3, 3, n - 4, n - 4], outline=(40, 90, 150, 255), width=1)
+    for (x, y) in ((0, 0), (n - 6, 0), (0, n - 6), (n - 6, n - 6)):
+        d.rectangle([x, y, x + 5, y + 5], fill=(255, 210, 90, 255))
+    return im
+
+
 def _core_icon(d, c, S, base, manas=False):
     """Núcleo exclusivo das Supremas (cruz luminosa + anéis) na cor própria; Ciel (Manas) em losango duplo."""
     light = mix(base, (255, 255, 255, 255), 0.55)
@@ -763,10 +902,12 @@ def main():
     bp_icon = sys.argv[3] if len(sys.argv) > 3 else None
     T = os.path.join(rp, 'textures', 'tensura')
     import shutil
-    for old in ('icons', 'ui', 'menu'):
+    for old in ('icons', 'ui', 'menu', 'art'):
         shutil.rmtree(os.path.join(T, old), ignore_errors=True)
     for s in spec['skills']:
         save(icon(s), os.path.join(T, 'icons', s['icon'] + '.png'))
+        save(art(s), os.path.join(T, 'art', s['icon'] + '.png'))
+    save(art_frame(), os.path.join(T, 'ui', 'art_frame.png'))
     for code in spec['frames']:
         save(frame(code), os.path.join(T, 'ui', 'node', 'f_' + code + '.png'))
     for code in spec['lines']:

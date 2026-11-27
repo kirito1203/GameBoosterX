@@ -9,7 +9,7 @@ import { CONFIG } from '../config.js';
 import { barSlots } from '../core/stats.js';
 import { SKILLS, RACES, TREES, SECTORS, initialSkillsFor } from '../data/registry.js';
 import { unlock } from '../core/progression.js';
-import { buildTreeForm, viewAt, centeredView, pan, ensureVisible, toOverview, fromOverview } from '../core/view.js';
+import { buildTreeForm, viewAt, raceViewAt, centeredView, pan, ensureVisible, toOverview, fromOverview } from '../core/view.js';
 import { evaluate } from '../core/progression.js';
 import { buildMenuForm } from '../core/menuView.js';
 import { getMap, getSupremeMap, getRaceMap } from '../core/map.js';
@@ -149,12 +149,13 @@ async function treeLoop(player, menus, focus = {}) {
   // Padrão: árvore racial (mapa próprio). focus.universal abre o mapa das árvores universais.
   const race = !supreme && !focus.universal && !(focus.key && !getRaceMap(lin).pos[focus.key]);
   const map = supreme ? getSupremeMap(lin) : race ? getRaceMap(lin) : getMap(lin);
-  let view = supreme || race ? viewAt(map.roots[map.centerId]) : d.ui.view && Number.isFinite(d.ui.view.x) && Number.isFinite(d.ui.view.y) ? { x: d.ui.view.x, y: d.ui.view.y } : centeredView();
-  let highlight = null;
-  if (focus.key && map.pos[focus.key]) { highlight = focus.key; view = viewAt(map.pos[focus.key]); }
-  if (focus.pos) view = viewAt(focus.pos);
-  let result = 'back';
+  const at = (pos) => (race && zoom === 1 ? raceViewAt(pos) : viewAt(pos));
   let zoom = 1;
+  let view = supreme ? viewAt(map.roots[map.centerId]) : race ? raceViewAt([0, 0]) : d.ui.view && Number.isFinite(d.ui.view.x) && Number.isFinite(d.ui.view.y) ? { x: d.ui.view.x, y: d.ui.view.y } : centeredView();
+  let highlight = null;
+  if (focus.key && map.pos[focus.key]) { highlight = focus.key; view = at(map.pos[focus.key]); }
+  if (focus.pos) view = at(focus.pos);
+  let result = 'back';
   for (;;) {
     const model = buildTreeForm({ state: progressionState(d), view, focus: highlight, mp: { cur: d.mp, max: d.stats.maxMp }, equipped: d.equipped, zoom, supreme, race });
     const res = await showForm(player, formOf(model));
@@ -176,7 +177,7 @@ async function treeLoop(player, menus, focus = {}) {
         }
         if (race && act.cat === map.centerId && SECTORS[lin]) {
           const r = await pickSector(player, d, map);
-          if (r === 'overview') { zoom = 3; view = toOverview(viewAt([0, 0])); break; }
+          if (r === 'overview') { zoom = 3; view = toOverview(viewAt([5, 30])); break; }
           if (r === 'supreme') {
             if ((await treeLoop(player, menus, { supreme: true })) === 'close') { result = 'close'; return finish(); }
             break;
@@ -184,19 +185,19 @@ async function treeLoop(player, menus, focus = {}) {
           if (r) pos = r;
         }
         if (zoom > 1) { zoom = 1; }
-        view = viewAt(pos);
+        view = at(pos);
         break;
       }
       case 'pan': view = pan(view, act.dx, act.dy, map, zoom); break;
-      case 'center': highlight = null; view = supreme ? viewAt(map.roots[map.centerId]) : zoom > 1 ? toOverview(viewAt([0, 0])) : viewAt([0, 0]); break;
+      case 'center': highlight = null; view = supreme ? viewAt(map.roots[map.centerId]) : zoom > 1 ? toOverview(viewAt([0, 0])) : at([0, 0]); break;
       case 'zoom': view = act.zoom > 1 ? toOverview(view) : fromOverview(view); zoom = act.zoom; break;
-      case 'zoomin': zoom = 1; view = viewAt(act.pos); break;
+      case 'zoomin': zoom = 1; view = at(act.pos); break;
       case 'universal':
         if ((await treeLoop(player, menus, { universal: true })) === 'close') { result = 'close'; return finish(); }
         break;
       case 'unlock': doUnlock(player, d, act.id); highlight = act.id; break;
       case 'equip': toggleEquip(player, d, act.id); highlight = act.id; break;
-      case 'goto': highlight = act.key; view = viewAt(map.pos[act.key] ?? [0, 0]); break;
+      case 'goto': highlight = act.key; view = at(map.pos[act.key] ?? [0, 0]); break;
       default: break;
     }
   }

@@ -254,7 +254,7 @@ import { buildSageForm } from '../BP/scripts/core/sageView.js';
 import { freshSage, addXp } from '../BP/scripts/core/sage.js';
 import { getMap, getSupremeMap, getRaceMap } from '../BP/scripts/core/map.js';
 import { computeStats } from '../BP/scripts/core/stats.js';
-import { viewAt } from '../BP/scripts/core/view.js';
+import { viewAt, raceViewAt } from '../BP/scripts/core/view.js';
 
 function demoPlayer() {
   const unlocked = new Set([...initialSkillsFor('slime'), 'r.slime.self_regen', 'r.slime.shapeshift', 'r.slime.analyze', 'elem.core', 'elem.fire',
@@ -281,7 +281,7 @@ export function scenario(name) {
   const map = getMap('slime');
   switch (name) {
     case 'tree-center': return { kind: 'tree', p: { state, view: centeredView(), mp } };
-    case 'tree-slime': return { kind: 'tree', p: { state: { ...state, discovered: new Set(['r.slime.sticky_thread']), missions: new Set(), mastery: { 'r.slime.predation': 35 }, maxMp: d.stats.maxMp, absorbed: new Set(d.absorbed) }, view: viewAt([-10, 2]), mp, race: true } };
+    case 'tree-slime': return { kind: 'tree', p: { state: { ...state, discovered: new Set(['r.slime.sticky_thread']), missions: new Set(), mastery: { 'r.slime.predation': 35 }, maxMp: d.stats.maxMp, absorbed: new Set(d.absorbed) }, view: raceViewAt([0, 0]), mp, race: true } };
     case 'tree-slime-sel': {
       const st = { ...state, discovered: new Set(), missions: new Set(), mastery: { 'r.slime.predation': 35 }, maxMp: d.stats.maxMp, absorbed: new Set(d.absorbed) };
       const rm = getRaceMap('slime');
