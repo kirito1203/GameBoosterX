@@ -1,0 +1,49 @@
+plugins { id 'com.android.application' }
+
+// chave fixa do projeto: toda build sai com a mesma assinatura,
+// então a versão nova instala por cima da antiga sem desinstalar
+def ksFile = file("rpgdice.keystore")
+
+android {
+    namespace 'com.linkcreator.rpgdice'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.linkcreator.rpgdice"
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+    }
+
+    // sem chave no repositório: o release sai assinado com a chave de debug,
+    // que o workflow mantém em cache — assinatura estável entre builds.
+    // Se um dia houver app/rpgdice.keystore, ela passa a ser usada.
+    signingConfigs {
+        if (ksFile.exists()) {
+            release {
+                storeFile ksFile
+                storePassword System.getenv("RPGDICE_KS_PASS") ?: "rpgdice123"
+                keyAlias "rpgdice"
+                keyPassword System.getenv("RPGDICE_KS_PASS") ?: "rpgdice123"
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig ksFile.exists() ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.11.0'
+    implementation 'androidx.core:core:1.13.1'
+}
