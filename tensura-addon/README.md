@@ -11,10 +11,11 @@ e uma **árvore de habilidades visual em tela cheia**.
 |---|---|
 | Minecraft | Bedrock / PE **1.21.90 ou superior** |
 | Script API | `@minecraft/server` **2.0.0** e `@minecraft/server-ui` **2.0.0** (estáveis, sem experimentos) |
-| Conteúdo | 50 raças em 19 linhagens, 267 habilidades, 28 árvores (9 universais + 19 raciais), 10 invocações |
+| Conteúdo | 50 raças em 19 linhagens, 333 habilidades em 14 categorias (incluindo Únicas, Supremas, Extras e Resistências do anime), 10 invocações |
 
-![Árvore Elemental, zoom afastado](docs/img/elemental-z1.jpg)
-![Nó selecionado com painel de detalhes](docs/img/elemental-z2-sel.jpg)
+![Menu principal — Status](docs/img/menu-status.jpg)
+![Árvore de habilidades — mapa único](docs/img/tree-z1.jpg)
+![Nó selecionado com painel de detalhes](docs/img/tree-z2-sel.jpg)
 
 *Capturas do simulador do JSON UI (`tools/preview.mjs`), que interpreta os arquivos gerados com as
 texturas reais. Não são capturas do jogo — veja “O que foi e o que não foi testado”.*
@@ -37,18 +38,26 @@ Não é preciso ativar experimentos.
    - **Grimório do Grande Sábio** — livro + lápis-lazúli + fragmento de ametista.
    - **Cristal de Magicules** — fragmento de ametista + lápis-lazúli + redstone.
 2. **Use o Grimório** → na primeira vez, escolha a raça (permanente; você muda evoluindo).
-3. A **árvore de habilidades** abre em tela cheia:
+   Depois ele abre o **menu principal** com as abas **Status** (personagem, EP, Aura, Magículas, nível,
+   progresso de evolução, habilidades em destaque e a Barra de Habilidades de 5 espaços), **Raça**,
+   **Habilidades** (abre a árvore), **Evolução** (requisitos e botão de evoluir) e **Registros**
+   (conquistas, criaturas derrotadas, espécies absorvidas).
+3. A **árvore de habilidades** é um **mapa único** em tela cheia: sua raça no centro e as 13 categorias
+   em volta, com nós quadrados em pixel art e linhas retas e diagonais.
    - **Toque num nó** para ver os detalhes (nome em português e original, ícone, descrição,
      categoria, raridade, custo em pontos e Magicules, pré-requisitos, próxima evolução, efeito
      real e origem). Se tudo estiver atendido aparece **Desbloquear**; senão, a lista exata do que falta.
    - **Setas** movem a câmera nas 4 direções; **lupas** aproximam/afastam (3 níveis);
      **mira** centraliza na raiz.
-   - **Abas** na parte de baixo: Racial, Elemental, Aspectual, Sagrada, Invocação, Ilusão,
-     Espiritual, Necromancia, Trevas e Avançada.
+   - **Ícones de categoria** na parte de baixo levam a câmera direto para Racial, Elemental, Aspectual,
+     Sagrada, Invocação, Ilusão, Espiritual, Necromancia, Trevas, Avançada, Únicas, Supremas, Extras e
+     Resistências. **Voltar** retorna ao menu.
+   - Pré-requisitos de outra categoria aparecem como **nó compartilhado** (selo azul) ao lado de quem
+     precisa dele; tocar nele leva ao original.
    - **Grimório** (topo) lista as magias aprendidas: conjurar, equipar no Cristal, ver na árvore.
    - **Status** mostra raça, nível, EP, Magicules, resistências, fraquezas e conquistas.
-4. **Use o Cristal** para conjurar a magia do slot atual; **agachado + usar** troca de magia.
-   A barra de Magicules aparece na action bar quando você segura o Grimório ou o Cristal.
+4. **Use o Cristal** para conjurar a habilidade do espaço atual da barra; **agachado + usar** troca de espaço.
+   Magias gastam **Magículas**; habilidades raciais gastam **Aura**. As duas aparecem na action bar.
 5. Derrote criaturas para ganhar **EP** → níveis → **20 pontos por nível**. Derrotar o Wither, o Ender
    Dragon e o Warden dá pontos extras e libera requisitos das magias supremas.
 

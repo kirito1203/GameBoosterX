@@ -1,15 +1,16 @@
-// Interface principal: a árvore de habilidades em tela cheia.
+// Telas principais: menu com abas (Status, Raça, Habilidades, Evolução, Registros)
+// e a árvore de habilidades em mapa único.
 //
-// Cada toque (nó, aba, seta, zoom) devolve o índice do botão; o script atualiza o
-// estado e reabre o formulário já com a nova câmera/seleção. O desenho em si
-// (posições, linhas, molduras) é feito pelo resource pack (RP/ui/tensura_tree.json).
+// Cada toque devolve o índice do botão; o script atualiza o estado e reabre o
+// formulário. O desenho é feito pelo resource pack (RP/ui/tensura_tree.json).
 import { system, world } from '@minecraft/server';
 import { ActionFormData, FormCancelationReason } from '@minecraft/server-ui';
 import { CONFIG } from '../config.js';
-import { SKILLS, TREES, RACES, initialSkillsFor } from '../data/registry.js';
+import { SKILLS, RACES, initialSkillsFor } from '../data/registry.js';
 import { unlock } from '../core/progression.js';
-import { buildTreeForm, centeredView, pan, rezoom, ensureVisible } from '../core/view.js';
-import { getLayout } from '../core/layout.js';
+import { buildTreeForm, viewAt, centeredView, pan, rezoom, ensureVisible } from '../core/view.js';
+import { buildMenuForm } from '../core/menuView.js';
+import { getMap } from '../core/map.js';
 import { getData, progressionState, saveNow, refreshStats, markDirty } from '../systems/storage.js';
 import { particle, sound, msg, V } from '../systems/util.js';
 
@@ -28,18 +29,10 @@ export async function showForm(player, form) {
   return null;
 }
 
-function viewFor(d, tab) {
-  const v = d.ui.views[tab];
-  if (v && CONFIG.ui.zoomGrids[v.zoom]) return v;
-  return centeredView(CONFIG.ui.defaultZoom);
-}
-
-function treeIdForTab(d, tab) {
-  return tab === 'racial' ? `race.${RACES[d.race].lineage}` : tab;
-}
-
-function tabForTree(treeId) {
-  return TREES[treeId]?.kind === 'racial' ? 'racial' : treeId;
+function formOf(model) {
+  const form = new ActionFormData().title(model.title).body(model.body);
+  for (const b of model.buttons) form.button(b.text, b.icon || undefined);
+  return form;
 }
 
 /** Aplica uma evolução racial: nova raça, habilidades iniciais dela, atributos. */
@@ -48,6 +41,7 @@ export function applyEvolution(player, d, raceId) {
   for (const id of initialSkillsFor(raceId)) d.unlocked.add(id);
   refreshStats(d);
   d.mp = d.stats.maxMp;
+  d.aura = d.stats.maxAura;
   for (let i = 0; i < 30; i++) {
     particle(player.dimension, 'minecraft:totem_particle', V.add(player.location, { x: (Math.random() - 0.5) * 2, y: Math.random() * 2.5, z: (Math.random() - 0.5) * 2 }));
   }
@@ -55,70 +49,10 @@ export function applyEvolution(player, d, raceId) {
   world.sendMessage(`§6§l${player.name} evoluiu para ${r.name}!`);
 }
 
-export async function openTree(player, menus) {
-  if (openFor.has(player.id)) return;
-  const d = getData(player);
-  if (!d.race) { await menus.chooseRace(player); if (!getData(player).race) return; }
-  openFor.add(player.id);
-  try {
-    let tab = d.ui.tab ?? 'racial';
-    let selected = null;
-    let view = viewFor(d, tab);
-    for (;;) {
-      const model = buildTreeForm({
-        state: progressionState(d), tab, view, selected,
-        mp: { cur: d.mp, max: d.stats.maxMp }, equipped: d.equipped,
-      });
-      const form = new ActionFormData().title(model.title).body(model.body);
-      for (const b of model.buttons) form.button(b.text, b.icon || undefined);
-      const res = await showForm(player, form);
-      if (!player.isValid) return;
-      if (!res || res.canceled || res.selection === undefined) break;
-      const act = model.hit[res.selection];
-      if (!act) continue;
-      if (act.type === 'close') break;
-      switch (act.type) {
-        case 'grimoire': {
-          const r = await menus.grimoire(player);
-          if (r?.goto) { tab = tabForTree(SKILLS[r.goto].tree); selected = r.goto; view = focus(d, tab, r.goto, viewFor(d, tab)); }
-          if (r?.close) { d.ui.tab = tab; d.ui.views[tab] = view; markDirty(player); return; } // conjurou: volta ao jogo
-          break;
-        }
-        case 'status': await menus.status(player); break;
-        case 'tab': d.ui.views[tab] = view; tab = act.tab; selected = null; view = viewFor(d, tab); break;
-        case 'pan': view = pan(view, act.dx, act.dy, model.layout); break;
-        case 'zoom': view = rezoom(view, view.zoom + act.dz); break;
-        case 'center': view = centeredView(view.zoom); break;
-        case 'node':
-          selected = selected === act.id ? null : act.id;
-          if (selected) view = ensureVisible(view, model.layout.pos[act.id]);
-          break;
-        case 'deselect': selected = null; break;
-        case 'unlock': doUnlock(player, d, act.id); break;
-        case 'equip': toggleEquip(player, d, act.id); break;
-        case 'goto': d.ui.views[tab] = view; tab = tabForTree(act.tree); selected = act.id; view = focus(d, tab, act.id, viewFor(d, tab)); break;
-        default: break;
-      }
-    }
-    d.ui.tab = tab;
-    d.ui.views[tab] = view;
-    markDirty(player);
-  } finally {
-    openFor.delete(player.id);
-  }
-}
-
-function focus(d, tab, skillId, view) {
-  const tree = TREES[treeIdForTab(d, tab)];
-  const L = getLayout(tree);
-  const pos = L.pos[skillId];
-  return pos ? ensureVisible(view, pos) : view;
-}
-
-function doUnlock(player, d, id) {
+export function doUnlock(player, d, id) {
   const st = progressionState(d);
   const r = unlock(id, st);
-  if (!r.ok) { msg(player, `§cNão foi possível desbloquear: ${r.missing.join('; ')}`); return; }
+  if (!r.ok) { msg(player, `§cNão foi possível desbloquear: ${r.missing.join('; ')}`); return false; }
   d.points = st.points;
   const s = SKILLS[id];
   if (r.evolvedTo) {
@@ -128,12 +62,13 @@ function doUnlock(player, d, id) {
     refreshStats(d);
     sound(player.dimension, 'random.levelup', player.location, { pitch: 1.4, volume: 0.7 });
     msg(player, `§aDesbloqueado: §l${s.name}§r §7(-${r.cost} pts, restam ${d.points})`);
-    if (s.type === 'active' && d.equipped.length < 9 && !d.equipped.includes(id)) {
+    if (s.type === 'active' && d.equipped.length < CONFIG.ui.barSlots && !d.equipped.includes(id)) {
       d.equipped.push(id);
-      msg(player, `§7${s.name} foi equipada no Cristal de Magicules (slot ${d.equipped.length}).`);
+      msg(player, `§7${s.name} foi colocada na Barra de Habilidades (espaço ${d.equipped.length}).`);
     }
   }
   saveNow(player);
+  return true;
 }
 
 function toggleEquip(player, d, id) {
@@ -141,11 +76,91 @@ function toggleEquip(player, d, id) {
   if (i >= 0) {
     d.equipped.splice(i, 1);
     if (d.slot >= d.equipped.length) d.slot = 0;
-    msg(player, `§7${SKILLS[id].name} removida do Cristal.`);
+    msg(player, `§7${SKILLS[id].name} removida da barra.`);
   } else {
-    if (d.equipped.length >= 9) { msg(player, '§cO Cristal comporta no máximo 9 magias. Remova uma antes.'); return; }
+    if (d.equipped.length >= CONFIG.ui.barSlots) { msg(player, `§cA barra tem ${CONFIG.ui.barSlots} espaços. Remova uma habilidade antes.`); return; }
     d.equipped.push(id);
-    msg(player, `§b${SKILLS[id].name} equipada no slot ${d.equipped.length}.`);
+    msg(player, `§b${SKILLS[id].name} colocada no espaço ${d.equipped.length}.`);
   }
   saveNow(player);
 }
+
+// ── Menu principal ──
+export async function openMenu(player, menus, startTab = 'status') {
+  if (openFor.has(player.id)) return;
+  let d = getData(player);
+  if (!d.race) { await menus.chooseRace(player); d = getData(player); if (!d.race) return; }
+  openFor.add(player.id);
+  try {
+    let tab = startTab;
+    for (;;) {
+      const model = buildMenuForm({ tab, d, state: progressionState(d) });
+      const res = await showForm(player, formOf(model));
+      if (!player.isValid) return;
+      if (!res || res.canceled || res.selection === undefined) break;
+      const act = model.hit[res.selection];
+      if (!act) continue;
+      if (act.type === 'close') break;
+      if (act.type === 'tab') {
+        if (act.tab === 'skills') { if ((await treeLoop(player, menus)) === 'close') break; continue; }
+        tab = act.tab;
+        continue;
+      }
+      if (act.type === 'skill') { if ((await treeLoop(player, menus, { key: act.id })) === 'close') break; continue; }
+      if (act.type === 'tree') { if ((await treeLoop(player, menus, { pos: act.pos })) === 'close') break; continue; }
+      if (act.type === 'slot' || act.type === 'grimoire') {
+        const r = await menus.grimoire(player);
+        if (r?.goto && (await treeLoop(player, menus, { key: r.goto })) === 'close') break;
+        if (r?.close) break;
+        continue;
+      }
+      if (act.type === 'unlock') { doUnlock(player, d, act.id); d = getData(player); continue; }
+      if (act.type === 'mimic') { await menus.mimic(player); continue; }
+      if (act.type === 'storage') { await menus.storage(player); continue; }
+    }
+    markDirty(player);
+  } finally {
+    openFor.delete(player.id);
+  }
+}
+
+// ── Árvore (mapa único) ──
+// Retorna 'back' (voltar ao menu) ou 'close' (fechar tudo).
+async function treeLoop(player, menus, focus = {}) {
+  const d = getData(player);
+  const map = getMap(RACES[d.race].lineage);
+  let selected = null;
+  let view = d.ui.view && CONFIG.ui.zoomGrids[d.ui.view.zoom] ? d.ui.view : centeredView(CONFIG.ui.defaultZoom);
+  if (focus.key && map.pos[focus.key]) { selected = focus.key; view = ensureVisible(view, map.pos[focus.key]); }
+  if (focus.pos) view = viewAt(focus.pos, view.zoom);
+  let result = 'back';
+  for (;;) {
+    const model = buildTreeForm({ state: progressionState(d), view, selected, mp: { cur: d.mp, max: d.stats.maxMp }, equipped: d.equipped });
+    const res = await showForm(player, formOf(model));
+    if (!player.isValid) return 'close';
+    if (!res || res.canceled || res.selection === undefined) { result = 'close'; break; }
+    const act = model.hit[res.selection];
+    if (!act) continue;
+    if (act.type === 'back') break;
+    if (act.type === 'close') { result = 'close'; break; }
+    switch (act.type) {
+      case 'jump': selected = null; view = viewAt(act.pos, view.zoom); break;
+      case 'pan': view = pan(view, act.dx, act.dy, map); break;
+      case 'zoom': view = rezoom(view, view.zoom + act.dz); break;
+      case 'center': view = centeredView(view.zoom); break;
+      case 'node':
+        selected = selected === act.key ? null : act.key;
+        if (selected) view = ensureVisible(view, map.pos[act.key]);
+        break;
+      case 'deselect': selected = null; break;
+      case 'unlock': doUnlock(player, d, act.id); break;
+      case 'equip': toggleEquip(player, d, act.id); break;
+      case 'goto': selected = act.key; view = ensureVisible(view, map.pos[act.key]); break;
+      default: break;
+    }
+  }
+  d.ui.view = view;
+  markDirty(player);
+  return result;
+}
+

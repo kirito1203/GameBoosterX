@@ -38,8 +38,9 @@ export async function chooseRace(player) {
   for (const id of initialSkillsFor(race.id)) d.unlocked.add(id);
   refreshStats(d);
   d.mp = d.stats.maxMp;
+  d.aura = d.stats.maxAura;
   d.ui.tab = 'racial';
-  for (const id of d.unlocked) if (SKILLS[id].type === 'active' && !d.equipped.includes(id)) d.equipped.push(id);
+  for (const id of d.unlocked) if (SKILLS[id].type === 'active' && !d.equipped.includes(id) && d.equipped.length < CONFIG.ui.barSlots) d.equipped.push(id);
   saveNow(player);
   sound(player.dimension, 'random.totem', player.location);
   msg(player, `§6§lVocê renasceu como ${race.name}!§r Você tem §e${d.points} pontos§r. Toque nos nós da árvore para desbloquear habilidades.`);
@@ -51,7 +52,7 @@ export async function grimoire(player) {
     const actives = [...d.unlocked].map((id) => SKILLS[id]).filter((s) => s.type === 'active');
     const passives = [...d.unlocked].map((id) => SKILLS[id]).filter((s) => s.type === 'passive');
     const f = new ActionFormData().title('§lGrimório · Magias aprendidas')
-      .body(`§dMagicules: ${Math.floor(d.mp)}/${d.stats.maxMp}§r\nCristal de Magicules: ${d.equipped.length}/9 magias equipadas.\nUse o Cristal para conjurar; agachado + usar troca de magia.\n\n§ePassivas ativas (${passives.length}):§r\n${passives.map((s) => `• ${s.name}`).join('\n') || '§7nenhuma'}`);
+      .body(`§dMagicules: ${Math.floor(d.mp)}/${d.stats.maxMp}§r\nBarra de Habilidades: ${d.equipped.length}/${CONFIG.ui.barSlots} espaços.\nUse o Cristal de Magicules para conjurar a habilidade da barra; agachado + usar troca de espaço.\nMagias gastam Magículas; habilidades raciais gastam Aura (${Math.floor(d.aura)}/${d.stats.maxAura}).\n\n§ePassivas ativas (${passives.length}):§r\n${passives.map((s) => `• ${s.name}`).join('\n') || '§7nenhuma'}`);
     f.button('§l« Voltar à árvore');
     for (const s of actives) {
       const slot = d.equipped.indexOf(s.id);
@@ -81,15 +82,15 @@ async function skillMenu(player, s) {
     case 0: cast(player, s.id); return { close: true };
     case 1:
       if (slot >= 0) d.equipped.splice(slot, 1);
-      else if (d.equipped.length < 9) d.equipped.push(s.id);
-      else msg(player, '§cO Cristal comporta no máximo 9 magias.');
+      else if (d.equipped.length < CONFIG.ui.barSlots) d.equipped.push(s.id);
+      else msg(player, `§cA barra tem ${CONFIG.ui.barSlots} espaços. Remova uma habilidade antes.`);
       if (d.slot >= d.equipped.length) d.slot = 0;
       saveNow(player);
       return null;
     case 2:
       if (slot >= 0) d.equipped.splice(slot, 1);
       d.equipped.unshift(s.id);
-      if (d.equipped.length > 9) d.equipped.length = 9;
+      if (d.equipped.length > CONFIG.ui.barSlots) d.equipped.length = CONFIG.ui.barSlots;
       d.slot = 0;
       saveNow(player);
       return null;
@@ -202,5 +203,5 @@ export async function storageMenu(player) {
   }
 }
 
-export const MENUS = { chooseRace, grimoire, status };
+export const MENUS = { chooseRace, grimoire, status, mimic: mimicMenu, storage: storageMenu };
 export { system };

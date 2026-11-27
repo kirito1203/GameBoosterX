@@ -14,8 +14,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { buildTreeForm, centeredView, ensureVisible, pan } from '../BP/scripts/core/view.js';
 import { MARK } from '../BP/scripts/core/uiSpec.js';
-import { getLayout } from '../BP/scripts/core/layout.js';
-import { TREES, initialSkillsFor } from '../BP/scripts/data/registry.js';
+import { initialSkillsFor } from '../BP/scripts/data/registry.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const UI = JSON.parse(readFileSync(join(ROOT, 'RP/ui/tensura_tree.json'), 'utf8').replace(/^\/\/.*$/m, ''));
@@ -131,7 +130,7 @@ function mc(text) {
 function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
 
 // ── Renderização ──
-function render(model, W, H, scale) {
+function render(model, W, H, scale, rootName = 'root') {
   const els = [];
   const stats = { nodes: 0, pipes: 0, ctl: 0, rects: { node: new Map(), pipe: new Map() } };
   const globals = { '#title_text': model.title, '#form_text': model.body };
@@ -183,7 +182,10 @@ function render(model, W, H, scale) {
         els.push(`<img style="${st}" src="${src}">`);
       }
       if (texture.includes('/node/f_')) { stats.nodes++; stats.rects.node.set(cidx, box); }
-      if (texture.includes('/pipe/p')) { stats.pipes++; stats.rects.pipe.set(cidx, box); }
+      if (texture.includes('/ui/line/')) { stats.pipes++; stats.rects.pipe.set(cidx, box); }
+    }
+    if (def.type === 'custom') {
+      els.push(`<div style="${st};display:flex;align-items:flex-end;justify-content:center"><div style="width:38%;height:92%;background:linear-gradient(#2b3550,#141b2b);border:1px dashed #6af;color:#8bf;font:${(5 * scale).toFixed(0)}px monospace;display:flex;align-items:center;justify-content:center;text-align:center">${def.renderer}<br>(personagem)</div></div>`);
     }
     if (def.type === 'label' && text) {
       els.push(`<div class="lbl" style="${st};height:auto;font-size:${(7 * (def.font_scale_factor ?? 1) * scale).toFixed(1)}px;text-align:${def.text_alignment ?? 'left'}">${mc(text)}</div>`);
@@ -203,16 +205,17 @@ function render(model, W, H, scale) {
       walk(k, c[k], box, v, { cidx: def.collection_index !== undefined ? def.collection_index : ctx.cidx }, layer + 1);
     }
   }
-  walk('root', UI.root, { x: 0, y: 0, w: W, h: H }, {}, {}, 0);
+  walk(rootName, UI[rootName], { x: 0, y: 0, w: W, h: H }, {}, {}, 0);
   return { html: els.join('\n'), stats };
 }
 
-export function previewHtml(model, { W = 427, H = 192, scale = 3, label = '' } = {}) {
-  const { html, stats } = render(model, W, H, scale);
+export function previewHtml(model, { W = 427, H = 192, scale = 3, label = '', root = 'root' } = {}) {
+  const { html, stats } = render(model, W, H, scale, root);
   const page = `<!doctype html><meta charset="utf-8"><style>
 body{margin:0;background:#000;font-family:'DejaVu Sans',sans-serif}
 #s{position:relative;width:${W * scale}px;height:${H * scale}px;overflow:hidden}
 #s img,#s div{position:absolute}
+#s img{image-rendering:pixelated}
 .lbl{color:#fff;text-shadow:1px 1px 0 #000;white-space:pre-wrap;line-height:1.15}
 .scroll{overflow:hidden}
 #cap{color:#9ab;font:12px monospace;padding:4px}
@@ -221,35 +224,48 @@ body{margin:0;background:#000;font-family:'DejaVu Sans',sans-serif}
 }
 
 // ── Cenários de teste ──
+import { buildMenuForm } from '../BP/scripts/core/menuView.js';
+import { getMap } from '../BP/scripts/core/map.js';
+import { computeStats } from '../BP/scripts/core/stats.js';
+import { viewAt } from '../BP/scripts/core/view.js';
+
+function demoPlayer() {
+  const unlocked = new Set([...initialSkillsFor('slime'), 'r.slime.self_regen', 'r.slime.shapeshift', 'r.slime.analyze', 'elem.core', 'elem.fire',
+    'elem.fireball', 'elem.water', 'elem.freeze', 'elem.wind_cutter', 'elem.stone_shot', 'elem.fire_lance', 'uni.soul', 'uni.great_sage',
+    'uni.predator', 'aspect.magic_sense', 'aspect.barrier', 'ext.magic_aura', 'ext.water_manipulation', 'ext.water_blade']);
+  const d = { race: 'slime', level: 22, points: 140, flags: new Set(), unlocked, mpBonus: 20, mimic: null, epTotal: 1250, ep: 300,
+    mp: 210, aura: 150, equipped: ['uni.predator', 'ext.water_blade', 'aspect.barrier'], absorbed: ['minecraft:wolf'], kills: { 'minecraft:zombie': 12, 'minecraft:spider': 4 } };
+  d.stats = computeStats(d);
+  return d;
+}
+
 export function scenario(name) {
-  const base = { race: 'slime', level: 22, points: 140, flags: new Set() };
-  const unlocked = new Set([...initialSkillsFor('slime'), 'r.slime.self_regen', 'r.slime.shapeshift', 'elem.core', 'elem.fire', 'elem.fireball',
-    'elem.water', 'elem.freeze', 'elem.wind_cutter', 'elem.stone_shot', 'elem.fire_lance']);
-  const state = { ...base, unlocked };
-  const mp = { cur: 210, max: 252 };
+  const d = demoPlayer();
+  const state = { race: d.race, level: d.level, points: d.points, unlocked: d.unlocked, flags: d.flags };
+  const mp = { cur: d.mp, max: d.stats.maxMp };
+  const map = getMap('slime');
   switch (name) {
-    case 'elemental-z1': return { state, tab: 'elemental', view: centeredView(1), selected: null, mp };
-    case 'elemental-z2-sel': {
-      const L = getLayout(TREES.elemental);
-      return { state, tab: 'elemental', view: ensureVisible(centeredView(2), L.pos['elem.firestorm']), selected: 'elem.firestorm', mp };
-    }
-    case 'racial-z3': return { state, tab: 'racial', view: centeredView(3), selected: null, mp };
-    case 'racial-z2-sel': return { state, tab: 'racial', view: centeredView(2), selected: 'r.slime.evo_demon_slime', mp };
-    case 'aspect-z1-pan': {
-      const L = getLayout(TREES.aspect);
-      return { state, tab: 'aspect', view: pan(centeredView(1), 0, -1, L), selected: null, mp };
-    }
+    case 'tree-z1': return { kind: 'tree', p: { state, view: centeredView(1), selected: null, mp } };
+    case 'tree-z2-sel': return { kind: 'tree', p: { state, view: ensureVisible(viewAt(map.roots.elemental, 2), map.pos['elem.firestorm']), selected: 'elem.firestorm', mp } };
+    case 'tree-z3': return { kind: 'tree', p: { state, view: viewAt(map.roots.unique, 3), selected: null, mp } };
+    case 'tree-z1-pan': return { kind: 'tree', p: { state, view: pan(viewAt(map.roots.extra, 1), 0, -1, map), selected: null, mp } };
+    case 'menu-status': return { kind: 'menu', p: { tab: 'status', d, state } };
+    case 'menu-evolution': return { kind: 'menu', p: { tab: 'evolution', d, state } };
     default: throw new Error(`cenário desconhecido ${name}`);
   }
 }
 
+export function modelFor(sc) {
+  return sc.kind === 'menu' ? buildMenuForm(sc.p) : buildTreeForm(sc.p);
+}
+
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const out = process.argv[2] ?? join(ROOT, 'dist', 'preview.html');
-  const sc = process.argv[3] ?? 'elemental-z2-sel';
-  const model = buildTreeForm(scenario(sc));
-  if (!model.title.includes(MARK)) throw new Error('título sem marcador');
-  const { page, stats } = previewHtml(model, { label: `cenário: ${sc} — simulação do JSON UI gerado (não é o jogo)` });
+  const name = process.argv[3] ?? 'tree-z2-sel';
+  const sc = scenario(name);
+  const model = modelFor(sc);
+  const { page, stats } = previewHtml(model, { root: sc.kind === 'menu' ? 'menu_root' : 'root', label: `cenário: ${name} — simulação do JSON UI gerado (não é o jogo)` });
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, page);
-  console.log(JSON.stringify({ out, nodes: stats.nodes, pipes: stats.pipes, buttons: stats.ctl }));
+  console.log(JSON.stringify({ out, nodes: stats.nodes, lines: stats.pipes, buttons: stats.ctl }));
 }

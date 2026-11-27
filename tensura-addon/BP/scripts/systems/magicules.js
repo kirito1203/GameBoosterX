@@ -30,7 +30,7 @@ function holdingTensura(player) {
 export function hudLine(player) {
   const d = getData(player);
   if (!d.stats) return '';
-  let s = `§dMagicules ${bar(d.mp, d.stats.maxMp)} §f${Math.floor(d.mp)}/${d.stats.maxMp}`;
+  let s = `§9Aura §f${Math.floor(d.aura)}/${d.stats.maxAura}  §dMagículas ${bar(d.mp, d.stats.maxMp, 14)} §f${Math.floor(d.mp)}/${d.stats.maxMp}`;
   if (d.equipped.length) {
     const id = d.equipped[d.slot % d.equipped.length];
     const sk = SKILLS[id];
@@ -54,6 +54,7 @@ export function startMagicules() {
     for (const p of world.getAllPlayers()) {
       const d = getData(p);
       if (!d.stats) continue;
+      if (d.aura < d.stats.maxAura) d.aura = Math.min(d.stats.maxAura, d.aura + d.stats.auraRegen * CONFIG.magicules.regenTickSeconds);
       if (d.mp < d.stats.maxMp) {
         let r = d.stats.regen * d.stats.regenMult * CONFIG.magicules.regenTickSeconds;
         if (now - d.lastCast < 100) r *= CONFIG.magicules.combatRegenFactor;

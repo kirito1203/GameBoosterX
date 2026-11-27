@@ -18,7 +18,7 @@ import { startBolts } from './systems/bolts.js';
 import { startTempBlocks } from './systems/tempBlocks.js';
 import { setEffectMenus } from './systems/effects.js';
 import { cast } from './systems/casting.js';
-import { openTree } from './ui/treeUI.js';
+import { openMenu } from './ui/treeUI.js';
 import { MENUS, mimicMenu, storageMenu } from './ui/menus.js';
 
 const TOME = 'tensura:great_sage_tome';
@@ -30,10 +30,10 @@ world.afterEvents.itemUse.subscribe((ev) => {
   const player = ev.source;
   const id = ev.itemStack?.typeId;
   if (id === TOME) {
-    openTree(player, MENUS);
+    openMenu(player, MENUS);
   } else if (id === CRYSTAL) {
     const d = getData(player);
-    if (!d.race) { openTree(player, MENUS); return; }
+    if (!d.race) { openMenu(player, MENUS); return; }
     if (!d.equipped.length) { player.sendMessage('§7Nenhuma magia equipada. Abra o Grimório, desbloqueie magias ativas e equipe-as no Cristal.'); return; }
     if (player.isSneaking) {
       d.slot = (d.slot + 1) % d.equipped.length;
@@ -56,7 +56,7 @@ function giveStarterItems(player) {
   }
   d.gifted = true;
   saveNow(player);
-  player.sendMessage('§6§lTensura RPG:§r você recebeu o §bGrimório do Grande Sábio§r (abre a árvore de habilidades) e o §dCristal de Magicules§r (conjura magias). Use o Grimório para escolher sua raça.');
+  player.sendMessage('§6§lTensura RPG:§r você recebeu o §bGrimório do Grande Sábio§r (abre o menu e a árvore de habilidades) e o §dCristal de Magicules§r (conjura magias). Use o Grimório para escolher sua raça.');
 }
 
 world.afterEvents.playerSpawn.subscribe((ev) => {

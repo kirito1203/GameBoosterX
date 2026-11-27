@@ -93,7 +93,10 @@ export function describeFx(fx) {
       case 'p_starved': parts.push(`Passiva: ao derrotar criaturas, recupera fome e +${f.mp} Magicules`); break;
       case 'p_points': parts.push(`Passiva: custo em pontos x${f.mult} nas árvores universais`); break;
       case 'p_regen_env': parts.push('Passiva: bônus na água' + (f.fire ? ' e em chamas' : '')); break;
-      case 'p_race': parts.push(f.pack ? 'Passiva: força e resistência perto de aliados' : f.poisonImmune ? 'Passiva: imunidade a veneno' : 'Atributos da raça'); break;
+      case 'p_race': parts.push(f.pack ? 'Passiva: força e resistência perto de aliados' : f.poisonImmune ? 'Passiva: imunidade a veneno'
+        : f.cleanse ? `Passiva: imunidade a ${f.cleanse.map(effectName).join(', ')}` : 'Atributos da raça'); break;
+      case 'p_xp': parts.push(`Passiva: EP ganho x${f.mult}`); break;
+      case 'p_aura': parts.push(`Passiva: +${f.max ?? 0} Aura máxima${f.regen ? `, +${f.regen}/s` : ''}`); break;
       default: parts.push(f.k);
     }
     const effs = f.eff && !f.k.startsWith('p_') ? effList(f.eff) : '';

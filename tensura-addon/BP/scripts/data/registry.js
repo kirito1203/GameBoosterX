@@ -8,11 +8,15 @@ import spirit from './trees/spirit.js';
 import necromancy from './trees/necromancy.js';
 import dark from './trees/dark.js';
 import advanced from './trees/advanced.js';
+import unique from './trees/unique.js';
+import ultimate from './trees/ultimate.js';
+import extra from './trees/extra.js';
+import resist from './trees/resist.js';
 import { RACIAL_TREES } from './trees/racial.js';
 import { RACES, LINEAGES } from './races.js';
 
 // Ordem das abas na interface. A primeira aba é sempre a árvore racial do jogador.
-export const UNIVERSAL_TREES = [elemental, aspect, holy, summon, illusion, spirit, necromancy, dark, advanced];
+export const UNIVERSAL_TREES = [elemental, aspect, holy, summon, illusion, spirit, necromancy, dark, advanced, unique, ultimate, extra, resist];
 export const TAB_ORDER = ['racial', ...UNIVERSAL_TREES.map((t) => t.id)];
 
 export const TREES = {};

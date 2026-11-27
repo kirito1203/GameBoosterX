@@ -45,20 +45,6 @@ def save(img, path):
     img.save(path, optimize=True)
 
 
-ELEMENT_COLORS = {
-    'fire': '#ff6a2a', 'water': '#2a9dff', 'ice': '#9fe8ff', 'earth': '#c09050', 'wind': '#8cf0a8',
-    'lightning': '#ffe14a', 'explosion': '#ff3b3b', 'holy': '#fff2a8', 'dark': '#9a5cff', 'spirit': '#5effc8',
-    'illusion': '#ff7ae6', 'space': '#6a7bff', 'gravity': '#8a6cff', 'soul': '#4fd9d0', 'nuclear': '#8aff3a',
-    'dragon': '#d050ff', 'physical': '#d8d8d8', 'acid': '#a0e040', 'blood': '#e0304a',
-}
-TREE_COLORS = {
-    'elemental': '#ff9a40', 'aspect': '#6ab0ff', 'holy': '#ffe680', 'summon': '#c080ff', 'illusion': '#ff80d0',
-    'spirit': '#60ffc0', 'necromancy': '#90e070', 'dark': '#9060ff', 'advanced': '#ff4060', 'racial': '#ffb040',
-}
-RARITY_COLORS = {1: '#b4bccc', 2: '#3fa9ff', 3: '#c060ff', 4: '#ffb020', 5: '#ff3050'}
-
-
-# ── Glifos ────────────────────────────────────────────────────────────────
 def glyph(d, kind, cx, cy, r, col, dark):
     w = max(2, int(r * 0.16))
     if kind in ('bolt', 'chain'):
@@ -156,182 +142,194 @@ def glyph(d, kind, cx, cy, r, col, dark):
         d.polygon([(cx, cy - r * .45), (cx + r * .3, cy - r * .1), (cx, cy + r * .35), (cx - r * .3, cy - r * .1)], fill=dark)
 
 
-def icon(skill, size=96):
-    img = canvas(size)
-    d = ImageDraw.Draw(img)
-    S = size * SS
-    cx = cy = S / 2
+
+ELEMENT_COLORS = {}
+TREE_COLORS = {
+    'elemental': '#ff8a30', 'aspect': '#5aa8ff', 'holy': '#ffe27a', 'summon': '#b878ff', 'illusion': '#ff78d0',
+    'spirit': '#50f0b8', 'necromancy': '#9ad070', 'dark': '#8a58ff', 'advanced': '#ff4060', 'racial': '#ffb040',
+    'unique': '#40d8ff', 'ultimate': '#ffd000', 'extra': '#78c8ff', 'resist': '#c8c8d0',
+}
+RARITY_COLORS = {1: '#9aa4b8', 2: '#3fa9ff', 3: '#b860ff', 4: '#ffb020', 5: '#ff3050'}
+TAB_GLYPH = {'racial': 'race', 'elemental': 'bolt', 'aspect': 'buff', 'holy': 'heal', 'summon': 'summon', 'illusion': 'debuff',
+             'spirit': 'flight', 'necromancy': 'bind', 'dark': 'drain', 'advanced': 'nova', 'unique': 'analyze',
+             'ultimate': 'evolve', 'extra': 'blink', 'resist': 'passive'}
+
+
+def pixel(img_small, scale):
+    return img_small.resize((img_small.width * scale, img_small.height * scale), Image.NEAREST)
+
+
+def shade(c, k):
+    return tuple(max(0, min(255, int(v * k))) for v in c[:3]) + (c[3] if len(c) > 3 else 255,)
+
+
+# ── Ícones: azulejo quadrado em pixel art (24x24 ampliado 4x) ──
+def icon(skill, n=24, scale=4):
     base = hexc(skill['color'])
-    dark = (14, 12, 28, 255)
-    # disco com gradiente radial
-    for i in range(40, 0, -1):
-        t = i / 40
-        c = mix(base, dark, 0.55 + 0.45 * t)
-        rr = S * 0.5 * t
-        d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=c)
-    d.ellipse([S * .06, S * .06, S * .94, S * .94], outline=mix(base, (255, 255, 255, 255), .3), width=SS * 2)
-    glyph(d, skill['glyph'], cx, cy - S * .07, S * .3, mix(base, (255, 255, 255, 255), .45), dark)
-    # abreviação
-    f = font(int(S * 0.2))
-    txt = skill['abbr']
-    tb = d.textbbox((0, 0), txt, font=f)
-    tw = tb[2] - tb[0]
-    d.text((cx - tw / 2, S * 0.68), txt, font=f, fill=(255, 255, 255, 235), stroke_width=SS * 2, stroke_fill=(0, 0, 0, 200))
-    return finish(img, size)
+    im = Image.new('RGBA', (n, n), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 0, n - 1, n - 1], fill=shade(base, 0.22))
+    for i in range(n // 2):  # gradiente em degraus
+        d.rectangle([i, i, n - 1 - i, n - 1 - i], fill=shade(base, 0.22 + 0.025 * i))
+    light = mix(base, (255, 255, 255, 255), 0.5)
+    glyph(d, skill['glyph'], n / 2, n / 2, n * 0.36, light, shade(base, 0.15))
+    # contorno escuro do glifo (efeito pixel art)
+    px = im.load()
+    out = im.copy()
+    po = out.load()
+    for y in range(n):
+        for x in range(n):
+            if px[x, y][:3] == light[:3]:
+                for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                    xx, yy = x + dx, y + dy
+                    if 0 <= xx < n and 0 <= yy < n and px[xx, yy][:3] != light[:3]:
+                        po[xx, yy] = shade(base, 0.12)
+    d2 = ImageDraw.Draw(out)
+    d2.rectangle([0, 0, n - 1, n - 1], outline=(10, 10, 16, 255))
+    return pixel(out, scale)
 
 
-def frame(code, size=128):
+# ── Molduras quadradas (32x32 ampliado 2x) ──
+def frame(code, n=32, scale=2):
     st, rar, major, link, sel = code[0], int(code[1]), code[2] == 'm', code[3] == 'k', code[4] == 's'
-    img = canvas(size)
-    S = size * SS
-    c = S / 2
+    im = Image.new('RGBA', (n, n), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
     rc = hexc(RARITY_COLORS[rar])
-    icon_r = S * 0.318          # raio do ícone (56% / 88%)
-    ring_in = icon_r * 1.0
-    ring_out = icon_r * (1.18 if not major else 1.3)
-
-    glow = Image.new('RGBA', img.size, (0, 0, 0, 0))
-    gd = ImageDraw.Draw(glow)
-    if st == 'u':
-        gd.ellipse([c - ring_out * 1.35, c - ring_out * 1.35, c + ring_out * 1.35, c + ring_out * 1.35], fill=rc[:3] + (150,))
-    elif st == 'a':
-        gd.ellipse([c - ring_out * 1.35, c - ring_out * 1.35, c + ring_out * 1.35, c + ring_out * 1.35], fill=(255, 216, 74, 170))
-    glow = glow.filter(ImageFilter.GaussianBlur(S * 0.05))
-    img.alpha_composite(glow)
-    d = ImageDraw.Draw(img)
-
-    ring = rc
+    # o ícone ocupa 54/78 do quadro → borda interna em ~4.5 px de cada lado
+    inner = round(n * (1 - 54 / 78) / 2)
     if st == 'l':
-        ring = mix(rc, (60, 60, 70, 255), 0.65)[:3] + (200,)
+        ring = shade(rc, 0.45)
     elif st == 'r':
-        ring = mix(rc, (90, 90, 100, 255), 0.35)
+        ring = shade(rc, 0.75)
     elif st == 'a':
-        ring = (255, 216, 74, 255)
-    d.ellipse([c - ring_out, c - ring_out, c + ring_out, c + ring_out], fill=ring)
-    # recorta o centro para o ícone aparecer
-    mask = Image.new('L', img.size, 255)
-    ImageDraw.Draw(mask).ellipse([c - ring_in, c - ring_in, c + ring_in, c + ring_in], fill=0)
-    img = Image.composite(img, Image.new('RGBA', img.size, (0, 0, 0, 0)), mask)
-    d = ImageDraw.Draw(img)
-    # véu escuro sobre o ícone: bloqueado (forte) ou faltando requisito (leve)
-    if st in ('l', 'r'):
-        d.ellipse([c - icon_r, c - icon_r, c + icon_r, c + icon_r], fill=(5, 5, 12, 170 if st == 'l' else 100))
-
-    # anel interno fino
-    d.ellipse([c - ring_in, c - ring_in, c + ring_in, c + ring_in], outline=mix(ring, (255, 255, 255, 255), .35), width=SS * 2)
-
-    if major:  # ornamentos: 8 pontas e anel externo
-        orn = ring if st != 'l' else ring
-        for i in range(8):
-            ang = math.pi * 2 * i / 8
-            r1, r2 = ring_out * 1.02, ring_out * 1.28
-            w = 0.16
-            p = [(c + math.cos(ang - w) * r1, c + math.sin(ang - w) * r1), (c + math.cos(ang) * r2, c + math.sin(ang) * r2),
-                 (c + math.cos(ang + w) * r1, c + math.sin(ang + w) * r1)]
-            d.polygon(p, fill=orn)
-        d.ellipse([c - ring_out * 1.12, c - ring_out * 1.12, c + ring_out * 1.12, c + ring_out * 1.12], outline=orn, width=SS * 2)
-    if rar >= 4 and st != 'l':  # bordas especiais para lendária/suprema
-        for i in range(16):
-            ang = math.pi * 2 * i / 16 + math.pi / 16
-            rr = ring_out * (1.38 if major else 1.15)
-            d.ellipse([c + math.cos(ang) * rr - SS * 2.5, c + math.sin(ang) * rr - SS * 2.5,
-                       c + math.cos(ang) * rr + SS * 2.5, c + math.sin(ang) * rr + SS * 2.5], fill=rc)
-    if link:  # nó compartilhado: selo azul com elo
-        bx, by, br = c + ring_out * .78, c + ring_out * .78, S * .1
-        d.ellipse([bx - br, by - br, bx + br, by + br], fill=(40, 110, 255, 255), outline=(220, 235, 255, 255), width=SS * 2)
-        d.ellipse([bx - br * .55, by - br * .3, bx + br * .05, by + br * .3], outline=(255, 255, 255, 255), width=SS * 2)
-        d.ellipse([bx - br * .05, by - br * .3, bx + br * .55, by + br * .3], outline=(255, 255, 255, 255), width=SS * 2)
-    if sel:  # seleção: colchetes brancos
-        r = S * 0.48
-        L = S * 0.12
-        w = SS * 3
-        for sx in (-1, 1):
-            for sy in (-1, 1):
-                x, y = c + sx * r, c + sy * r
-                d.line([x, y, x - sx * L, y], fill=(255, 255, 255, 255), width=w)
-                d.line([x, y, x, y - sy * L], fill=(255, 255, 255, 255), width=w)
-    return finish(img, size)
+        ring = (255, 214, 70, 255)
+    else:
+        ring = rc
+    w = 3 if major else 2
+    if st in ('a', 'u'):  # halo de brilho em volta da borda
+        gc = (255, 214, 70) if st == 'a' else rc[:3]
+        for k, a in ((1, 170), (2, 110), (3, 55)):
+            d.rectangle([inner - w - k, inner - w - k, n - 1 - inner + w + k, n - 1 - inner + w + k], outline=gc + (a,))
+    d.rectangle([inner - w, inner - w, n - 1 - inner + w, n - 1 - inner + w], outline=ring, width=w)
+    d.rectangle([inner, inner, n - 1 - inner, n - 1 - inner], outline=(8, 8, 14, 255))
+    if st in ('l', 'r'):  # véu sobre o ícone
+        d.rectangle([inner + 1, inner + 1, n - 2 - inner, n - 2 - inner], fill=(4, 4, 10, 170 if st == 'l' else 100))
+    if major:  # cantos ornamentados
+        o = inner - w - 2
+        for (cx, cy, sx, sy) in ((o, o, 1, 1), (n - 1 - o, o, -1, 1), (o, n - 1 - o, 1, -1), (n - 1 - o, n - 1 - o, -1, -1)):
+            d.line([cx, cy, cx + 4 * sx, cy], fill=mix(ring, (255, 255, 255, 255), 0.4), width=1)
+            d.line([cx, cy, cx, cy + 4 * sy], fill=mix(ring, (255, 255, 255, 255), 0.4), width=1)
+    if rar >= 4 and st != 'l':  # bordas especiais (lendária/suprema)
+        for x in range(inner, n - inner, 3):
+            d.point((x, inner - w - 1), fill=mix(rc, (255, 255, 255, 255), 0.5))
+            d.point((x, n - inner + w), fill=mix(rc, (255, 255, 255, 255), 0.5))
+    if link:  # selo azul de nó compartilhado
+        d.rectangle([n - inner - 3, n - inner - 3, n - inner + 3, n - inner + 3], fill=(40, 110, 255, 255), outline=(220, 235, 255, 255))
+    if sel:
+        L = 5
+        for (x, y, sx, sy) in ((0, 0, 1, 1), (n - 1, 0, -1, 1), (0, n - 1, 1, -1), (n - 1, n - 1, -1, -1)):
+            d.line([x, y, x + L * sx, y], fill=(255, 255, 255, 255), width=2)
+            d.line([x, y, x, y + L * sy], fill=(255, 255, 255, 255), width=2)
+    return pixel(im, scale)
 
 
-PIPE_COLORS = {1: (70, 76, 105, 230), 2: (214, 172, 74, 255), 3: (120, 230, 255, 255)}
+# ── Linhas: 8 direções (n ne e se s sw w nw), 2 estados ──
+DIR8 = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
 
 
-def pipe(code, size=64):
-    img = canvas(size)
-    S = size * SS
-    c = S / 2
-    vals = [int(ch) for ch in code]  # n e s w
-    glow = Image.new('RGBA', img.size, (0, 0, 0, 0))
-    gd = ImageDraw.Draw(glow)
-    d = ImageDraw.Draw(img)
-    hw = S * 0.055
-    dirs = [(0, -1), (1, 0), (0, 1), (-1, 0)]
-    for (dx, dy), v in zip(dirs, vals):
-        if not v:
-            continue
-        col = PIPE_COLORS[v]
-        x2, y2 = c + dx * c, c + dy * c
-        box = [min(c, x2) - hw, min(c, y2) - hw, max(c, x2) + hw, max(c, y2) + hw]
-        if dx == 0:
-            box[0], box[2] = c - hw, c + hw
-        else:
-            box[1], box[3] = c - hw, c + hw
-        if v == 3:
-            gbox = [box[0] - hw * 1.5, box[1] - hw * 1.5, box[2] + hw * 1.5, box[3] + hw * 1.5]
-            if dx == 0:
-                gbox[1], gbox[3] = box[1], box[3]
-            else:
-                gbox[0], gbox[2] = box[0], box[2]
-            gd.rectangle(gbox, fill=(80, 200, 255, 120))
-        d.rectangle(box, fill=col)
-    m = max(vals)
-    if m:
-        d.ellipse([c - hw * 1.25, c - hw * 1.25, c + hw * 1.25, c + hw * 1.25], fill=PIPE_COLORS[m])
-    glow = glow.filter(ImageFilter.GaussianBlur(S * 0.03))
-    out = Image.new('RGBA', img.size, (0, 0, 0, 0))
-    out.alpha_composite(glow)
-    out.alpha_composite(img)
-    return finish(out, size)
+def line_tile(code, n=48):
+    # code: 8 caracteres (n ne e se s sw w nw): 0 sem linha, 1 apagada, 2 acesa
+    im = Image.new('RGBA', (n * SS, n * SS), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    c = n * SS / 2
+    dim = (64, 70, 92, 235)
+    lit = (150, 225, 255, 255)
+    wd = int(n * SS * 0.05)
+    wl = int(n * SS * 0.065)
+    g = Image.new('RGBA', im.size, (0, 0, 0, 0))
+    gd = ImageDraw.Draw(g)
+    for ch, (dx, dy) in zip(code, DIR8):
+        if ch == '2':
+            gd.line([c, c, c + dx * c, c + dy * c], fill=(70, 170, 255, 110), width=wl * 3)
+    im.alpha_composite(g.filter(ImageFilter.GaussianBlur(n * SS * 0.03)))
+    for state in ('1', '2'):  # apagadas por baixo, acesas por cima
+        for ch, (dx, dy) in zip(code, DIR8):
+            if ch == state:
+                col, w = (dim, wd) if state == '1' else (lit, wl)
+                d.line([c, c, c + dx * c * 1.02, c + dy * c * 1.02], fill=col, width=w)
+    top = '2' if '2' in code else '1'
+    w = wl if top == '2' else wd
+    d.ellipse([c - w / 2, c - w / 2, c + w / 2, c + w / 2], fill=lit if top == '2' else dim)
+    return im.resize((n, n), Image.LANCZOS)
 
 
-def background(w=512, h=256):
-    img = Image.new('RGBA', (w, h), (0, 0, 0, 255))
-    px = img.load()
-    for y in range(h):
-        for x in range(w):
-            dx, dy = (x - w / 2) / (w / 2), (y - h / 2) / (h / 2)
-            dist = min(1, math.sqrt(dx * dx * 0.7 + dy * dy))
-            r = int(18 + 22 * (1 - dist))
-            g = int(14 + 14 * (1 - dist))
-            b = int(34 + 46 * (1 - dist))
+# ── Fundo: paisagem noturna em pixel art (320x180 ampliado 3x) ──
+def landscape(W=320, H=180, scale=3):
+    rnd = random.Random(11)
+    im = Image.new('RGBA', (W, H), (0, 0, 0, 255))
+    px = im.load()
+    for y in range(H):
+        t = y / H
+        r = int(14 + 22 * t); g = int(22 + 30 * t); b = int(44 + 38 * t)
+        for x in range(W):
             px[x, y] = (r, g, b, 255)
-    d = ImageDraw.Draw(img)
-    rnd = random.Random(7)
-    for _ in range(260):
-        x, y = rnd.random() * w, rnd.random() * h
-        a = rnd.randint(40, 160)
-        s = rnd.choice((0.5, 0.8, 1.2))
-        d.ellipse([x - s, y - s, x + s, y + s], fill=(170, 190, 255, a))
-    # círculo mágico sutil ao centro
-    over = Image.new('RGBA', (w, h), (0, 0, 0, 0))
-    od = ImageDraw.Draw(over)
-    for rr, a in ((110, 26), (86, 20), (60, 16)):
-        od.ellipse([w / 2 - rr, h / 2 - rr, w / 2 + rr, h / 2 + rr], outline=(120, 140, 255, a), width=2)
-    for i in range(6):
-        ang = math.pi * 2 * i / 6
-        od.line([w / 2 + math.cos(ang) * 110, h / 2 + math.sin(ang) * 110, w / 2 + math.cos(ang + 2.09) * 110, h / 2 + math.sin(ang + 2.09) * 110],
-                fill=(120, 140, 255, 18), width=2)
-    img.alpha_composite(over)
-    return img
+    d = ImageDraw.Draw(im)
+    # via láctea
+    for _ in range(900):
+        u = rnd.random()
+        x = int(u * W)
+        y = int(10 + u * 60 + rnd.gauss(0, 9))
+        if 0 <= y < H:
+            c = px[x, y]
+            px[x, y] = tuple(min(255, v + rnd.randint(10, 40)) for v in c[:3]) + (255,)
+    for _ in range(170):
+        x, y = rnd.randrange(W), rnd.randrange(int(H * 0.6))
+        v = rnd.randint(150, 255)
+        px[x, y] = (v, v, min(255, v + 20), 255)
+    # montanhas em camadas
+    def ridge(base, amp, col, seed):
+        r2 = random.Random(seed)
+        pts = []
+        y = base
+        for x in range(0, W + 8, 8):
+            y = max(base - amp, min(base + amp, y + r2.randint(-6, 6)))
+            pts.append((x, y))
+        d.polygon(pts + [(W, H), (0, H)], fill=col)
+    ridge(112, 18, (34, 44, 70, 255), 3)
+    ridge(128, 14, (26, 34, 54, 255), 5)
+    ridge(146, 10, (18, 24, 40, 255), 9)
+    # castelo à direita
+    tower = (12, 16, 28, 255)
+    d.rectangle([W - 34, 70, W - 14, H], fill=tower)
+    d.rectangle([W - 52, 96, W - 30, H], fill=tower)
+    for x in range(W - 36, W - 12, 5):
+        d.rectangle([x, 66, x + 2, 70], fill=tower)
+    for x in range(W - 54, W - 30, 5):
+        d.rectangle([x, 92, x + 2, 96], fill=tower)
+    for (wx, wy) in ((W - 26, 84), (W - 20, 100), (W - 42, 110)):
+        d.rectangle([wx, wy, wx + 1, wy + 2], fill=(255, 190, 90, 255))
+    # fogueira e barraca
+    d.polygon([(110, 168), (122, 150), (134, 168)], fill=(30, 30, 40, 255))
+    glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    ImageDraw.Draw(glow).ellipse([140, 150, 176, 176], fill=(255, 140, 40, 90))
+    im.alpha_composite(glow.filter(ImageFilter.GaussianBlur(6)))
+    d.polygon([(156, 170), (153, 160), (157, 163), (158, 154), (161, 164), (163, 160), (161, 170)], fill=(255, 170, 60, 255))
+    # vinheta
+    vig = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    vd = ImageDraw.Draw(vig)
+    for i in range(14):
+        vd.rectangle([i, i, W - 1 - i, H - 1 - i], outline=(0, 0, 0, 120 - i * 8))
+    im.alpha_composite(vig)
+    return pixel(im, scale)
 
 
-def box_texture(size, fill, border, bw=2, glow_top=None):
-    img = Image.new('RGBA', (size, size), fill)
-    d = ImageDraw.Draw(img)
-    d.rectangle([0, 0, size - 1, size - 1], outline=border, width=bw)
-    if glow_top:
-        d.line([bw, bw, size - bw - 1, bw], fill=glow_top, width=1)
-    return img
+def box(n, fill, border, inner=None, bw=1):
+    im = Image.new('RGBA', (n, n), fill)
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 0, n - 1, n - 1], outline=border, width=bw)
+    if inner:
+        d.rectangle([bw, bw, n - 1 - bw, n - 1 - bw], outline=inner)
+    return im
 
 
 def ui_icon(name, size=64):
@@ -339,31 +337,33 @@ def ui_icon(name, size=64):
     d = ImageDraw.Draw(img)
     S = size * SS
     c = S / 2
-    W = (240, 236, 255, 255)
-    G = (255, 205, 90, 255)
+    W = (235, 240, 255, 255)
     w = int(S * 0.09)
-    if name == 'btn_close':
-        d.line([S * .25, S * .25, S * .75, S * .75], fill=W, width=w)
-        d.line([S * .75, S * .25, S * .25, S * .75], fill=W, width=w)
+    if name in ('btn_close', 'close'):
+        d.line([S * .27, S * .27, S * .73, S * .73], fill=W, width=w)
+        d.line([S * .73, S * .27, S * .27, S * .73], fill=W, width=w)
+    elif name in ('btn_back', 'back'):
+        d.line([S * .22, c, S * .8, c], fill=W, width=w)
+        d.line([S * .22, c, S * .45, S * .27], fill=W, width=w)
+        d.line([S * .22, c, S * .45, S * .73], fill=W, width=w)
     elif name == 'btn_grimoire':
-        d.rectangle([S * .2, S * .2, S * .8, S * .82], fill=(110, 60, 30, 255), outline=G, width=SS * 3)
-        d.rectangle([S * .27, S * .2, S * .3, S * .82], fill=G)
-        glyph(d, 'summon', S * .55, S * .5, S * .2, G, (0, 0, 0, 255))
+        d.rectangle([S * .2, S * .18, S * .8, S * .82], fill=(60, 90, 170, 255), outline=(255, 210, 90, 255), width=SS * 3)
+        glyph(d, 'summon', S * .52, S * .5, S * .2, (150, 230, 255, 255), (0, 0, 0, 255))
     elif name == 'btn_status':
         d.ellipse([S * .35, S * .15, S * .65, S * .45], fill=W)
         d.pieslice([S * .2, S * .45, S * .8, S * 1.05], 180, 360, fill=W)
     elif name == 'btn_unlock':
-        d.rectangle([S * .25, S * .45, S * .75, S * .85], fill=G)
-        d.arc([S * .32, S * .12, S * .68, S * .6], 180, 330, fill=G, width=w)
+        d.rectangle([S * .25, S * .45, S * .75, S * .85], fill=(255, 205, 90, 255))
+        d.arc([S * .32, S * .12, S * .68, S * .6], 180, 330, fill=(255, 205, 90, 255), width=w)
     elif name == 'btn_equip':
         glyph(d, 'passive', c, c, S * .4, (120, 220, 255, 255), (0, 0, 0, 255))
     elif name == 'btn_link':
         d.ellipse([S * .12, S * .32, S * .55, S * .68], outline=(140, 190, 255, 255), width=w)
         d.ellipse([S * .45, S * .32, S * .88, S * .68], outline=(140, 190, 255, 255), width=w)
     elif name.startswith('arrow_'):
-        dirn = name[-1]
+        dn = name[-1]
         pts = {'u': [(c, S * .22), (S * .78, S * .7), (S * .22, S * .7)], 'd': [(c, S * .78), (S * .78, S * .3), (S * .22, S * .3)],
-               'l': [(S * .22, c), (S * .7, S * .22), (S * .7, S * .78)], 'r': [(S * .78, c), (S * .3, S * .22), (S * .3, S * .78)]}[dirn]
+               'l': [(S * .22, c), (S * .7, S * .22), (S * .7, S * .78)], 'r': [(S * .78, c), (S * .3, S * .22), (S * .3, S * .78)]}[dn]
         d.polygon(pts, fill=W)
     elif name.startswith('zoom_'):
         col = W if not name.endswith('_off') else (110, 110, 130, 255)
@@ -375,29 +375,64 @@ def ui_icon(name, size=64):
     elif name == 'center':
         d.ellipse([S * .2, S * .2, S * .8, S * .8], outline=W, width=w)
         d.ellipse([S * .43, S * .43, S * .57, S * .57], fill=W)
-        for (x1, y1, x2, y2) in ((c, S * .05, c, S * .25), (c, S * .75, c, S * .95), (S * .05, c, S * .25, c), (S * .75, c, S * .95, c)):
-            d.line([x1, y1, x2, y2], fill=W, width=int(w * .8))
     elif name == 'hover':
-        d.ellipse([S * .02, S * .02, S * .98, S * .98], outline=(255, 255, 255, 200), width=SS * 4)
+        d.rectangle([S * .02, S * .02, S * .98, S * .98], outline=(255, 255, 255, 220), width=SS * 4)
     elif name == 'icon_slot':
-        d.ellipse([S * .02, S * .02, S * .98, S * .98], fill=(10, 10, 24, 220), outline=(255, 205, 90, 255), width=SS * 3)
+        d.rectangle([S * .02, S * .02, S * .98, S * .98], fill=(10, 12, 22, 230), outline=(80, 200, 255, 255), width=SS * 3)
     return finish(img, size)
 
 
-TAB_GLYPH = {'racial': 'race', 'elemental': 'bolt', 'aspect': 'buff', 'holy': 'heal', 'summon': 'summon', 'illusion': 'debuff',
-             'spirit': 'flight', 'necromancy': 'bind', 'dark': 'drain', 'advanced': 'nova'}
+# Ícones das abas do menu (estilo da referência: glifo branco/azulado).
+def menu_tab_icon(kind, on, size=48):
+    img = canvas(size)
+    d = ImageDraw.Draw(img)
+    S = size * SS
+    col = (90, 200, 255, 255) if on else (200, 210, 225, 255)
+    if kind == 'status':
+        for i, h in enumerate((.35, .55, .75)):
+            d.rectangle([S * (.18 + i * .24), S * (.88 - h), S * (.34 + i * .24), S * .88], fill=col)
+    elif kind == 'race':
+        d.pieslice([S * .18, S * .12, S * .82, S * .9], 180, 360, fill=col)
+        d.rectangle([S * .18, S * .5, S * .82, S * .62], fill=col)
+        d.rectangle([S * .3, S * .62, S * .42, S * .88], fill=col)
+        d.rectangle([S * .58, S * .62, S * .7, S * .88], fill=col)
+        d.rectangle([S * .3, S * .3, S * .7, S * .42], fill=(0, 0, 0, 0))
+    elif kind == 'skills':
+        w = int(S * .08)
+        d.line([S * .2, S * .2, S * .8, S * .8], fill=col, width=w)
+        d.line([S * .8, S * .2, S * .2, S * .8], fill=col, width=w)
+        d.ellipse([S * .4, S * .4, S * .6, S * .6], fill=col)
+    elif kind == 'evolution':
+        d.polygon([(S * .5, S * .1), (S * .85, S * .5), (S * .62, S * .5), (S * .62, S * .9), (S * .38, S * .9), (S * .38, S * .5), (S * .15, S * .5)], fill=col)
+    elif kind == 'records':
+        d.rectangle([S * .12, S * .2, S * .48, S * .82], fill=col)
+        d.rectangle([S * .52, S * .2, S * .88, S * .82], fill=col)
+        for k in range(3):
+            y = S * (.34 + k * .14)
+            d.line([S * .18, y, S * .42, y], fill=(30, 40, 60, 255), width=SS * 2)
+            d.line([S * .58, y, S * .82, y], fill=(30, 40, 60, 255), width=SS * 2)
+    return finish(img, size)
 
 
-def tab_icon(tid, on, size=64):
+def progress_bar(k, steps=20, w=120, h=10):
+    im = Image.new('RGBA', (w, h), (10, 14, 24, 255))
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 0, w - 1, h - 1], outline=(90, 110, 140, 255))
+    fill = int((w - 4) * k / steps)
+    if fill > 0:
+        for x in range(fill):
+            t = x / max(1, w - 4)
+            d.line([2 + x, 2, 2 + x, h - 3], fill=(int(40 + 40 * t), int(160 + 60 * t), 255, 255))
+    return im
+
+
+def tab_icon(tid, size=48):
     img = canvas(size)
     d = ImageDraw.Draw(img)
     S = size * SS
     col = hexc(TREE_COLORS[tid])
-    if not on:
-        col = mix(col, (120, 120, 140, 255), 0.45)
-    else:
-        d.ellipse([S * .04, S * .04, S * .96, S * .96], fill=col[:3] + (60,))
-    glyph(d, TAB_GLYPH[tid], S / 2, S / 2, S * .38, col, (10, 10, 24, 255))
+    d.rectangle([S * .06, S * .06, S * .94, S * .94], fill=shade(col, 0.25), outline=col, width=SS * 2)
+    glyph(d, TAB_GLYPH[tid], S / 2, S / 2, S * .32, mix(col, (255, 255, 255, 255), 0.4), (10, 10, 24, 255))
     return finish(img, size)
 
 
@@ -415,8 +450,7 @@ def item_crystal(size=32):
     img = canvas(size)
     d = ImageDraw.Draw(img)
     S = size * SS
-    d.polygon([(S * .5, S * .06), (S * .8, S * .4), (S * .62, S * .94), (S * .38, S * .94), (S * .2, S * .4)], fill=(90, 200, 255, 255),
-              outline=(230, 250, 255, 255))
+    d.polygon([(S * .5, S * .06), (S * .8, S * .4), (S * .62, S * .94), (S * .38, S * .94), (S * .2, S * .4)], fill=(90, 200, 255, 255), outline=(230, 250, 255, 255))
     d.polygon([(S * .5, S * .06), (S * .62, S * .4), (S * .5, S * .94), (S * .38, S * .4)], fill=(170, 235, 255, 255))
     return finish(img, size)
 
@@ -433,42 +467,70 @@ def pack_icon(size=256):
     return img
 
 
+def nine(path, im, n=3):
+    save(im, path + '.png')
+    with open(path + '.json', 'w') as fh:
+        json.dump({'nineslice_size': n, 'base_size': [im.width, im.height]}, fh)
+
+
 def main():
     spec = json.load(open(sys.argv[1]))
     rp = sys.argv[2]
     bp_icon = sys.argv[3] if len(sys.argv) > 3 else None
     T = os.path.join(rp, 'textures', 'tensura')
+    import shutil
+    for old in ('icons', 'ui', 'menu'):
+        shutil.rmtree(os.path.join(T, old), ignore_errors=True)
     for s in spec['skills']:
         save(icon(s), os.path.join(T, 'icons', s['icon'] + '.png'))
     for code in spec['frames']:
         save(frame(code), os.path.join(T, 'ui', 'node', 'f_' + code + '.png'))
-    for code in spec['pipes']:
-        save(pipe(code), os.path.join(T, 'ui', 'pipe', 'p' + code + '.png'))
-    save(background(), os.path.join(T, 'ui', 'bg.png'))
-    nines = {
-        'bar': box_texture(16, (8, 8, 20, 225), (190, 150, 70, 255), 1),
-        'panel': box_texture(16, (10, 10, 26, 236), (110, 130, 255, 255), 1, (190, 200, 255, 255)),
-        'ctl': box_texture(16, (30, 30, 58, 235), (100, 110, 170, 255), 1),
-        'ctl_hover': box_texture(16, (52, 52, 96, 245), (255, 210, 90, 255), 1),
-        'ctl_pressed': box_texture(16, (20, 20, 40, 255), (255, 230, 150, 255), 1),
-    }
-    for n, im in nines.items():
-        save(im, os.path.join(T, 'ui', n + '.png'))
-        with open(os.path.join(T, 'ui', n + '.json'), 'w') as fh:
-            json.dump({'nineslice_size': 2, 'base_size': [16, 16]}, fh)
-    for n in ('btn_close', 'btn_grimoire', 'btn_status', 'btn_unlock', 'btn_equip', 'btn_link', 'arrow_l', 'arrow_u', 'arrow_d', 'arrow_r',
-              'zoom_in', 'zoom_out', 'zoom_in_off', 'zoom_out_off', 'center', 'hover', 'icon_slot'):
-        save(ui_icon(n), os.path.join(T, 'ui', n + '.png'))
+    for code in spec['lines']:
+        save(line_tile(code), os.path.join(T, 'ui', 'line', code + '.png'))
+    save(landscape(), os.path.join(T, 'ui', 'bg.png'))
+    U = os.path.join(T, 'ui')
+    nine(os.path.join(U, 'bar'), box(16, (8, 10, 20, 200), (60, 120, 170, 255)))
+    nine(os.path.join(U, 'panel'), box(16, (10, 12, 24, 238), (60, 170, 230, 255), (20, 40, 70, 255)))
+    nine(os.path.join(U, 'ctl'), box(16, (24, 30, 48, 225), (80, 100, 140, 255)))
+    nine(os.path.join(U, 'ctl_hover'), box(16, (40, 52, 82, 240), (100, 210, 255, 255)))
+    nine(os.path.join(U, 'ctl_pressed'), box(16, (18, 22, 36, 255), (160, 230, 255, 255)))
+    for n in ('btn_close', 'btn_back', 'btn_grimoire', 'btn_status', 'btn_unlock', 'btn_equip', 'btn_link', 'arrow_l', 'arrow_u', 'arrow_d',
+              'arrow_r', 'zoom_in', 'zoom_out', 'zoom_in_off', 'zoom_out_off', 'center', 'hover', 'icon_slot'):
+        save(ui_icon(n), os.path.join(U, n + '.png'))
     for tid in TAB_GLYPH:
-        save(tab_icon(tid, False), os.path.join(T, 'ui', 'tab_' + tid + '.png'))
-        save(tab_icon(tid, True), os.path.join(T, 'ui', 'tab_' + tid + '_on.png'))
+        save(tab_icon(tid), os.path.join(U, 'tab_' + tid + '.png'))
+    # Menu principal
+    M = os.path.join(T, 'menu')
+    nine(os.path.join(M, 'window'), box(24, (22, 27, 36, 245), (95, 105, 120, 255), (40, 48, 60, 255), 2), 4)
+    nine(os.path.join(M, 'box'), box(16, (17, 21, 29, 255), (58, 66, 80, 255)))
+    nine(os.path.join(M, 'row'), box(16, (28, 33, 43, 255), (70, 80, 96, 255)))
+    nine(os.path.join(M, 'row_hover'), box(16, (36, 44, 60, 255), (90, 200, 255, 255)))
+    nine(os.path.join(M, 'slot'), box(16, (14, 17, 24, 255), (78, 88, 104, 255), (30, 36, 46, 255), 2), 4)
+    nine(os.path.join(M, 'slot_hover'), box(16, (20, 26, 36, 255), (90, 200, 255, 255), (30, 36, 46, 255), 2), 4)
+    nine(os.path.join(M, 'button'), box(16, (40, 46, 56, 255), (110, 120, 136, 255), (60, 68, 80, 255), 2), 4)
+    nine(os.path.join(M, 'button_hover'), box(16, (52, 60, 74, 255), (90, 200, 255, 255), (60, 68, 80, 255), 2), 4)
+    nine(os.path.join(M, 'button_pressed'), box(16, (30, 36, 46, 255), (140, 220, 255, 255), (60, 68, 80, 255), 2), 4)
+    nine(os.path.join(M, 'tab_bg'), box(16, (34, 40, 50, 255), (80, 90, 104, 255), (48, 56, 68, 255), 2), 4)
+    nine(os.path.join(M, 'tab_bg_hover'), box(16, (40, 50, 66, 255), (90, 200, 255, 255), (48, 56, 68, 255), 2), 4)
+    save(Image.new('RGBA', (4, 4), (0, 0, 0, 0)), os.path.join(M, 'none.png'))
+    save(Image.new('RGBA', (4, 4), (0, 0, 0, 110)), os.path.join(M, 'shade.png'))
+    save(Image.new('RGBA', (4, 2), (60, 70, 86, 255)), os.path.join(M, 'line.png'))
+    save(Image.new('RGBA', (4, 2), (60, 190, 255, 255)), os.path.join(M, 'tab_line.png'))
+    save(box(16, (14, 17, 24, 255), (60, 68, 82, 255), (24, 28, 38, 255), 2), os.path.join(M, 'slot_empty.png'))
+    for k in ('status', 'race', 'skills', 'evolution', 'records'):
+        save(menu_tab_icon(k, False), os.path.join(M, f'tab_{k}.png'))
+        save(menu_tab_icon(k, True), os.path.join(M, f'tab_{k}_on.png'))
+    save(ui_icon('close', 48), os.path.join(M, 'close.png'))
+    save(ui_icon('back', 48), os.path.join(M, 'back.png'))
+    for k in range(21):
+        save(progress_bar(k), os.path.join(M, f'bar_{k}.png'))
     save(item_tome(), os.path.join(rp, 'textures', 'items', 'tensura_tome.png'))
     save(item_crystal(), os.path.join(rp, 'textures', 'items', 'tensura_crystal.png'))
     pi = pack_icon()
     save(pi, os.path.join(rp, 'pack_icon.png'))
     if bp_icon:
         save(pi, bp_icon)
-    print(f"texturas: {len(spec['skills'])} ícones, {len(spec['frames'])} molduras, {len(spec['pipes'])} linhas")
+    print(f"texturas: {len(spec['skills'])} ícones, {len(spec['frames'])} molduras, {len(spec['lines'])} linhas")
 
 
 if __name__ == '__main__':

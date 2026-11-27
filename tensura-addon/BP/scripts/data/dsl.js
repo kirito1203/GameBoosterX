@@ -54,7 +54,7 @@ export function S(id, name, original, rarity, o = {}) {
 }
 
 const PASSIVE_KINDS = new Set(['p_effect', 'p_mp', 'p_resist', 'p_lifesteal', 'p_onhit', 'p_affinity',
-  'p_power', 'p_starved', 'p_xp', 'p_points', 'p_regen_env', 'p_race']);
+  'p_power', 'p_starved', 'p_xp', 'p_points', 'p_regen_env', 'p_race', 'p_aura']);
 
 export function isPassiveFx(fx) {
   const list = Array.isArray(fx) ? fx : [fx];

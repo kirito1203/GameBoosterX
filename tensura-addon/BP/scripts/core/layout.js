@@ -36,17 +36,18 @@ export function getLayout(tree) {
   return l;
 }
 
-export function computeLayout(tree) {
+export function computeLayout(tree, opts = {}) {
   const rootId = tree.root;
   const ids = [...tree.skills.map((s) => s.id)];
   const linkArm = {};
-  for (const lk of tree.links ?? []) {
+  const linkList = opts.links ?? (opts.noLinks ? [] : tree.links ?? []);
+  for (const lk of linkList) {
     if (!SKILLS[lk.id]) throw new Error(`Link inexistente em ${tree.id}: ${lk.id}`);
     if (!ids.includes(lk.id)) ids.push(lk.id);
     if (lk.arm) linkArm[lk.id] = lk.arm;
   }
   const inTree = new Set(ids);
-  const isLink = new Set((tree.links ?? []).map((l) => l.id));
+  const isLink = new Set(linkList.map((l) => l.id));
   if (!inTree.has(rootId)) throw new Error(`Raiz ausente na árvore ${tree.id}`);
 
   // 1) Pai de layout de cada nó.
@@ -83,12 +84,12 @@ export function computeLayout(tree) {
   const sizeOf = (id) => 1 + children[id].reduce((a, c) => a + sizeOf(c), 0);
   const unassigned = [];
   for (const c of children[rootId]) {
-    const a = isLink.has(c) ? (linkArm[c] ?? null) : SKILLS[c].arm;
-    if (a && arms[a]) arms[a].push(c);
+    const a = opts.forceArm ?? (isLink.has(c) ? (linkArm[c] ?? null) : SKILLS[c].arm);
+    if (a && arms[a] && !(opts.blockedArm === a)) arms[a].push(c);
     else unassigned.push(c);
   }
   for (const c of unassigned) {
-    const best = Object.keys(arms).sort((a, b) => armWeight(arms[a]) - armWeight(arms[b]))[0];
+    const best = Object.keys(arms).filter((a) => a !== opts.blockedArm).sort((a, b) => armWeight(arms[a]) - armWeight(arms[b]))[0];
     arms[best].push(c);
   }
   function armWeight(list) { return list.reduce((a, c) => a + sizeOf(c), 0); }

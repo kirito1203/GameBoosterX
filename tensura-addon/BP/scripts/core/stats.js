@@ -56,6 +56,11 @@ export function computeStats(d) {
   const race = RACES[d.race];
   const s = {
     maxMp: race.mp + (d.level - 1) * CONFIG.magicules.perLevel + (d.mpBonus ?? 0),
+    // Aura: energia de combate do corpo (habilidades raciais). Raças robustas têm mais.
+    maxAura: 60 + Math.max(0, race.hp + 1) * 25 + (d.level - 1) * CONFIG.magicules.auraPerLevel,
+    auraRegen: 2 + d.level * 0.05,
+    xpMult: 1,
+    cleanse: new Set(),
     regen: race.regen,
     regenMult: 1,
     resist: { ...race.resist },
@@ -109,7 +114,9 @@ function applyPassive(s, f, addEff) {
     case 'p_points': s.pointMult *= f.mult; break;
     case 'p_starved': s.starved = f; break;
     case 'p_regen_env': if (f.water) s.envWater.push(...f.water); if (f.fire) s.envFire.push(...f.fire); break;
-    case 'p_race': if (f.pack) s.pack = true; if (f.poisonImmune) s.poisonImmune = true; break;
+    case 'p_race': if (f.pack) s.pack = true; if (f.poisonImmune) s.poisonImmune = true; for (const e of f.cleanse ?? []) s.cleanse.add(e); break;
+    case 'p_xp': s.xpMult *= f.mult; break;
+    case 'p_aura': s.maxAura += f.max ?? 0; s.auraRegen += f.regen ?? 0; break;
     default: break;
   }
 }

@@ -45,6 +45,7 @@ function passiveTick() {
       if (near) { apply(p, 'strength', 0, T + 30); apply(p, 'resistance', 0, T + 30); }
     }
     if (s.poisonImmune) { try { p.removeEffect('poison'); } catch { /* */ } }
+    for (const e of s.cleanse) { try { p.removeEffect(e); } catch { /* */ } }
     const sp = s.special;
     if ((sp.has('sunburn') || sp.has('sunburn_weak')) && day(p) && !p.isInWater && skyExposed(p) && !wearingHelmet(p)) {
       if (sp.has('sunburn')) { try { p.setOnFire(3, true); } catch { /* */ } }

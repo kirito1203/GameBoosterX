@@ -1,6 +1,6 @@
 # Catálogo — Tensura RPG
 
-Gerado por `tools/catalog.mjs`. 267 habilidades, 50 raças, 28 árvores.
+Gerado por `tools/catalog.mjs`. 333 habilidades, 50 raças, 32 árvores.
 
 **Origem:** *Tensura* = nome presente na obra (efeito adaptado ao Minecraft); *Adaptado* = conceito da obra adaptado pelo addon; *Original* = criado pelo addon.
 
@@ -215,6 +215,92 @@ Nós compartilhados exibidos aqui: Invocar Mortos-vivos (de Árvore de Necromanc
 | Coração de Marionete | Marionette Heart | Ativa | Lendária | 200 | 150 | 180s | 44 | Magia das Almas, Marionete Demoníaca | Adaptado | Converte até 3 criatura(s) com até 50% de vida em aliado(s) por 120s |
 | Vento Exorcizador da Vida | Life-Exorcising Wind | Ativa | Suprema | 270 | 200 | 240s | 50 | Magia das Almas, Lâmina de Tornado | Adaptado | Cone de alma: 25 de dano, alcance 12, empurrão 1, executa criaturas com até 20 de vida máx., Wither IV (6s) |
 | **Magia dos Dragões Verdadeiros** | True Dragon Magic | Ativa | Suprema | 300 | 250 | 300s | 55 | Magia das Almas + killed_ender_dragon | Adaptado | Feixe de dracônico: 45 de dano, alcance 40, atravessa alvos, incendeia 6s |
+
+### Habilidades Únicas
+
+| Habilidade | Original | Tipo | Raridade | Pontos | MP | Recarga | Nível | Pré-requisitos | Origem | Efeito |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **Alma Desperta** | Awakened Soul | Passiva | Rara | 30 | — | — | 10 | — | **Original do addon** | Passiva: +40 Magicules máx. |
+| Grande Sábio | Great Sage | Passiva | Épica | 90 | — | — | 12 | Alma Desperta | Tensura | Passiva: regeneração x1.25 + Passiva: EP ganho x1.2 + Passiva: custo de Magicules x0.95 em todas as árvores |
+| Matemático | Mathematician | Passiva | Épica | 80 | — | — | 16 | Grande Sábio | Tensura | Passiva: dano x1.15 (todas as magias) |
+| Analista | Analyst | Ativa | Rara | 50 | 3 | 1s | 12 | Grande Sábio | Tensura | Analisa alvo até 48 blocos |
+| Criador | Creator | Ativa | Épica | 90 | 70 | 90s | 20 | Analista | Tensura | Converte Magicules em minérios |
+| Predador | Predator | Ativa | Épica | 100 | 15 | 4s | 15 | Alma Desperta | Tensura | Absorve alvo com até 40% de vida (alcance 8): +3 Magicules máx. (limite +300) |
+| Gula | Gluttony | Ativa | Lendária | 150 | 30 | 6s | 28 | Predador | Tensura | Absorve alvo com até 55% de vida (alcance 12): +5 Magicules máx. (limite +450) |
+| Faminto | Starved | Passiva | Rara | 50 | — | — | 14 | Predador | Tensura | Passiva: ao derrotar criaturas, recupera fome e +10 Magicules |
+| Cozinheiro | Cook | Passiva | Épica | 80 | — | — | 18 | Alma Desperta | Tensura | Passiva: 25% de chance por golpe + Passiva: roubo de vida 10% nos golpes |
+| Degenerado | Degenerate | Ativa | Épica | 90 | 45 | 45s | 20 | Cozinheiro | Tensura | Força III (30s), Resist. ao fogo I (30s) + Golpes de fogo: +4 de dano por 30s, incendeiam, incendeia 4s |
+| Usurpador | Usurper | Ativa | Lendária | 140 | 60 | 60s | 30 | Cozinheiro | Tensura | Drena 14 de vida, alcance 16, cura 100% do dano, +40 Magicules |
+| Ira | Wrath | Ativa | Lendária | 150 | 70 | 90s | 30 | Alma Desperta | Tensura | Força IV (30s), Velocidade III (30s), Resistência II (30s) |
+| Ganância | Greed | Passiva | Lendária | 140 | — | — | 30 | Ira | Adaptado | Passiva: EP ganho x1.4 |
+| Inveja | Envy | Ativa | Épica | 100 | 40 | 40s | 24 | Ira | Adaptado | Drena 5 de vida de todos num raio 8, cura 50% do dano, +3 Magicules |
+| Preguiça | Sloth | Ativa | Épica | 100 | 45 | 45s | 24 | Ira | Adaptado | Área raio 9 ao seu redor, Lentidão VI (8s), Fadiga IV (8s) |
+| Luxúria | Lust | Ativa | Épica | 100 | 40 | 45s | 24 | Ira | Adaptado | Pacifica criaturas num raio 8 por 15s |
+| Orgulho | Pride | Passiva | Lendária | 150 | — | — | 34 | Ira | Adaptado | Passiva: Vida extra II, Resistência I |
+
+### Habilidades Supremas
+
+| Habilidade | Original | Tipo | Raridade | Pontos | MP | Recarga | Nível | Pré-requisitos | Origem | Efeito |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **Despertar Supremo** | Ultimate Awakening | Passiva | Lendária | 150 | — | — | 45 | — + 6 épicas+ | **Original do addon** | Passiva: +150 Magicules máx., +2/s regeneração |
+| **Raphael** | Raphael | Passiva | Suprema | 280 | — | — | 50 | Despertar Supremo, Grande Sábio | Tensura | Passiva: custo de Magicules x0.8 em todas as árvores + Passiva: dano x1.2 (todas as magias) + Passiva: regeneração x1.5 |
+| Faust | Faust | Ativa | Suprema | 260 | 30 | 30s | 50 | Raphael | Tensura | Detecta criaturas num raio de 96 + Visão noturna I (120s) |
+| **Beelzebuth** | Beelzebuth | Ativa | Suprema | 300 | 40 | 5s | 55 | Despertar Supremo, Gula | Tensura | Absorve alvo com até 70% de vida (alcance 16): +8 Magicules máx. (limite +800) |
+| Mammon | Mammon | Ativa | Suprema | 260 | 120 | 90s | 52 | Beelzebuth | Tensura | Drena 16 de vida de todos num raio 10, cura 60% do dano, +25 Magicules |
+| **Uriel** | Uriel | Ativa | Suprema | 280 | 120 | 180s | 50 | Despertar Supremo | Tensura | Você e aliados (raio 10), Absorção VI (20s), Resistência IV (20s), Resist. ao fogo I (20s) |
+| Gabriel | Gabriel | Ativa | Suprema | 260 | 150 | 180s | 52 | Uriel | Tensura | Cura total, aliados raio 12 + Você e aliados (raio 12), Regeneração III (20s) + Remove efeitos negativos, aliados raio 12 |
+| Michael | Michael | Ativa | Suprema | 290 | 160 | 240s | 55 | Uriel | Tensura | Pacifica criaturas num raio 12 por 30s + Você e aliados (raio 12), Força III (30s), Resistência II (30s) |
+| Metatron | Metatron | Ativa | Suprema | 280 | 180 | 180s | 55 | Gabriel | Tensura | Feixe de sagrado: 50 de dano, alcance 40, atravessa alvos |
+| **Satanael** | Satanael | Ativa | Suprema | 300 | 150 | 240s | 55 | Despertar Supremo, Ira | Tensura | Força V (40s), Velocidade III (40s), Resistência III (40s) + Golpes de trevas: +8 de dano por 40s, Wither III (3s) |
+| Azathoth | Azathoth | Ativa | Suprema | 320 | 250 | 300s | 60 | Satanael, Beelzebuth + killed_ender_dragon | Tensura | Explosão de área de espaço: 60 de dano, raio 10, alcance 30, Wither IV (6s) |
+| Yog-Sothoth | Yog-Sothoth | Ativa | Suprema | 300 | 200 | 240s | 60 | Faust + killed_wither | Tensura | Campo raio 14 por 8s que acompanha você, congela o tempo, inimigos: Lentidão máx. (1s), Fraqueza máx. (1s) |
+| Amaterasu | Amaterasu | Ativa | Suprema | 260 | 140 | 120s | 52 | Gabriel | Tensura | Chuva de sagrado: 8 ondas de 18 de dano, raio 7, alcance 32, incendeia 5s |
+| Susanoo | Susanoo | Ativa | Suprema | 260 | 140 | 120s | 52 | Satanael | Tensura | Chuva de relâmpago: 10 ondas de 18 de dano, raio 8, alcance 32 |
+
+### Habilidades Extras
+
+| Habilidade | Original | Tipo | Raridade | Pontos | MP | Recarga | Nível | Pré-requisitos | Origem | Efeito |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **Aura Mágica** | Magic Aura | Passiva | Comum | 10 | — | — | 2 | — | Adaptado | Passiva: +30 Aura máxima |
+| Movimento das Sombras | Shadow Motion | Ativa | Rara | 40 | 12 | 5s | 8 | Aura Mágica | Tensura | Teleporte de até 14 blocos |
+| Movimento Espacial | Spatial Motion | Ativa | Épica | 80 | 25 | 6s | 22 | Movimento das Sombras | Tensura | Teleporte de até 30 blocos |
+| Domínio Espacial | Spatial Domination | Ativa | Lendária | 140 | 90 | 120s | 34 | Movimento Espacial | Tensura | Campo raio 10 por 15s que acompanha você, inimigos não saem, inimigos: Lentidão III (2s) |
+| Ondas Ultrassônicas | Ultrasonic Waves | Ativa | Comum | 20 | 10 | 8s | 4 | Movimento das Sombras | Tensura | Área raio 6 ao seu redor, 2 de dano, Náusea I (6s), Lentidão II (3s) |
+| Detecção Universal | Universal Detection | Ativa | Épica | 70 | 15 | 15s | 18 | Ondas Ultrassônicas | Tensura | Detecta criaturas num raio de 64 + Visão noturna I (60s) |
+| Armadura Corporal | Body Armor | Passiva | Rara | 40 | — | — | 8 | Aura Mágica | Tensura | Passiva: resistência Físico 20% |
+| Regeneração Instantânea | Instant Regeneration | Ativa | Rara | 50 | 20 | 20s | 12 | Armadura Corporal | Tensura | Cura 12 de vida |
+| Regeneração Ultra-veloz | Ultraspeed Regeneration | Passiva | Épica | 90 | — | — | 24 | Regeneração Instantânea | Tensura | Passiva: Regeneração II |
+| Barreira Multicamadas | Multilayer Barrier | Ativa | Épica | 80 | 35 | 40s | 20 | Armadura Corporal | Tensura | Absorção IV (30s), Resistência II (30s) |
+| Haki do Espírito do Dragão | Dragon Spirit Haki | Ativa | Lendária | 150 | 70 | 90s | 32 | Barreira Multicamadas | Tensura | Área raio 12 ao seu redor, 6 de dano, Fraqueza III (10s), Lentidão III (10s), Náusea I (8s) |
+| Manipulação de Chamas | Flame Manipulation | Passiva | Rara | 40 | — | — | 10 | Aura Mágica | Tensura | Passiva: dano x1.2 (Fogo) + Passiva: resistência Fogo 30% |
+| Chama Negra | Black Flame | Ativa | Épica | 90 | 35 | 8s | 22 | Manipulação de Chamas | Tensura | Cone de trevas: 14 de dano, alcance 10, Wither II (5s), incendeia 6s |
+| Manipulação da Água | Water Manipulation | Passiva | Rara | 40 | — | — | 8 | Aura Mágica | Tensura | Passiva: dano x1.2 (Água) + Passiva: dano x1.2 (Gelo) + Passiva: bônus na água |
+| Lâmina d'Água | Water Blade | Ativa | Comum | 25 | 8 | 2s | 6 | Manipulação da Água | Tensura | Feixe de água: 9 de dano, alcance 16, atravessa alvos |
+| Bala d'Água | Water Bullet | Ativa | Comum | 20 | 5 | 1s | 4 | Manipulação da Água | Tensura | Projétil de água: 5 de dano, alcance 20, 3 projéteis |
+| Fio de Aço | Steel Thread | Ativa | Rara | 35 | 12 | 4s | 10 | Lâmina d'Água | Tensura | Feixe de físico: 10 de dano, alcance 14, atravessa alvos |
+| Fio de Aço Pegajoso | Sticky Steel Thread | Ativa | Rara | 40 | 15 | 12s | 12 | Fio de Aço | Tensura | Prende o alvo por 6s, alcance 16 |
+| Relâmpago Negro | Black Lightning | Ativa | Épica | 100 | 50 | 15s | 24 | Manipulação de Chamas | Tensura | Feixe de relâmpago: 22 de dano, alcance 28, atravessa alvos |
+| Sopro Venenoso | Poisonous Breath | Ativa | Comum | 25 | 10 | 6s | 6 | Manipulação da Água | Tensura | Cone de ácido: 3 de dano, alcance 7, Veneno II (6s) |
+| Sopro Paralisante | Paralyzing Breath | Ativa | Rara | 40 | 15 | 10s | 12 | Sopro Venenoso | Tensura | Cone de ácido: 2 de dano, alcance 7, Lentidão 7 (4s), Fadiga IV (4s) |
+| Autorreplicação | Self-Replication | Ativa | Épica | 90 | 50 | 60s | 22 | Movimento Espacial | Tensura | Invoca 1x por 40s |
+
+### Resistências
+
+| Habilidade | Original | Tipo | Raridade | Pontos | MP | Recarga | Nível | Pré-requisitos | Origem | Efeito |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **Tolerância** | Tolerance | Passiva | Comum | 10 | — | — | 2 | — | **Original do addon** | Passiva: resistência Físico 5%, Mágico 5% |
+| Resistência a Variações de Calor | Thermal Fluctuation Resistance | Passiva | Comum | 20 | — | — | 4 | Tolerância | Tensura | Passiva: resistência Fogo 30%, Gelo 30% |
+| Anulação de Variações de Calor | Thermal Fluctuation Nullification | Passiva | Épica | 90 | — | — | 24 | Resistência a Variações de Calor | Tensura | Passiva: resistência Fogo 80%, Gelo 80% + Passiva: Resist. ao fogo I |
+| Resistência à Dor | Pain Resistance | Passiva | Comum | 20 | — | — | 4 | Tolerância | Tensura | Passiva: resistência Físico 15%, Queda 15% |
+| Resistência a Ataques Físicos | Physical Attack Resistance | Passiva | Rara | 50 | — | — | 12 | Resistência à Dor | Tensura | Passiva: resistência Físico 30%, Explosão 20% |
+| Anulação de Dor | Pain Nullification | Passiva | Épica | 90 | — | — | 26 | Resistência a Ataques Físicos | Tensura | Passiva: resistência Físico 50%, Queda 50% |
+| Resistência a Corrente Elétrica | Electric Current Resistance | Passiva | Comum | 20 | — | — | 6 | Tolerância | Tensura | Passiva: resistência Relâmpago 50% |
+| Resistência a Paralisia | Paralysis Resistance | Passiva | Comum | 25 | — | — | 6 | Resistência a Corrente Elétrica | Tensura | Passiva: imunidade a Lentidão, Fadiga |
+| Resistência a Veneno | Poison Resistance | Passiva | Comum | 25 | — | — | 6 | Tolerância | Tensura | Passiva: imunidade a veneno |
+| Resistência à Corrosão | Corrosion Resistance | Passiva | Rara | 40 | — | — | 12 | Resistência a Veneno | Tensura | Passiva: imunidade a Wither, Fome + Passiva: resistência Trevas/Wither 30% |
+| Resistência a Ataques Sagrados | Holy Attack Resistance | Passiva | Épica | 80 | — | — | 22 | Resistência à Corrosão | Tensura | Passiva: resistência Sagrado 50% |
+| Resistência a Ataques Espirituais | Spiritual Attack Resistance | Passiva | Épica | 80 | — | — | 22 | Resistência à Corrosão | Tensura | Passiva: resistência Mágico 40%, Trevas/Wither 40% + Passiva: imunidade a Cegueira, Náusea, Escuridão |
+| Anulação de Efeitos Naturais | Natural Effect Nullification | Passiva | Lendária | 150 | — | — | 34 | Anulação de Variações de Calor, Resistência a Corrente Elétrica | Tensura | Passiva: resistência Afogamento 100%, Sufocamento 80%, Relâmpago 80%, Fogo 50%, Gelo 50% |
 
 ## Árvores raciais
 

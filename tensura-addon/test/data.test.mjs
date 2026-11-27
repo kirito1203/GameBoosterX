@@ -8,16 +8,30 @@ import { fxList } from '../BP/scripts/core/progression.js';
 import { isPassiveFx } from '../BP/scripts/data/dsl.js';
 import { describeFx } from '../BP/scripts/core/describe.js';
 
-const PASSIVES = new Set(['p_effect', 'p_mp', 'p_resist', 'p_lifesteal', 'p_onhit', 'p_affinity', 'p_power', 'p_starved', 'p_xp', 'p_points', 'p_regen_env', 'p_race']);
+const PASSIVES = new Set(['p_effect', 'p_mp', 'p_resist', 'p_lifesteal', 'p_onhit', 'p_affinity', 'p_power', 'p_starved', 'p_xp', 'p_points', 'p_regen_env', 'p_race', 'p_aura']);
 // Tipos ativos implementados em systems/effects.js (lidos do código-fonte).
 const effectsSrc = readFileSync(new URL('../BP/scripts/systems/effects.js', import.meta.url), 'utf8');
 const handlersBlock = effectsSrc.slice(effectsSrc.indexOf('const HANDLERS = {'), effectsSrc.indexOf('function compass('));
 const ACTIVE = new Set([...handlersBlock.matchAll(/^  ([a-z_]+)\(player/gm)].map((m) => m[1]));
 
-test('há centenas de habilidades e as 10 árvores pedidas', () => {
-  assert.ok(Object.keys(SKILLS).length >= 250, `só ${Object.keys(SKILLS).length}`);
-  assert.equal(TAB_ORDER.length, 10);
-  assert.deepEqual(UNIVERSAL_TREES.map((t) => t.id), ['elemental', 'aspect', 'holy', 'summon', 'illusion', 'spirit', 'necromancy', 'dark', 'advanced']);
+test('há centenas de habilidades: as 10 árvores pedidas + Únicas, Supremas, Extras e Resistências', () => {
+  assert.ok(Object.keys(SKILLS).length >= 320, `só ${Object.keys(SKILLS).length}`);
+  assert.equal(TAB_ORDER.length, 14);
+  assert.deepEqual(UNIVERSAL_TREES.map((t) => t.id), ['elemental', 'aspect', 'holy', 'summon', 'illusion', 'spirit', 'necromancy', 'dark', 'advanced',
+    'unique', 'ultimate', 'extra', 'resist']);
+});
+
+test('habilidades do anime: Únicas, Supremas, Extras e Resistências', () => {
+  const names = new Set(Object.values(SKILLS).map((s) => s.original));
+  for (const w of ['Great Sage', 'Predator', 'Gluttony', 'Starved', 'Cook', 'Degenerate', 'Mathematician', 'Analyst', 'Creator', 'Usurper',
+    'Wrath', 'Raphael', 'Beelzebuth', 'Uriel', 'Gabriel', 'Michael', 'Metatron', 'Satanael', 'Azathoth', 'Faust', 'Yog-Sothoth', 'Mammon',
+    'Amaterasu', 'Susanoo', 'Magic Sense', 'Shadow Motion', 'Spatial Motion', 'Spatial Domination', 'Universal Detection', 'Body Armor',
+    'Instant Regeneration', 'Ultraspeed Regeneration', 'Multilayer Barrier', 'Dragon Spirit Haki', 'Flame Manipulation', 'Black Flame',
+    'Water Manipulation', 'Water Blade', 'Water Bullet', 'Steel Thread', 'Sticky Steel Thread', 'Black Lightning', 'Poisonous Breath',
+    'Paralyzing Breath', 'Ultrasonic Waves', 'Self-Replication', 'Thermal Fluctuation Resistance', 'Pain Resistance',
+    'Physical Attack Resistance', 'Electric Current Resistance', 'Paralysis Resistance', 'Poison Resistance', 'Corrosion Resistance',
+    'Holy Attack Resistance', 'Spiritual Attack Resistance']) assert.ok(names.has(w), `ausente: ${w}`);
+  for (const s of TREES.ultimate.skills) assert.ok(s.minLevel >= 45, `${s.id}: suprema com nível baixo`);
 });
 
 test('todas as 26 raças pedidas existem', () => {

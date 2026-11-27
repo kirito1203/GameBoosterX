@@ -78,3 +78,19 @@ verificado num aparelho (itens 1–17 do pedido):
 - Se uma atualização do Minecraft mudar `server_form.json`, a sobreposição pode precisar de ajuste.
 - Voo, Dominação e Possessão são aproximações dentro do que a API permite (ver README).
 - Classificação de origem (obra/adaptado/original): revisar em `docs/CATALOGO.md`.
+
+## Versão 0.2 — menu e árvore no estilo das referências
+
+- **Menu principal** (aba Status como a referência): boneco do jogador (`live_player_renderer`, o mesmo
+  do inventário), EP total, Aura, Magículas, nível, progresso de evolução com barra, habilidades em
+  destaque e Barra de Habilidades com 5 espaços; abas Raça, Habilidades, Evolução e Registros.
+- **Aura** passou a ser um recurso real: habilidades raciais gastam Aura; magias gastam Magículas.
+- **Árvore em mapa único**: a raça no centro e as categorias em volta, com posições e rotas
+  calculadas no build (`tools/gen-map.mjs`). O jogo só lê o resultado. As linhas são retas e diagonais,
+  e cada direção tem o próprio estado (acesa/apagada): 1.276 peças geradas a partir das combinações
+  que existem no mapa. Os nós são quadrados em pixel art e o fundo é uma paisagem noturna gerada por código.
+- **Habilidades do anime**: categorias novas Únicas (17), Supremas (14), Extras (22) e Resistências (13),
+  num total de 333 habilidades.
+- Testes: 37 automatizados passando (mapa, linhas, menu, JSON UI gerado, simulação e desempenho).
+- **Ainda não testado no jogo:** o menu e o mapa novos (inclusive o boneco do jogador dentro de um
+  formulário) precisam ser conferidos no aparelho.

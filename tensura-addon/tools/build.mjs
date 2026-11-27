@@ -8,7 +8,7 @@ import { execFileSync } from 'node:child_process';
 import { deflateRawSync, crc32 } from 'node:zlib';
 import { SKILLS, TREES } from '../BP/scripts/data/registry.js';
 import { fxList } from '../BP/scripts/core/progression.js';
-import { allFrameCodes, allPipeCodes, iconName } from '../BP/scripts/core/uiSpec.js';
+import { allFrameCodes, lineCodesForCell, iconName } from '../BP/scripts/core/uiSpec.js';
 import { buildUi } from './build-ui.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -19,6 +19,7 @@ const DIST = join(ROOT, 'dist');
 const ELEMENT_FROM_TREE = {
   elemental: '#ff9a40', aspect: '#6ab0ff', holy: '#ffe680', summon: '#c080ff', illusion: '#ff80d0',
   spirit: '#60ffc0', necromancy: '#90e070', dark: '#9060ff', advanced: '#ff4060',
+  unique: '#40d8ff', ultimate: '#ffd000', extra: '#78c8ff', resist: '#c8c8d0',
 };
 const EL_COLORS = {
   fire: '#ff6a2a', water: '#2a9dff', ice: '#9fe8ff', earth: '#c09050', wind: '#8cf0a8', lightning: '#ffe14a',
@@ -105,12 +106,28 @@ function walk(dir, base = dir, out = []) {
   return out;
 }
 
-function main() {
+async function lineCodes() {
+  const { getMap } = await import('../BP/scripts/core/map.js?' + Date.now());
+  const { LINEAGES } = await import('../BP/scripts/data/registry.js');
+  const set = new Set();
+  for (const lin in LINEAGES) {
+    for (const st of getMap(lin).stubs.values()) {
+      const dirs = [];
+      for (let d = 0; d < 8; d++) if (st[d].length) dirs.push(d);
+      for (const c of lineCodesForCell(dirs)) set.add(c);
+    }
+  }
+  return [...set].sort();
+}
+
+async function main() {
   const withTextures = process.argv.includes('--textures');
+  // O mapa precisa existir antes de listar as peças de linha usadas.
+  execFileSync(process.execPath, [join(ROOT, 'tools', 'gen-map.mjs')], { stdio: 'inherit' });
   const spec = {
     skills: Object.values(SKILLS).map(iconSpec),
     frames: allFrameCodes(),
-    pipes: allPipeCodes(),
+    lines: await lineCodes(),
   };
   if (withTextures) {
     mkdirSync(DIST, { recursive: true });
@@ -122,7 +139,7 @@ function main() {
   const missing = [];
   for (const s of spec.skills) if (!existsSync(join(RP, 'textures/tensura/icons', `${s.icon}.png`))) missing.push(`icons/${s.icon}`);
   for (const c of spec.frames) if (!existsSync(join(RP, 'textures/tensura/ui/node', `f_${c}.png`))) missing.push(`node/f_${c}`);
-  for (const c of spec.pipes) if (!existsSync(join(RP, 'textures/tensura/ui/pipe', `p${c}.png`))) missing.push(`pipe/p${c}`);
+  for (const c of spec.lines) if (!existsSync(join(RP, 'textures/tensura/ui/line', `${c}.png`))) missing.push(`line/${c}`);
   if (missing.length) {
     console.error(`Texturas ausentes (${missing.length}), rode com --textures. Ex.: ${missing.slice(0, 5).join(', ')}`);
     process.exit(1);
@@ -144,4 +161,4 @@ function main() {
   console.log(`OK: ${Object.keys(SKILLS).length} habilidades, ${ui.controls} células de UI, ${bpFiles.length}+${rpFiles.length} arquivos → ${relative(ROOT, out)}`);
 }
 
-main();
+await main();

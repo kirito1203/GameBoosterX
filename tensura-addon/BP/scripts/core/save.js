@@ -14,6 +14,8 @@ export function fresh() {
     unlocked: new Set(),
     flags: new Set(),
     mp: 0,
+    aura: 0,
+    epTotal: 0,          // EP acumulado na vida (exibido no Status)
     mpBonus: 0,          // Magicules máximas extras (Absorção)
     equipped: [],        // ids no Cristal de Magicules
     slot: 0,
@@ -23,6 +25,7 @@ export function fresh() {
     flightDrain: 3,
     warp: null,          // { x, y, z, dim }
     gifted: false,
+    kills: {},           // registros: criaturas derrotadas por tipo
     ui: { tab: 'racial', views: {}, selected: null },
     // memória de execução (não salva)
     cooldowns: {},
@@ -35,9 +38,9 @@ export function fresh() {
 export function serialize(d) {
   return JSON.stringify({
     v: VERSION, race: d.race, level: d.level, ep: d.ep, points: d.points,
-    unlocked: [...d.unlocked], flags: [...d.flags], mp: Math.floor(d.mp), mpBonus: d.mpBonus,
+    unlocked: [...d.unlocked], flags: [...d.flags], mp: Math.floor(d.mp), aura: Math.floor(d.aura), epTotal: d.epTotal, kills: d.kills, mpBonus: d.mpBonus,
     equipped: d.equipped, slot: d.slot, absorbed: d.absorbed, mimic: d.mimic, flying: d.flying, flightDrain: d.flightDrain,
-    warp: d.warp, gifted: d.gifted, ui: { tab: d.ui.tab, views: d.ui.views },
+    warp: d.warp, gifted: d.gifted, ui: { tab: d.ui.tab, views: d.ui.views, view: d.ui.view ?? null },
   });
 }
 
@@ -55,6 +58,9 @@ export function deserialize(raw) {
       unlocked: new Set((o.unlocked ?? []).filter((id) => SKILLS[id])),
       flags: new Set(o.flags ?? []),
       mp: o.mp ?? 0,
+      aura: o.aura ?? 0,
+      epTotal: o.epTotal ?? 0,
+      kills: o.kills ?? {},
       mpBonus: o.mpBonus ?? 0,
       equipped: (o.equipped ?? []).filter((id) => SKILLS[id]),
       slot: o.slot ?? 0,
@@ -67,6 +73,7 @@ export function deserialize(raw) {
     });
     d.ui.tab = o.ui?.tab ?? 'racial';
     d.ui.views = o.ui?.views ?? {};
+    d.ui.view = o.ui?.view ?? null;
   } catch {
     // dados corrompidos: começa do zero (o jogador recebe um aviso no log)
     d.corrupted = true;

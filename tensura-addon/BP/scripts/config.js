@@ -29,6 +29,7 @@ export const CONFIG = {
   // Magicules (energia mágica).
   magicules: {
     perLevel: 6,              // capacidade máxima extra por nível
+    auraPerLevel: 5,          // Aura máxima extra por nível
     regenTickSeconds: 1,      // intervalo de regeneração
     combatRegenFactor: 0.5,   // regeneração reduzida até 5 s após conjurar
     hudSeconds: 4,            // tempo que a barra fica visível após usar magia
@@ -47,8 +48,9 @@ export const CONFIG = {
     defaultZoom: 2,
     // Grade visível (colunas x linhas) por nível de zoom. Deve coincidir com a
     // interface gerada em RP/ui (ver tools/build-ui.mjs, que lê este mesmo arquivo).
-    zoomGrids: { 1: [15, 6], 2: [11, 5], 3: [7, 4] },
-    labelsFromZoom: 2,        // nomes dos nós aparecem a partir deste zoom
+    zoomGrids: { 1: [17, 8], 2: [13, 6], 3: [9, 4] },
+    labelsFromZoom: 3,        // nomes dos nós aparecem a partir deste zoom
+    barSlots: 5,              // espaços da Barra de Habilidades (Cristal)
   },
 
   // Protege construções: magias que colocam blocos só substituem ar e plantas.

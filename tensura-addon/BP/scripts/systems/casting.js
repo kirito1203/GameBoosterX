@@ -2,6 +2,7 @@
 import { system } from '@minecraft/server';
 import { SKILLS } from '../data/registry.js';
 import { mpCost } from '../core/stats.js';
+import { TREES } from '../data/registry.js';
 import { getData } from './storage.js';
 import { spend, showHud } from './magicules.js';
 import { antimagicBlocks } from './fields.js';
@@ -19,7 +20,10 @@ export function cast(player, skillId) {
   const ready = d.cooldowns[skillId] ?? 0;
   if (ready > now) { msg(player, `§7${s.name}: recarga ${Math.ceil((ready - now) / 20)}s.`); return false; }
   const cost = mpCost(s, d.stats);
-  if (d.mp < cost) { msg(player, `§cMagicules insuficientes: ${s.name} custa ${cost} (você tem ${Math.floor(d.mp)}).`); sound(player.dimension, 'random.fizz', player.location); return false; }
+  // Habilidades raciais gastam Aura; magias gastam Magículas.
+  const aura = TREES[s.tree].kind === 'racial';
+  const have = aura ? d.aura : d.mp;
+  if (have < cost) { msg(player, `§c${aura ? 'Aura' : 'Magículas'} insuficiente: ${s.name} custa ${cost} (você tem ${Math.floor(have)}).`); sound(player.dimension, 'random.fizz', player.location); return false; }
   let ok;
   try {
     ok = runFx(player, s);
@@ -28,7 +32,7 @@ export function cast(player, skillId) {
     return false;
   }
   if (ok === false) return false;
-  spend(player, cost);
+  if (aura) { d.aura -= cost; d.lastCast = now; } else spend(player, cost);
   if (s.cooldown) d.cooldowns[skillId] = now + Math.round(s.cooldown * 20);
   showHud(player);
   return true;

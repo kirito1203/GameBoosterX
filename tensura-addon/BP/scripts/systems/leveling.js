@@ -18,7 +18,9 @@ export function mobEp(e) {
 export function grantEp(player, amount) {
   const d = getData(player);
   if (!d.race) return;
+  amount = Math.round(amount * (d.stats?.xpMult ?? 1));
   d.ep += amount;
+  d.epTotal = (d.epTotal ?? 0) + amount;
   let ups = 0;
   while (d.level < CONFIG.leveling.maxLevel && d.ep >= epForLevel(d.level)) {
     d.ep -= epForLevel(d.level);
@@ -30,6 +32,7 @@ export function grantEp(player, amount) {
   if (ups) {
     refreshStats(d);
     d.mp = d.stats.maxMp;
+    d.aura = d.stats.maxAura;
     saveNow(player);
     sound(player.dimension, 'random.levelup', player.location);
     msg(player, `§6§lNível ${d.level}!§r §e+${ups * CONFIG.leveling.pointsPerLevel} pontos de habilidade§r (total ${d.points}). Magicules restauradas.`);
@@ -54,6 +57,7 @@ export function startLeveling() {
     if (!killer || killer.typeId !== 'minecraft:player') return;
     const d = getData(killer);
     if (!d.race) return;
+    d.kills[dead.typeId] = (d.kills[dead.typeId] ?? 0) + 1;
     let ep = 0;
     try { ep = mobEp(dead); } catch { ep = 5; }
     const flag = BOSS_FLAGS[dead.typeId];
