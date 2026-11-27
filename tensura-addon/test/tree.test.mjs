@@ -142,7 +142,7 @@ test('detalhes: nada clicável sob o painel; desbloquear só quando permitido; n
   const v = viewAt(m.roots.elemental, 1);
   const f = buildTreeForm({ state, view: v, selected: 'elem.fire', mp: { cur: 1, max: 1 } });
   const { cols } = gridOf(1);
-  for (const [idx, h] of Object.entries(f.hit)) if (h.type === 'node') assert.ok((Number(idx) - CTRL_COUNT) % cols < detailsCoveredFrom(cols));
+  for (const [idx, h] of Object.entries(f.hit)) if (h.type === 'node') assert.ok((Number(idx) - layerBase(1).node) % cols < detailsCoveredFrom(cols));
   assert.equal(buildTreeForm({ state, view: v, selected: 'elem.fireball', mp: { cur: 1, max: 1 } }).hit[CTRL.unlock]?.type, 'unlock');
   const no = buildTreeForm({ state, view: v, selected: 'elem.firestorm', mp: { cur: 1, max: 1 } });
   assert.equal(no.hit[CTRL.unlock], undefined);
@@ -181,23 +181,34 @@ test('menu: aba Evolução oferece "Evoluir" quando os requisitos são atendidos
   assert.ok(f.body.includes('Demon Slime'));
 });
 
-test('JSON UI gerado: grade completa nas posições certas e roteador com árvore, menu e formulário padrão', () => {
+test('JSON UI gerado: cada célula fica na posição cujo índice (linha*colunas+coluna) é o do botão certo', () => {
   const ui = JSON.parse(readFileSync(new URL('ui/tensura_tree.json', RP), 'utf8').replace(/^\/\/.*$/m, ''));
+  assert.ok(!JSON.stringify(ui).includes('"collection_index"'), 'collection_index não funciona em formulários (visto no jogo)');
   for (const z of ZOOMS) {
     const { cols, rows, n } = gridOf(z);
     const base = layerBase(z);
-    const seen = { n: new Set(), p: new Set() };
-    for (const ctrl of ui[`grid_z${z}`].controls) {
-      const [k] = Object.keys(ctrl);
-      const def = ctrl[k];
-      const i = Number(k.slice(1).split('@')[0]);
-      assert.ok(Math.abs(parseFloat(def.offset[0]) - ((i % cols) * 100) / cols) < 0.01 && Math.abs(parseFloat(def.offset[1]) - (Math.floor(i / cols) * 100) / rows) < 0.01);
-      if (k.startsWith('n')) { assert.equal(def.collection_index, base.node + i); seen.n.add(i); }
-      if (k.startsWith('p')) { assert.equal(def.collection_index, base.pipe + i); seen.p.add(i); }
+    assert.equal(base.node % cols, 0, 'camadas começam no início de uma linha');
+    const panel = ui[`grid_z${z}`];
+    const grids = Object.fromEntries(panel.controls.map((c) => { const [k] = Object.keys(c); return [k, c[k]]; }));
+    for (const [gname, start] of [['grid_n', base.node], ['grid_p', base.pipe]]) {
+      const g = grids[gname];
+      assert.equal(g.grid_dimensions[0], cols);
+      const seen = new Set();
+      for (const c of g.controls) {
+        const def = Object.values(c)[0];
+        const [gx, gy] = def.grid_position;
+        const idx = gy * cols + gx;
+        assert.ok(idx >= start && idx < start + n, `${gname} z${z}: índice ${idx} fora da camada`);
+        seen.add(idx);
+      }
+      assert.equal(seen.size, n);
+      // a primeira linha visível da grade coincide com o topo da área da árvore
+      assert.ok(Math.abs(parseFloat(g.offset[1]) + (start / cols / rows) * 100) < 0.01);
     }
-    assert.equal(seen.n.size, n);
-    assert.equal(seen.p.size, n);
   }
+  // botões fixos: grade de 1 linha com a coluna = índice
+  const close = JSON.stringify(ui.menu_root);
+  assert.ok(close.includes('"grid_position":[0,0]') || close.includes('"grid_position": [0, 0]') || /grid_position":\[0,0\]/.test(close.replace(/\s/g, '')));
   assert.ok(ui.menu_root, 'tela do menu existe');
   const sf = JSON.parse(readFileSync(new URL('ui/server_form.json', RP), 'utf8').replace(/^\/\/.*$/m, ''));
   const names = sf.tensura_long_form_router.controls.map((c) => Object.keys(c)[0]);
@@ -214,14 +225,20 @@ test('simulação do JSON UI: nós quadrados alinhados com as linhas; menu com t
     const base = layerBase(sc.p.view.zoom);
     for (const [idx, r] of stats.rects.node) {
       assert.ok(Math.abs(r.w - r.h) < 0.01, `${name}: nó não quadrado`);
-      const pr = stats.rects.pipe.get(base.pipe + (idx - CTRL_COUNT));
+      const pr = stats.rects.pipe.get(base.pipe + (idx - base.node));
       if (pr) assert.ok(Math.abs(r.x + r.w / 2 - (pr.x + pr.w / 2)) < 0.01 && Math.abs(r.y + r.h / 2 - (pr.y + pr.h / 2)) < 0.01, `${name}: desalinhado`);
     }
   }
   const sc = scenario('menu-status');
   const { html } = { html: previewHtml(modelFor(sc), { root: 'menu_root' }).page };
-  for (const s of ['EP:', 'Aura:', 'Magículas:', 'Nível:', 'Progresso de evolução:', 'Habilidades Ativas', 'Barra de Habilidades', 'live_player_renderer', 'Voltar']) {
+  for (const s of ['EP:', 'Aura:', 'Magículas:', 'Nível:', 'Progresso de evolução:', 'Habilidades Ativas', 'Barra de Habilidades', 'live_player_renderer', 'Voltar',
+    // valores vindos de botões diferentes (o bug visto no jogo mostrava o botão 0 em todos)
+    '1.250', 'STATUS', 'RAÇA', 'HABILIDADES', 'EVOLUÇÃO', 'REGISTROS', 'Predador', 'Grande Sábio', 'Slime', 'bar_']) {
     assert.ok(html.includes(s), `menu sem "${s}"`);
+  }
+  // nenhum botão do menu pode mostrar o ícone de fechar, exceto o próprio fechar
+  assert.equal((html.match(/menu\/close\.png/g) ?? []).length, 1, 'ícone de fechar repetido (todos lendo o botão 0)');
+  {
   }
 });
 

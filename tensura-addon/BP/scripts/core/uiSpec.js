@@ -41,14 +41,21 @@ export function hasLabels(zoom) {
   return zoom >= CONFIG.ui.labelsFromZoom;
 }
 
-/** Índices das camadas da grade: nó, linhas e rótulo. */
+/**
+ * Índices das camadas da grade: nó, linhas e rótulo.
+ * As camadas começam num múltiplo do nº de colunas (botões vazios de preenchimento depois dos
+ * controles), porque no JSON UI o índice de cada célula vem da posição dela numa grade
+ * (grid_position): índice = linha * colunas + coluna.
+ */
 export function layerBase(zoom) {
-  const { n } = gridOf(zoom);
+  const { cols, n } = gridOf(zoom);
+  const start = Math.ceil(CTRL_COUNT / cols) * cols;
   return {
-    node: CTRL_COUNT,
-    pipe: CTRL_COUNT + n,
-    label: hasLabels(zoom) ? CTRL_COUNT + 2 * n : -1,
-    total: CTRL_COUNT + n * (hasLabels(zoom) ? 3 : 2),
+    startRow: start / cols,
+    node: start,
+    pipe: start + n,
+    label: hasLabels(zoom) ? start + 2 * n : -1,
+    total: start + n * (hasLabels(zoom) ? 3 : 2),
   };
 }
 

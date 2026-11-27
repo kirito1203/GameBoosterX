@@ -5,8 +5,8 @@
 //   §t§n§s… → árvore de habilidades (mapa único, nós quadrados, linhas em 8 direções)
 // Formulários sem marcador continuam idênticos aos do jogo.
 //
-// Técnicas vindas dos arquivos do próprio jogo (bedrock-samples): collection_index para
-// posições fixas (pdp_screenshots_section.json), textura por concatenação de string
+// Técnicas vindas dos arquivos do próprio jogo (bedrock-samples): grid + grid_position para
+// ligar cada elemento ao botão certo (crafting_grid_3x3 em inventory_screen.json), textura por concatenação de string
 // (game_tip_screen.json), "%y" = porcentagem da própria altura (ui_purchase_common.json),
 // live_player_renderer (inventory_screen.json).
 import { writeFileSync, mkdirSync } from 'node:fs';
@@ -69,6 +69,7 @@ function templates() {
         ] } },
       ],
     },
+    label_cell: { type: 'panel', layer: 6, controls: [{ [`lbl@${NS}.label`]: {} }] },
     label: {
       type: 'label', layer: 6, anchor_from: 'bottom_middle', anchor_to: 'bottom_middle',
       size: ['150%', 'default'], max_size: ['150%', '30%'], text_alignment: 'center', shadow: true,
@@ -107,7 +108,7 @@ function templates() {
     },
     // Texto só leitura vindo do formulário (valores do Status).
     value: {
-      type: 'label', ...TL, layer: 3, text: '#form_button_text', shadow: true, color: [1, 1, 1],
+      type: 'label', ...TL, layer: 3, size: ['100%', 'default'], text: '#form_button_text', shadow: true, color: [1, 1, 1],
       text_alignment: '$v_align', font_scale_factor: '$v_font', bindings: [colText],
       '$v_align|default': 'right', '$v_font|default': 1.0,
     },
@@ -150,31 +151,52 @@ const SLOT = {
 };
 const PLAIN = { $ctl_bg: `${TEX.menu}none`, $ctl_bg_hover: `${TEX.menu}none`, $ctl_bg_pressed: `${TEX.menu}none`, $ctl_font: 1.1 };
 
-function ctl(name, index, x, y, w, h, style = ICON_ONLY) {
-  return { [`${name}@${NS}.ctl`]: { collection_index: index, ...at(x, y, w, h), ...style } };
+// Coloca o botão `index` do formulário na posição (x,y,w,h) em %.
+// O JSON UI liga um elemento ao botão certo pela POSIÇÃO numa grade (grid_position →
+// índice = linha*colunas + coluna, como na grade de crafting do jogo). Por isso cada elemento é
+// uma grade de 1 linha com index+1 colunas, deslocada para que a coluna `index` caia em (x,y).
+function slot(name, index, x, y, w, h, template, extra = {}, childSize = null) {
+  const cols = index + 1;
+  return { [`g_${name}`]: {
+    type: 'grid', ...TL, collection_name: COL, grid_dimensions: [cols, 1], layer: 1,
+    size: [pct(cols * w), pct(h)], offset: [pct(x - index * w), pct(y)],
+    controls: [{ [`${name}@${NS}.${template}`]: {
+      grid_position: [index, 0], ...TL, size: childSize ?? [pct(100 / cols), '100%'], ...extra } }],
+  } };
+}
+
+function ctl(name, index, x, y, w, h, style = ICON_ONLY, childSize = null) {
+  return slot(name, index, x, y, w, h, 'ctl', style, childSize);
 }
 
 // ── Árvore ──
-function gridPanel(zoom) {
+function layerGrid(name, template, zoom, firstRow) {
   const { cols, rows } = gridOf(zoom);
-  const base = layerBase(zoom);
-  const cw = 100 / cols;
-  const ch = 100 / rows;
+  const totalRows = firstRow + rows;
   const controls = [];
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const i = r * cols + c;
-      const pos = { offset: [pct(c * cw), pct(r * ch)], size: [pct(cw), pct(ch)] };
-      controls.push({ [`p${i}@${NS}.line`]: { collection_index: base.pipe + i, ...pos } });
-      controls.push({ [`n${i}@${NS}.node`]: { collection_index: base.node + i, ...pos } });
-      if (hasLabels(zoom)) {
-        controls.push({ [`c${i}`]: { type: 'panel', ...TL, collection_name: COL, ...pos,
-          controls: [{ [`l${i}@${NS}.label`]: { collection_index: base.label + i } }] } });
-      }
+      controls.push({ [`${name}${r * cols + c}@${NS}.${template}`]: {
+        grid_position: [c, firstRow + r], ...TL, size: [pct(100 / cols), pct(100 / totalRows)] } });
     }
   }
+  // Linhas "fantasmas" acima (índices anteriores): a grade sobe e a área da árvore recorta.
+  return { [`grid_${name}`]: {
+    type: 'grid', ...TL, collection_name: COL, grid_dimensions: [cols, totalRows],
+    size: ['100%', pct((totalRows / rows) * 100)], offset: [0, pct((-firstRow / rows) * 100)], controls,
+  } };
+}
+
+function gridPanel(zoom) {
+  const { rows } = gridOf(zoom);
+  const base = layerBase(zoom);
+  const controls = [
+    layerGrid('p', 'line', zoom, base.startRow + rows),
+    layerGrid('n', 'node', zoom, base.startRow),
+  ];
+  if (hasLabels(zoom)) controls.push(layerGrid('l', 'label_cell', zoom, base.startRow + 2 * rows));
   return {
-    type: 'panel', size: ['100%', '100%'], collection_name: COL,
+    type: 'panel', size: ['100%', '100%'],
     bindings: [{ binding_name: '#title_text' }, view(has(`${MARK}§${zoom}`), '#visible')],
     controls,
   };
@@ -215,7 +237,7 @@ function treeRoot() {
       { bg: img(`${TEX.ui}panel`, { layer: 0 }) },
       { icon_slot: { type: 'panel', size: ['100%y', '22%'], offset: ['4%', '2%'], ...TL, layer: 2, collection_name: COL, controls: [
         { icon_bg: img(`${TEX.ui}icon_slot`, { layer: 0 }) },
-        { [`detail_icon@${NS}.ctl`]: { collection_index: CTRL.detailIcon, size: ['100%', '100%'], ...PLAIN, $ctl_icon_size: ['100%y', '84%'] } },
+        ctl('detail_icon', CTRL.detailIcon, 0, 0, 100, 100, { ...PLAIN, $ctl_icon_size: ['100%y', '84%'] }),
       ] } },
       ctl('close_details', CTRL.closeDetails, 87, 1.5, 11, 9),
       { text_area: { type: 'panel', size: ['94%', '44%'], offset: ['3%', '26%'], ...TL, layer: 2,
@@ -244,13 +266,14 @@ function treeRoot() {
 function menuRoot() {
   const st = (text, x, y, w, extra = {}) => ({ [`t_${Math.round(x * 10)}_${Math.round(y * 10)}@${NS}.static_text`]: {
     $st_text: text, ...TL, offset: [pct(x), pct(y)], size: [pct(w), 'default'], ...extra } });
-  const value = (name, idx, x, y, w, extra = {}) => ({ [`${name}@${NS}.value`]: { collection_index: idx, offset: [pct(x), pct(y)], size: [pct(w), 'default'], ...extra } });
+  const value = (name, idx, x, y, w, extra = {}) => slot(name, idx, x, y, w, 7, 'value', extra);
 
   // Coluna esquerda (comum às abas): boneco do jogador + nome da raça.
   const left = [
     { doll_box: { ...at(2, 16, 22, 52), type: 'image', layer: 1, texture: `${TEX.menu}box`, keep_ratio: false, controls: [
       { player: { type: 'custom', renderer: 'live_player_renderer', property_bag: { '#look_at_cursor': true },
-        layer: 8, size: ['100%', '92%'], anchor_from: 'bottom_middle', anchor_to: 'bottom_middle', offset: [0, '-4%'] } },
+        // O modelo é desenhado com ~1,9x a altura do controle, a partir do topo (medido no jogo).
+        layer: 8, size: ['100%', '48%'], anchor_from: 'top_middle', anchor_to: 'top_middle', offset: [0, '4%'] } },
     ] } },
     ctl('race_name', MENU.raceName, 2, 70, 22, 9.5, { ...PLAIN, $ctl_bg: `${TEX.menu}box`, $ctl_bg_hover: `${TEX.menu}box`, $ctl_bg_pressed: `${TEX.menu}box`, $ctl_font: 1.2 }),
   ];
@@ -266,13 +289,12 @@ function menuRoot() {
       { sep: { ...at(28, 50, 37, 0.6), type: 'image', layer: 2, texture: `${TEX.menu}line`, keep_ratio: false } },
       st('Nível:', 29, 55, 15), value('v_lvl', MENU.stat0 + 3, 44, 55, 20),
       st('Progresso de evolução:', 29, 64, 26, { $st_font: 0.9 }), value('v_prog', MENU.stat0 + 4, 55, 64, 9),
-      { [`bar@${NS}.picture`]: { collection_index: MENU.progressBar, ...at(28.5, 71, 36, 5) } },
+      slot('bar', MENU.progressBar, 28.5, 71, 36, 5, 'picture'),
       { skills_box: { ...at(69, 16, 29, 63), type: 'image', layer: 1, texture: `${TEX.menu}box`, keep_ratio: false } },
       st('§bHabilidades Ativas', 71, 19, 25, { $st_align: 'center', $st_font: 1.0 }),
       ...Array.from({ length: ACTIVE_ROWS }, (_, i) => ctl(`active${i}`, MENU.active0 + i, 70.5, 26 + i * 13, 26, 11.5, ROW)),
       st('§bBarra de Habilidades', 3, 81.5, 30, { $st_font: 0.9 }),
-      ...Array.from({ length: BAR_SLOTS }, (_, i) => ({ [`slot${i}@${NS}.ctl`]: {
-        collection_index: MENU.slot0 + i, ...TL, offset: [pct(3 + i * 8.6), '87%'], size: ['100%y', '11%'], ...SLOT } })),
+      ...Array.from({ length: BAR_SLOTS }, (_, i) => ctl(`slot${i}`, MENU.slot0 + i, 3 + i * 8.6, 87, 8, 11, SLOT, ['100%y', '100%'])),
     ],
   };
 

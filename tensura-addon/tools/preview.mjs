@@ -136,7 +136,9 @@ function render(model, W, H, scale, rootName = 'root') {
   const globals = { '#title_text': model.title, '#form_text': model.body };
   function walk(name, rawDef, parent, vars, ctx, depthLayer) {
     const { def, vars: v, kind } = resolve(name, rawDef, vars);
-    let cidx = def.collection_index ?? ctx.cidx;
+    // Em grades, o índice vem da posição: linha * colunas + coluna (como no jogo).
+    let cidx = ctx.gridCell ? ctx.gridCell.index : ctx.cidx;
+    if (def.collection_index !== undefined) cidx = undefined; // não usado mais: o jogo ignorou (ver relatório)
     const props = { ...globals };
     if (cidx !== undefined && model.buttons[cidx]) {
       props['#form_button_text'] = model.buttons[cidx].text;
@@ -167,8 +169,9 @@ function render(model, W, H, scale, rootName = 'root') {
     const [ax, ay] = ANCH[def.anchor_from ?? 'center'];
     const [bx, by] = ANCH[def.anchor_to ?? 'center'];
     const off = def.offset ?? [0, 0];
-    const x = parent.x + ax * parent.w - bx * own.w + dimOf(off[0], parent, own, 'w', 0);
-    const y = parent.y + ay * parent.h - by * own.h + dimOf(off[1], parent, own, 'h', 0);
+    let x = parent.x + ax * parent.w - bx * own.w + dimOf(off[0], parent, own, 'w', 0);
+    let y = parent.y + ay * parent.h - by * own.h + dimOf(off[1], parent, own, 'h', 0);
+    if (ctx.gridCell) { x = ctx.gridCell.x; y = ctx.gridCell.y; }
     const box = { x, y, w: own.w, h: own.h };
     const layer = depthLayer + (def.layer ?? 0);
     const st = `left:${(x * scale).toFixed(1)}px;top:${(y * scale).toFixed(1)}px;width:${(own.w * scale).toFixed(1)}px;height:${(own.h * scale).toFixed(1)}px;z-index:${layer}`;
@@ -202,7 +205,14 @@ function render(model, W, H, scale, rootName = 'root') {
     }
     for (const c of children) {
       const k = Object.keys(c)[0];
-      walk(k, c[k], box, v, { cidx: def.collection_index !== undefined ? def.collection_index : ctx.cidx }, layer + 1);
+      if (def.type === 'grid') {
+        const [gx, gy] = c[k].grid_position;
+        const [dx, dy] = def.grid_dimensions;
+        const cell = { x: box.x + (gx * box.w) / dx, y: box.y + (gy * box.h) / dy, index: gy * dx + gx };
+        walk(k, c[k], box, v, { gridCell: cell }, layer + 1);
+      } else {
+        walk(k, c[k], box, v, { cidx }, layer + 1);
+      }
     }
   }
   walk(rootName, UI[rootName], { x: 0, y: 0, w: W, h: H }, {}, {}, 0);

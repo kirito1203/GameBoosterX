@@ -94,3 +94,18 @@ verificado num aparelho (itens 1–17 do pedido):
 - Testes: 37 automatizados passando (mapa, linhas, menu, JSON UI gerado, simulação e desempenho).
 - **Ainda não testado no jogo:** o menu e o mapa novos (inclusive o boneco do jogador dentro de um
   formulário) precisam ser conferidos no aparelho.
+
+## Versão 0.2.1 — correção após o primeiro teste no jogo
+
+O print do jogo mostrou o que funcionava e o que não:
+- **Funcionou:** a troca do formulário padrão pela tela do addon (`server_form.json`) e o
+  boneco do jogador (`live_player_renderer`).
+- **Falhou:** todos os elementos mostravam os dados do botão 0 (o "X" de fechar) e nenhum texto.
+  O `collection_index` fixo é ignorado nos formulários do servidor.
+- **Correção:** cada elemento agora é ligado ao botão pela **posição numa grade** (`grid_position`;
+  índice = linha × colunas + coluna), o mesmo mecanismo da grade de crafting e do inventário do jogo.
+  As células da árvore usam grades 2D, e as camadas começam no início de uma linha (botões vazios
+  de preenchimento).
+- O boneco era desenhado com ~1,9× a altura do quadro e saía dele: o quadro foi reduzido para caber.
+- O simulador e os testes passaram a usar a regra da grade e a verificar que cada valor (EP, nomes
+  das habilidades, textos das abas) aparece no lugar certo.

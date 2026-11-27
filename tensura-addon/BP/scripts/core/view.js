@@ -101,7 +101,7 @@ export function buildTreeForm(p) {
   const title = `${zoomMark(view.zoom)}§l§bÁrvore de Habilidades§r  §7${race.name}  §ePontos ${state.points}  §fNv ${state.level}  §a${owned}/${total}  §dMagículas ${Math.floor(mp.cur)}/${mp.max}`;
 
   const set = (i, text, icon = '') => { buttons[i] = { text, icon }; };
-  for (let i = 0; i < CTRL_COUNT; i++) set(i, '');
+  for (let i = 0; i < base.node; i++) set(i, ''); // controles + preenchimento
   set(CTRL.back, 'Voltar', `${TEX.ui}btn_back`); hit[CTRL.back] = { type: 'back' };
   set(CTRL.close, '', `${TEX.ui}btn_close`); hit[CTRL.close] = { type: 'close' };
   CATEGORY_ORDER.forEach((cat, i) => {
