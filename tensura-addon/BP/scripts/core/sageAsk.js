@@ -4,7 +4,9 @@
 //
 // Expansão futura: `ask()` passa por `ANSWERERS` em ordem; um provedor externo (ex.: uma IA real,
 // se um dia for possível no Bedrock) pode ser registrado com registerAnswerer() antes do padrão.
-import { SKILLS, TREES, RACES } from '../data/registry.js';
+import { SKILLS, TREES, RACES, ABSORPTION } from '../data/registry.js';
+import { missionProgress, missionsFor } from './missions.js';
+import { masteryLevel, masteryMax } from './mastery.js';
 import { GROUP_NAMES } from '../data/elements.js';
 import { evaluate } from './progression.js';
 import { epForLevel } from '../config.js';
@@ -67,11 +69,57 @@ const INTENTS = [
     ],
   },
   {
+    id: 'missions', test: (q) => has(q, 'missao', 'missoes', 'quest'),
+    answer: ({ d }) => {
+      const list = missionsFor(RACES[d.race]?.lineage);
+      if (!list.length) return [`Sua raça não tem missões especiais cadastradas. ${INSUFFICIENT}`];
+      return list.map((m) => {
+        if (d.missions?.has(m.id)) return `✔ ${m.name} (concluída)`;
+        const p = missionProgress(m, d);
+        return `• ${m.name}: ${p.parts.filter((x) => !x.ok).map((x) => `${x.label} ${x.cur}/${x.need}`).join('; ') || 'pronta'}`;
+      });
+    },
+  },
+  {
+    id: 'absorption', test: (q) => has(q, 'absorv', 'absorc', 'devor', 'quais criaturas'),
+    answer: ({ d, sage }) => {
+      const db = ABSORPTION[RACES[d.race]?.lineage] ?? [];
+      if (!db.length) return [`Sua raça não obtém habilidades por absorção. ${INSUFFICIENT}`];
+      const lines = ['Habilidades que podem ser obtidas por absorção:'];
+      for (const e of db) {
+        const mobs = hasCapability(sage, 'analysis') ? e.mc.map((x) => x.replace('minecraft:', '')).join('/') : '?';
+        const pend = e.skills.filter((id) => !d.discovered?.has(id) && !d.unlocked.has(id));
+        lines.push(`• ${mobs} (${e.work}): ${pend.length ? pend.map((id) => SKILLS[id].name).join(', ') : 'todas descobertas'}`);
+      }
+      return lines;
+    },
+  },
+  {
+    id: 'mastery', test: (q) => has(q, 'dominio', 'evoluir habilidade', 'habilidade evoluir', 'pode evoluir'),
+    answer: ({ d, state }) => {
+      const lines = [];
+      for (const id of d.unlocked) {
+        const s = SKILLS[id];
+        const max = masteryMax(s);
+        if (max) lines.push(`• ${s.name}: domínio ${masteryLevel(id, d.mastery?.[id] ?? 0)}/${max}`);
+      }
+      const ready = Object.values(SKILLS).filter((s) => s.needMastery && !d.unlocked.has(s.id) && evaluate(s.id, state).ok);
+      if (ready.length) lines.unshift(`Os requisitos para a evolução foram cumpridos: ${ready.map((s) => s.name).join(', ')}.`);
+      return lines.length ? lines.slice(0, 12) : ['Nenhuma habilidade com domínio ainda. Use suas habilidades ativas para desenvolvê-las.'];
+    },
+  },
+  {
     id: 'synthesis', test: (q) => has(q, 'combin', 'sintes', 'fundir', 'juntar habilidade'),
-    answer: () => [
-      'A Síntese de habilidades ainda não existe neste addon.',
-      `Não há regras de combinação cadastradas para eu consultar. ${INSUFFICIENT}`,
-    ],
+    answer: ({ d, state }) => {
+      // Combinações reais = habilidades da sua árvore racial que exigem duas ou mais anteriores.
+      const tree = TREES[`race.${RACES[d.race]?.lineage}`];
+      const combos = (tree?.skills ?? []).filter((s) => s.requires.length >= 2 && !d.unlocked.has(s.id));
+      if (!combos.length) return [`Não há combinações cadastradas para a sua raça. ${INSUFFICIENT}`];
+      const near = combos.filter((s) => s.requires.filter((r) => !d.unlocked.has(r)).length <= 1);
+      const list = (near.length ? near : combos).slice(0, 6);
+      return [near.length ? 'Análise concluída. Possíveis combinações identificadas:' : 'Combinações existentes (ainda distantes):',
+        ...list.map((s) => `• ${s.requires.map((r) => SKILLS[r].name).join(' + ')} → ${s.name}${evaluate(s.id, state).ok ? ' (disponível)' : ''}`)];
+    },
   },
   {
     id: 'sage_level', test: (q) => (has(q, 'seu nivel', 'voce esta', 'nivel do sabio', 'nivel do grande', 'seu estagio', 'sua experiencia')),

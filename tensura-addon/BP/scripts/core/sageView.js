@@ -2,6 +2,8 @@
 // Puro (testável em Node); o desenho é do resource pack (RP/ui/tensura_tree.json → sage_root).
 import { SKILLS, TREES } from '../data/registry.js';
 import { mpCost } from './stats.js';
+import { missionProgress, missionsFor } from './missions.js';
+import { RACES, ABSORPTION } from '../data/registry.js';
 import { evaluate } from './progression.js';
 import { describeFx } from './describe.js';
 import { rarityInfo } from '../config.js';
@@ -13,12 +15,12 @@ import { SAGE, SAGE_CATS, SAGE_TILES, SAGE_COUNT, SAGE_ACTIONS, sageMark, TEX, i
 
 export const CAT_LABEL = {
   ask: 'Conversar', analyses: 'Analisar', level: 'Status', skills: 'Habilidades', magic: 'Magias',
-  intel: 'Capacidades', next: 'Evolução', history: 'Memória', manifest: 'Manifestar', settings: 'Configurações',
+  intel: 'Capacidades', next: 'Evolução', history: 'Memória', manifest: 'Manifestar', missions: 'Missões', settings: 'Configurações',
 };
 const CAT_TITLE = {
   home: 'Menu do Grande Sábio', ask: 'Perguntar ao Grande Sábio', analyses: 'Análises', level: 'Nível e evolução',
   skills: 'Habilidades do Grande Sábio', magic: 'Magias', intel: 'Inteligência e capacidades', next: 'Próximas evoluções',
-  history: 'Histórico e memória', settings: 'Configurações',
+  history: 'Histórico e memória', settings: 'Configurações', missions: 'Missões especiais',
 };
 const GREETING = {
   sage: ['Olá, viajante...', 'Eu sou o §bGrande Sábio§r.', '', 'Estou aqui para guiá-lo em sua jornada neste novo mundo.'],
@@ -124,6 +126,26 @@ export function buildSageForm({ cat, d, sage, page = 0, note = '' }) {
     const caps = CAPABILITIES.filter((c) => hasCapability(sage, c.id)).length;
     lines.push('', `§7${caps} capacidades ativas · ${Object.keys(sage.analyses).length} espécies analisadas · ${sage.qa.length} conversas.§r`);
     if (ev?.ready) lines.push(`§6§lUma evolução está disponível: ${stageName(ev.next)}.§r Toque em Status.`);
+  } else if (cat === 'missions') {
+    const lin = RACES[d.race]?.lineage;
+    const list = missionsFor(lin);
+    if (!list.length) lines.push('Sua raça ainda não tem missões especiais cadastradas.');
+    for (const m of list) {
+      const done = d.missions?.has(m.id);
+      const pr = missionProgress(m, d);
+      lines.push(`${done ? '§a✔' : pr.done ? '§e★' : '§7•'} §l${m.name}§r ${done ? '§a(concluída)' : `§7${Math.round(pr.progress * 100)}%`}§r`, `  ${m.desc}`);
+      if (!done) for (const p of pr.parts) lines.push(`  ${p.ok ? '§a✔' : '§c✘'} ${p.label}: ${p.cur}/${p.need}§r`);
+      lines.push(`  §8Recompensa: ${m.reward} pontos · Origem: ${m.src === 'mod' ? 'missão do addon' : m.src}§r`, '');
+    }
+    const db = ABSORPTION[lin] ?? [];
+    if (db.length) {
+      lines.push('§l§bAbsorções conhecidas:§r');
+      for (const e of db) {
+        const got = e.skills.filter((id) => d.discovered?.has(id) || d.unlocked.has(id)).length;
+        lines.push(`• ${e.work} §7(${e.mc.map((x) => x.replace('minecraft:', '')).join('/')})§r — ${got}/${e.skills.length} descobertas`);
+      }
+    }
+    actions.push(['Manifestar o Sábio', `${TEX.sage}icon_${sage.stage}`, { type: 'manifest' }]);
   } else if (cat === 'magic') {
     const mine = [...d.unlocked].map((id) => SKILLS[id]).filter((s) => s && s.type === 'active' && TREES[s.tree].kind === 'universal');
     lines.push(`§lSuas magias (${mine.length}):§r`);

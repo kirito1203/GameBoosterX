@@ -6,9 +6,11 @@
 import { system, world } from '@minecraft/server';
 import { ActionFormData, FormCancelationReason } from '@minecraft/server-ui';
 import { CONFIG } from '../config.js';
-import { SKILLS, RACES, initialSkillsFor } from '../data/registry.js';
+import { barSlots } from '../core/stats.js';
+import { SKILLS, RACES, TREES, SECTORS, initialSkillsFor } from '../data/registry.js';
 import { unlock } from '../core/progression.js';
-import { buildTreeForm, viewAt, centeredView, pan, ensureVisible } from '../core/view.js';
+import { buildTreeForm, viewAt, centeredView, pan, ensureVisible, toOverview, fromOverview } from '../core/view.js';
+import { evaluate } from '../core/progression.js';
 import { buildMenuForm } from '../core/menuView.js';
 import { getMap } from '../core/map.js';
 import { getData, progressionState, saveNow, refreshStats, markDirty } from '../systems/storage.js';
@@ -62,7 +64,7 @@ export function doUnlock(player, d, id) {
     refreshStats(d);
     sound(player.dimension, 'random.levelup', player.location, { pitch: 1.4, volume: 0.7 });
     msg(player, `§aDesbloqueado: §l${s.name}§r §7(-${r.cost} pts, restam ${d.points})`);
-    if (s.type === 'active' && d.equipped.length < CONFIG.ui.barSlots && !d.equipped.includes(id)) {
+    if (s.type === 'active' && d.equipped.length < barSlots(d) && !d.equipped.includes(id)) {
       d.equipped.push(id);
       msg(player, `§7${s.name} foi colocada na Barra de Habilidades (espaço ${d.equipped.length}).`);
     }
@@ -83,7 +85,7 @@ function toggleEquip(player, d, id) {
     if (d.slot >= d.equipped.length) d.slot = 0;
     msg(player, `§7${SKILLS[id].name} removida da barra.`);
   } else {
-    if (d.equipped.length >= CONFIG.ui.barSlots) { msg(player, `§cA barra tem ${CONFIG.ui.barSlots} espaços. Remova uma habilidade antes.`); return; }
+    if (d.equipped.length >= barSlots(d)) { msg(player, `§cA barra tem ${barSlots(d)} espaços. Remova uma habilidade antes.`); return; }
     d.equipped.push(id);
     msg(player, `§b${SKILLS[id].name} colocada no espaço ${d.equipped.length}.`);
   }
@@ -142,8 +144,9 @@ async function treeLoop(player, menus, focus = {}) {
   if (focus.key && map.pos[focus.key]) { highlight = focus.key; view = viewAt(map.pos[focus.key]); }
   if (focus.pos) view = viewAt(focus.pos);
   let result = 'back';
+  let zoom = 1;
   for (;;) {
-    const model = buildTreeForm({ state: progressionState(d), view, focus: highlight, mp: { cur: d.mp, max: d.stats.maxMp }, equipped: d.equipped });
+    const model = buildTreeForm({ state: progressionState(d), view, focus: highlight, mp: { cur: d.mp, max: d.stats.maxMp }, equipped: d.equipped, zoom });
     const res = await showForm(player, formOf(model));
     if (!player.isValid) return 'close';
     if (!res || res.canceled || res.selection === undefined) { result = 'close'; break; }
@@ -152,16 +155,54 @@ async function treeLoop(player, menus, focus = {}) {
     if (act.type === 'back') break;
     if (act.type === 'close') { result = 'close'; break; }
     switch (act.type) {
-      case 'jump': highlight = null; view = viewAt(act.pos); break;
-      case 'pan': view = pan(view, act.dx, act.dy, map); break;
-      case 'center': highlight = null; view = viewAt([0, 0]); break;
+      case 'jump': {
+        highlight = null;
+        let pos = act.pos;
+        // Árvore racial com setores: escolher o setor (ou a visão geral).
+        if (act.cat === 'racial' && SECTORS[map.lineage ?? RACES[d.race].lineage]) {
+          const r = await pickSector(player, d, map);
+          if (r === 'overview') { zoom = 3; view = toOverview(viewAt([0, 0])); break; }
+          if (r) pos = r;
+        }
+        if (zoom > 1) { zoom = 1; }
+        view = viewAt(pos);
+        break;
+      }
+      case 'pan': view = pan(view, act.dx, act.dy, map, zoom); break;
+      case 'center': highlight = null; view = zoom > 1 ? toOverview(viewAt([0, 0])) : viewAt([0, 0]); break;
+      case 'zoom': view = act.zoom > 1 ? toOverview(view) : fromOverview(view); zoom = act.zoom; break;
+      case 'zoomin': zoom = 1; view = viewAt(act.pos); break;
       case 'unlock': doUnlock(player, d, act.id); highlight = act.id; break;
       case 'equip': toggleEquip(player, d, act.id); highlight = act.id; break;
       case 'goto': highlight = act.key; view = viewAt(map.pos[act.key]); break;
       default: break;
     }
   }
-  d.ui.view = view;
+  d.ui.view = zoom > 1 ? fromOverview(view) : view;
   markDirty(player);
   return result;
+}
+
+/** Lista dos setores da árvore racial (com progresso) + visão geral. Retorna posição, 'overview' ou null. */
+async function pickSector(player, d, map) {
+  const lin = RACES[d.race].lineage;
+  const sec = SECTORS[lin];
+  const tree = TREES[`race.${lin}`];
+  const st = progressionState(d);
+  const form = new ActionFormData().title('§lÁrvore Racial — Setores')
+    .body(`§7${tree.name}. Escolha um setor para ir até ele, ou a visão geral (zoom afastado).§r`);
+  const targets = [];
+  for (const id of sec.order) {
+    const skills = tree.skills.filter((s) => s.sector === id);
+    if (!skills.length) continue;
+    const own = skills.filter((s) => d.unlocked.has(s.id)).length;
+    const avail = skills.filter((s) => evaluate(s.id, st).ok).length;
+    const head = skills.find((s) => map.pos[s.id]);
+    targets.push(map.pos[head.id]);
+    form.button(`§l${sec.names[id]}§r\n§a${own}/${skills.length}${avail ? `  §9${avail} disponível(is)` : ''}`);
+  }
+  form.button('§l§bVisão geral (zoom afastado)');
+  const res = await showForm(player, form);
+  if (!res || res.canceled || res.selection === undefined) return null;
+  return res.selection === targets.length ? 'overview' : targets[res.selection];
 }

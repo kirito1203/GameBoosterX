@@ -14,6 +14,20 @@ export const ORIGINS = {
 };
 
 /**
+ * Origem detalhada (catálogo do Rimuru e futuras árvores raciais completas).
+ * Nunca misturar: uma habilidade só é 'anime' se aparece no anime; 'ln' se é da Light Novel etc.
+ * Na dúvida: 'pendente'.
+ */
+export const SOURCES = {
+  anime: 'CANÔNICO — ANIME',
+  manga: 'CANÔNICO — MANGÁ',
+  ln: 'CANÔNICO — LIGHT NOVEL',
+  mod: 'EXPANSÃO — MOD',
+  pendente: 'PENDENTE DE VERIFICAÇÃO',
+};
+const SRC_TO_ORIGIN = { anime: 'obra', manga: 'obra', ln: 'obra', mod: 'original', pendente: 'adaptado' };
+
+/**
  * Cria a definição de uma habilidade.
  * @param {string} id  ID único (ex.: 'elem.fireball')
  * @param {string} name Nome em português
@@ -50,11 +64,40 @@ export function S(id, name, original, rarity, o = {}) {
     category: o.cat ?? '',
     initial: o.initial ?? false,      // concedida ao se tornar a raça (árvores raciais)
     evolveTo: o.evolveTo ?? null,     // nós de evolução racial
+    // ── Campos das árvores raciais completas (opcionais) ──
+    rank: o.rank ?? null,             // F, E, D, C, B, A, S, SS, EX (CONFIG.ranks)
+    src: o.src ?? null,               // SOURCES
+    sector: o.sector ?? null,         // setor da árvore (ex.: 'body')
+    needMp: o.needMp ?? 0,            // Magicules MÁXIMAS necessárias
+    needAbsorb: o.needAbsorb ?? null, // { any: [typeId...] } e/ou { count: n } espécies absorvidas
+    discover: o.discover ?? false,    // precisa ser descoberta (absorção) antes de desbloquear
+    needMission: o.mission ?? null,   // id de missão especial concluída
+    needMastery: o.needMastery ?? null, // { skillId: nível de domínio }
+    needStage: o.needStage ?? null,   // estágio racial mínimo (0, 1, 2…)
+    masteryMax: o.masteryMax ?? null, // nível máximo de domínio (padrão: pelo rank)
+    masteryDesc: o.masteryDesc ?? null, // texto por nível de domínio
+    acquire: o.acquire ?? null,       // texto do método de aquisição (gerado se ausente)
+    evolvesTo: o.evolvesTo ?? [],     // evoluções possíveis (texto informativo)
   };
 }
 
+/**
+ * Habilidade com rank: custo, nível e raridade padrão vêm de CONFIG.ranks (sobrescrevíveis).
+ * @param {string} rank
+ * @param {string} src  chave de SOURCES
+ */
+export function SR(id, name, original, rank, src, ranks, o = {}) {
+  const r = ranks[rank];
+  if (!r) throw new Error(`Rank inválido em ${id}: ${rank}`);
+  if (!SOURCES[src]) throw new Error(`Origem inválida em ${id}: ${src}`);
+  return S(id, name, original, o.rarity ?? r.rarity, {
+    cost: r.cost, lvl: r.lvl, origin: SRC_TO_ORIGIN[src], ...o, rank, src,
+  });
+}
+
 const PASSIVE_KINDS = new Set(['p_effect', 'p_mp', 'p_resist', 'p_lifesteal', 'p_onhit', 'p_affinity',
-  'p_power', 'p_starved', 'p_xp', 'p_points', 'p_regen_env', 'p_race', 'p_aura']);
+  'p_power', 'p_starved', 'p_xp', 'p_points', 'p_regen_env', 'p_race', 'p_aura',
+  'p_cleanse', 'p_cd', 'p_slots', 'p_absorb', 'p_mimic']);
 
 export function isPassiveFx(fx) {
   const list = Array.isArray(fx) ? fx : [fx];

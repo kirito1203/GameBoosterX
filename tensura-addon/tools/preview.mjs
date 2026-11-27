@@ -255,10 +255,10 @@ import { viewAt } from '../BP/scripts/core/view.js';
 
 function demoPlayer() {
   const unlocked = new Set([...initialSkillsFor('slime'), 'r.slime.self_regen', 'r.slime.shapeshift', 'r.slime.analyze', 'elem.core', 'elem.fire',
-    'elem.fireball', 'elem.water', 'elem.freeze', 'elem.wind_cutter', 'elem.stone_shot', 'elem.fire_lance', 'uni.soul', 'uni.great_sage',
-    'uni.predator', 'aspect.magic_sense', 'aspect.barrier', 'ext.magic_aura', 'ext.water_manipulation', 'ext.water_blade']);
+    'elem.fireball', 'elem.water', 'elem.freeze', 'elem.wind_cutter', 'elem.stone_shot', 'elem.fire_lance', 'uni.soul', 'r.slime.great_sage',
+    'r.slime.predator', 'r.slime.predation', 'r.slime.stomach', 'r.slime.analyze', 'r.slime.physical_resist', 'r.slime.pain_null', 'r.slime.water_manip', 'r.slime.water_blade', 'r.slime.thought_accel', 'r.slime.appraisal', 'aspect.magic_sense', 'aspect.barrier', 'ext.magic_aura', 'ext.water_manipulation', 'ext.water_blade']);
   const d = { race: 'slime', level: 22, points: 140, flags: new Set(), unlocked, mpBonus: 20, mimic: null, epTotal: 1250, ep: 300,
-    mp: 210, aura: 150, equipped: ['uni.predator', 'ext.water_blade', 'aspect.barrier'], absorbed: ['minecraft:wolf'], kills: { 'minecraft:zombie': 12, 'minecraft:spider': 4 } };
+    mp: 210, aura: 150, equipped: ['r.slime.predation', 'ext.water_blade', 'aspect.barrier'], absorbed: ['minecraft:wolf'], kills: { 'minecraft:zombie': 12, 'minecraft:spider': 4 } };
   d.sage = freshSage();
   addXp(d.sage, 2600);
   d.sage.analyses = {
@@ -278,6 +278,15 @@ export function scenario(name) {
   const map = getMap('slime');
   switch (name) {
     case 'tree-center': return { kind: 'tree', p: { state, view: centeredView(), mp } };
+    case 'tree-slime': return { kind: 'tree', p: { state: { ...state, discovered: new Set(['r.slime.sticky_thread']), missions: new Set(), mastery: { 'r.slime.predation': 35 }, maxMp: d.stats.maxMp, absorbed: new Set(d.absorbed) }, view: viewAt([-14, 2]), mp } };
+    case 'tree-slime-sel': {
+      const st = { ...state, discovered: new Set(), missions: new Set(), mastery: { 'r.slime.predation': 35 }, maxMp: d.stats.maxMp, absorbed: new Set(d.absorbed) };
+      const view = viewAt([-14, 2]);
+      const pos = map.pos['r.slime.gluttony'];
+      const i = (pos[1] - view.y) * 13 + (pos[0] - view.x);
+      return { kind: 'tree', p: { state: st, view, mp }, toggles: [`tg_${i}`], cell: i };
+    }
+    case 'tree-overview': return { kind: 'tree', p: { state, view: { x: -19, y: -16 }, mp, zoom: 3 } };
     case 'tree-elemental': return { kind: 'tree', p: { state, view: viewAt(map.roots.elemental), mp } };
     case 'tree-unique-sel': {
       const view = viewAt(map.roots.unique);
@@ -298,6 +307,7 @@ export function scenario(name) {
     case 'race-page2': return { kind: 'race', p: { page: 1, selected: 'giant', sageText: 'Gigante... Afinidade: Terra · Força. Dificuldade 2 de 5.' } };
     case 'sage-home': return { kind: 'sage', p: { cat: 'home', d, sage: d.sage } };
     case 'sage-magic': return { kind: 'sage', p: { cat: 'magic', d, sage: d.sage } };
+    case 'sage-missions': return { kind: 'sage', p: { cat: 'missions', d: { ...d, missions: new Set(['m.slime.first_meals']), discovered: new Set(['r.slime.sticky_thread']), absorbTotal: 12, absorbLog: {} }, sage: d.sage } };
     case 'sage-ask': return { kind: 'sage', p: { cat: 'ask', d, sage: d.sage } };
     case 'sage-level': return { kind: 'sage', p: { cat: 'level', d, sage: d.sage } };
     case 'sage-intel': return { kind: 'sage', p: { cat: 'intel', d, sage: d.sage } };

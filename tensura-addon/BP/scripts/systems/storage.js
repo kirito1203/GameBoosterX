@@ -56,7 +56,10 @@ export function forget(playerId) {
 }
 
 export function progressionState(d) {
-  return { race: d.race, level: d.level, points: d.points, unlocked: d.unlocked, flags: d.flags };
+  return {
+    race: d.race, level: d.level, points: d.points, unlocked: d.unlocked, flags: d.flags,
+    maxMp: d.stats?.maxMp ?? 0, absorbed: new Set(d.absorbed), discovered: d.discovered, missions: d.missions, mastery: d.mastery,
+  };
 }
 
 // Armazenamento Espacial: chave separada (pode crescer).

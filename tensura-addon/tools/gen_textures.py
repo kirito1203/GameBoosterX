@@ -191,46 +191,48 @@ def icon(skill, n=24, scale=4):
 
 # ── Molduras quadradas (32x32 ampliado 2x) ──
 def frame(code, n=32, scale=2):
+    """Nó circular. Cor do anel = estado (cinza bloqueado, azul disponível, verde desbloqueado,
+    vermelho requisito especial pendente); anel interno roxo = habilidade única (lendária),
+    dourado = suprema. O anel cobre os cantos do ícone quadrado (o ícone fica redondo)."""
     st, rar, major, link, sel = code[0], int(code[1]), code[2] == 'm', code[3] == 'k', code[4] == 's'
-    im = Image.new('RGBA', (n, n), (0, 0, 0, 0))
+    SS = 8
+    N = n * SS
+    im = Image.new('RGBA', (N, N), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
-    rc = hexc(RARITY_COLORS[rar])
-    # o ícone ocupa 54/78 do quadro → borda interna em ~4.5 px de cada lado
-    inner = round(n * (1 - 54 / 78) / 2)
-    if st == 'l':
-        ring = shade(rc, 0.45)
-    elif st == 'r':
-        ring = shade(rc, 0.75)
-    elif st == 'a':
-        ring = (255, 214, 70, 255)
-    else:
-        ring = rc
-    w = 3 if major else 2
-    if st in ('a', 'u'):  # halo de brilho em volta da borda
-        gc = (255, 214, 70) if st == 'a' else rc[:3]
-        for k, a in ((1, 170), (2, 110), (3, 55)):
-            d.rectangle([inner - w - k, inner - w - k, n - 1 - inner + w + k, n - 1 - inner + w + k], outline=gc + (a,))
-    d.rectangle([inner - w, inner - w, n - 1 - inner + w, n - 1 - inner + w], outline=ring, width=w)
-    d.rectangle([inner, inner, n - 1 - inner, n - 1 - inner], outline=(8, 8, 14, 255))
-    if st in ('l', 'r'):  # véu sobre o ícone
-        d.rectangle([inner + 1, inner + 1, n - 2 - inner, n - 2 - inner], fill=(4, 4, 10, 170 if st == 'l' else 100))
-    if major:  # cantos ornamentados
-        o = inner - w - 2
-        for (cx, cy, sx, sy) in ((o, o, 1, 1), (n - 1 - o, o, -1, 1), (o, n - 1 - o, 1, -1), (n - 1 - o, n - 1 - o, -1, -1)):
-            d.line([cx, cy, cx + 4 * sx, cy], fill=mix(ring, (255, 255, 255, 255), 0.4), width=1)
-            d.line([cx, cy, cx, cy + 4 * sy], fill=mix(ring, (255, 255, 255, 255), 0.4), width=1)
-    if rar >= 4 and st != 'l':  # bordas especiais (lendária/suprema)
-        for x in range(inner, n - inner, 3):
-            d.point((x, inner - w - 1), fill=mix(rc, (255, 255, 255, 255), 0.5))
-            d.point((x, n - inner + w), fill=mix(rc, (255, 255, 255, 255), 0.5))
-    if link:  # selo azul de nó compartilhado
-        d.rectangle([n - inner - 3, n - inner - 3, n - inner + 3, n - inner + 3], fill=(40, 110, 255, 255), outline=(220, 235, 255, 255))
+    STATE = {'l': (86, 90, 104), 'r': (150, 158, 178), 's': (235, 64, 64), 'a': (70, 165, 255), 'u': (70, 225, 115)}
+    ring = STATE[st]
+    c = N / 2
+    R = N * 0.5 - SS * 0.5          # borda externa
+    r_in = N * 0.37                  # o ícone aparece dentro deste raio
+    glow = st in ('a', 'u', 's')
+    if glow:
+        for k, a in ((3, 50), (2, 90), (1, 140)):
+            d.ellipse([c - R - k * SS * 0.0, c - R, c + R, c + R], outline=ring + (a,), width=int(SS * 1.2))
+    # faixa do anel (cobre os cantos do ícone)
+    d.ellipse([c - R, c - R, c + R, c + R], fill=(10, 12, 22, 255))
+    d.ellipse([c - R, c - R, c + R, c + R], outline=ring + (255,), width=int(SS * (3.2 if major else 2.4)))
+    acc = (176, 92, 255) if rar == 4 else (255, 204, 60) if rar == 5 else None
+    if acc:
+        d.ellipse([c - r_in - SS * 1.7, c - r_in - SS * 1.7, c + r_in + SS * 1.7, c + r_in + SS * 1.7], outline=acc + (255,), width=int(SS * 1.6))
+    # janela do ícone (transparente)
+    d.ellipse([c - r_in, c - r_in, c + r_in, c + r_in], fill=(0, 0, 0, 0))
+    if st in ('l', 'r', 's'):  # véu sobre o ícone
+        d.ellipse([c - r_in, c - r_in, c + r_in, c + r_in], fill=(4, 4, 10, 170 if st == 'l' else 110 if st == 's' else 90))
+    if major:
+        for ang in range(0, 360, 45):
+            x = c + (R - SS * 1.2) * math.cos(math.radians(ang))
+            y = c + (R - SS * 1.2) * math.sin(math.radians(ang))
+            d.ellipse([x - SS * 0.9, y - SS * 0.9, x + SS * 0.9, y + SS * 0.9], fill=mix(ring + (255,), (255, 255, 255, 255), 0.5))
+    if link:
+        x, y = c + R * 0.62, c + R * 0.62
+        d.ellipse([x - SS * 3, y - SS * 3, x + SS * 3, y + SS * 3], fill=(40, 110, 255, 255), outline=(220, 235, 255, 255), width=SS)
     if sel:
-        L = 5
-        for (x, y, sx, sy) in ((0, 0, 1, 1), (n - 1, 0, -1, 1), (0, n - 1, 1, -1), (n - 1, n - 1, -1, -1)):
-            d.line([x, y, x + L * sx, y], fill=(255, 255, 255, 255), width=2)
-            d.line([x, y, x, y + L * sy], fill=(255, 255, 255, 255), width=2)
-    return pixel(im, scale)
+        for ang in range(0, 360, 30):
+            x = c + (R + 0) * math.cos(math.radians(ang)) * 0.98
+            y = c + (R + 0) * math.sin(math.radians(ang)) * 0.98
+            d.ellipse([x - SS, y - SS, x + SS, y + SS], fill=(255, 255, 255, 255))
+    small = im.resize((n, n), Image.LANCZOS)
+    return pixel(small, scale)
 
 
 # ── Linhas: 8 direções (n ne e se s sw w nw), 2 estados ──
@@ -481,10 +483,16 @@ def sage_icon(kind, on=False, size=48):
     c = S / 2
     TILE_COL = {'ask': (90, 210, 255), 'analyses': (150, 225, 255), 'level': (70, 170, 255), 'skills': (255, 210, 60),
                 'magic': (200, 130, 255), 'intel': (110, 240, 230), 'next': (90, 200, 255), 'history': (110, 220, 130),
-                'manifest': (130, 220, 255), 'settings': (200, 215, 235)}
+                'manifest': (130, 220, 255), 'settings': (200, 215, 235), 'missions': (240, 225, 190)}
     col = (TILE_COL.get(kind, (120, 230, 255)) + (255,)) if on else (205, 225, 245, 255)
     w = int(S * 0.08)
-    if kind == 'magic':
+    if kind == 'missions':
+        d.rectangle([S * .22, S * .16, S * .78, S * .84], fill=col)
+        d.ellipse([S * .14, S * .1, S * .3, S * .26], fill=col); d.ellipse([S * .7, S * .74, S * .86, S * .9], fill=col)
+        for k in range(4):
+            y = S * (.3 + k * .13)
+            d.line([S * .32, y, S * (.68 if k % 2 else .6), y], fill=(90, 70, 40, 255), width=max(2, w // 2))
+    elif kind == 'magic':
         import math
         pts = []
         for i in range(16):
@@ -631,7 +639,7 @@ def main():
     nine(os.path.join(G, 'cat'), box(16, (14, 24, 50, 255), (50, 100, 170, 255), (22, 36, 70, 255), 2), 4)
     nine(os.path.join(G, 'cat_hover'), box(16, (24, 44, 88, 255), (120, 220, 255, 255), (30, 56, 100, 255), 2), 4)
     nine(os.path.join(G, 'header'), box(16, (16, 30, 66, 255), glow, (40, 80, 150, 255), 2), 4)
-    for k in ('ask', 'analyses', 'level', 'skills', 'magic', 'intel', 'next', 'history', 'manifest', 'settings'):
+    for k in ('ask', 'analyses', 'level', 'skills', 'magic', 'intel', 'next', 'history', 'manifest', 'settings', 'missions'):
         save(sage_icon(k, False), os.path.join(G, f'cat_{k}.png'))
         save(sage_icon(k, True), os.path.join(G, f'cat_{k}_on.png'))
     for k in ('ask', 'examples', 'target', 'item', 'skill'):

@@ -1781,11 +1781,11 @@
         ],
         "layer": 1,
         "size": [
-         "110.5%",
+         "90.95%",
          "84%"
         ],
         "offset": [
-         "-39%",
+         "-20.6%",
          "8%"
         ],
         "controls": [
@@ -1818,11 +1818,11 @@
         ],
         "layer": 1,
         "size": [
-         "123.5%",
+         "101.65%",
          "84%"
         ],
         "offset": [
-         "-45.1%",
+         "-25.55%",
          "8%"
         ],
         "controls": [
@@ -1855,11 +1855,11 @@
         ],
         "layer": 1,
         "size": [
-         "130%",
+         "107%",
          "84%"
         ],
         "offset": [
-         "-44.7%",
+         "-25.15%",
          "8%"
         ],
         "controls": [
@@ -1892,11 +1892,11 @@
         ],
         "layer": 1,
         "size": [
-         "117%",
+         "96.3%",
          "84%"
         ],
         "offset": [
-         "-24.8%",
+         "-8.7%",
          "8%"
         ],
         "controls": [
@@ -1929,11 +1929,11 @@
         ],
         "layer": 1,
         "size": [
-         "136.5%",
+         "112.35%",
          "84%"
         ],
         "offset": [
-         "-37.4%",
+         "-19%",
          "8%"
         ],
         "controls": [
@@ -1947,6 +1947,43 @@
            "anchor_to": "top_left",
            "size": [
             "4.7619%",
+            "100%"
+           ]
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_zoom": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         22,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "117.7%",
+         "84%"
+        ],
+        "offset": [
+         "-18.6%",
+         "8%"
+        ],
+        "controls": [
+         {
+          "zoom@tensura_tree.ctl": {
+           "grid_position": [
+            21,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "4.5455%",
             "100%"
            ]
           }
@@ -6320,7 +6357,7 @@
           }
          },
          {
-          "g_tile_manifest": {
+          "g_tile_missions": {
            "type": "grid",
            "anchor_from": "top_left",
            "anchor_to": "top_left",
@@ -6340,7 +6377,7 @@
            ],
            "controls": [
             {
-             "tile_manifest@tensura_tree.ctl": {
+             "tile_missions@tensura_tree.ctl": {
               "grid_position": [
                10,
                0

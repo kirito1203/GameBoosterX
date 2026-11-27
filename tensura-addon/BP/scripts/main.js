@@ -24,6 +24,7 @@ import { runIntro, restoreControls, introRunning } from './systems/intro.js';
 import { openSage } from './ui/sageUI.js';
 import { startSage, onSkillUnlocked } from './systems/sage.js';
 import { setTreeHooks } from './ui/treeUI.js';
+import { checkMissions } from './systems/progressHooks.js';
 
 const TOME = 'tensura:great_sage_tome';
 const CRYSTAL = 'tensura:magic_crystal';
@@ -31,7 +32,7 @@ const CORE = 'tensura:sage_core';
 
 // Menu principal e item Núcleo abrem o MESMO painel (openSage) com os mesmos dados.
 MENUS.sage = openSage;
-setTreeHooks({ onSkillUnlocked });
+setTreeHooks({ onSkillUnlocked: (p) => { onSkillUnlocked(p); checkMissions(p); } });
 
 setEffectMenus({ mimic: mimicMenu, storage: storageMenu });
 

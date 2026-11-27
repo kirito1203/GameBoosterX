@@ -57,7 +57,7 @@ function passiveTick() {
     if (sp.has('aquatic') && p.isInWater) { apply(p, 'conduit_power', 0, T + 30); apply(p, 'speed', 1, T + 30); }
     if (sp.has('hungry')) apply(p, 'hunger', 0, T + 30);
     // Transformação consome Magicules.
-    if (d.mimic) {
+    if (d.mimic && !d.stats.mimicNoDrain) {
       const cost = (T / 20) * 1;
       if (d.mp >= cost) { d.mp -= cost; markDirty(p); } else { d.mimic = null; refreshStats(d); try { p.sendMessage('§cMagicules insuficientes: Transformação desfeita.'); } catch { /* */ } }
     }

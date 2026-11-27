@@ -361,3 +361,89 @@ confere as UVs dentro da textura. O teste da tela inicial confere 9 blocos, Conf
 estágio. Prévia 3D: `docs/img/sabio_nucleo_3d.png`.
 
 **Não testado no jogo:** a transparência dos anéis e painéis, a rotação no jogo e o visual no celular.
+
+## Versão 0.6.0 — Árvore completa do Rimuru Tempest (raça Slime)
+
+Decisões aplicadas (as recomendadas no diagnóstico):
+- As habilidades universais iguais às do Rimuru continuam para as outras raças, mas ficam **proibidas para o
+  Slime**. Quem já as tinha recebe a versão do Slime automaticamente, sem perder pontos e sem efeito em dobro.
+- **Raphael e Ciel do painel** exigem, para o Slime, os nós correspondentes da árvore.
+- God Slime continua, marcado como **Expansão — Mod**.
+- A pesquisa de origens na internet **não foi possível**: os sites da wiki estão bloqueados na rede desta sessão.
+  O catálogo usa o conhecimento da obra; o que não tenho certeza ficou **PENDENTE DE VERIFICAÇÃO**
+  (33 nós, ex.: Shub-Niggurath, Forma Ultimate Slime, nomes internos de Azathoth).
+
+**Catálogo:** 116 nós em 9 setores, em `data/skill_trees/slime/` (um arquivo por setor).
+- Cada nó tem rank (F→EX, configurável em `CONFIG.ranks`), origem (Anime / Mangá / LN / Mod / Pendente),
+  setor, custo, nível, requisitos, método de aquisição e efeito real.
+- Tabela completa: `docs/CATALOGO_SLIME.md`, gerada dos dados por `tools/catalog-race.mjs`.
+- Junções para não duplicar:
+  - Passo das Sombras = Movimento das Sombras;
+  - Comunicação Telepática = Comunicação Mental;
+  - Controle de Leis = Manipulação de Leis;
+  - Relâmpago Negro e Manipulação das Chamas ficam só no setor de Absorção;
+  - Consumo de Almas fica no setor do Predador;
+  - Raphael e Beelzebuth ficam nos seus ramos, com moldura dourada de Suprema.
+
+**Requisitos novos (nó vermelho = requisito especial pendente):**
+- Magicules máximas;
+- estágio racial;
+- descoberta por absorção e absorção de espécie específica;
+- missão concluída;
+- nível de domínio de outra habilidade;
+- chefes derrotados.
+
+Supremas e finais exigem cadeias longas, missões, domínio, Magicules e evolução: não dá para pular só com pontos (testado).
+
+**Absorção:**
+- Banco com criatura da obra, mob do addon (adaptação), habilidades, método, condições, evoluções e origem.
+- Absorver **descobre** as habilidades. Algumas exigem Predador ou Glutonaria para serem assimiladas.
+- O Grande Sábio avisa "Uma nova habilidade foi identificada".
+
+**Missões:**
+- 8 missões: Primeiras Refeições, Herança de Shizu, Desastre Orc, Festival da Colheita, Despertar da Tempestade,
+  Manas, Deus do Vazio e Senhor da Abundância.
+- O progresso é calculado com dados reais; a recompensa sai uma única vez.
+
+**Domínio:**
+- Cada habilidade ativa sobe com o uso real, até o máximo do rank (3 a 5).
+- Cada nível reduz custo e recarga em 5%.
+- Predação nível 4 e 5 liberam Glutonaria e Beelzebuth.
+
+**Efeitos novos:**
+- anulação total por grupo de dano;
+- imunidade a efeitos;
+- redução de recarga;
+- +3 espaços na barra;
+- Magicules por absorção;
+- formas da Imitação mais fortes e sem gasto.
+
+**Interface:**
+- Nós **circulares** com cores pelo estado: cinza bloqueado, azul disponível, verde desbloqueado, vermelho requisito
+  especial. Anel interno roxo = única; dourado = suprema.
+- Os 9 setores ficam lado a lado no mapa. O botão da árvore racial abre a lista de setores (com progresso) e a
+  **Visão geral** (zoom afastado 3x).
+- O painel do nó mostra rank, origem, setor, aquisição, domínio, requisitos e evoluções.
+- **Grande Sábio:**
+  - novo bloco **Missões** (progresso e absorções conhecidas);
+  - responde sobre absorções possíveis, missões, combinações reais e domínio.
+
+**Reutilizável:** outra raça ganha uma árvore completa criando `data/skill_trees/<linhagem>/` no mesmo formato
+(setores, banco de absorção, missões e equivalências).
+
+**Testes:** 69 passando, 12 novos em `test/slime.test.mjs`. Cobrem:
+- catálogo, setores, ranks e origens;
+- exclusividade entre raças e migração;
+- progressão difícil e requisitos especiais;
+- absorção, missões e domínio;
+- efeitos nos atributos;
+- salvamento;
+- respostas do Sábio;
+- setores e visão geral.
+
+**Não testado no jogo:**
+- abertura e navegação no celular;
+- cores dos nós no jogo;
+- notificações de descoberta;
+- conclusão de missões em partida real;
+- desempenho com o pacote maior (6,9 MB, por causa das peças de linha do mapa maior).

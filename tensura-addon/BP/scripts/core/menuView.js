@@ -19,7 +19,7 @@ export function fmtNum(n) {
 export function nextEvolutions(d) {
   const lin = RACES[d.race].lineage;
   return TREES[`race.${lin}`].skills.filter((s) => s.type === 'evolution' && !d.unlocked.has(s.id)
-    && s.requires.every((r) => d.unlocked.has(r)) && RACES[s.evolveTo].stage === RACES[d.race].stage + 1);
+    && RACES[s.evolveTo].stage === RACES[d.race].stage + 1);
 }
 
 /** Progresso (0..1) rumo à próxima evolução: média de nível, habilidades da árvore e pontos. */

@@ -4,7 +4,7 @@ import { ItemStack, EquipmentSlot, EnchantmentTypes, system } from '@minecraft/s
 import { ActionFormData, MessageFormData } from '@minecraft/server-ui';
 import { CONFIG, epForLevel } from '../config.js';
 import { SKILLS, TREES, RACES, LINEAGES, initialSkillsFor } from '../data/registry.js';
-import { mpCost, mimicTraits } from '../core/stats.js';
+import { mpCost, mimicTraits, barSlots } from '../core/stats.js';
 import { describeFx } from '../core/describe.js';
 import { raceSummary } from '../core/view.js';
 import { TEX, iconName } from '../core/uiSpec.js';
@@ -27,7 +27,7 @@ export async function grimoire(player) {
     const actives = [...d.unlocked].map((id) => SKILLS[id]).filter((s) => s.type === 'active');
     const passives = [...d.unlocked].map((id) => SKILLS[id]).filter((s) => s.type === 'passive');
     const f = new ActionFormData().title('§lGrimório · Magias aprendidas')
-      .body(`§dMagicules: ${Math.floor(d.mp)}/${d.stats.maxMp}§r\nBarra de Habilidades: ${d.equipped.length}/${CONFIG.ui.barSlots} espaços.\nUse o Cristal de Magicules para conjurar a habilidade da barra; agachado + usar troca de espaço.\nMagias gastam Magículas; habilidades raciais gastam Aura (${Math.floor(d.aura)}/${d.stats.maxAura}).\n\n§ePassivas ativas (${passives.length}):§r\n${passives.map((s) => `• ${s.name}`).join('\n') || '§7nenhuma'}`);
+      .body(`§dMagicules: ${Math.floor(d.mp)}/${d.stats.maxMp}§r\nBarra de Habilidades: ${d.equipped.length}/${barSlots(d)} espaços.\nUse o Cristal de Magicules para conjurar a habilidade da barra; agachado + usar troca de espaço.\nMagias gastam Magículas; habilidades raciais gastam Aura (${Math.floor(d.aura)}/${d.stats.maxAura}).\n\n§ePassivas ativas (${passives.length}):§r\n${passives.map((s) => `• ${s.name}`).join('\n') || '§7nenhuma'}`);
     f.button('§l« Voltar à árvore');
     for (const s of actives) {
       const slot = d.equipped.indexOf(s.id);
@@ -57,15 +57,15 @@ async function skillMenu(player, s) {
     case 0: cast(player, s.id); return { close: true };
     case 1:
       if (slot >= 0) d.equipped.splice(slot, 1);
-      else if (d.equipped.length < CONFIG.ui.barSlots) d.equipped.push(s.id);
-      else msg(player, `§cA barra tem ${CONFIG.ui.barSlots} espaços. Remova uma habilidade antes.`);
+      else if (d.equipped.length < barSlots(d)) d.equipped.push(s.id);
+      else msg(player, `§cA barra tem ${barSlots(d)} espaços. Remova uma habilidade antes.`);
       if (d.slot >= d.equipped.length) d.slot = 0;
       saveNow(player);
       return null;
     case 2:
       if (slot >= 0) d.equipped.splice(slot, 1);
       d.equipped.unshift(s.id);
-      if (d.equipped.length > CONFIG.ui.barSlots) d.equipped.length = CONFIG.ui.barSlots;
+      if (d.equipped.length > barSlots(d)) d.equipped.length = barSlots(d);
       d.slot = 0;
       saveNow(player);
       return null;

@@ -14,6 +14,7 @@ import extra from './trees/extra.js';
 import resist from './trees/resist.js';
 import { RACIAL_TREES } from './trees/racial.js';
 import { RACES, LINEAGES } from './races.js';
+import { SLIME_REPLACES, MISSIONS as SLIME_MISSIONS, ABSORPTION as SLIME_ABSORPTION, SECTORS as SLIME_SECTORS, SECTOR_ORDER as SLIME_SECTOR_ORDER } from './skill_trees/slime/index.js';
 
 // Ordem das abas na interface. A primeira aba é sempre a árvore racial do jogador.
 export const UNIVERSAL_TREES = [elemental, aspect, holy, summon, illusion, spirit, necromancy, dark, advanced, unique, ultimate, extra, resist];
@@ -37,6 +38,22 @@ for (const id in SKILLS) {
     if (SKILLS[r]) SKILLS[r].children.push(id);
   }
 }
+
+// ── Árvores raciais completas ──
+// Equivalências: habilidade universal → versão própria da linhagem. A universal fica proibida para
+// essa linhagem e a versão própria conta como pré-requisito no lugar dela (sem duplicar efeitos).
+export const REPLACES = { slime: SLIME_REPLACES };
+for (const [lin, map] of Object.entries(REPLACES)) {
+  for (const [uni, own] of Object.entries(map)) {
+    if (!SKILLS[uni] || !SKILLS[own]) throw new Error(`Equivalência inválida: ${uni} → ${own}`);
+    if (!SKILLS[uni].blockedRaces.includes(lin)) SKILLS[uni].blockedRaces.push(lin);
+  }
+}
+// Setores visuais de cada árvore racial (ordem = botões de salto).
+export const SECTORS = { slime: { names: SLIME_SECTORS, order: SLIME_SECTOR_ORDER } };
+export const MISSIONS = {};
+for (const m of SLIME_MISSIONS) MISSIONS[m.id] = m;
+export const ABSORPTION = { slime: SLIME_ABSORPTION };
 
 export function racialTreeId(lineage) {
   return `race.${lineage}`;

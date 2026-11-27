@@ -303,7 +303,7 @@ function treeRoot() {
   const catW = 64 / CAT_COUNT;
   const nav = [];
   for (let i = 0; i < CAT_COUNT; i++) nav.push(ctl(`cat${i}`, CTRL.cat0 + i, 0.5 + i * catW, 8, catW - 0.3, 84, { $ctl_icon_size: ['100%y', '78%'] }));
-  const navBtns = [['pan_l', CTRL.panLeft], ['page_up', CTRL.pageUp], ['page_down', CTRL.pageDown], ['pan_r', CTRL.panRight], ['center', CTRL.center]];
+  const navBtns = [['pan_l', CTRL.panLeft], ['page_up', CTRL.pageUp], ['page_down', CTRL.pageDown], ['pan_r', CTRL.panRight], ['center', CTRL.center], ['zoom', CTRL.zoom]];
   const navW = (100 - 65 - 0.5) / navBtns.length;
   navBtns.forEach(([n, idx], k) => nav.push(ctl(n, idx, 65 + k * navW, 8, navW - 0.4, 84)));
   const bottomBar = {

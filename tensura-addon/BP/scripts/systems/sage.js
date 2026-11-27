@@ -13,6 +13,7 @@ import { lookTarget, isBoss, isUndead, msg, particle, sound, V, QUERY_EXCLUDE } 
 import { mobEp } from './leveling.js';
 import { spawnSage, sageTalk, vanishSage, sageAura, setSageStage } from './sageEntity.js';
 import { cast } from './casting.js';
+import { checkMissions } from './progressHooks.js';
 
 const R = () => CONFIG.sage.rewards;
 const PREFIX = (s) => `${STAGES[s.stage].color}§l[${STAGES[s.stage].name}]§r `;
@@ -86,6 +87,7 @@ export function award(player, kind, { daily = null, amount = null } = {}) {
     }
     if (s.level >= CONFIG.sage.levelCaps[s.stage]) notify(player, `Alcancei o limite do estágio ${STAGES[s.stage].name}. Só uma evolução permitirá continuar.`, { important: true });
     refreshStats(d); // capacidades com bônus de atributos
+    checkMissions(player);
   }
   checkEvolution(player);
   if (ups) saveNow(player);

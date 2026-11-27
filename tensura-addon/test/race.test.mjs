@@ -29,8 +29,8 @@ test('formulário: card selecionado destacado, bloqueados marcados, painel e bot
   assert.equal(f.buttons[RACE.card0].text, `${CARD_SELECTED}Slime`);
   assert.ok(f.buttons[RACE.card0 + 3].text.startsWith(CARD_LOCKED), 'Hobgoblin bloqueado');
   assert.equal(f.hit[RACE.confirm].type, 'confirm');
-  assert.ok(f.buttons[RACE.infoInitial].text.includes('Absorção'));
-  assert.ok(f.buttons[RACE.infoInitial].text.includes('Dissolução'));
+  assert.ok(f.buttons[RACE.infoInitial].text.includes('Absorver'));
+  assert.ok(f.buttons[RACE.infoInitial].text.includes('Dissolver'));
   assert.ok(f.buttons[RACE.infoInitial].text.includes('Autorregeneração'));
   assert.ok(f.buttons[RACE.infoEvolutions].text.includes('Demon Slime'));
   assert.ok(f.buttons[RACE.infoAffinity].text.includes('Adaptabilidade'));
@@ -140,7 +140,7 @@ test('simulação: tela de raças com cards, painel e textos de botões diferent
     for (const s of ['ESCOLHA SUA RAÇA', 'Grande Sábio', 'Dificuldade', 'stars_']) assert.ok(page.includes(s), `${name}: falta ${s}`);
   }
   const { page } = previewHtml(modelFor(scenario('race-slime')), { root: 'race_root' });
-  for (const s of ['Slime', 'Humano', 'Goblin', 'Elemental', 'CONFIRMAR RAÇA', 'Absorção', 'Demon Slime', 'p_slime', 'p_goblin', 'card_sel', 'card_locked']) {
+  for (const s of ['Slime', 'Humano', 'Goblin', 'Elemental', 'CONFIRMAR RAÇA', 'Absorver', 'Demon Slime', 'p_slime', 'p_goblin', 'card_sel', 'card_locked']) {
     assert.ok(page.includes(s), `falta ${s}`);
   }
 });

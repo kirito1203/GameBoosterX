@@ -143,6 +143,11 @@ export function evolutionRequirements(sage, d) {
       { label: 'Derrotar o Wither e o Ender Dragon', ok: d.flags.has('killed_wither') && d.flags.has('killed_ender_dragon') },
       { label: 'Raça no 3º estágio de evolução (ou superior)', ok: raceStage >= 2 },
     ];
+  // Slime (Rimuru): a evolução do Sábio também exige o nó correspondente na árvore racial.
+  if (RACES[d.race]?.lineage === 'slime') {
+    const node = next === 'raphael' ? 'r.slime.raphael' : 'r.slime.ciel';
+    reqs.push({ label: `Nó "${next === 'raphael' ? 'Raphael' : 'Ciel'}" desbloqueado na árvore do Slime`, ok: d.unlocked.has(node) });
+  }
   for (const r of reqs) if (r.progress === undefined) r.progress = r.ok ? 1 : 0;
   return { next, reqs, ready: reqs.every((r) => r.ok), progress: reqs.reduce((a, r) => a + r.progress, 0) / reqs.length };
 }

@@ -2,6 +2,8 @@
 import { system } from '@minecraft/server';
 import { SKILLS } from '../data/registry.js';
 import { mpCost } from '../core/stats.js';
+import { masteryMults } from '../core/mastery.js';
+import { addMasteryUse } from './progressHooks.js';
 import { TREES } from '../data/registry.js';
 import { getData } from './storage.js';
 import { spend, showHud } from './magicules.js';
@@ -19,7 +21,8 @@ export function cast(player, skillId) {
   const now = system.currentTick;
   const ready = d.cooldowns[skillId] ?? 0;
   if (ready > now) { msg(player, `§7${s.name}: recarga ${Math.ceil((ready - now) / 20)}s.`); return false; }
-  const cost = mpCost(s, d.stats);
+  const mm = masteryMults(skillId, d.mastery[skillId] ?? 0);
+  const cost = Math.round(mpCost(s, d.stats) * mm.cost);
   // Habilidades raciais gastam Aura; magias gastam Magículas.
   const aura = TREES[s.tree].kind === 'racial';
   const have = aura ? d.aura : d.mp;
@@ -33,7 +36,8 @@ export function cast(player, skillId) {
   }
   if (ok === false) return false;
   if (aura) { d.aura -= cost; d.lastCast = now; } else spend(player, cost);
-  if (s.cooldown) d.cooldowns[skillId] = now + Math.round(s.cooldown * 20 * (d.stats.cdMult ?? 1));
+  if (s.cooldown) d.cooldowns[skillId] = now + Math.round(s.cooldown * 20 * (d.stats.cdMult ?? 1) * mm.cooldown);
+  addMasteryUse(player, skillId);
   showHud(player);
   return true;
 }

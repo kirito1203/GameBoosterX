@@ -1,6 +1,6 @@
 // Serialização dos dados do jogador (pura, testável). O systems/storage.js grava
 // o resultado numa propriedade dinâmica do próprio jogador.
-import { RACES, SKILLS } from '../data/registry.js';
+import { RACES, SKILLS, REPLACES } from '../data/registry.js';
 
 export const VERSION = 1;
 
@@ -27,6 +27,11 @@ export function fresh() {
     gifted: false,
     introDone: false,    // apresentação do Grande Sábio concluída
     kills: {},           // registros: criaturas derrotadas por tipo
+    discovered: new Set(), // habilidades descobertas por absorção
+    missions: new Set(),   // missões especiais concluídas (recompensa uma única vez)
+    mastery: {},           // usos por habilidade (níveis de domínio)
+    absorbLog: {},         // absorções por espécie
+    absorbTotal: 0,        // absorções no total
     ui: { tab: 'racial', views: {}, selected: null },
     // memória de execução (não salva)
     cooldowns: {},
@@ -36,12 +41,33 @@ export function fresh() {
   };
 }
 
+/**
+ * Troca habilidades universais pelas versões próprias da linhagem (ex.: Slime com "uni.predator"
+ * passa a ter "r.slime.predator"). Sem perder progresso e sem efeito em dobro.
+ */
+export function migrateLineage(d) {
+  const map = REPLACES[RACES[d.race]?.lineage];
+  if (!map) return 0;
+  let n = 0;
+  for (const [uni, own] of Object.entries(map)) {
+    if (!d.unlocked.has(uni)) continue;
+    d.unlocked.delete(uni);
+    d.unlocked.add(own);
+    d.equipped = d.equipped.map((id) => (id === uni ? own : id));
+    if (d.mastery[uni]) { d.mastery[own] = Math.max(d.mastery[own] ?? 0, d.mastery[uni]); delete d.mastery[uni]; }
+    n++;
+  }
+  d.equipped = [...new Set(d.equipped)];
+  return n;
+}
+
 export function serialize(d) {
   return JSON.stringify({
     v: VERSION, race: d.race, level: d.level, ep: d.ep, points: d.points,
     unlocked: [...d.unlocked], flags: [...d.flags], mp: Math.floor(d.mp), aura: Math.floor(d.aura), epTotal: d.epTotal, kills: d.kills, mpBonus: d.mpBonus,
     equipped: d.equipped, slot: d.slot, absorbed: d.absorbed, mimic: d.mimic, flying: d.flying, flightDrain: d.flightDrain,
-    warp: d.warp, gifted: d.gifted, introDone: d.introDone, ui: { tab: d.ui.tab, views: d.ui.views, view: d.ui.view ?? null },
+    warp: d.warp, gifted: d.gifted, introDone: d.introDone,
+    discovered: [...d.discovered], missions: [...d.missions], mastery: d.mastery, absorbLog: d.absorbLog, absorbTotal: d.absorbTotal, ui: { tab: d.ui.tab, views: d.ui.views, view: d.ui.view ?? null },
   });
 }
 
@@ -73,7 +99,13 @@ export function deserialize(raw) {
       gifted: o.gifted ?? false,
       // quem já tinha raça (versões anteriores) não vê a apresentação
       introDone: o.introDone ?? !!(o.race && RACES[o.race]),
+      discovered: new Set((o.discovered ?? []).filter((id) => SKILLS[id])),
+      missions: new Set(o.missions ?? []),
+      mastery: o.mastery && typeof o.mastery === 'object' ? o.mastery : {},
+      absorbLog: o.absorbLog && typeof o.absorbLog === 'object' ? o.absorbLog : {},
+      absorbTotal: Number.isFinite(o.absorbTotal) ? o.absorbTotal : 0,
     });
+    migrateLineage(d);
     d.ui.tab = o.ui?.tab ?? 'racial';
     d.ui.views = o.ui?.views ?? {};
     d.ui.view = o.ui?.view ?? null;

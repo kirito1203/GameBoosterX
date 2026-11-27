@@ -17,6 +17,7 @@ import { fxList } from '../core/progression.js';
 import { mimicTraits } from '../core/stats.js';
 import { effectName } from '../core/describe.js';
 import { recordAnalysis } from './sage.js';
+import { onAbsorbed } from './progressHooks.js';
 import { mobEp } from './leveling.js';
 
 const NEGATIVE = ['poison', 'wither', 'nausea', 'blindness', 'weakness', 'slowness', 'hunger', 'darkness', 'mining_fatigue', 'fatal_poison', 'levitation', 'bad_omen'];
@@ -438,14 +439,16 @@ const HANDLERS = {
     const type = t.typeId;
     const loc = t.location;
     try { t.applyDamage(h.currentValue + 100, { cause: EntityDamageCause.magic, damagingEntity: player }); } catch { /* */ }
-    if (d.mpBonus < f.mpCap) d.mpBonus = Math.min(f.mpCap, d.mpBonus + f.mpGain);
+    const gain = Math.round(f.mpGain * (d.stats?.absorbMult ?? 1));
+    if (d.mpBonus < f.mpCap) d.mpBonus = Math.min(f.mpCap, d.mpBonus + gain);
     const isNew = !d.absorbed.includes(type);
     if (isNew) d.absorbed.push(type);
     refreshStats(d);
     saveNow(player);
     for (let i = 0; i < 8; i++) particle(player.dimension, 'minecraft:oozing_emitter', V.add(loc, { x: Math.random() - 0.5, y: Math.random(), z: Math.random() - 0.5 }));
     sound(player.dimension, 'mob.slime.squish', loc);
-    msg(player, `§bAbsorção: +${f.mpGain} Magicules máximas (bônus ${d.mpBonus}/${f.mpCap}).${isNew ? ` Nova forma registrada: §e${mimicTraits(type).name}` : ''}`);
+    msg(player, `§bAbsorção: +${gain} Magicules máximas (bônus ${d.mpBonus}/${f.mpCap}).${isNew ? ` Nova forma registrada: §e${mimicTraits(type).name}` : ''}`);
+    try { onAbsorbed(player, type); } catch (e) { console.warn(`[Tensura] Absorção (descoberta): ${e}`); }
   },
 
   dissolve(player, f) {

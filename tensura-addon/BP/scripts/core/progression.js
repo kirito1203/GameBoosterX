@@ -1,9 +1,11 @@
 // Regras de desbloqueio. Puro (sem Minecraft): recebe o estado do jogador.
 //
 // state = {
-//   race, level, points, unlocked: Set<string>, flags: Set<string>
+//   race, level, points, unlocked: Set<string>, flags: Set<string>,
+//   (opcionais) maxMp, absorbed: Set, discovered: Set, missions: Set, mastery: { id: usos }
 // }
-import { SKILLS, TREES, RACES } from '../data/registry.js';
+import { SKILLS, TREES, RACES, REPLACES, MISSIONS } from '../data/registry.js';
+import { masteryLevel } from './mastery.js';
 import { CONFIG, rarityInfo } from '../config.js';
 
 const EPIC_PLUS = new Set(['epic', 'legendary', 'supreme']);
@@ -60,7 +62,8 @@ const FLAG_NAMES = {
 
 /**
  * Avalia o desbloqueio de uma habilidade.
- * @returns {{ ok: boolean, state: 'unlocked'|'available'|'reachable'|'locked', missing: string[], cost: number }}
+ * @returns {{ ok: boolean, state: 'unlocked'|'available'|'reachable'|'special'|'locked', missing: string[], cost: number, special?: string[] }}
+ *   - special  : nós anteriores ok, mas falta requisito especial (absorção, missão, domínio, Magicules, chefe, evolução)
  *   - unlocked : já desbloqueada
  *   - available: tudo atendido, pode desbloquear agora
  *   - reachable: pré-requisitos (nós anteriores) ok, mas falta nível/pontos/outro requisito
@@ -81,8 +84,9 @@ export function evaluate(skillId, state) {
     if (tree.kind === 'racial') missing.push('Pertence a outra linhagem racial');
     else missing.push('Sua raça não pode aprender esta habilidade');
   }
+  const own = REPLACES[RACES[state.race]?.lineage] ?? {};
   for (const r of s.requires) {
-    if (!state.unlocked.has(r)) {
+    if (!state.unlocked.has(r) && !(own[r] && state.unlocked.has(own[r]))) {
       prereqOk = false;
       missing.push(`Requer: ${SKILLS[r]?.name ?? r}`);
     }
@@ -113,13 +117,33 @@ export function evaluate(skillId, state) {
     const n = countEpicPlus(state);
     if (n < s.needEpic) other.push(`${s.needEpic} habilidades Épicas ou superiores (atual: ${n})`);
   }
+  // Requisitos especiais (nó vermelho quando são o que falta).
+  const special = [];
   for (const f of s.needFlags) {
-    if (!state.flags.has(f)) other.push(`Conquista: ${FLAG_NAMES[f] ?? f}`);
+    if (!state.flags.has(f)) special.push(`Conquista: ${FLAG_NAMES[f] ?? f}`);
+  }
+  if (s.needMp && (state.maxMp ?? 0) < s.needMp) special.push(`Magicules máximas ${s.needMp} (atual: ${Math.floor(state.maxMp ?? 0)})`);
+  if (s.needStage !== null && s.needStage !== undefined && (RACES[state.race]?.stage ?? 0) < s.needStage) {
+    special.push(`Evolução racial: ${s.needStage + 1}º estágio`);
+  }
+  if (s.discover && !state.discovered?.has(skillId)) special.push('Descobrir por absorção (absorva a criatura certa)');
+  if (s.needAbsorb) {
+    const abs = state.absorbed ?? new Set();
+    if (s.needAbsorb.any && !s.needAbsorb.any.some((t) => abs.has(t))) special.push(`Absorver: ${s.needAbsorb.any.map((t) => t.replace('minecraft:', '')).join(' ou ')}`);
+    if (s.needAbsorb.count && abs.size < s.needAbsorb.count) special.push(`${s.needAbsorb.count} espécies absorvidas (atual: ${abs.size})`);
+  }
+  if (s.needMission && !state.missions?.has(s.needMission)) special.push(`Missão: ${MISSIONS[s.needMission]?.name ?? s.needMission}`);
+  if (s.needMastery) {
+    for (const [id, lvl] of Object.entries(s.needMastery)) {
+      const cur = masteryLevel(id, state.mastery?.[id] ?? 0);
+      if (cur < lvl) special.push(`Domínio de ${SKILLS[id]?.name ?? id}: nível ${lvl} (atual: ${cur})`);
+    }
   }
   if (state.points < cost) other.push(`${cost} pontos (você tem ${state.points})`);
 
-  missing.push(...other);
+  missing.push(...other, ...special);
   if (!prereqOk) return { ok: false, state: 'locked', missing, cost };
+  if (special.length) return { ok: false, state: 'special', missing, cost, special };
   if (other.length) return { ok: false, state: 'reachable', missing, cost };
   return { ok: true, state: 'available', missing: [], cost };
 }

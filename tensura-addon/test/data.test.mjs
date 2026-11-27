@@ -8,7 +8,8 @@ import { fxList } from '../BP/scripts/core/progression.js';
 import { isPassiveFx } from '../BP/scripts/data/dsl.js';
 import { describeFx } from '../BP/scripts/core/describe.js';
 
-const PASSIVES = new Set(['p_effect', 'p_mp', 'p_resist', 'p_lifesteal', 'p_onhit', 'p_affinity', 'p_power', 'p_starved', 'p_xp', 'p_points', 'p_regen_env', 'p_race', 'p_aura']);
+const PASSIVES = new Set(['p_effect', 'p_mp', 'p_resist', 'p_lifesteal', 'p_onhit', 'p_affinity', 'p_power', 'p_starved', 'p_xp', 'p_points', 'p_regen_env', 'p_race', 'p_aura',
+  'p_cleanse', 'p_cd', 'p_slots', 'p_absorb', 'p_mimic']);
 // Tipos ativos implementados em systems/effects.js (lidos do código-fonte).
 const effectsSrc = readFileSync(new URL('../BP/scripts/systems/effects.js', import.meta.url), 'utf8');
 const handlersBlock = effectsSrc.slice(effectsSrc.indexOf('const HANDLERS = {'), effectsSrc.indexOf('function compass('));
@@ -56,7 +57,7 @@ test('todas as magias listadas no pedido existem com o nome original', () => {
     'Shadow Manipulation', 'Cursed Poison', 'Locking Curse', 'Abyss Annihilation', 'Death Streak', 'Physics Magic', 'Primitive Magic',
     'Soul Magic', 'True Dragon Magic', 'Gravity Magic', 'Space Magic', 'Time Magic', 'Nuclear Flame', 'Nuclear Cannon',
     'Isolated Battlefield', 'Marionette Heart', 'Life-Exorcising Wind',
-    'Absorption', 'Dissolve', 'Self-Regeneration', 'Shape-shifting', 'Magic Adaptation', 'Magic Resistance', 'Elemental Affinity',
+    'Absorb', 'Dissolve', 'Self-Regeneration', 'Mimicry', 'Magic Adaptation', 'Magic Resistance', 'Elemental Affinity',
     'Spirit Affinity', 'Enchantment', 'Magic Learning', 'Elemental Manipulation', 'Magicule Manipulation', 'Physical Enhancement',
     'Elemental Transformation', 'Dragon Scales', 'Dragon Eye', 'Dragon Body', 'Dragon Change', 'Flame Breath', 'Thunder Breath',
     'Thought Communication', 'Ultra Smell', 'Coercion', 'Starved', 'Physical Resistance', 'Regeneration', 'Energy Absorption',

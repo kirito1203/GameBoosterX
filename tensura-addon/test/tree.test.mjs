@@ -185,6 +185,7 @@ test('menu: aba Evolução oferece "Evoluir" quando os requisitos são atendidos
   const { d, state } = demo();
   for (const id of TREES['race.slime'].skills.map((s) => s.id).filter((id) => !id.includes('evo_'))) d.unlocked.add(id);
   d.level = 40; d.points = 999; state.level = 40; state.points = 999;
+  state.missions = new Set(['m.slime.harvest']);
   const f = buildMenuForm({ tab: 'evolution', d, state });
   assert.ok(Object.values(f.hit).some((h) => h.type === 'unlock' && h.id === 'r.slime.evo_demon_slime'));
   assert.ok(f.body.includes('Demon Slime'));

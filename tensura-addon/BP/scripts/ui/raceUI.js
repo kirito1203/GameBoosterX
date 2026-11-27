@@ -2,6 +2,7 @@
 import { system } from '@minecraft/server';
 import { ActionFormData } from '@minecraft/server-ui';
 import { CONFIG } from '../config.js';
+import { barSlots } from '../core/stats.js';
 import { RACES, SKILLS, initialSkillsFor } from '../data/registry.js';
 import { CARD_META } from '../data/raceCards.js';
 import { buildRaceForm, isSelectable, baseOf, pageOf } from '../core/raceView.js';
@@ -34,7 +35,7 @@ export function applyRace(player, raceId) {
   d.aura = d.stats.maxAura;
   d.ui.tab = 'racial';
   for (const id of d.unlocked) {
-    if (SKILLS[id].type === 'active' && !d.equipped.includes(id) && d.equipped.length < CONFIG.ui.barSlots) d.equipped.push(id);
+    if (SKILLS[id].type === 'active' && !d.equipped.includes(id) && d.equipped.length < barSlots(d)) d.equipped.push(id);
   }
   saveNow(player);
   return true;

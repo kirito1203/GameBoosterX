@@ -78,6 +78,12 @@ export function computeStats(d) {
     pack: false,
     poisonImmune: false,
     special: new Set(race.special ?? []),
+    nullified: new Set(),           // grupos de dano anulados (imunidade total)
+    cdMultSkills: 1,                // recarga (passivas)
+    extraSlots: 0,                  // espaços extras na Barra de Habilidades
+    absorbMult: 1,                  // Magicules ganhas por absorção
+    mimicAmp: 0,                    // níveis extras nas formas da Imitação
+    mimicNoDrain: false,
   };
   const addEff = (id, amp) => s.effects.set(id, Math.max(s.effects.get(id) ?? -1, amp));
   if (race.hp >= 0) addEff('health_boost', race.hp);
@@ -88,7 +94,7 @@ export function computeStats(d) {
     if (!sk || (sk.type !== 'passive' && sk.type !== 'race_root')) continue;
     for (const f of fxList(sk.fx)) applyPassive(s, f, addEff);
   }
-  if (d.mimic) for (const [id, amp] of mimicTraits(d.mimic).eff) addEff(id, amp);
+  if (d.mimic) for (const [id, amp] of mimicTraits(d.mimic).eff) addEff(id, amp + (id === "health_boost" || id === "slowness" ? 0 : s.mimicAmp));
   // Capacidades do Grande Sábio com efeito em atributos (ver core/sage.js).
   const sb = d.sage ? sageBonuses(d.sage) : null;
   s.cdMult = sb?.cooldownMult ?? 1;
@@ -99,8 +105,9 @@ export function computeStats(d) {
   // Resistências limitadas a 90%, exceto imunidades raciais declaradas como 1 (ex.: queda do Slime).
   for (const k in s.resist) {
     const innate = race.resist[k] >= 1;
-    s.resist[k] = innate ? 1 : Math.min(0.9, s.resist[k]);
+    s.resist[k] = innate || s.nullified.has(k) ? 1 : Math.min(0.9, s.resist[k]);
   }
+  s.cdMult = (s.cdMult ?? 1) * s.cdMultSkills;
   return s;
 }
 
@@ -112,7 +119,17 @@ function applyPassive(s, f, addEff) {
   switch (f.k) {
     case 'p_effect': for (const [id, amp] of f.eff) addEff(id, amp); break;
     case 'p_mp': s.maxMp += f.max ?? 0; s.regen += f.regen ?? 0; s.regenMult *= f.regenMult ?? 1; break;
-    case 'p_resist': for (const g in f.groups) s.resist[g] = 1 - (1 - (s.resist[g] ?? 0)) * (1 - f.groups[g]); break;
+    case 'p_resist':
+      for (const g in f.groups) {
+        s.resist[g] = 1 - (1 - (s.resist[g] ?? 0)) * (1 - f.groups[g]);
+        if (f.null) s.nullified.add(g);
+      }
+      break;
+    case 'p_cleanse': for (const e of f.eff) s.cleanse.add(e); break;
+    case 'p_cd': s.cdMultSkills *= f.mult; break;
+    case 'p_slots': s.extraSlots += f.n; break;
+    case 'p_absorb': s.absorbMult *= f.mult; break;
+    case 'p_mimic': s.mimicAmp += f.amp ?? 0; if (f.noDrain) s.mimicNoDrain = true; break;
     case 'p_lifesteal': s.lifesteal += f.pct; break;
     case 'p_onhit': s.onHit.push(f); break;
     case 'p_affinity': mulInto(s.affinity, f.tree, f.mult); break;
@@ -125,6 +142,11 @@ function applyPassive(s, f, addEff) {
     case 'p_aura': s.maxAura += f.max ?? 0; s.auraRegen += f.regen ?? 0; break;
     default: break;
   }
+}
+
+/** Espaços da Barra de Habilidades (5 + Armazenamento de Habilidades). */
+export function barSlots(d) {
+  return CONFIG.ui.barSlots + (d?.stats?.extraSlots ?? 0);
 }
 
 /** Custo de Magicules de uma habilidade, com afinidades. */

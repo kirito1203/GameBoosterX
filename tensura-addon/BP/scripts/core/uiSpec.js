@@ -23,9 +23,12 @@ export const CTRL = {
   pageUp: 18,
   pageDown: 19,
   center: 20,
+  zoom: 21, // visão geral (zoom afastado) ⇄ visão normal
 };
 export const CAT_COUNT = CATEGORY_ORDER.length;
-export const CTRL_COUNT = 21;
+export const CTRL_COUNT = 22;
+// Visão geral: cada célula representa um bloco ZOOM_OUT x ZOOM_OUT do mapa.
+export const ZOOM_OUT = 3;
 export const TREE_COLS = CONFIG.ui.treeGrid[0];
 export const TREE_ROWS = CONFIG.ui.treeGrid[1];
 export const TREE_CELLS = TREE_COLS * TREE_ROWS;
@@ -75,7 +78,7 @@ export const ACTION_COUNT = 6;
 
 // ── Texturas ──
 export const RARITY_INDEX = { common: 1, rare: 2, epic: 3, legendary: 4, supreme: 5 };
-export const NODE_STATES = { locked: 'l', reachable: 'r', available: 'a', unlocked: 'u' };
+export const NODE_STATES = { locked: 'l', reachable: 'r', special: 's', available: 'a', unlocked: 'u' };
 export const EDGE = { none: 0, dim: 1, lit: 2 };
 
 export const TEX = {
@@ -149,8 +152,8 @@ export const CARD_LOCKED = '§t§c§l';
 // Cada bloco abre a página da categoria (marcador §1..§9), com "Voltar" para a tela inicial.
 export const SAGE_MARK = '§t§n§g';
 export const sageMark = (cat) => `${SAGE_MARK}§${cat}`;
-export const SAGE_TILES = ['ask', 'analyses', 'level', 'skills', 'magic', 'intel', 'next', 'history', 'manifest'];
-export const SAGE_CATS = ['ask', 'analyses', 'level', 'skills', 'magic', 'intel', 'next', 'history', 'settings'];
+export const SAGE_TILES = ['ask', 'analyses', 'level', 'skills', 'magic', 'intel', 'next', 'history', 'missions'];
+export const SAGE_CATS = ['ask', 'analyses', 'level', 'skills', 'magic', 'intel', 'next', 'history', 'settings', 'missions'];
 export const SAGE = {
   close: 0,
   back: 1,

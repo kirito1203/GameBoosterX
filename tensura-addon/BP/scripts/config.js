@@ -14,6 +14,33 @@ export const CONFIG = {
   },
   costMultiplier: 1,
 
+  // Ranks do Tensura RPG (balanceamento do addon — NÃO é uma classificação oficial da obra).
+  // Cada habilidade declara seu rank; custo e nível abaixo são os valores padrão (a habilidade pode
+  // sobrescrever). `rarity` define a moldura/cor do nó e a faixa de custo validada nos testes.
+  ranks: {
+    F:  { name: 'F',  desc: 'Extremamente básica', cost: 10,  lvl: 1,  rarity: 'common',    mastery: 3 },
+    E:  { name: 'E',  desc: 'Inicial',             cost: 20,  lvl: 4,  rarity: 'common',    mastery: 3 },
+    D:  { name: 'D',  desc: 'Intermediária',       cost: 35,  lvl: 10, rarity: 'rare',      mastery: 4 },
+    C:  { name: 'C',  desc: 'Desenvolvida',        cost: 55,  lvl: 16, rarity: 'rare',      mastery: 4 },
+    B:  { name: 'B',  desc: 'Avançada',            cost: 85,  lvl: 24, rarity: 'epic',      mastery: 5 },
+    A:  { name: 'A',  desc: 'Elite',               cost: 115, lvl: 32, rarity: 'epic',      mastery: 5 },
+    S:  { name: 'S',  desc: 'Especial / Única',    cost: 180, lvl: 38, rarity: 'legendary', mastery: 5 },
+    SS: { name: 'SS', desc: 'Suprema',             cost: 280, lvl: 50, rarity: 'supreme',   mastery: 4 },
+    EX: { name: 'EX', desc: 'Final / Extraordinária', cost: 380, lvl: 65, rarity: 'supreme', mastery: 3 },
+  },
+
+  // Domínio: cada habilidade ATIVA sobe de nível com o uso real (cada conjuração bem-sucedida).
+  // Usos acumulados para alcançar os níveis 2, 3, 4, 5. O máximo de cada habilidade vem do rank
+  // (ou de `masteryMax` na própria habilidade). Cada nível acima do 1 reduz custo e recarga.
+  mastery: {
+    uses: [10, 30, 70, 150],
+    costCutPerLevel: 0.05,
+    cooldownCutPerLevel: 0.05,
+  },
+
+  // Missões especiais: pontos concedidos UMA vez ao concluir (além de liberar habilidades).
+  missions: { defaultRewardPoints: 30 },
+
   // Progressão: EP (Existence Points) obtidos ao derrotar criaturas.
   leveling: {
     maxLevel: 100,
@@ -79,6 +106,10 @@ export const CONFIG = {
   // Magias atingem outros jogadores? (padrão: não — modo cooperativo)
   pvp: false,
 };
+
+export function rankInfo(r) {
+  return CONFIG.ranks[r] ?? null;
+}
 
 export function rarityInfo(r) {
   return CONFIG.rarities[r] ?? CONFIG.rarities.common;

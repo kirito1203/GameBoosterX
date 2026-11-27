@@ -1,13 +1,14 @@
 // Monta o formulário da árvore (mapa único) a partir do estado do jogador e da
 // câmera. Puro: testável em Node.
-import { SKILLS, TREES, RACES } from '../data/registry.js';
+import { SKILLS, TREES, RACES, SECTORS, ABSORPTION, MISSIONS } from '../data/registry.js';
+import { masteryLevel, masteryMax, usesForNext } from './mastery.js';
 import { evaluate } from './progression.js';
 import { getMap, DIRS8 } from './map.js';
 import { describeFx } from './describe.js';
-import { rarityInfo } from '../config.js';
-import { ORIGINS } from '../data/dsl.js';
+import { rarityInfo, CONFIG } from '../config.js';
+import { ORIGINS, SOURCES } from '../data/dsl.js';
 import {
-  CTRL, CATEGORY_ORDER, MARK, gridOf, layerBase, frameCode, iconName, TEX, EDGE, TREE_COLS, TREE_ROWS,
+  CTRL, CATEGORY_ORDER, MARK, gridOf, layerBase, frameCode, iconName, TEX, EDGE, TREE_COLS, TREE_ROWS, ZOOM_OUT,
 } from './uiSpec.js';
 
 const TYPE_NAMES = { active: 'Ativa', passive: 'Passiva', evolution: 'Evolução racial', race_root: 'Raça' };
@@ -21,10 +22,22 @@ export function centeredView() {
   return { x: -Math.floor(TREE_COLS / 2), y: -Math.floor(TREE_ROWS / 2) };
 }
 
+/** Visão geral centrada no mesmo ponto da visão normal (e vice-versa). */
+export function toOverview(view) {
+  const cx = view.x + Math.floor(TREE_COLS / 2);
+  const cy = view.y + Math.floor(TREE_ROWS / 2);
+  return { x: cx - Math.floor((TREE_COLS * ZOOM_OUT) / 2), y: cy - Math.floor((TREE_ROWS * ZOOM_OUT) / 2) };
+}
+export function fromOverview(ov) {
+  const cx = ov.x + Math.floor((TREE_COLS * ZOOM_OUT) / 2);
+  const cy = ov.y + Math.floor((TREE_ROWS * ZOOM_OUT) / 2);
+  return { x: cx - Math.floor(TREE_COLS / 2), y: cy - Math.floor(TREE_ROWS / 2) };
+}
+
 /** Move a câmera: lados em passos de ~1/3 da largura; páginas verticais quase inteiras. */
-export function pan(view, dx, dy, map) {
-  const sx = Math.max(1, Math.floor(TREE_COLS / 3));
-  const sy = TREE_ROWS - 3;
+export function pan(view, dx, dy, map, zoom = 1) {
+  const sx = Math.max(1, Math.floor(TREE_COLS / 3)) * zoom;
+  const sy = (TREE_ROWS - 3) * zoom;
   const b = map.bounds;
   return {
     x: clamp(view.x + dx * sx, b.minX - Math.floor(TREE_COLS / 2), b.maxX - Math.floor(TREE_COLS / 2)),
@@ -66,8 +79,10 @@ export function categoryName(cat, lineage) {
  * @param {string|null} [p.focus] chave de um nó para destacar (vindo do menu)
  * @param {{cur:number,max:number}} p.mp
  * @param {string[]} [p.equipped]
+ * @param {number} [p.zoom]  1 = normal; ZOOM_OUT = visão geral
  */
 export function buildTreeForm(p) {
+  if (p.zoom && p.zoom > 1) return buildOverviewForm(p);
   const { state, view, focus = null, mp, equipped = [] } = p;
   const lineage = RACES[state.race].lineage;
   const map = getMap(lineage);
@@ -94,6 +109,7 @@ export function buildTreeForm(p) {
   set(CTRL.pageUp, '', `${TEX.ui}arrow_u`); hit[CTRL.pageUp] = { type: 'pan', dx: 0, dy: -1 };
   set(CTRL.pageDown, '', `${TEX.ui}arrow_d`); hit[CTRL.pageDown] = { type: 'pan', dx: 0, dy: 1 };
   set(CTRL.center, '', `${TEX.ui}center`); hit[CTRL.center] = { type: 'center' };
+  set(CTRL.zoom, '', `${TEX.ui}zoom_out`); hit[CTRL.zoom] = { type: 'zoom', zoom: ZOOM_OUT };
 
   const evalCache = new Map();
   const evalOf = (id) => {
@@ -157,14 +173,24 @@ function detailsText(s, ev, state, isLink, equipped) {
   const ri = rarityInfo(s.rarity);
   const tree = TREES[s.tree];
   const res = tree.kind === 'racial' ? 'Aura' : 'Magículas';
-  const status = { unlocked: '§aDesbloqueada', available: '§eDisponível', reachable: '§6Falta requisito', locked: '§8Bloqueada' }[ev.state];
+  const status = { unlocked: '§aDesbloqueada', available: '§9Disponível', reachable: '§7Falta nível/pontos', special: '§cRequisito especial pendente', locked: '§8Bloqueada' }[ev.state];
   const lines = [
     `§l${ri.color}${s.name}§r §8${s.original}`,
-    `${status}§r · ${TYPE_NAMES[s.type]} · ${ri.color}${ri.name}§r`,
+    `${status}§r · ${TYPE_NAMES[s.type]} · ${s.rank ? `§eRank ${s.rank}§r` : `${ri.color}${ri.name}§r`}`,
     `§e${ev.cost} pts§r${s.mp ? ` · ${res} §d${s.mp}§r` : ''}${s.cooldown ? ` · ${s.cooldown}s` : ''} · Nv ${s.minLevel}`,
   ];
+  if (s.src) lines.push(`§7${SOURCES[s.src]}${s.sector ? ` · ${SECTORS[RACES[state.race].lineage]?.names[s.sector] ?? ''}` : ''}§r`);
+  const acq = acquisition(s);
+  if (acq) lines.push(`§7Aquisição: ${acq}§r`);
+  const mmax = masteryMax(s);
+  if (mmax && state.unlocked.has(s.id)) {
+    const uses = state.mastery?.[s.id] ?? 0;
+    const lvl = masteryLevel(s.id, uses);
+    const nx = usesForNext(s.id, uses);
+    lines.push(`§bDomínio ${lvl}/${mmax}§r${nx ? ` §7(${uses}/${nx} usos)` : ' §7(máximo)'}${s.masteryDesc?.[lvl - 1] ? ` · ${s.masteryDesc[lvl - 1]}` : ''}§r`);
+  }
   if (s.requires.length) lines.push(`Requer: ${s.requires.map((r) => `${state.unlocked.has(r) ? '§a✔' : '§c✘'} ${SKILLS[r]?.name ?? r}§r`).join(', ')}`);
-  if (s.children.length) lines.push(`§7Leva a: ${s.children.map((c) => SKILLS[c].name).join(', ')}§r`);
+  if (s.children.length) lines.push(`§7Evoluções/leva a: ${s.children.map((c) => SKILLS[c].name).join(', ')}§r`);
   if (isLink) lines.push(`§9Nó compartilhado de ${tree.name}.§r`);
   if (s.type === 'race_root') lines.push(cut(raceSummary(state.race).split('\n').slice(1, 4).join(' · '), 160));
   else {
@@ -174,6 +200,78 @@ function detailsText(s, ev, state, isLink, equipped) {
   if (equipped.includes(s.id)) lines.push(`§bNa barra (espaço ${equipped.indexOf(s.id) + 1})§r`);
   if (ev.missing.length && ev.state !== 'unlocked') lines.push(`§cFalta: ${ev.missing.join('; ')}§r`);
   return lines.join('\n');
+}
+
+/** Texto do método de aquisição (pontos, evolução, absorção, missão, domínio). */
+export function acquisition(s) {
+  if (s.acquire) return s.acquire;
+  const parts = [];
+  if (s.initial) return `concedida ao se tornar ${RACES[s.initial]?.name ?? s.initial}`;
+  if (s.type === 'evolution') parts.push('evolução racial');
+  if (s.discover) {
+    const lin = TREES[s.tree].lineage;
+    const e = (ABSORPTION[lin] ?? []).find((x) => x.skills.includes(s.id));
+    parts.push(e ? `absorver ${e.mc.map((m) => m.replace('minecraft:', '')).join('/')} (${e.work})` : 'absorção');
+  }
+  if (s.needMission) parts.push(`missão "${MISSIONS[s.needMission]?.name ?? s.needMission}"`);
+  if (s.needMastery) parts.push('domínio de habilidade anterior');
+  if (!parts.length && TREES[s.tree].kind === 'racial') return '';
+  parts.push('pontos de habilidade');
+  return parts.join(' + ');
+}
+
+/**
+ * Visão geral (zoom afastado): cada célula mostra o nó mais importante de um bloco ZOOM_OUT x ZOOM_OUT.
+ * Tocar abre um resumo do bloco; "Ampliar aqui" volta à visão normal naquele ponto.
+ */
+function buildOverviewForm(p) {
+  const { state, view, mp } = p;
+  const Z = ZOOM_OUT;
+  const lineage = RACES[state.race].lineage;
+  const map = getMap(lineage);
+  const { cols, rows, n } = gridOf();
+  const base = layerBase();
+  const buttons = Array.from({ length: base.total }, () => ({ text: '', icon: '' }));
+  const hit = {};
+  const set = (i, text, icon = '') => { buttons[i] = { text, icon }; };
+  const race = RACES[state.race];
+  const title = `${MARK}§l§bVisão Geral§r  §7${race.name}  §ePontos ${state.points}  §fNv ${state.level}  §dMagículas ${Math.floor(mp.cur)}/${mp.max}`;
+  set(CTRL.back, 'Voltar', `${TEX.ui}btn_back`); hit[CTRL.back] = { type: 'back' };
+  set(CTRL.close, '', `${TEX.ui}btn_close`); hit[CTRL.close] = { type: 'close' };
+  CATEGORY_ORDER.forEach((cat, i) => { set(CTRL.cat0 + i, '', `${TEX.ui}tab_${cat}`); hit[CTRL.cat0 + i] = { type: 'jump', pos: map.roots[cat], cat }; });
+  set(CTRL.panLeft, '', `${TEX.ui}arrow_l`); hit[CTRL.panLeft] = { type: 'pan', dx: -1, dy: 0 };
+  set(CTRL.panRight, '', `${TEX.ui}arrow_r`); hit[CTRL.panRight] = { type: 'pan', dx: 1, dy: 0 };
+  set(CTRL.pageUp, '', `${TEX.ui}arrow_u`); hit[CTRL.pageUp] = { type: 'pan', dx: 0, dy: -1 };
+  set(CTRL.pageDown, '', `${TEX.ui}arrow_d`); hit[CTRL.pageDown] = { type: 'pan', dx: 0, dy: 1 };
+  set(CTRL.center, '', `${TEX.ui}center`); hit[CTRL.center] = { type: 'center' };
+  set(CTRL.zoom, '', `${TEX.ui}zoom_in`); hit[CTRL.zoom] = { type: 'zoom', zoom: 1 };
+  const rank = (st) => ({ unlocked: 4, available: 3, special: 2, reachable: 1, locked: 0 }[st]);
+  let visible = 0;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const i = r * cols + c;
+      const keys = [];
+      for (let yy = 0; yy < Z; yy++) for (let xx = 0; xx < Z; xx++) {
+        const k = map.nodeAt.get(`${view.x + c * Z + xx},${view.y + r * Z + yy}`);
+        if (k && !map.isLink.has(k)) keys.push(k);
+      }
+      if (!keys.length) continue;
+      visible++;
+      const items = keys.map((k) => ({ k, s: SKILLS[map.skillOf[k]], ev: evaluate(map.skillOf[k], state) }));
+      items.sort((a, b) => (b.s.major - a.s.major) || (rank(b.ev.state) - rank(a.ev.state)));
+      const top = items[0];
+      set(base.node + i, frameCode(top.ev.state, top.s.rarity, top.s.major || keys.length > 1, false, false), `${TEX.icon}${iconName(top.s.id)}`);
+      const sector = top.s.sector ? SECTORS[lineage]?.names[top.s.sector] : TREES[top.s.tree].name;
+      const owned = items.filter((x) => x.ev.state === 'unlocked').length;
+      const lines = [`§l§b${sector ?? ''}§r`, `${keys.length} habilidade(s) · §a${owned} desbloqueada(s)`,
+        ...items.slice(0, 6).map((x) => `${{ unlocked: '§a✔', available: '§9●', special: '§c●', reachable: '§7●', locked: '§8●' }[x.ev.state]} ${x.s.name}§r`)];
+      if (items.length > 6) lines.push(`§7…e mais ${items.length - 6}`);
+      set(base.detail + i, lines.join('\n'));
+      const pos = map.pos[top.k];
+      set(base.action + i, '§l§bAmpliar aqui', `${TEX.ui}zoom_in`); hit[base.action + i] = { type: 'zoomin', pos };
+    }
+  }
+  return { title, body: '', buttons, hit, map, visibleNodes: visible, cells: n, zoom: Z };
 }
 
 export function raceSummary(raceId) {

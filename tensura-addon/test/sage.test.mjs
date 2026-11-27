@@ -95,6 +95,8 @@ test('Raphael: evolui só com todos os requisitos (sem desbloqueio manual)', () 
   for (let i = 0; i < 20; i++) s.analyses[`minecraft:mob${i}`] = { typeId: `minecraft:mob${i}`, name: 'x', count: 1 };
   assert.ok(!evolutionRequirements(s, d).ready, 'falta chefe');
   d.flags.add('killed_wither');
+  assert.ok(!evolutionRequirements(s, d).ready, 'Slime: falta o nó Raphael da árvore');
+  d.unlocked.add('r.slime.raphael');
   ev = evolutionRequirements(s, d);
   assert.ok(ev.ready);
   assert.equal(evolve(s, d, 12), 'raphael');
@@ -117,6 +119,8 @@ test('Ciel: requisitos especiais (Raphael no máximo, nível 60, Wither + Dragon
   assert.ok(!evolutionRequirements(s, d).ready, 'raça ainda no 1º estágio');
   const high = Object.keys(RACES).find((r) => RACES[r].lineage === 'slime' && RACES[r].stage >= 2);
   d.race = high;
+  assert.ok(!evolutionRequirements(s, d).ready, 'Slime: falta o nó Ciel da árvore');
+  d.unlocked.add('r.slime.ciel');
   ev = evolutionRequirements(s, d);
   assert.ok(ev.ready, JSON.stringify(ev.reqs));
   assert.equal(evolve(s, d), 'ciel');
@@ -136,7 +140,7 @@ test('perguntas: respostas com dados reais e "dados insuficientes" quando não h
   assert.match(ask('Qual é o nível de ameaça desta criatura?', ctx).text, new RegExp(INSUFFICIENT));
   const t = ask('Qual é o nível de ameaça desta criatura?', { ...ctx, target: { name: 'zombie', hp: 20, maxHp: 20, hostile: true, boss: false, undead: true } });
   assert.match(t.text, /Moderada/);
-  assert.match(ask('Quais habilidades podem ser combinadas?', ctx).text, /ainda não existe/);
+  assert.match(ask('Quais habilidades podem ser combinadas?', ctx).text, /combina/i);
   assert.match(ask('Quais capacidades você possui atualmente?', ctx).text, /Capacidades ativas/);
   assert.equal(ask('xyzzy blorp', ctx).intent, 'unknown');
   assert.match(ask('xyzzy blorp', ctx).text, new RegExp(INSUFFICIENT));
