@@ -257,9 +257,9 @@ function treeContent() {
     type: 'panel', layer: 2,
     bindings: [colText, view("(not (#form_button_text = ''))", '#visible')],
     controls: [
-      { icon: { type: 'image', layer: 3, size: ['100%y', '54%'], bilinear: false, bindings: [
+      { icon: { type: 'image', layer: 3, size: ['100%y', '44%'], bilinear: false, bindings: [
         { ...colTex, binding_name_override: '#texture' }, { ...colTexFs, binding_name_override: '#texture_file_system' }] } },
-      { frame: { type: 'image', layer: 4, size: ['100%y', '78%'], bilinear: false, bindings: [
+      { frame: { type: 'image', layer: 4, size: ['100%y', '64%'], bilinear: false, bindings: [
         colText, view(`('${TEX.node}' + #form_button_text)`, '#texture')] } },
       { [`tg_${i}@common.toggle`]: {
         layer: 5, size: ['100%y', '82%'],
@@ -281,7 +281,12 @@ function treeContent() {
     const pl = detailPlacement(c, r);
     return [`d${i}`, {
       type: 'panel', layer: 10,
-      controls: [{ panel: {
+      controls: [
+        // Nome embaixo do nó: 1ª linha do texto de detalhes (só o nome), recortada a uma linha.
+        { name: { type: 'panel', layer: -8, anchor_from: 'bottom_middle', anchor_to: 'bottom_middle', size: ['190%', '14%'], clips_children: true,
+          controls: [{ lbl: { type: 'label', anchor_from: 'top_middle', anchor_to: 'top_middle', size: ['100%', 'default'], text_alignment: 'center',
+            text: '#form_button_text', color: [1, 1, 1], font_scale_factor: 0.5, shadow: true, bindings: [colText] } }] } },
+        { panel: {
         type: 'panel', ...TL, layer: 10,
         size: [relW(pl.w), pct(DETAIL_ROWS * 100)], offset: [relX(pl.x, c), pct((pl.row - r) * 100)],
         bindings: [toggleWatch(i)],
@@ -295,7 +300,8 @@ function treeContent() {
           { txt: { type: 'label', ...TL, offset: ['3%', '38%'], size: ['94%', 'default'], max_size: ['94%', '48%'], layer: 2,
             text: '#form_button_text', color: [1, 1, 1], font_scale_factor: 0.58, shadow: true, bindings: [colText] } },
         ],
-      } }],
+      } },
+      ],
     }];
   }, { layer: 10 });
   // Botão de ação do painel (desbloquear / barra / ir ao original): a única parte que vai ao script.

@@ -23,7 +23,9 @@ test('mapas: universal (com a raça no centro) e racial próprio; cada habilidad
     assert.deepEqual(m.pos[m.centerId], [0, 0], 'a raça fica no centro');
     const r = getRaceMap(lin);
     assert.equal(r.nodeAt.size, Object.keys(r.pos).length, `${lin}: nós raciais sobrepostos`);
-    assert.deepEqual(Object.keys(r.pos).sort(), TREES[`race.${lin}`].skills.map((s) => s.id).sort(), `${lin}: árvore racial completa`);
+    const ownR = Object.keys(r.pos).filter((k) => !r.isLink.has(k));
+    assert.deepEqual(ownR.sort(), TREES[`race.${lin}`].skills.map((s) => s.id).sort(), `${lin}: árvore racial completa`);
+    for (const k of r.isLink) assert.ok(SKILLS[r.skillOf[k]], `${lin}: vínculo inválido ${k}`);
   }
 });
 
@@ -215,7 +217,7 @@ test('JSON UI gerado: grade rolável, nós como toggles de rádio e painéis lig
     assert.equal(tg[name].$radio_toggle_group, true);
     assert.equal(tg[name].$toggle_name, NODE_TOGGLE_GROUP);
   }
-  const d0 = Object.values(grids.grid_details.controls[0])[0].controls[0].panel;
+  const d0 = Object.values(grids.grid_details.controls[0])[0].controls.find((c) => c.panel).panel;
   assert.equal(d0.bindings[0].source_control_name, 'tg_0');
   assert.ok(json.includes('"$scrolling_content":"tensura_tree.tree_content"'), 'área da árvore rola');
   const sf = JSON.parse(readFileSync(new URL('ui/server_form.json', RP), 'utf8').replace(/^\/\/.*$/m, ''));

@@ -86,3 +86,22 @@ test('todas as peças de linha dos mapas raciais existem no resource pack', asyn
     }
   }
 });
+
+test('árvore racial em formato de árvore: todo nó ligado por uma linha, cabe em 13 colunas, vínculos válidos', () => {
+  for (const lin in LINEAGES) {
+    const r = getRaceMap(lin);
+    const root = `r.${lin}.root`;
+    assert.deepEqual(r.pos[root], [0, 0], `${lin}: raiz no topo`);
+    const into = new Set(r.edges.map((e) => e.to));
+    for (const k in r.pos) {
+      if (k !== root) assert.ok(into.has(k), `${lin}: ${k} solto (sem linha chegando)`);
+      assert.ok(r.pos[k][0] >= 0 && r.pos[k][0] <= 12, `${lin}: ${k} fora das 13 colunas`);
+    }
+    for (const k of r.isLink) {
+      const [sid, sec] = k.split('@');
+      assert.equal(r.skillOf[k], sid);
+      assert.ok(TREES[`race.${lin}`].skills.some((s) => s.id === sid), `${lin}: vínculo para fora da raça ${k}`);
+      assert.ok(TREES[`race.${lin}`].skills.some((s) => s.sector === sec && s.requires.includes(sid)), `${lin}: vínculo sem uso ${k}`);
+    }
+  }
+});

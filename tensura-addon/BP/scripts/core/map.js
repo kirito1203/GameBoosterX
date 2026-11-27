@@ -18,7 +18,8 @@ export function getRaceMap(lineage) {
   const R = MAP.racial[lineage];
   if (!R) throw new Error(`linhagem sem mapa: ${lineage}`);
   const skillOf = {};
-  for (const k in R.pos) skillOf[k] = k;
+  const isLink = new Set();
+  for (const k in R.pos) { skillOf[k] = R.links?.[k] ?? k; if (R.links?.[k]) isLink.add(k); }
   const nodeAt = new Map();
   for (const k in R.pos) nodeAt.set(key(...R.pos[k]), k);
   const edges = [];
@@ -27,7 +28,7 @@ export function getRaceMap(lineage) {
   const centerId = `r.${lineage}.root`;
   const roots = { [centerId]: R.pos[centerId] };
   for (const sec in R.heads) roots[R.heads[sec]] = R.pos[R.heads[sec]];
-  m = { lineage, race: true, centerId, pos: R.pos, skillOf, isLink: new Set(), nodeAt, edges, stubs, bounds: R.bounds, roots, heads: R.heads };
+  m = { lineage, race: true, centerId, pos: R.pos, skillOf, isLink, nodeAt, edges, stubs, bounds: R.bounds, roots, heads: R.heads };
   cache.set(ck, m);
   return m;
 }

@@ -117,14 +117,14 @@ export function buildTreeForm(p) {
   if (raceMode) {
     // Saltos por categoria (ícone-cristal da cabeça da categoria) + botão das árvores universais.
     Object.keys(map.roots).slice(0, CATEGORY_ORDER.length - 1).forEach((sid, i) => {
-      set(CTRL.cat0 + i, '', `${TEX.icon}${iconName(sid)}`);
+      set(CTRL.cat0 + i, '', `${TEX.icon}${iconName(map.skillOf[sid] ?? sid)}`);
       hit[CTRL.cat0 + i] = { type: 'jump', pos: map.roots[sid], cat: sid };
     });
     const last = CTRL.cat0 + CATEGORY_ORDER.length - 1;
     set(last, '', `${TEX.ui}tab_elemental`); hit[last] = { type: 'universal' };
   } else if (supreme) {
     Object.keys(map.roots).forEach((sid, i) => {
-      set(CTRL.cat0 + i, '', `${TEX.icon}${iconName(sid)}`);
+      set(CTRL.cat0 + i, '', `${TEX.icon}${iconName(map.skillOf[sid] ?? sid)}`);
       hit[CTRL.cat0 + i] = { type: 'jump', pos: map.roots[sid], cat: sid };
     });
   } else {
@@ -205,7 +205,9 @@ function detailsText(s, ev, state, isLink, equipped, full = false) {
   const res = tree.kind === 'racial' ? 'Aura' : 'Magículas';
   const status = { unlocked: '§aDesbloqueada', available: '§9Disponível', reachable: '§7Falta nível/pontos', special: '§cRequisito especial pendente', locked: '§8Bloqueada' }[ev.state];
   const lines = [
-    `§l${ri.color}${s.name}§r §8${s.original}${s.tier ? ` · ${s.tier === 'manas' ? '§d' : s.tier === 'ultimate' ? '§6' : '§5'}${TIERS[s.tier]}§r` : ''}`,
+    // 1ª linha = só o nome: a tela também a mostra embaixo do nó.
+    `§l${ri.color}${s.name}§r`,
+    `§8${s.original}${s.tier ? ` · ${s.tier === 'manas' ? '§d' : s.tier === 'ultimate' ? '§6' : '§5'}${TIERS[s.tier]}§r` : ''}`,
     `${status}§r · ${TYPE_NAMES[s.type]} · ${s.rank ? `§eRank ${s.rank}§r` : `${ri.color}${ri.name}§r`}`,
     `§e${ev.cost} pts§r${s.mp ? ` · ${res} §d${s.mp}§r` : ''}${s.cooldown ? ` · ${s.cooldown}s` : ''} · Nv ${s.minLevel}`,
   ];

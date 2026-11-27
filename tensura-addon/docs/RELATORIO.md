@@ -744,3 +744,43 @@ O catálogo mostra apenas as habilidades que já existem no addon, com a origem 
 - abrir o catálogo no celular;
 - conferir se a descrição cabe no cartão com a fonte real do jogo;
 - tocar num cartão e ir para a árvore.
+
+## Versão 0.9.3 — árvore racial com cara de árvore de habilidades
+
+Pedido: "deixa com mais cara de árvore de habilidades".
+
+**Formato de árvore (IMPLEMENTADO, árvores raciais):**
+- A raça fica no alto à esquerda e um **tronco** desce por ela.
+- Cada categoria sai do tronco como um **galho**.
+- Dentro do galho, cada habilidade fica à direita do seu pré-requisito:
+  - o primeiro filho na mesma linha;
+  - os outros nas linhas de baixo, ligados por um cotovelo (desce e vira).
+- Uma linha vazia separa as categorias.
+- Antes, as categorias apareciam soltas e havia linhas diagonais longas cruzando a tela.
+- Todo nó agora tem uma linha chegando nele (teste novo confere isso em todas as 24 linhagens).
+- Ainda cabe na largura da tela (13 colunas) e se percorre arrastando para cima e para baixo.
+
+**Pré-requisito de outra categoria:**
+- Vira um **nó vinculado** (cópia com selo), que é o começo do galho, como já acontecia nas árvores universais.
+- O botão "Ir para o original" leva até a habilidade original.
+
+**Pré-requisito secundário da mesma categoria:**
+- É desenhado só quando a linha é curta (até 5 células).
+- Os longos não são desenhados, para não cruzar os galhos. O requisito continua valendo e aparece no painel ("Requer: ✔/✘").
+
+**Nome embaixo de cada nó (IMPLEMENTADO, em todas as árvores):**
+- O nó ficou um pouco menor e o nome aparece embaixo, numa linha.
+- Os nomes longos quebram e mostram só a primeira linha.
+- No painel de detalhes, o nome original (em inglês) passou para a segunda linha.
+
+**Correção:** os atalhos de categoria da barra de baixo usavam o ícone errado quando o começo do galho era um
+nó vinculado.
+
+**Testes (TESTADO, fora do jogo):**
+- 91 testes passando, typecheck sem erros;
+- simulador atualizado para respeitar o recorte (`clips_children`).
+
+**PENDENTE / não testado no jogo:**
+- se o recorte do nome mostra exatamente uma linha com a fonte real do Minecraft (pode aparecer um pedaço da
+  segunda linha ou cortar a primeira);
+- se o tamanho do nome fica legível no celular.

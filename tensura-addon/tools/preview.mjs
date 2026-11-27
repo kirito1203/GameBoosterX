@@ -199,9 +199,20 @@ function render(model, W, H, scale, rootName = 'root', toggles = new Set()) {
       els.push(`<div style="${st};display:flex;align-items:flex-end;justify-content:center"><div style="width:38%;height:92%;background:linear-gradient(#2b3550,#141b2b);border:1px dashed #6af;color:#8bf;font:${(5 * scale).toFixed(0)}px monospace;display:flex;align-items:center;justify-content:center;text-align:center">${def.renderer}<br>(personagem)</div></div>`);
     }
     if (def.type === 'label' && text) {
-      els.push(`<div class="lbl" style="${st};height:auto;font-size:${(7 * (def.font_scale_factor ?? 1) * scale).toFixed(1)}px;text-align:${def.text_alignment ?? 'left'}">${mc(text)}</div>`);
+      const fs = `font-size:${(7 * (def.font_scale_factor ?? 1) * scale).toFixed(1)}px;text-align:${def.text_alignment ?? 'left'}`;
+      const c = ctx.clip;
+      if (c) {
+        // só as linhas que cabem na caixa recortada (o resto não existe na tela)
+        const fit = Math.max(1, Math.floor(c.h / (7 * (def.font_scale_factor ?? 1) * 1.15)));
+        text = text.split('\n').slice(0, fit).join('\n');
+        // Recorte (clips_children no pai): o texto fora da caixa do pai não aparece, como no jogo.
+        const inner = `left:${((x - c.x) * scale).toFixed(1)}px;top:${((y - c.y) * scale).toFixed(1)}px;width:${(own.w * scale).toFixed(1)}px`;
+        els.push(`<div style="position:absolute;overflow:hidden;left:${(c.x * scale).toFixed(1)}px;top:${(c.y * scale).toFixed(1)}px;width:${(c.w * scale).toFixed(1)}px;height:${(c.h * scale).toFixed(1)}px;z-index:${layer}"><div class="lbl" style="${inner};height:auto;${fs}">${mc(text)}</div></div>`);
+      } else {
+        els.push(`<div class="lbl" style="${st};height:auto;${fs}">${mc(text)}</div>`);
+      }
     }
-    if (def.clips_children) els.push(`<!-- clip ${name} -->`);
+    const clip = def.clips_children ? box : ctx.clip;
     let children = def.controls ?? [];
     if (kind === 'common.button') {
       stats.ctl++;
@@ -223,9 +234,9 @@ function render(model, W, H, scale, rootName = 'root', toggles = new Set()) {
         const [gx, gy] = c[k].grid_position;
         const [dx, dy] = def.grid_dimensions;
         const cell = { x: box.x + (gx * box.w) / dx, y: box.y + (gy * box.h) / dy, index: gy * dx + gx };
-        walk(k, c[k], box, v, { gridCell: cell }, layer + 1);
+        walk(k, c[k], box, v, { gridCell: cell, clip }, layer + 1);
       } else {
-        walk(k, c[k], box, v, { cidx }, layer + 1);
+        walk(k, c[k], box, v, { cidx, clip }, layer + 1);
       }
     }
   }

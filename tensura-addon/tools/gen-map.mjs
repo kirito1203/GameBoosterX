@@ -35,31 +35,63 @@ function overlap(a, b, m) {
 }
 
 // ── Árvores raciais (mapa próprio de cada raça) ──
-// Layout VERTICAL e estreito: a raiz fica no alto à esquerda, cada categoria cresce para a direita
-// (profundidade) e as categorias se empilham para baixo, com 2 linhas de corredor entre elas.
-// Assim a árvore inteira cabe na largura da tela e é percorrida arrastando o dedo para cima/baixo.
+// Formato de ÁRVORE: a raiz da raça no alto à esquerda; um TRONCO desce pela coluna 0 e solta um
+// GALHO para cada categoria. Dentro da categoria cada habilidade fica à direita do seu pré-requisito
+// (2 colunas por nível); o 1º filho na mesma linha e os outros nas linhas de baixo, ligados por um
+// cotovelo (desce e vira). Cabe em 13 colunas e é percorrida arrastando para cima/baixo.
+// Pré-requisito de OUTRA categoria vira nó vinculado ("id@categoria"), como nas árvores universais.
 const racial = {};
+const racialLinks = {};
+const racialPlan = {};
 let reserved = { minX: 0, maxX: 0, minY: 1, maxY: 1 };
 for (const lin in LINEAGES) {
-  const L = computeLayout(TREES[`race.${lin}`], { noLinks: true, forceArm: 'E' });
-  const secOf = (id) => SKILLS[id].sector;
-  const secs = [...new Set(Object.keys(L.pos).map(secOf).filter(Boolean))];
-  if (secs.length > 1) {
-    const minY = (s) => Math.min(...Object.keys(L.pos).filter((id) => secOf(id) === s).map((id) => L.pos[id][1]));
-    secs.sort((a, b) => minY(a) - minY(b));
-    const GAP = 2;
-    for (const id in L.pos) {
-      const i = secs.indexOf(secOf(id));
-      if (i >= 0) L.pos[id] = [L.pos[id][0], L.pos[id][1] + i * GAP];
+  const tree = TREES[`race.${lin}`];
+  const root = tree.root;
+  const secOf = (id) => SKILLS[id].sector ?? '_';
+  const ids = tree.skills.map((s) => s.id).filter((id) => id !== root);
+  const inTree = new Set(ids);
+  const secs = [...new Set(ids.map(secOf))];
+  const inSec = (id) => SKILLS[id].requires.filter((r) => inTree.has(r) && secOf(r) === secOf(id));
+  const depth = {};
+  const dep = (id) => (depth[id] ??= inSec(id).length ? 1 + Math.max(...inSec(id).map(dep)) : 0);
+  const kids = {};
+  const links = {};
+  const tops = {}; // categoria → raízes do galho (na ordem)
+  const extra = []; // pré-requisitos secundários da mesma categoria (linhas roteadas)
+  for (const id of ids) {
+    const sec = secOf(id);
+    const same = inSec(id).sort((x, y) => dep(y) - dep(x));
+    let parent = same[0];
+    if (!parent) {
+      const cross = SKILLS[id].requires.find((r) => inTree.has(r));
+      if (cross) { parent = `${cross}@${sec}`; if (!links[parent]) { links[parent] = cross; (tops[sec] ??= []).push(parent); } }
     }
+    if (parent) (kids[parent] ??= []).push(id); else (tops[sec] ??= []).push(id);
+    for (const r of same.slice(1)) extra.push([r, id]);
   }
-  // raiz no topo: desloca tudo para que o menor y seja 0 e a raiz fique na coluna 0
-  const ys = Object.values(L.pos).map((p) => p[1]);
-  const y0 = Math.min(...ys);
-  const root = TREES[`race.${lin}`].root;
-  for (const id in L.pos) L.pos[id] = [L.pos[id][0], L.pos[id][1] - y0];
-  L.pos[root] = [0, 0];
-  racial[lin] = L.pos;
+  const pos = { [root]: [0, 0] };
+  const tree_ = [];
+  let y = 0;
+  // 2 colunas por nível; nos níveis muito fundos (raros) os nós ficam colados para caber na tela.
+  const X = (d) => (d <= 5 ? 1 + 2 * d : 11 + (d - 5));
+  const place = (n, d) => {
+    pos[n] = [X(d), y];
+    (kids[n] ?? []).forEach((c, i) => {
+      if (i) y++;
+      const yc = y;
+      place(c, d + 1);
+      tree_.push([n, c, pos[n], [X(d + 1), yc]]);
+    });
+  };
+  secs.forEach((sec, si) => {
+    if (si) y += 2; // corredor de 1 linha entre categorias
+    (tops[sec] ?? []).forEach((t, i) => { if (i) y++; place(t, 0); tree_.push([root, t, [0, 0], pos[t]]); });
+  });
+  const maxX = Math.max(...Object.values(pos).map((p) => p[0]));
+  if (maxX > 12) throw new Error(`árvore racial ${lin} larga demais (${maxX + 1} colunas)`);
+  racial[lin] = pos;
+  racialLinks[lin] = links;
+  racialPlan[lin] = { tree: tree_, extra };
 }
 // Cada raça tem MAPA PRÓPRIO (abaixo); no mapa principal fica só a raiz da raça, no centro.
 reserved = { minX: -3, maxX: 3, minY: 1, maxY: 3 };
@@ -182,29 +214,45 @@ for (const [a, b] of uniEdgesWanted) {
   uniEdges.push([a, b, flat(path)]);
 }
 
-// Mapas raciais (um por linhagem, coordenadas próprias).
+// Mapas raciais (um por linhagem, coordenadas próprias): galhos em cotovelo (tronco e categorias)
+// e, por cima, os pré-requisitos secundários da mesma categoria roteados por A*.
+const elbow = ([px, py], [cx, cy]) => {
+  const path = [];
+  for (let yy = py; yy <= cy; yy++) path.push([px, yy]);
+  for (let xx = px + 1; xx <= cx; xx++) path.push([xx, cy]);
+  return path;
+};
 const racialOut = {};
 for (const lin in racial) {
   const pos = racial[lin];
   const nodes = new Set(Object.values(pos).map(([x, y]) => key(x, y)));
   const u = new Map();
   const rb = bboxOf(pos);
-  const RB = { minX: rb.minX - 3, maxX: rb.maxX + 3, minY: rb.minY - 3, maxY: rb.maxY + 3 };
-  const route = makeRouter(nodes, () => false, u, RB);
+  const RB = { minX: rb.minX - 1, maxX: Math.max(12, rb.maxX + 1), minY: rb.minY - 1, maxY: rb.maxY + 2 };
   const edges = [];
-  const rootId = TREES[`race.${lin}`].root;
-  for (const id in pos) for (const r of SKILLS[id].requires) {
-    // A ligação raiz → cabeça de categoria é óbvia (ser da raça): não desenha (evita linhas cruzando a árvore).
-    if (!pos[r] || (r === rootId && SKILLS[id].sector)) continue;
-    const path = route(pos[r], pos[id]);
-    if (!path) throw new Error(`sem rota ${lin}: ${r} → ${id}`);
+  for (const [a, b, pa, pb] of racialPlan[lin].tree) {
+    const path = elbow(pa, pb);
+    for (const [x, y] of path.slice(1, -1)) if (nodes.has(key(x, y))) throw new Error(`galho atravessa nó ${lin}: ${a} → ${b}`);
     addUsage(u, path);
-    edges.push([r, id, flat(path)]);
+    edges.push([a, b, flat(path)]);
   }
-  // Cabeças das categorias (saltos): primeiro nó de cada categoria (ou a raiz).
+  const route = makeRouter(nodes, () => false, u, RB);
+  for (const [a, b] of racialPlan[lin].extra) {
+    const path = route(pos[a], pos[b]);
+    // Só as curtas: as longas cruzariam os galhos. O requisito continua valendo (e aparece no painel).
+    if (!path || path.length > 5) continue;
+    addUsage(u, path);
+    edges.push([a, b, flat(path)]);
+  }
+  // Cabeças das categorias (saltos): primeiro nó de cada categoria.
   const heads = {};
-  for (const id of Object.keys(pos)) { const sec = SKILLS[id].sector; if (sec && !heads[sec]) heads[sec] = id; }
-  racialOut[lin] = { pos, edges, bounds: RB, heads };
+  for (const id of Object.keys(pos).sort((x, y) => pos[x][1] - pos[y][1])) {
+    const sid = racialLinks[lin][id] ?? id;
+    const sec = SKILLS[sid].sector;
+    const own = id.includes('@') ? id.split('@')[1] : sec;
+    if (own && own !== '_' && !heads[own]) heads[own] = id;
+  }
+  racialOut[lin] = { pos, links: racialLinks[lin], edges, bounds: RB, heads };
 }
 
 // ── Árvores Supremas (tela própria por linhagem): uma coluna por Suprema, sub-habilidades abaixo
