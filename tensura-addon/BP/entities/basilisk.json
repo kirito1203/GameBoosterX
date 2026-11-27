@@ -1,0 +1,171 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "tensura:basilisk",
+      "is_spawnable": false,
+      "is_summonable": true
+    },
+    "component_groups": {
+      "tensura:tamed": {
+        "minecraft:is_tamed": {}
+      },
+      "tensura:despawn": {
+        "minecraft:instant_despawn": {}
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "tensura_summon",
+          "mob"
+        ]
+      },
+      "minecraft:health": {
+        "value": 40,
+        "max": 40
+      },
+      "minecraft:movement": {
+        "value": 0.28
+      },
+      "minecraft:collision_box": {
+        "width": 1.2,
+        "height": 0.8
+      },
+      "minecraft:physics": {},
+      "minecraft:pushable": {
+        "is_pushable": true,
+        "is_pushable_by_piston": true
+      },
+      "minecraft:nameable": {},
+      "minecraft:jump.static": {},
+      "minecraft:breathable": {
+        "total_supply": 15,
+        "suffocate_time": 0,
+        "breathes_water": true
+      },
+      "minecraft:follow_range": {
+        "value": 32,
+        "max": 32
+      },
+      "minecraft:tameable": {
+        "probability": 0.0,
+        "tame_items": "minecraft:structure_void",
+        "tame_event": {
+          "event": "tensura:on_tame",
+          "target": "self"
+        }
+      },
+      "minecraft:timer": {
+        "looping": false,
+        "time": 200,
+        "time_down_event": {
+          "event": "tensura:despawn",
+          "target": "self"
+        }
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "fall",
+            "deals_damage": "no"
+          }
+        ]
+      },
+      "minecraft:behavior.float": {
+        "priority": 0
+      },
+      "minecraft:behavior.follow_owner": {
+        "priority": 4,
+        "speed_multiplier": 1.2,
+        "start_distance": 8,
+        "stop_distance": 3
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 9,
+        "look_distance": 6
+      },
+      "minecraft:behavior.random_look_around": {
+        "priority": 10
+      },
+      "minecraft:navigation.walk": {
+        "can_path_over_water": true,
+        "avoid_damage_blocks": true,
+        "can_open_doors": false
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:can_climb": {},
+      "minecraft:behavior.random_stroll": {
+        "priority": 8,
+        "speed_multiplier": 0.8
+      },
+      "minecraft:attack": {
+        "damage": 7
+      },
+      "minecraft:behavior.owner_hurt_by_target": {
+        "priority": 1
+      },
+      "minecraft:behavior.owner_hurt_target": {
+        "priority": 2
+      },
+      "minecraft:behavior.hurt_by_target": {
+        "priority": 1,
+        "entity_types": {
+          "filters": {
+            "all_of": [
+              {
+                "test": "is_family",
+                "subject": "other",
+                "operator": "!=",
+                "value": "player"
+              },
+              {
+                "test": "is_family",
+                "subject": "other",
+                "operator": "!=",
+                "value": "tensura_summon"
+              }
+            ]
+          }
+        }
+      },
+      "minecraft:behavior.nearest_attackable_target": {
+        "priority": 3,
+        "must_see": true,
+        "reselect_targets": true,
+        "within_radius": 16,
+        "entity_types": [
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "monster"
+            },
+            "max_dist": 16
+          }
+        ]
+      },
+      "minecraft:behavior.melee_attack": {
+        "priority": 3,
+        "speed_multiplier": 1.25,
+        "track_target": true
+      }
+    },
+    "events": {
+      "tensura:on_tame": {
+        "add": {
+          "component_groups": [
+            "tensura:tamed"
+          ]
+        }
+      },
+      "tensura:despawn": {
+        "add": {
+          "component_groups": [
+            "tensura:despawn"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "format_version": "1.21.90",
+  "minecraft:item": {
+    "description": {
+      "identifier": "tensura:magic_crystal",
+      "menu_category": {
+        "category": "equipment"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "tensura_crystal"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "item.tensura:magic_crystal"
+      },
+      "minecraft:max_stack_size": 1,
+      "minecraft:glint": false,
+      "minecraft:allow_off_hand": false
+    }
+  }
+}

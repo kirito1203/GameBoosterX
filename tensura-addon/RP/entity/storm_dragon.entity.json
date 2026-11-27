@@ -1,0 +1,29 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "tensura:storm_dragon",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/tensura/storm_dragon"
+      },
+      "geometry": {
+        "default": "geometry.tensura.dragon"
+      },
+      "render_controllers": [
+        "controller.render.tensura.dragon"
+      ],
+      "animations": {
+        "fly": "animation.tensura.dragon.fly"
+      },
+      "scripts": {
+        "animate": [
+          "fly"
+        ],
+        "scale": "1.6"
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "pack.name",
+    "description": "pack.description",
+    "uuid": "f29f79b3-b58a-4b21-a62a-cfb5222a250e",
+    "version": [
+      0,
+      9,
+      3
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      90
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "f353fc72-1f62-4888-a455-bd8d0a151f16",
+      "version": [
+        0,
+        9,
+        3
+      ]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "7b23c4b7-d976-4d87-8126-a61e53bb6667",
+      "version": [
+        0,
+        9,
+        3
+      ],
+      "entry": "scripts/main.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "2.0.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "2.0.0"
+    },
+    {
+      "uuid": "1b36e51f-28ff-477f-b41d-04bc660aae10",
+      "version": [
+        0,
+        9,
+        3
+      ]
+    }
+  ],
+  "metadata": {
+    "authors": [
+      "Tensura RPG addon"
+    ],
+    "license": "Fan-made, sem afilia\u00e7\u00e3o oficial"
+  }
+}
