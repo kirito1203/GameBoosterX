@@ -58,20 +58,21 @@ export function detailPlacement(c, r) {
 }
 
 // ── Menu principal ──
-export const MENU_TABS = ['status', 'race', 'skills', 'evolution', 'records'];
+// Barra lateral com 8 categorias + Grande Sábio; conteúdo à direita.
+export const MENU_TABS = ['char', 'race', 'tree', 'inventory', 'missions', 'status', 'evolution', 'settings'];
 export const MENU = {
   close: 0,
-  tab0: 1, // 1..5
-  back: 6,
-  active0: 7, // 7..10 habilidades ativas (4 linhas)
-  slot0: 11, // 11..15 barra de habilidades (5 espaços)
-  raceName: 16,
-  stat0: 17, // 17..21: EP, Aura, Magículas, Nível, Progresso
-  progressBar: 22,
-  action0: 23, // 23..28 botões de ação das outras abas
-  sage: 29, // botão GRANDE SÁBIO (coluna esquerda, todas as abas)
+  tab0: 1, // 1..8 categorias
+  sage: 9, // botão GRANDE SÁBIO (barra lateral)
+  active0: 10, // 10..13 habilidades em destaque (4 linhas)
+  slot0: 14, // 14..18 barra de habilidades (5 espaços)
+  raceName: 19,
+  stat0: 20, // 20..24: EP, Aura, Magículas, Nível, Progresso
+  progressBar: 25,
+  action0: 26, // 26..31 botões de ação das páginas de texto
+  pageTitle: 32,
 };
-export const MENU_COUNT = 30;
+export const MENU_COUNT = 33;
 export const ACTIVE_ROWS = 4;
 export const BAR_SLOTS = 5;
 export const ACTION_COUNT = 6;

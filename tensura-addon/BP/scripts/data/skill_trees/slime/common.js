@@ -5,15 +5,23 @@ import { CONFIG } from '../../../config.js';
 import { RC } from '../../raceDsl.js';
 
 export const SECTORS = {
-  body: 'Corpo e Natureza',
-  resist: 'Resistências e Imunidades',
-  predator: 'Predador e Evoluções',
-  sage: 'Grande Sábio, Raphael e Ciel',
-  absorbed: 'Habilidades por Absorção',
-  tech: 'Técnicas Pessoais',
+  body: 'Corpo de Slime',
+  absorption: 'Absorção',
+  sage: 'Análise e Grande Sábio',
+  resist: 'Resistências',
+  regen: 'Regeneração',
+  bodymanip: 'Manipulação Corporal',
+  magic: 'Magia',
+  spirit: 'Energia Espiritual',
+  unique: 'Habilidades Únicas',
   supreme: 'Habilidades Supremas',
-  final: 'Poderes Finais',
+  evolution: 'Evolução Racial',
   mod: 'Expansões do Mod',
+};
+// Cor de cada categoria (cristais da árvore e destaques).
+export const SECTOR_COLORS = {
+  body: '#7fd36a', absorption: '#c060ff', sage: '#4fc8ff', resist: '#c8c8d0', regen: '#ff7a9a', bodymanip: '#ffb347',
+  magic: '#3aa0ff', spirit: '#5effc8', unique: '#40d8ff', supreme: '#ffd000', evolution: '#ff5a3a', mod: '#b0b0c0',
 };
 export const SECTOR_ORDER = Object.keys(SECTORS);
 

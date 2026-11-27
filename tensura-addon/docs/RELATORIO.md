@@ -544,3 +544,73 @@ O Bedrock não desenha 3D real em telas de formulário. A profundidade vem das t
   formato usado agora nas texturas.
 - **Não testado no jogo:** a ordem das 4 margens no 9-slice do Bedrock. Se algum botão aparecer esticado, troco
   para margem única.
+
+## Versão 0.8.0 — Redesign "3D" do menu e da árvore
+
+**Importante:** o Bedrock não desenha 3D real em telas de formulário. A profundidade é **simulada**: camadas,
+relevo, sombras, brilho e animações nativas da interface. O único modelo 3D real na tela é o boneco do jogador.
+
+Decisões aprovadas:
+- **Classe** fora do menu (não existe sistema de classes; fica para uma etapa própria).
+- Supremas só na categoria Supremas.
+- **Expansões do Mod** como 12ª categoria.
+- Ícones-cristal na cor da categoria.
+
+**Menu principal (FASE 3):**
+- Barra lateral com 8 categorias **com função real**:
+  - **Personagem:** boneco 3D, atributos, destaques e barra.
+  - **Raça.**
+  - **Árvore de Habilidades:** abre a árvore.
+  - **Inventário Especial:** armazenamento real com Estômago ou Armazenamento Espacial; mostra o requisito se
+    estiver bloqueado. Também tem Transformação e Grimório.
+  - **Missões:** mesmo progresso do painel do Sábio.
+  - **Status:** atributos, resistências, fraquezas e registros.
+  - **Evolução.**
+  - **Configurações:** salvas no personagem.
+- Botão **Grande Sábio**.
+- Cabeçalho com o título da página.
+- A janela entra subindo e aparecendo; partículas mágicas discretas no fundo.
+
+**Configurações reais:**
+- HUD de Magicules (ao usar / sempre / nunca).
+- **Efeitos visuais reduzidos:** só 1 de cada 3 partículas durante as suas conjurações, para celular.
+- Notificações e sons do Grande Sábio.
+
+**Árvore (FASES 4 e 5):**
+- **Nós-cristal:** cada habilidade é um cristal facetado na **cor da categoria**, com o símbolo do efeito.
+- As **7 Supremas** têm **núcleo exclusivo** em cor própria: Raphael dourado, Beelzebuth carmesim, Uriel prata,
+  Veldora ciano, Velgrynd laranja, Azathoth violeta, Shub-Niggurath verde.
+- **Ciel** tem núcleo em losango rosa, identificado como MANAS.
+- A moldura do nó continua indicando o estado e a raridade.
+- **Slime em 12 categorias** (só posição/categoria; IDs, requisitos e saves iguais), com corredor de 2 colunas
+  entre elas: Corpo de Slime, Absorção, Análise e Grande Sábio, Resistências, Regeneração, Manipulação Corporal,
+  Magia, Energia Espiritual, Únicas, Supremas, Evolução Racial e Expansões do Mod.
+
+**Animações e efeitos (FASE 6):**
+- Brilho pulsante atrás dos nós: azul disponível, verde desbloqueado, vermelho requisito especial; dourado
+  (suprema) ou roxo (única).
+- **Explosão de luz** (uma vez) no nó em foco: recém-desbloqueado ou escolhido no menu.
+- Seleção pulsando.
+- Pulso de energia nas linhas.
+- Partículas no fundo.
+- Entrada suave das janelas do menu e do Sábio.
+
+**Android (FASE 7):**
+- O número de controles por tela não mudou (624 células na árvore).
+- As animações são nativas da interface, com 8 a 9 brilhos de fundo por tela.
+- Os efeitos extras usam texturas pequenas.
+- Nenhum laço novo no script.
+
+**Testes (FASE 8):** 79 passando, checagem de tipos sem erros e simulador de tela (menu, árvore, Árvore Suprema).
+
+**Não testado no jogo:**
+- animações em execução;
+- desempenho no Realme C71;
+- tamanho do pacote (cresceu por causa dos brilhos e das explosões por moldura);
+- posição do boneco 3D no novo layout.
+
+**Limitações:**
+- Sem 3D real.
+- A energia "correndo" nas linhas virou pulso de brilho.
+- Sem transição contínua entre telas (cada ação que salva reabre a tela).
+- Sem arrastar para os lados.

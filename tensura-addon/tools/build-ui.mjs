@@ -51,7 +51,7 @@ function templates() {
   return {
     // ── Árvore ──
     line: {
-      type: 'image', layer: 2, keep_ratio: false, bilinear: false, ...TL,
+      type: 'image', layer: 2, keep_ratio: false, bilinear: false, ...TL, anims: [`@${NS}.anim_line_a`],
       bindings: [colText, view(`('${TEX.line}' + #form_button_text)`, '#texture'), view("(not (#form_button_text = ''))", '#visible')],
     },
     node: {
@@ -60,6 +60,13 @@ function templates() {
       controls: [
         // sombra no "chão" (profundidade): levemente abaixo e à direita do nó
         { shadow: { type: 'image', layer: 2, texture: `${TEX.ui}node_shadow`, size: ['100%y', '80%'], offset: ['4%', '12%'], keep_ratio: false } },
+        // brilho pulsante do cristal (cor do estado / aura dourada ou roxa nas raras e supremas)
+        { glow: { type: 'image', layer: 2, size: ['100%y', '100%'], bilinear: true, anims: [`@${NS}.anim_glow_a`], bindings: [
+          colText, view(`('${TEX.ui}glow/g_' + #form_button_text)`, '#texture')] } },
+        // explosão de luz (uma vez) no nó em foco: recém-desbloqueado ou escolhido no menu
+        { burst: { type: 'image', layer: 7, size: ['100%y', '100%'], bilinear: true,
+          anims: [`@${NS}.anim_burst_size`, `@${NS}.anim_burst_alpha`], bindings: [
+            colText, view(`('${TEX.ui}burst/b_' + #form_button_text)`, '#texture')] } },
         { icon: { type: 'image', layer: 3, size: ['100%y', '54%'], bilinear: false, bindings: [
           { ...colTex, binding_name_override: '#texture' }, { ...colTexFs, binding_name_override: '#texture_file_system' }] } },
         { frame: { type: 'image', layer: 4, size: ['100%y', '78%'], bilinear: false, bindings: [
@@ -146,6 +153,12 @@ const ROW = {
   $ctl_bg: `${TEX.menu}row`, $ctl_bg_hover: `${TEX.menu}row_hover`, $ctl_bg_pressed: `${TEX.menu}row_hover`,
   $ctl_icon_size: ['100%y', '80%'], $ctl_icon_anchor: 'left_middle', $ctl_icon_offset: ['3%', 0],
   $ctl_text_size: ['70%', 'default'], $ctl_text_anchor: 'left_middle', $ctl_text_offset: ['28%', 0], $ctl_align: 'left', $ctl_font: 1.0,
+};
+// Categoria da barra lateral do menu: ícone à esquerda, nome à direita.
+const MENU_SIDE = {
+  $ctl_bg: `${TEX.menu}tab_bg`, $ctl_bg_hover: `${TEX.menu}tab_bg_hover`, $ctl_bg_pressed: `${TEX.menu}button_pressed`,
+  $ctl_icon_size: ['100%y', '68%'], $ctl_icon_anchor: 'left_middle', $ctl_icon_offset: ['4%', 0],
+  $ctl_text_size: ['72%', 'default'], $ctl_text_anchor: 'right_middle', $ctl_text_offset: ['-2%', 0], $ctl_align: 'left', $ctl_font: 0.8,
 };
 const SAGE_BTN = {
   ...ICON_LEFT_TEXT, $ctl_bg: `${TEX.sage}button`, $ctl_bg_hover: `${TEX.sage}button_hover`, $ctl_bg_pressed: `${TEX.sage}button_pressed`,
@@ -316,6 +329,7 @@ function treeRoot() {
     type: 'panel', size: ['100%', '100%'],
     controls: [
       { bg: img(`${TEX.ui}bg`, { layer: 0, bilinear: true }) },
+      ...sparkles('tree', 9),
       // Área da árvore: rolagem vertical nativa (arrastar o dedo).
       { tree_area: { type: 'panel', size: ['100%', pct(area)], offset: [0, pct(TOP)], ...TL, layer: 5, controls: [
         { 'scroll@common.scrolling_panel': {
@@ -332,70 +346,72 @@ function menuRoot() {
   const st = (text, x, y, w, extra = {}) => ({ [`t_${Math.round(x * 10)}_${Math.round(y * 10)}@${NS}.static_text`]: {
     $st_text: text, ...TL, offset: [pct(x), pct(y)], size: [pct(w), 'default'], ...extra } });
   const value = (name, idx, x, y, w, extra = {}) => slot(name, idx, x, y, w, 7, 'value', extra);
+  const box = (name, x, y, w, h, tex = `${TEX.menu}box`) => ({ [name]: { ...at(x, y, w, h), type: 'image', layer: 1, texture: tex, keep_ratio: false } });
+  const isTab = (n) => has(`${MENU_MARK}§${n}`);
 
-  // Coluna esquerda (comum às abas): boneco do jogador + nome da raça.
-  const left = [
-    { doll_box: { ...at(2, 16, 22, 43), type: 'image', layer: 1, texture: `${TEX.menu}box`, keep_ratio: false, controls: [
+  // Página "Personagem": boneco 3D, nome da raça, atributos, habilidades em destaque e barra.
+  const charPage = {
+    type: 'panel', ...at(23, 12, 76, 86), collection_name: COL,
+    bindings: [{ binding_name: '#title_text' }, view(isTab(1), '#visible')],
+    controls: [
+      box('doll_box', 0, 0, 27, 66),
       { player: { type: 'custom', renderer: 'live_player_renderer', property_bag: { '#look_at_cursor': true },
         // O modelo é desenhado com ~1,9x a altura do controle, a partir do topo (medido no jogo).
-        layer: 8, size: ['100%', '48%'], anchor_from: 'top_middle', anchor_to: 'top_middle', offset: [0, '4%'] } },
-    ] } },
-    ctl('race_name', MENU.raceName, 2, 60, 22, 8.5, { ...PLAIN, $ctl_bg: `${TEX.menu}box`, $ctl_bg_hover: `${TEX.menu}box`, $ctl_bg_pressed: `${TEX.menu}box`, $ctl_font: 1.2 }),
-    // Botão GRANDE SÁBIO: abre o painel individual do assistente.
-    ctl('sage', MENU.sage, 2, 69.5, 22, 10, { ...SAGE_BTN, $ctl_font: 0.85 }),
-  ];
-
-  const status = {
-    type: 'panel', size: ['100%', '100%'], collection_name: COL,
-    bindings: [{ binding_name: '#title_text' }, view(has(`${MENU_MARK}§1`), '#visible')],
-    controls: [
-      { stats_box: { ...at(26, 16, 41, 63), type: 'image', layer: 1, texture: `${TEX.menu}box`, keep_ratio: false } },
-      st('EP:', 29, 22, 15), value('v_ep', MENU.stat0, 44, 22, 20),
-      st('Aura:', 29, 32, 15), value('v_aura', MENU.stat0 + 1, 44, 32, 20),
-      st('Magículas:', 29, 41, 15), value('v_mp', MENU.stat0 + 2, 44, 41, 20),
-      { sep: { ...at(28, 50, 37, 0.6), type: 'image', layer: 2, texture: `${TEX.menu}line`, keep_ratio: false } },
-      st('Nível:', 29, 55, 15), value('v_lvl', MENU.stat0 + 3, 44, 55, 20),
-      st('Progresso de evolução:', 29, 64, 26, { $st_font: 0.9 }), value('v_prog', MENU.stat0 + 4, 55, 64, 9),
-      slot('bar', MENU.progressBar, 28.5, 71, 36, 5, 'picture'),
-      { skills_box: { ...at(69, 16, 29, 63), type: 'image', layer: 1, texture: `${TEX.menu}box`, keep_ratio: false } },
-      st('§bHabilidades Ativas', 71, 19, 25, { $st_align: 'center', $st_font: 1.0 }),
-      ...Array.from({ length: ACTIVE_ROWS }, (_, i) => ctl(`active${i}`, MENU.active0 + i, 70.5, 26 + i * 13, 26, 11.5, ROW)),
-      st('§bBarra de Habilidades', 3, 81.5, 30, { $st_font: 0.9 }),
-      ...Array.from({ length: BAR_SLOTS }, (_, i) => ctl(`slot${i}`, MENU.slot0 + i, 3 + i * 8.6, 87, 8, 11, SLOT, ['100%y', '100%'])),
+        layer: 8, ...at(0, 4, 27, 30), anchor_from: 'top_left', anchor_to: 'top_left' } },
+      ctl('race_name', MENU.raceName, 0, 68, 27, 11, { ...PLAIN, $ctl_bg: `${TEX.menu}row`, $ctl_bg_hover: `${TEX.menu}row`, $ctl_bg_pressed: `${TEX.menu}row`, $ctl_font: 1.1 }),
+      box('stats_box', 29, 0, 38, 79),
+      st('EP:', 31, 5, 16), value('v_ep', MENU.stat0, 45, 5, 20),
+      st('Aura:', 31, 15, 16), value('v_aura', MENU.stat0 + 1, 45, 15, 20),
+      st('Magículas:', 31, 25, 16), value('v_mp', MENU.stat0 + 2, 45, 25, 20),
+      { sep: { ...at(31, 36, 34, 0.6), type: 'image', layer: 2, texture: `${TEX.menu}line`, keep_ratio: false } },
+      st('Nível:', 31, 41, 16), value('v_lvl', MENU.stat0 + 3, 45, 41, 20),
+      st('Evolução:', 31, 52, 20), value('v_prog', MENU.stat0 + 4, 52, 52, 13),
+      slot('bar', MENU.progressBar, 31, 62, 34, 6, 'picture'),
+      box('skills_box', 69, 0, 31, 79),
+      st('§bEm destaque', 70, 3, 29, { $st_align: 'center', $st_font: 0.95 }),
+      ...Array.from({ length: ACTIVE_ROWS }, (_, i) => ctl(`active${i}`, MENU.active0 + i, 70, 11 + i * 16.5, 29, 15, ROW)),
+      st('§bBarra de Habilidades', 0, 82, 40, { $st_font: 0.9 }),
+      ...Array.from({ length: BAR_SLOTS }, (_, i) => ctl(`slot${i}`, MENU.slot0 + i, 29 + i * 9, 81, 8.5, 18, SLOT, ['100%y', '100%'])),
     ],
   };
 
-  const info = {
-    type: 'panel', size: ['100%', '100%'], collection_name: COL,
-    bindings: [{ binding_name: '#title_text' },
-      view(`(${has(`${MENU_MARK}§2`)} or ${has(`${MENU_MARK}§4`)} or ${has(`${MENU_MARK}§5`)})`, '#visible')],
+  // Páginas de texto (Raça, Inventário, Missões, Status, Evolução, Configurações).
+  const textPage = {
+    type: 'panel', ...at(23, 12, 76, 86), collection_name: COL,
+    bindings: [{ binding_name: '#title_text' }, view(`(not ${isTab(1)})`, '#visible')],
     controls: [
-      { text_box: { ...at(26, 16, 72, 63), type: 'image', layer: 1, texture: `${TEX.menu}box`, keep_ratio: false } },
-      { text_area: { type: 'panel', ...at(27.5, 18, 69, 59), layer: 2, controls: [{ 'scroll@common.scrolling_panel': {
+      box('text_box', 0, 0, 100, 76),
+      { text_area: { type: 'panel', ...at(1.5, 2, 97, 72), layer: 2, controls: [{ 'scroll@common.scrolling_panel': {
         ...TL, size: ['100%', '100%'], $show_background: false,
         $scrolling_content: `${NS}.details_text`, $scroll_size: [4, '100% - 2px'], $scrolling_pane_size: ['100% - 6px', '100%'],
         $scrolling_pane_offset: [0, 0], $scroll_bar_right_padding_size: [0, 0],
       } }] } },
-      ...Array.from({ length: ACTION_COUNT }, (_, i) => ctl(`action${i}`, MENU.action0 + i, 3 + (i % 3) * 21.5, 82 + Math.floor(i / 3) * 8.5, 20.5, 7.5, { ...MENU_BTN, $ctl_font: 0.8 })),
+      ...Array.from({ length: ACTION_COUNT }, (_, i) => ctl(`action${i}`, MENU.action0 + i, (i % 3) * 33.6, 79 + Math.floor(i / 3) * 10.5, 32.6, 9.5, { ...MENU_BTN, $ctl_font: 0.85 })),
     ],
   };
 
-  const tabW = 86 / MENU_TABS.length;
+  const side = MENU_TABS.length + 1;
+  const sideH = (86 - (side - 1) * 0.8) / side;
   const windowCtrls = [
     { bg: img(`${TEX.menu}window`, { layer: 0 }) },
-    ...MENU_TABS.map((t, i) => ctl(`tab_${t}`, MENU.tab0 + i, 1.2 + i * tabW, 2, tabW - 0.8, 11, MENU_TAB)),
-    ctl('close', MENU.close, 88.3, 2, 10.5, 11, { ...ICON_ONLY, $ctl_bg: `${TEX.menu}button`, $ctl_bg_hover: `${TEX.menu}button_hover`, $ctl_bg_pressed: `${TEX.menu}button_pressed` }),
-    { tab_line: { ...at(1, 13.4, 98, 0.8), type: 'image', layer: 2, texture: `${TEX.menu}tab_line`, keep_ratio: false } },
-    ...left,
-    { status },
-    { info },
-    ctl('back', MENU.back, 72, 84, 26, 12, MENU_BTN),
+    // Cabeçalho: título da página + fechar
+    { header: { ...at(1, 1.5, 98, 9), type: 'image', layer: 1, texture: `${TEX.menu}tab_bg`, keep_ratio: false } },
+    { brand: { type: 'label', ...TL, offset: ['2.5%', '4%'], size: ['24%', 'default'], layer: 3, text: '§l§bTENSURA RPG', shadow: true, font_scale_factor: 1.15 } },
+    slot('page_title', MENU.pageTitle, 25, 3.8, 60, 6, 'value', { $v_align: 'left', $v_font: 1.2 }),
+    ctl('close', MENU.close, 89, 2.3, 9.5, 7.5, { ...ICON_ONLY, $ctl_bg: `${TEX.menu}button`, $ctl_bg_hover: `${TEX.menu}button_hover`, $ctl_bg_pressed: `${TEX.menu}button_pressed` }),
+    // Barra lateral: 8 categorias + Grande Sábio
+    ...MENU_TABS.map((t, i) => ctl(`tab_${t}`, MENU.tab0 + i, 1, 12 + i * (sideH + 0.8), 21, sideH, MENU_SIDE)),
+    ctl('sage', MENU.sage, 1, 12 + MENU_TABS.length * (sideH + 0.8), 21, sideH, { ...MENU_SIDE, $ctl_bg: `${TEX.sage}button`, $ctl_bg_hover: `${TEX.sage}button_hover`, $ctl_bg_pressed: `${TEX.sage}button_pressed` }),
+    { char: charPage },
+    { text: textPage },
   ];
   return {
     type: 'panel', size: ['100%', '100%'], collection_name: COL,
     controls: [
       { shade: img(`${TEX.menu}shade`, { layer: 0 }) },
-      { window: { type: 'panel', size: ['88%', '88%'], layer: 2, collection_name: COL, controls: windowCtrls } },
+      ...sparkles('menu', 8),
+      { window: { type: 'panel', size: ['92%', '92%'], layer: 2, collection_name: COL, controls: windowCtrls,
+        anims: [`@${NS}.anim_rise_in`, `@${NS}.anim_open_fade`] } },
     ],
   };
 }
@@ -448,9 +464,26 @@ function sageRoot() {
     type: 'panel', size: ['100%', '100%'], collection_name: COL,
     controls: [
       { shade: img(`${TEX.menu}shade`, { layer: 0 }) },
-      { window: { type: 'panel', size: ['92%', '92%'], layer: 2, collection_name: COL, controls: ctrls } },
+      ...sparkles('sage', 8),
+      { window: { type: 'panel', size: ['92%', '92%'], layer: 2, collection_name: COL, controls: ctrls,
+        anims: [`@${NS}.anim_rise_in`, `@${NS}.anim_open_fade`] } },
     ],
   };
+}
+
+// Partículas mágicas discretas no fundo (poucas imagens, animações nativas, sem partículas do mundo).
+function sparkles(name, n) {
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const x = (i * 37 + 11) % 96 + 1;
+    const y = (i * 53 + 17) % 88 + 6;
+    const s = 0.8 + ((i * 7) % 5) * 0.25;
+    out.push({ [`${name}_spark${i}`]: { type: 'panel', ...at(x, y, s, s * 2), layer: 1,
+      anims: [`@${NS}.anim_drift_a`],
+      controls: [{ s: { type: 'image', texture: `${TEX.ui}spark`, size: ['100%x', '100%x'], bilinear: true,
+        anims: [i % 2 ? `@${NS}.anim_spark_a` : `@${NS}.anim_spark2_a`] } }] } });
+  }
+  return out;
 }
 
 // ── Animações (cadeias com "next", como as do próprio jogo) ──
@@ -467,6 +500,18 @@ function animations() {
     ...loop('anim_glow_a', 'anim_glow_b', 'alpha', 0.55, 0.95, 1.8),
     ...loop('anim_blink_a', 'anim_blink_b', 'alpha', 1.0, 0.15, 0.55, 'linear'),
     anim_fade_in: { anim_type: 'alpha', easing: 'out_cubic', duration: 0.7, from: 0.0, to: 1.0 },
+    // Entrada das janelas: sobe um pouco e aparece (sensação de profundidade).
+    anim_rise_in: { anim_type: 'offset', easing: 'out_back', duration: 0.45, from: [0, '4%'], to: [0, 0] },
+    anim_open_fade: { anim_type: 'alpha', easing: 'out_cubic', duration: 0.35, from: 0.0, to: 1.0 },
+    // Linhas: pulso lento de energia.
+    ...loop('anim_line_a', 'anim_line_b', 'alpha', 0.72, 1.0, 1.6),
+    // Explosão de seleção/desbloqueio (uma vez ao abrir).
+    anim_burst_size: { anim_type: 'size', easing: 'out_cubic', duration: 0.8, from: ['100%y', '60%'], to: ['100%y', '170%'] },
+    anim_burst_alpha: { anim_type: 'alpha', easing: 'in_quad', duration: 0.9, from: 1.0, to: 0.0 },
+    // Partículas mágicas do fundo.
+    ...loop('anim_spark_a', 'anim_spark_b', 'alpha', 0.1, 0.9, 1.3, 'in_out_sine'),
+    ...loop('anim_spark2_a', 'anim_spark2_b', 'alpha', 0.0, 0.7, 2.1, 'in_out_sine'),
+    ...loop('anim_drift_a', 'anim_drift_b', 'offset', [0, 0], [0, '-30%'], 3.2),
     anim_slide_in: { anim_type: 'offset', easing: 'out_cubic', duration: 0.6, from: ['-8%', 0], to: [0, 0] },
   };
 }
@@ -582,7 +627,7 @@ export function buildUi(outDir = join(ROOT, 'RP', 'ui')) {
   };
   tree.tree_content = treeContent();
   tree.tg_off = { type: 'panel' };
-  tree.tg_on = img(`${TEX.ui}selected`);
+  tree.tg_on = img(`${TEX.ui}selected`, { anims: [`@${NS}.anim_pulse_a`] });
   tree.tg_hover = img(`${TEX.ui}hover`);
   tree.close_details_off = { type: 'panel', controls: [{ bg: img(`${TEX.ui}ctl`) }, { t: { type: 'label', text: '§fFechar detalhes', font_scale_factor: 0.75, shadow: true, layer: 2 } }] };
   tree.close_details_hover = { type: 'panel', controls: [{ bg: img(`${TEX.ui}ctl_hover`) }, { t: { type: 'label', text: '§fFechar detalhes', font_scale_factor: 0.75, shadow: true, layer: 2 } }] };

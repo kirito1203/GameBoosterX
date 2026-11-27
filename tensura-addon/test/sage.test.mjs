@@ -216,7 +216,7 @@ test('painel: tela inicial 3x3 + Configurações; páginas com Voltar; botão GR
   assert.match(rh.buttons[SAGE.emblem].icon, /icon_raphael/);
   const menu = buildMenuForm({ tab: 'status', d, state: stateOf(d) });
   assert.deepEqual(menu.hit[MENU.sage], { type: 'sage' });
-  assert.match(menu.buttons[MENU.sage].text, /GRANDE SÁBIO/);
+  assert.match(menu.buttons[MENU.sage].text, /Grande Sábio/);
 });
 
 test('resource pack: tela do Sábio no roteador, texturas de estágio, item Núcleo', () => {

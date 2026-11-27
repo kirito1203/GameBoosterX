@@ -4,7 +4,7 @@
 // Cada toque devolve o índice do botão; o script atualiza o estado e reabre o
 // formulário. O desenho é feito pelo resource pack (RP/ui/tensura_tree.json).
 import { system, world } from '@minecraft/server';
-import { ActionFormData, FormCancelationReason } from '@minecraft/server-ui';
+import { ActionFormData, ModalFormData, FormCancelationReason } from '@minecraft/server-ui';
 import { CONFIG } from '../config.js';
 import { barSlots } from '../core/stats.js';
 import { SKILLS, RACES, TREES, SECTORS, initialSkillsFor } from '../data/registry.js';
@@ -93,7 +93,7 @@ function toggleEquip(player, d, id) {
 }
 
 // ── Menu principal ──
-export async function openMenu(player, menus, startTab = 'status') {
+export async function openMenu(player, menus, startTab = 'char') {
   if (openFor.has(player.id)) return;
   let d = getData(player);
   if (!d.race) { await menus.chooseRace(player); d = getData(player); if (!d.race) return; }
@@ -124,6 +124,7 @@ export async function openMenu(player, menus, startTab = 'status') {
       if (act.type === 'unlock') { doUnlock(player, d, act.id); d = getData(player); continue; }
       if (act.type === 'sage') { if ((await menus.sage(player, 'home', true)) === 'close') break; d = getData(player); continue; }
       if (act.type === 'mimic') { await menus.mimic(player); continue; }
+      if (act.type === 'settings') { await settingsForm(player, d); continue; }
       if (act.type === 'storage') { await menus.storage(player); continue; }
     }
     markDirty(player);
@@ -194,6 +195,26 @@ async function treeLoop(player, menus, focus = {}) {
     markDirty(player);
     return result;
   }
+}
+
+/** Configurações do menu (salvas no personagem). */
+async function settingsForm(player, d) {
+  const hudKeys = ['auto', 'always', 'never'];
+  const s = d.settings;
+  const f = new ModalFormData().title('§lConfigurações')
+    .dropdown('HUD de Magicules', ['Ao usar habilidades', 'Sempre', 'Nunca'], { defaultValueIndex: Math.max(0, hudKeys.indexOf(s.hud)) })
+    .toggle('Efeitos visuais reduzidos (melhor para celular)', { defaultValue: s.fx === 'reduced' })
+    .toggle('Notificações do Grande Sábio', { defaultValue: !!d.sage?.settings?.notify })
+    .toggle('Sons do Grande Sábio', { defaultValue: !!d.sage?.settings?.sound })
+    .submitButton('Salvar');
+  const r = await showForm(player, f);
+  if (!r || r.canceled || !r.formValues) return;
+  const [hud, fx, notify, snd] = r.formValues;
+  s.hud = hudKeys[Number(hud)] ?? 'auto';
+  s.fx = fx ? 'reduced' : 'normal';
+  if (d.sage) { d.sage.settings.notify = !!notify; d.sage.settings.sound = !!snd; d.sageDirty = true; }
+  saveNow(player);
+  msg(player, '§aConfigurações salvas.');
 }
 
 /** Lista dos setores da árvore racial (com progresso) + visão geral. Retorna posição, 'overview' ou null. */

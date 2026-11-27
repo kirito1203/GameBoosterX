@@ -162,9 +162,9 @@ test('painel de detalhes sempre dentro da grade e do lado oposto ao nó', () => 
   }
 });
 
-test('menu: Status mostra EP, Aura, Magículas, nível, progresso, habilidades e a barra de 5 espaços', () => {
+test('menu: Personagem mostra EP, Aura, Magículas, nível, progresso, habilidades e a barra de 5 espaços', () => {
   const { d, state } = demo();
-  const f = buildMenuForm({ tab: 'status', d, state });
+  const f = buildMenuForm({ tab: 'char', d, state });
   assert.equal(f.buttons.length, MENU_COUNT);
   assert.ok(f.title.startsWith(`${MENU_MARK}§1`));
   assert.ok(f.buttons[MENU.stat0].text.includes('1.250'));
@@ -245,8 +245,9 @@ test('simulação: nós quadrados alinhados às linhas; tocar num nó mostra só
   }
   const sc = scenario('menu-status');
   const { page: html } = previewHtml(modelFor(sc), { root: 'menu_root' });
-  for (const s of ['EP:', 'Aura:', 'Magículas:', 'Nível:', 'Progresso de evolução:', 'Habilidades Ativas', 'Barra de Habilidades', 'live_player_renderer', 'Voltar',
-    '1.250', 'STATUS', 'RAÇA', 'HABILIDADES', 'EVOLUÇÃO', 'REGISTROS', 'Predador', 'Grande Sábio', 'Slime', 'bar_']) {
+  for (const s of ['EP:', 'Aura:', 'Magículas:', 'Nível:', 'Evolução:', 'Em destaque', 'Barra de Habilidades', 'live_player_renderer',
+    '1.250', 'Personagem', 'Raça', 'Árvore de Habilidades', 'Inventário Especial', 'Missões', 'Status', 'Configurações',
+    'Predador', 'Grande Sábio', 'Slime', 'bar_']) {
     assert.ok(html.includes(s), `menu sem "${s}"`);
   }
   assert.equal((html.match(/menu\/close\.png/g) ?? []).length, 1, 'ícone de fechar repetido (todos lendo o botão 0)');

@@ -96,7 +96,13 @@ export function addEffects(e, list, fallbackSecs = 5) {
   }
 }
 
+// Efeitos reduzidos (configuração do jogador): durante a conjuração dele, só 1 de cada 3 partículas.
+let reduced = false;
+let skip = 0;
+export function setReducedFx(on) { reduced = on; skip = 0; }
+
 export function particle(dim, id, loc) {
+  if (reduced && (skip++ % 3) !== 0) return;
   try { dim.spawnParticle(id, loc); } catch { /* fora de chunk carregado */ }
 }
 

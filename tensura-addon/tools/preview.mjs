@@ -312,7 +312,8 @@ export function scenario(name) {
       const i = (pos[1] - view.y) * 13 + (pos[0] - view.x);
       return { kind: 'tree', p: { state, view, mp }, toggles: [`tg_${i}`], cell: i };
     }
-    case 'menu-status': return { kind: 'menu', p: { tab: 'status', d, state } };
+    case 'menu-status': return { kind: 'menu', p: { tab: 'char', d, state } };
+    case 'menu-stats': return { kind: 'menu', p: { tab: 'status', d: { ...d, settings: { hud: 'auto', fx: 'normal' } }, state } };
     case 'menu-evolution': return { kind: 'menu', p: { tab: 'evolution', d, state } };
     case 'race-slime': return { kind: 'race', p: { page: 0, selected: 'slime', sageText: 'Agora, escolha a raça que definirá sua existência neste mundo.' } };
     case 'race-kijin': return { kind: 'race', p: { page: 0, selected: 'kijin', sageText: 'Kijin não pode ser escolhido agora. Essa forma é alcançada evoluindo a partir de Ogro.' } };

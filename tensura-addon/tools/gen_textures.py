@@ -165,28 +165,50 @@ def shade(c, k):
 
 # ── Ícones: azulejo quadrado em pixel art (24x24 ampliado 4x) ──
 def icon(skill, n=24, scale=4):
+    """Cristal facetado na cor da categoria, com o símbolo do efeito. Supremas: núcleo exclusivo."""
     base = hexc(skill['color'])
-    im = Image.new('RGBA', (n, n), (0, 0, 0, 0))
+    S = n * 8
+    im = Image.new('RGBA', (S, S), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
-    d.rectangle([0, 0, n - 1, n - 1], fill=shade(base, 0.22))
-    for i in range(n // 2):  # gradiente em degraus
-        d.rectangle([i, i, n - 1 - i, n - 1 - i], fill=shade(base, 0.22 + 0.025 * i))
-    light = mix(base, (255, 255, 255, 255), 0.5)
-    glyph(d, skill['glyph'], n / 2, n / 2, n * 0.36, light, shade(base, 0.15))
-    # contorno escuro do glifo (efeito pixel art)
-    px = im.load()
-    out = im.copy()
-    po = out.load()
-    for y in range(n):
-        for x in range(n):
-            if px[x, y][:3] == light[:3]:
-                for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-                    xx, yy = x + dx, y + dy
-                    if 0 <= xx < n and 0 <= yy < n and px[xx, yy][:3] != light[:3]:
-                        po[xx, yy] = shade(base, 0.12)
-    d2 = ImageDraw.Draw(out)
-    d2.rectangle([0, 0, n - 1, n - 1], outline=(10, 10, 16, 255))
-    return pixel(out, scale)
+    c = S / 2
+    # fundo: brilho radial escuro na cor da categoria
+    for r in range(int(S * 0.72), 0, -int(S * 0.04)):
+        k = 1 - r / (S * 0.72)
+        d.ellipse([c - r, c - r, c + r, c + r], fill=mix(shade(base, 0.12), shade(base, 0.45), k))
+    if skill.get('core'):
+        _core_icon(d, c, S, base, skill.get('manas'))
+    else:
+        top, bot, w = S * 0.10, S * 0.90, S * 0.30
+        tip, shoulder = S * 0.10, S * 0.30
+        P = {'t': (c, top), 'lt': (c - w, shoulder), 'rt': (c + w, shoulder), 'lb': (c - w, S - shoulder), 'rb': (c + w, S - shoulder), 'b': (c, bot),
+             'm': (c, c)}
+        light, mid, dark = mix(base, (255, 255, 255, 255), 0.45), base, shade(base, 0.5)
+        d.polygon([P['t'], P['lt'], P['m']], fill=mix(base, (255, 255, 255, 255), 0.6))   # faceta superior esquerda (luz)
+        d.polygon([P['t'], P['rt'], P['m']], fill=light)
+        d.polygon([P['lt'], P['lb'], P['m']], fill=mid)
+        d.polygon([P['rt'], P['rb'], P['m']], fill=dark)
+        d.polygon([P['lb'], P['b'], P['m']], fill=shade(base, 0.7))
+        d.polygon([P['rb'], P['b'], P['m']], fill=shade(base, 0.38))
+        d.polygon([P['t'], P['rt'], P['rb'], P['b'], P['lb'], P['lt']], outline=mix(base, (255, 255, 255, 255), 0.7), width=int(S * 0.02))
+        d.line([P['t'], (c - w * 0.35, shoulder * 1.1)], fill=(255, 255, 255, 220), width=int(S * 0.03))   # reflexo
+        glyph(d, skill['glyph'], c, c * 1.04, S * 0.2, (255, 255, 255, 255), shade(base, 0.25))
+    return pixel(im.resize((n, n), Image.LANCZOS), scale)
+
+
+def _core_icon(d, c, S, base, manas=False):
+    """Núcleo exclusivo das Supremas (cruz luminosa + anéis) na cor própria; Ciel (Manas) em losango duplo."""
+    light = mix(base, (255, 255, 255, 255), 0.55)
+    for r, a in ((0.46, 150), (0.34, 200)):
+        d.ellipse([c - S * r, c - S * r * 0.34, c + S * r, c + S * r * 0.34], outline=light[:3] + (a,), width=int(S * 0.035))
+    u = S * 0.095
+    if manas:
+        d.polygon([(c, c - u * 4), (c + u * 3, c), (c, c + u * 4), (c - u * 3, c)], fill=base, outline=light, width=int(S * 0.02))
+        d.polygon([(c, c - u * 2.2), (c + u * 1.6, c), (c, c + u * 2.2), (c - u * 1.6, c)], fill=light)
+    else:
+        for (x0, y0, x1, y1) in ((-3.2, -1, 3.2, 1), (-1, -3.2, 1, 3.2), (-2.2, -2.2, 2.2, 2.2)):
+            d.rectangle([c + x0 * u, c + y0 * u, c + x1 * u, c + y1 * u], fill=base)
+        d.rectangle([c - 1.5 * u, c - 1.5 * u, c + 1.5 * u, c + 1.5 * u], fill=light)
+    d.rectangle([c - 0.7 * u, c - 0.7 * u, c + 0.7 * u, c + 0.7 * u], fill=(255, 255, 255, 255))
 
 
 # ── Molduras quadradas (32x32 ampliado 2x) ──
@@ -263,6 +285,48 @@ def _sphere_shade(im, c, R, r_in, ring):
     s = R * 0.16
     d.ellipse([hx - s, hy - s * 0.6, hx + s, hy + s * 0.6], fill=(255, 255, 255, 170))
     return out
+
+
+def node_glow(code, n=48):
+    """Halo do nó: cor do estado; aura dourada (suprema) ou roxa (única/lendária). Bloqueado: sem halo."""
+    st, rar = code[0], int(code[1])
+    im = Image.new('RGBA', (n, n), (0, 0, 0, 0))
+    col = {'a': (70, 165, 255), 'u': (70, 225, 115), 's': (235, 64, 64)}.get(st)
+    if rar == 5 and st != 'l':
+        col = (255, 200, 60)
+    elif rar == 4 and st != 'l' and st != 's':
+        col = (180, 100, 255)
+    if not col:
+        return Image.new('RGBA', (1, 1), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    for r, a in ((0.48, 40), (0.42, 70), (0.36, 90)):
+        d.ellipse([n * (0.5 - r), n * (0.5 - r), n * (0.5 + r), n * (0.5 + r)], fill=col + (a,))
+    return im.filter(ImageFilter.GaussianBlur(n * 0.06))
+
+
+def node_burst(code, n=64):
+    """Anel de luz da explosão de seleção/desbloqueio (só para o nó em foco)."""
+    if code[4] != 's':
+        return Image.new('RGBA', (1, 1), (0, 0, 0, 0))
+    im = Image.new('RGBA', (n, n), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    gold = int(code[1]) == 5
+    col = (255, 215, 90) if gold else (150, 230, 255)
+    d.ellipse([n * 0.08, n * 0.08, n * 0.92, n * 0.92], outline=col + (255,), width=int(n * 0.06))
+    for k in range(8):
+        import math
+        a = k * math.pi / 4
+        d.line([n / 2 + math.cos(a) * n * 0.28, n / 2 + math.sin(a) * n * 0.28, n / 2 + math.cos(a) * n * 0.46, n / 2 + math.sin(a) * n * 0.46], fill=col + (230,), width=int(n * 0.04))
+    return im.filter(ImageFilter.GaussianBlur(0.6))
+
+
+def spark(n=16):
+    im = Image.new('RGBA', (n, n), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    c = n / 2
+    d.ellipse([c - 3, c - 3, c + 3, c + 3], fill=(140, 220, 255, 200))
+    d.line([c, 1, c, n - 2], fill=(200, 240, 255, 160)); d.line([1, c, n - 2, c], fill=(200, 240, 255, 160))
+    return im.filter(ImageFilter.GaussianBlur(0.5))
 
 
 def node_shadow(n=64):
@@ -461,6 +525,14 @@ def menu_tab_icon(kind, on, size=48):
         d.ellipse([S * .4, S * .4, S * .6, S * .6], fill=col)
     elif kind == 'evolution':
         d.polygon([(S * .5, S * .1), (S * .85, S * .5), (S * .62, S * .5), (S * .62, S * .9), (S * .38, S * .9), (S * .38, S * .5), (S * .15, S * .5)], fill=col)
+    elif kind == 'char':
+        d.ellipse([S * .34, S * .1, S * .66, S * .42], fill=col)
+        d.rounded_rectangle([S * .2, S * .46, S * .8, S * .92], radius=S * .14, fill=col)
+    elif kind == 'chest':
+        d.rectangle([S * .14, S * .4, S * .86, S * .86], fill=col)
+        d.pieslice([S * .14, S * .14, S * .86, S * .66], 180, 360, fill=col)
+        d.rectangle([S * .44, S * .44, S * .56, S * .6], fill=(30, 40, 60, 255))
+        d.line([S * .14, S * .42, S * .86, S * .42], fill=(30, 40, 60, 255), width=SS * 2)
     elif kind == 'records':
         d.rectangle([S * .12, S * .2, S * .48, S * .82], fill=col)
         d.rectangle([S * .52, S * .2, S * .88, S * .82], fill=col)
@@ -701,6 +773,10 @@ def main():
         save(line_tile(code), os.path.join(T, 'ui', 'line', code + '.png'))
     save(landscape(), os.path.join(T, 'ui', 'bg.png'))
     save(node_shadow(), os.path.join(T, 'ui', 'node_shadow.png'))
+    save(spark(), os.path.join(T, 'ui', 'spark.png'))
+    for code in spec['frames']:
+        save(node_glow(code), os.path.join(T, 'ui', 'glow', 'g_' + code + '.png'))
+        save(node_burst(code), os.path.join(T, 'ui', 'burst', 'b_' + code + '.png'))
     U = os.path.join(T, 'ui')
     nine(os.path.join(U, 'bar'), window3d((8, 10, 20, 230), (40, 70, 110, 255)))
     nine(os.path.join(U, 'panel'), window3d((10, 12, 24, 238), (40, 120, 180, 255), (60, 170, 230)))
@@ -733,6 +809,12 @@ def main():
     for k in ('status', 'race', 'skills', 'evolution', 'records'):
         save(menu_tab_icon(k, False), os.path.join(M, f'tab_{k}.png'))
         save(menu_tab_icon(k, True), os.path.join(M, f'tab_{k}_on.png'))
+    # Categorias do menu (barra lateral)
+    for k, (fn, kind) in {'char': (menu_tab_icon, 'char'), 'race': (menu_tab_icon, 'race'), 'tree': (menu_tab_icon, 'skills'),
+                          'inventory': (menu_tab_icon, 'chest'), 'missions': (sage_icon, 'missions'), 'status': (menu_tab_icon, 'status'),
+                          'evolution': (menu_tab_icon, 'evolution'), 'settings': (sage_icon, 'settings')}.items():
+        save(fn(kind, False), os.path.join(M, f'cat_{k}.png'))
+        save(fn(kind, True), os.path.join(M, f'cat_{k}_on.png'))
     save(ui_icon('close', 48), os.path.join(M, 'close.png'))
     save(ui_icon('back', 48), os.path.join(M, 'back.png'))
     for k in range(21):

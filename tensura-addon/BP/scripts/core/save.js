@@ -37,6 +37,7 @@ export function fresh() {
     loadouts: [],          // conjuntos de barra guardados (Armazenamento)
     cielOps: new Set(),    // operações concluídas por Ciel (ex.: 'azathoth')
     opDays: {},            // último dia do mundo em que cada operação diária foi usada
+    settings: { hud: 'auto', fx: 'normal' }, // configurações do menu (HUD, efeitos visuais)
     ui: { tab: 'racial', views: {}, selected: null },
     // memória de execução (não salva)
     cooldowns: {},
@@ -73,7 +74,7 @@ export function serialize(d) {
     equipped: d.equipped, slot: d.slot, absorbed: d.absorbed, mimic: d.mimic, flying: d.flying, flightDrain: d.flightDrain,
     warp: d.warp, gifted: d.gifted, introDone: d.introDone,
     discovered: [...d.discovered], missions: [...d.missions], mastery: d.mastery, absorbLog: d.absorbLog, absorbTotal: d.absorbTotal,
-    library: [...d.library], skillCopies: d.skillCopies, loadouts: d.loadouts, cielOps: [...d.cielOps], opDays: d.opDays, ui: { tab: d.ui.tab, views: d.ui.views, view: d.ui.view ?? null },
+    library: [...d.library], skillCopies: d.skillCopies, loadouts: d.loadouts, cielOps: [...d.cielOps], opDays: d.opDays, settings: d.settings, ui: { tab: d.ui.tab, views: d.ui.views, view: d.ui.view ?? null },
   });
 }
 
@@ -115,6 +116,8 @@ export function deserialize(raw) {
       loadouts: (o.loadouts ?? []).slice(0, 3).map((l) => ({ name: String(l.name ?? ''), ids: (l.ids ?? []).filter((id) => SKILLS[id]) })),
       cielOps: new Set(o.cielOps ?? []),
       opDays: o.opDays && typeof o.opDays === 'object' ? o.opDays : {},
+      settings: { hud: ['auto', 'always', 'never'].includes(o.settings?.hud) ? o.settings.hud : 'auto',
+        fx: o.settings?.fx === 'reduced' ? 'reduced' : 'normal' },
     });
     migrateLineage(d);
     d.ui.tab = o.ui?.tab ?? 'racial';

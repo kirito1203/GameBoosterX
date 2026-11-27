@@ -39,6 +39,19 @@ const racial = {};
 let reserved = { minX: 0, maxX: 0, minY: 1, maxY: 1 };
 for (const lin in LINEAGES) {
   const L = computeLayout(TREES[`race.${lin}`], { noLinks: true, forceArm: 'S' });
+  // Árvores com categorias: abre um corredor de 2 colunas entre as categorias (grupos visualmente separados).
+  const secOf = (id) => SKILLS[id].sector;
+  const secs = [...new Set(Object.keys(L.pos).map(secOf).filter(Boolean))];
+  if (secs.length > 1) {
+    const minX = (s) => Math.min(...Object.keys(L.pos).filter((id) => secOf(id) === s).map((id) => L.pos[id][0]));
+    secs.sort((a, b) => minX(a) - minX(b));
+    const GAP = 2;
+    const mid = Math.floor(((secs.length - 1) * GAP) / 2);
+    for (const id in L.pos) {
+      const i = secs.indexOf(secOf(id));
+      if (i >= 0) L.pos[id] = [L.pos[id][0] + i * GAP - mid, L.pos[id][1]];
+    }
+  }
   racial[lin] = L.pos;
   const b = bboxOf(L.pos);
   reserved = { minX: Math.min(reserved.minX, b.minX), maxX: Math.max(reserved.maxX, b.maxX), minY: 1, maxY: Math.max(reserved.maxY, b.maxY) };

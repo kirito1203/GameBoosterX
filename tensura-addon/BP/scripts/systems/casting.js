@@ -9,7 +9,7 @@ import { getData } from './storage.js';
 import { spend, showHud } from './magicules.js';
 import { antimagicBlocks } from './fields.js';
 import { runFx } from './effects.js';
-import { msg, sound } from './util.js';
+import { msg, sound, setReducedFx } from './util.js';
 
 export function cast(player, skillId) {
   const d = getData(player);
@@ -28,11 +28,14 @@ export function cast(player, skillId) {
   const have = aura ? d.aura : d.mp;
   if (have < cost) { msg(player, `§c${aura ? 'Aura' : 'Magículas'} insuficiente: ${s.name} custa ${cost} (você tem ${Math.floor(have)}).`); sound(player.dimension, 'random.fizz', player.location); return false; }
   let ok;
+  setReducedFx(d.settings?.fx === 'reduced');
   try {
     ok = runFx(player, s);
   } catch (e) {
     console.warn(`[Tensura] Erro ao conjurar ${skillId}: ${e}`);
     return false;
+  } finally {
+    setReducedFx(false);
   }
   if (ok === false) return false;
   if (aura) { d.aura -= cost; d.lastCast = now; } else spend(player, cost);

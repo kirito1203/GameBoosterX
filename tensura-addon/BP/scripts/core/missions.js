@@ -51,3 +51,18 @@ export function missionsFor(lineage) {
 }
 
 export { MISSIONS };
+
+/** Linhas de texto das missões (menu principal e painel do Sábio usam o mesmo texto). */
+export function missionLines(d, lineage) {
+  const list = missionsFor(lineage);
+  if (!list.length) return ['Sua raça ainda não tem missões especiais cadastradas.'];
+  const lines = [];
+  for (const m of list) {
+    const done = d.missions?.has(m.id);
+    const pr = missionProgress(m, d);
+    lines.push(`${done ? '§a✔' : pr.done ? '§e★' : '§7•'} §l${m.name}§r ${done ? '§a(concluída)' : `§7${Math.round(pr.progress * 100)}%`}§r`, `  ${m.desc}`);
+    if (!done) for (const p of pr.parts) lines.push(`  ${p.ok ? '§a✔' : '§c✘'} ${p.label}: ${p.cur}/${p.need}§r`);
+    lines.push(`  §8Recompensa: ${m.reward} pontos§r`, '');
+  }
+  return lines;
+}

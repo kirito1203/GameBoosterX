@@ -6,7 +6,7 @@ import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { deflateRawSync, crc32 } from 'node:zlib';
-import { SKILLS, TREES } from '../BP/scripts/data/registry.js';
+import { SKILLS, TREES, SECTORS } from '../BP/scripts/data/registry.js';
 import { fxList } from '../BP/scripts/core/progression.js';
 import { allFrameCodes, lineCodesForCell, iconName } from '../BP/scripts/core/uiSpec.js';
 import { buildUi } from './build-ui.mjs';
@@ -27,11 +27,20 @@ const EL_COLORS = {
   gravity: '#8a6cff', soul: '#4fd9d0', nuclear: '#8aff3a', dragon: '#d050ff', physical: '#d8d8d8', acid: '#a0e040', blood: '#e0304a',
 };
 
+async function supremeColors() {
+  const m = await import('../BP/scripts/data/skill_trees/slime/index.js');
+  return m.SUPREME_COLORS;
+}
+const SUP = await supremeColors();
+
 function iconSpec(s) {
   const fx = fxList(s.fx);
   const el = fx.find((f) => f.el && EL_COLORS[f.el])?.el;
   const tree = TREES[s.tree];
-  const color = el ? EL_COLORS[el] : tree.kind === 'racial' ? '#ffb040' : ELEMENT_FROM_TREE[s.tree] ?? '#b0b0c0';
+  // Cristal na cor da CATEGORIA: setor (árvores raciais com categorias) ou árvore universal.
+  const sec = tree.kind === 'racial' && s.sector ? SECTORS[tree.lineage]?.colors?.[s.sector] : null;
+  const color = sec ?? (tree.kind === 'racial' ? '#ffb040' : ELEMENT_FROM_TREE[s.tree] ?? (el ? EL_COLORS[el] : '#b0b0c0'));
+  if (SUP[s.id]) return { icon: iconName(s.id), color: SUP[s.id], glyph: 'core', abbr: '', core: true, manas: s.tier === 'manas' };
   let glyph = fx[0]?.k ?? 'passive';
   if (s.type === 'passive') glyph = 'passive';
   if (s.type === 'evolution') glyph = 'evolve';

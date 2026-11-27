@@ -61,7 +61,8 @@ export function startMagicules() {
         d.mp = Math.min(d.stats.maxMp, d.mp + r);
         markDirty(p);
       }
-      if (holdingTensura(p) || now - d.lastCast < CONFIG.magicules.hudSeconds * 20 || d.flying) showHud(p);
+      const hud = d.settings?.hud ?? 'auto';
+      if (hud === 'always' || (hud === 'auto' && (holdingTensura(p) || now - d.lastCast < CONFIG.magicules.hudSeconds * 20 || d.flying))) showHud(p);
     }
   }, every);
 }
