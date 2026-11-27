@@ -45,6 +45,7 @@ function writeTexts() {
   const items = {
     'item.tensura:great_sage_tome': ['Grimório do Grande Sábio', 'Great Sage Grimoire'],
     'item.tensura:magic_crystal': ['Cristal de Magicules', 'Magicule Crystal'],
+    'item.tensura:sage_core': ['Núcleo do Grande Sábio', 'Great Sage Core'],
     'entity.tensura:hound_dog.name': ['Cão Invocado', 'Summoned Hound Dog'],
     'entity.tensura:basilisk.name': ['Basilisco Invocado', 'Summoned Basilisk'],
     'entity.tensura:daemon.name': ['Demônio Invocado', 'Summoned Daemon'],

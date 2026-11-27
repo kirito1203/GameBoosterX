@@ -217,7 +217,7 @@ test('JSON UI gerado: grade rolável, nós como toggles de rádio e painéis lig
   const sf = JSON.parse(readFileSync(new URL('ui/server_form.json', RP), 'utf8').replace(/^\/\/.*$/m, ''));
   assert.equal(sf.long_form_dynamic_buttons_panel.factory.max_children_size, 64, 'lista oculta limitada');
   const names = sf.tensura_long_form_router.controls.map((c) => Object.keys(c)[0]);
-  assert.deepEqual(names, ['vanilla_wrap', 'tensura_tree_wrap', 'tensura_menu_wrap', 'tensura_race_wrap']);
+  assert.deepEqual(names, ['vanilla_wrap', 'tensura_tree_wrap', 'tensura_menu_wrap', 'tensura_race_wrap', 'tensura_sage_wrap']);
 });
 
 test('simulação: nós quadrados alinhados às linhas; tocar num nó mostra só o painel dele; menu completo', () => {

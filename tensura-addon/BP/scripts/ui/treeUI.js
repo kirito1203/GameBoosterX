@@ -29,7 +29,7 @@ export async function showForm(player, form) {
   return null;
 }
 
-function formOf(model) {
+export function formOf(model) {
   const form = new ActionFormData().title(model.title).body(model.body);
   for (const b of model.buttons) form.button(b.text, b.icon || undefined);
   return form;
@@ -67,9 +67,14 @@ export function doUnlock(player, d, id) {
       msg(player, `§7${s.name} foi colocada na Barra de Habilidades (espaço ${d.equipped.length}).`);
     }
   }
+  menusRef?.onSkillUnlocked?.(player);
   saveNow(player);
   return true;
 }
+
+// Ganchos externos (definidos em main.js) — evita importação circular com o Grande Sábio.
+let menusRef = null;
+export function setTreeHooks(h) { menusRef = h; }
 
 function toggleEquip(player, d, id) {
   const i = d.equipped.indexOf(id);
@@ -115,6 +120,7 @@ export async function openMenu(player, menus, startTab = 'status') {
         continue;
       }
       if (act.type === 'unlock') { doUnlock(player, d, act.id); d = getData(player); continue; }
+      if (act.type === 'sage') { if ((await menus.sage(player, 'ask', true)) === 'close') break; d = getData(player); continue; }
       if (act.type === 'mimic') { await menus.mimic(player); continue; }
       if (act.type === 'storage') { await menus.storage(player); continue; }
     }

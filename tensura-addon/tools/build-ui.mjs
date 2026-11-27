@@ -16,6 +16,7 @@ import {
   MARK, MENU_MARK, CTRL, CAT_COUNT, layerBase, TEX, TREE_COLS, TREE_ROWS, DETAIL_ROWS, NODE_TOGGLE_GROUP, detailPlacement,
   MENU, MENU_TABS, ACTIVE_ROWS, BAR_SLOTS, ACTION_COUNT,
   RACE_MARK, RACE, RACE_CARD_COLS, RACE_CARD_ROWS, CARD_SELECTED, CARD_LOCKED,
+  SAGE_MARK, SAGE, SAGE_CATS, SAGE_ACTIONS,
 } from '../BP/scripts/core/uiSpec.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -143,6 +144,14 @@ const ROW = {
   $ctl_bg: `${TEX.menu}row`, $ctl_bg_hover: `${TEX.menu}row_hover`, $ctl_bg_pressed: `${TEX.menu}row_hover`,
   $ctl_icon_size: ['100%y', '80%'], $ctl_icon_anchor: 'left_middle', $ctl_icon_offset: ['3%', 0],
   $ctl_text_size: ['70%', 'default'], $ctl_text_anchor: 'left_middle', $ctl_text_offset: ['28%', 0], $ctl_align: 'left', $ctl_font: 1.0,
+};
+const SAGE_BTN = {
+  ...ICON_LEFT_TEXT, $ctl_bg: `${TEX.sage}button`, $ctl_bg_hover: `${TEX.sage}button_hover`, $ctl_bg_pressed: `${TEX.sage}button_pressed`,
+};
+const SAGE_CAT = {
+  $ctl_bg: `${TEX.sage}cat`, $ctl_bg_hover: `${TEX.sage}cat_hover`, $ctl_bg_pressed: `${TEX.sage}cat_hover`,
+  $ctl_icon_size: ['100%y', '70%'], $ctl_icon_anchor: 'left_middle', $ctl_icon_offset: ['4%', 0],
+  $ctl_text_size: ['74%', 'default'], $ctl_text_anchor: 'right_middle', $ctl_text_offset: ['-3%', 0], $ctl_align: 'left', $ctl_font: 0.78,
 };
 const SLOT = {
   $ctl_bg: `${TEX.menu}slot`, $ctl_bg_hover: `${TEX.menu}slot_hover`, $ctl_bg_pressed: `${TEX.menu}slot_hover`,
@@ -318,12 +327,14 @@ function menuRoot() {
 
   // Coluna esquerda (comum às abas): boneco do jogador + nome da raça.
   const left = [
-    { doll_box: { ...at(2, 16, 22, 52), type: 'image', layer: 1, texture: `${TEX.menu}box`, keep_ratio: false, controls: [
+    { doll_box: { ...at(2, 16, 22, 43), type: 'image', layer: 1, texture: `${TEX.menu}box`, keep_ratio: false, controls: [
       { player: { type: 'custom', renderer: 'live_player_renderer', property_bag: { '#look_at_cursor': true },
         // O modelo é desenhado com ~1,9x a altura do controle, a partir do topo (medido no jogo).
         layer: 8, size: ['100%', '48%'], anchor_from: 'top_middle', anchor_to: 'top_middle', offset: [0, '4%'] } },
     ] } },
-    ctl('race_name', MENU.raceName, 2, 70, 22, 9.5, { ...PLAIN, $ctl_bg: `${TEX.menu}box`, $ctl_bg_hover: `${TEX.menu}box`, $ctl_bg_pressed: `${TEX.menu}box`, $ctl_font: 1.2 }),
+    ctl('race_name', MENU.raceName, 2, 60, 22, 8.5, { ...PLAIN, $ctl_bg: `${TEX.menu}box`, $ctl_bg_hover: `${TEX.menu}box`, $ctl_bg_pressed: `${TEX.menu}box`, $ctl_font: 1.2 }),
+    // Botão GRANDE SÁBIO: abre o painel individual do assistente.
+    ctl('sage', MENU.sage, 2, 69.5, 22, 10, { ...SAGE_BTN, $ctl_font: 0.85 }),
   ];
 
   const status = {
@@ -377,6 +388,45 @@ function menuRoot() {
     controls: [
       { shade: img(`${TEX.menu}shade`, { layer: 0 }) },
       { window: { type: 'panel', size: ['88%', '88%'], layer: 2, collection_name: COL, controls: windowCtrls } },
+    ],
+  };
+}
+
+// ── Painel do Grande Sábio ──
+function sageRoot() {
+  const box = (name, x, y, w, h, tex = `${TEX.sage}box`) => ({ [name]: { ...at(x, y, w, h), type: 'image', layer: 1, texture: tex, keep_ratio: false, bilinear: false } });
+  const val = (name, idx, x, y, w, extra = {}) => slot(name, idx, x, y, w, 6, 'value', { $v_align: 'center', ...extra });
+  const catH = 9.6;
+  const ctrls = [
+    { bg: img(`${TEX.sage}window`, { layer: 0 }) },
+    box('header', 1, 1.5, 98, 10.5, `${TEX.sage}header`),
+    { title: { type: 'label', ...TL, offset: ['2.5%', '4.2%'], size: ['30%', 'default'], layer: 3, text: '§l§bGRANDE SÁBIO', shadow: true, font_scale_factor: 1.3 } },
+    slot('panel_title', SAGE.panelTitle, 30, 4.4, 56, 6, 'value', { $v_align: 'center', $v_font: 1.15 }),
+    ctl('close', SAGE.close, 88.5, 2.5, 9.5, 8.5, { ...ICON_ONLY, $ctl_bg: `${TEX.sage}button`, $ctl_bg_hover: `${TEX.sage}button_hover`, $ctl_bg_pressed: `${TEX.sage}button_pressed` }),
+    // Coluna esquerda: retrato do estágio, nome, nível, XP e barra.
+    box('portrait_box', 1.5, 13.5, 21, 45),
+    slot('portrait', SAGE.portrait, 2.5, 14.5, 19, 43, 'picture', {}, ['100%y', '100%']),
+    val('stage', SAGE.stage, 1.5, 60, 21, { $v_font: 1.1 }),
+    val('level', SAGE.level, 1.5, 67, 21),
+    val('xp', SAGE.xp, 1.5, 73.5, 21, { $v_font: 0.85 }),
+    slot('bar', SAGE.bar, 2.5, 80, 19, 4.5, 'picture'),
+    ctl('back', SAGE.back, 1.5, 87, 21, 10, { ...SAGE_BTN, $ctl_font: 0.8 }),
+    // Categorias (8)
+    ...SAGE_CATS.map((c, i) => ctl(`cat_${c}`, SAGE.cat0 + i, 23.5, 13.5 + i * (catH + 0.9), 20, catH, SAGE_CAT)),
+    // Conteúdo com rolagem
+    box('content_box', 44.5, 13.5, 54, 68),
+    { content: { type: 'panel', ...at(45.5, 14.5, 52, 66), layer: 2, controls: [{ 'scroll@common.scrolling_panel': {
+      ...TL, size: ['100%', '100%'], $show_background: false,
+      $scrolling_content: `${NS}.details_text`, $scroll_size: [4, '100% - 2px'], $scrolling_pane_size: ['100% - 6px', '100%'],
+      $scrolling_pane_offset: [0, 0], $scroll_bar_right_padding_size: [0, 0],
+    } }] } },
+    ...Array.from({ length: SAGE_ACTIONS }, (_, i) => ctl(`action${i}`, SAGE.action0 + i, 44.5 + (i % 3) * 18.1, 83 + Math.floor(i / 3) * 7.6, 17.6, 7, { ...SAGE_BTN, $ctl_font: 0.75 })),
+  ];
+  return {
+    type: 'panel', size: ['100%', '100%'], collection_name: COL,
+    controls: [
+      { shade: img(`${TEX.menu}shade`, { layer: 0 }) },
+      { window: { type: 'panel', size: ['92%', '92%'], layer: 2, collection_name: COL, controls: ctrls } },
     ],
   };
 }
@@ -501,7 +551,7 @@ function raceRoot() {
 export function buildUi(outDir = join(ROOT, 'RP', 'ui')) {
   mkdirSync(outDir, { recursive: true });
   const tree = {
-    namespace: NS, ...templates(), ...raceTemplates(), ...animations(), root: treeRoot(), menu_root: menuRoot(), race_root: raceRoot(),
+    namespace: NS, ...templates(), ...raceTemplates(), ...animations(), root: treeRoot(), menu_root: menuRoot(), race_root: raceRoot(), sage_root: sageRoot(),
     details_text: {
       type: 'stack_panel', size: ['100% - 4px', '100%c'], orientation: 'vertical', ...TL,
       controls: [{ body: { type: 'label', size: ['100%', 'default'], ...TL,
@@ -515,7 +565,7 @@ export function buildUi(outDir = join(ROOT, 'RP', 'ui')) {
   tree.close_details_off = { type: 'panel', controls: [{ bg: img(`${TEX.ui}ctl`) }, { t: { type: 'label', text: '§fFechar detalhes', font_scale_factor: 0.75, shadow: true, layer: 2 } }] };
   tree.close_details_hover = { type: 'panel', controls: [{ bg: img(`${TEX.ui}ctl_hover`) }, { t: { type: 'label', text: '§fFechar detalhes', font_scale_factor: 0.75, shadow: true, layer: 2 } }] };
 
-  const notMarked = `((((#title_text - '${MARK}') = #title_text) and ((#title_text - '${MENU_MARK}') = #title_text)) and ((#title_text - '${RACE_MARK}') = #title_text))`;
+  const notMarked = `(((((#title_text - '${MARK}') = #title_text) and ((#title_text - '${MENU_MARK}') = #title_text)) and ((#title_text - '${RACE_MARK}') = #title_text)) and ((#title_text - '${SAGE_MARK}') = #title_text))`;
   const serverForm = {
     namespace: 'server_form',
     main_screen_content: {
@@ -546,6 +596,9 @@ export function buildUi(outDir = join(ROOT, 'RP', 'ui')) {
         { tensura_race_wrap: { type: 'panel', size: ['100%', '100%'],
           bindings: [{ binding_name: '#title_text' }, view(has(RACE_MARK), '#visible')],
           controls: [{ [`race@${NS}.race_root`]: {} }] } },
+        { tensura_sage_wrap: { type: 'panel', size: ['100%', '100%'],
+          bindings: [{ binding_name: '#title_text' }, view(has(SAGE_MARK), '#visible')],
+          controls: [{ [`sage@${NS}.sage_root`]: {} }] } },
       ],
     },
   };

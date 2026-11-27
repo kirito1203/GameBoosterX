@@ -2,14 +2,32 @@
   "format_version": "1.8.0",
   "render_controllers": {
     "controller.render.tensura.great_sage": {
+      "arrays": {
+        "textures": {
+          "Array.skins": [
+            "Texture.default",
+            "Texture.raphael",
+            "Texture.ciel"
+          ]
+        }
+      },
       "geometry": "Geometry.default",
-      "materials": [{ "*": "Material.default" }, { "ring*": "Material.ring" }],
-      "textures": ["Texture.default"],
+      "materials": [
+        {
+          "*": "Material.default"
+        },
+        {
+          "ring*": "Material.ring"
+        }
+      ],
+      "textures": [
+        "Array.skins[(query.property('tensura:stage') == 'raphael' ? 1 : (query.property('tensura:stage') == 'ciel' ? 2 : 0))]"
+      ],
       "ignore_lighting": true,
       "overlay_color": {
-        "r": 0.45,
-        "g": 0.8,
-        "b": 1.0,
+        "r": "query.property('tensura:stage') == 'raphael' ? 1.0 : (query.property('tensura:stage') == 'ciel' ? 0.95 : 0.45)",
+        "g": "query.property('tensura:stage') == 'raphael' ? 0.8 : (query.property('tensura:stage') == 'ciel' ? 0.7 : 0.8)",
+        "b": "query.property('tensura:stage') == 'raphael' ? 0.35 : (query.property('tensura:stage') == 'ciel' ? 1.0 : 1.0)",
         "a": "0.10 + math.sin(query.life_time * 120) * 0.04"
       }
     }

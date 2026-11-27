@@ -2366,7 +2366,7 @@
         ],
         "size": [
          "22%",
-         "52%"
+         "43%"
         ],
         "type": "image",
         "layer": 1,
@@ -2409,11 +2409,11 @@
         "layer": 1,
         "size": [
          "374%",
-         "9.5%"
+         "8.5%"
         ],
         "offset": [
          "-350%",
-         "70%"
+         "60%"
         ],
         "controls": [
          {
@@ -2432,6 +2432,65 @@
            "$ctl_bg_hover": "textures/tensura/menu/box",
            "$ctl_bg_pressed": "textures/tensura/menu/box",
            "$ctl_font": 1.2
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_sage": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         30,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "660%",
+         "10%"
+        ],
+        "offset": [
+         "-636%",
+         "69.5%"
+        ],
+        "controls": [
+         {
+          "sage@tensura_tree.ctl": {
+           "grid_position": [
+            29,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "3.3333%",
+            "100%"
+           ],
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "5%",
+            0
+           ],
+           "$ctl_text_size": [
+            "66%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-4%",
+            0
+           ],
+           "$ctl_font": 0.85,
+           "$ctl_bg": "textures/tensura/sage/button",
+           "$ctl_bg_hover": "textures/tensura/sage/button_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/button_pressed"
           }
          }
         ]
@@ -5315,6 +5374,1339 @@
          "100%"
         ],
         "$rt_font": 0.55
+       }
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "sage_root": {
+  "type": "panel",
+  "size": [
+   "100%",
+   "100%"
+  ],
+  "collection_name": "form_buttons",
+  "controls": [
+   {
+    "shade": {
+     "type": "image",
+     "texture": "textures/tensura/menu/shade",
+     "size": [
+      "100%",
+      "100%"
+     ],
+     "keep_ratio": false,
+     "bilinear": false,
+     "layer": 0
+    }
+   },
+   {
+    "window": {
+     "type": "panel",
+     "size": [
+      "92%",
+      "92%"
+     ],
+     "layer": 2,
+     "collection_name": "form_buttons",
+     "controls": [
+      {
+       "bg": {
+        "type": "image",
+        "texture": "textures/tensura/sage/window",
+        "size": [
+         "100%",
+         "100%"
+        ],
+        "keep_ratio": false,
+        "bilinear": false,
+        "layer": 0
+       }
+      },
+      {
+       "header": {
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "offset": [
+         "1%",
+         "1.5%"
+        ],
+        "size": [
+         "98%",
+         "10.5%"
+        ],
+        "type": "image",
+        "layer": 1,
+        "texture": "textures/tensura/sage/header",
+        "keep_ratio": false,
+        "bilinear": false
+       }
+      },
+      {
+       "title": {
+        "type": "label",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "offset": [
+         "2.5%",
+         "4.2%"
+        ],
+        "size": [
+         "30%",
+         "default"
+        ],
+        "layer": 3,
+        "text": "§l§bGRANDE SÁBIO",
+        "shadow": true,
+        "font_scale_factor": 1.3
+       }
+      },
+      {
+       "g_panel_title": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         16,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "896%",
+         "6%"
+        ],
+        "offset": [
+         "-810%",
+         "4.4%"
+        ],
+        "controls": [
+         {
+          "panel_title@tensura_tree.value": {
+           "grid_position": [
+            15,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "6.25%",
+            "100%"
+           ],
+           "$v_align": "center",
+           "$v_font": 1.15
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_close": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         1,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "9.5%",
+         "8.5%"
+        ],
+        "offset": [
+         "88.5%",
+         "2.5%"
+        ],
+        "controls": [
+         {
+          "close@tensura_tree.ctl": {
+           "grid_position": [
+            0,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "100%",
+            "100%"
+           ],
+           "$ctl_bg": "textures/tensura/sage/button",
+           "$ctl_bg_hover": "textures/tensura/sage/button_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/button_pressed"
+          }
+         }
+        ]
+       }
+      },
+      {
+       "portrait_box": {
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "offset": [
+         "1.5%",
+         "13.5%"
+        ],
+        "size": [
+         "21%",
+         "45%"
+        ],
+        "type": "image",
+        "layer": 1,
+        "texture": "textures/tensura/sage/box",
+        "keep_ratio": false,
+        "bilinear": false
+       }
+      },
+      {
+       "g_portrait": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         11,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "209%",
+         "43%"
+        ],
+        "offset": [
+         "-187.5%",
+         "14.5%"
+        ],
+        "controls": [
+         {
+          "portrait@tensura_tree.picture": {
+           "grid_position": [
+            10,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "100%y",
+            "100%"
+           ]
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_stage": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         12,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "252%",
+         "6%"
+        ],
+        "offset": [
+         "-229.5%",
+         "60%"
+        ],
+        "controls": [
+         {
+          "stage@tensura_tree.value": {
+           "grid_position": [
+            11,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "8.3333%",
+            "100%"
+           ],
+           "$v_align": "center",
+           "$v_font": 1.1
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_level": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         13,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "273%",
+         "6%"
+        ],
+        "offset": [
+         "-250.5%",
+         "67%"
+        ],
+        "controls": [
+         {
+          "level@tensura_tree.value": {
+           "grid_position": [
+            12,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "7.6923%",
+            "100%"
+           ],
+           "$v_align": "center"
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_xp": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         14,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "294%",
+         "6%"
+        ],
+        "offset": [
+         "-271.5%",
+         "73.5%"
+        ],
+        "controls": [
+         {
+          "xp@tensura_tree.value": {
+           "grid_position": [
+            13,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "7.1429%",
+            "100%"
+           ],
+           "$v_align": "center",
+           "$v_font": 0.85
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_bar": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         15,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "285%",
+         "4.5%"
+        ],
+        "offset": [
+         "-263.5%",
+         "80%"
+        ],
+        "controls": [
+         {
+          "bar@tensura_tree.picture": {
+           "grid_position": [
+            14,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "6.6667%",
+            "100%"
+           ]
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_back": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         2,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "42%",
+         "10%"
+        ],
+        "offset": [
+         "-19.5%",
+         "87%"
+        ],
+        "controls": [
+         {
+          "back@tensura_tree.ctl": {
+           "grid_position": [
+            1,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "50%",
+            "100%"
+           ],
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "5%",
+            0
+           ],
+           "$ctl_text_size": [
+            "66%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-4%",
+            0
+           ],
+           "$ctl_font": 0.8,
+           "$ctl_bg": "textures/tensura/sage/button",
+           "$ctl_bg_hover": "textures/tensura/sage/button_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/button_pressed"
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_cat_ask": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         3,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "60%",
+         "9.6%"
+        ],
+        "offset": [
+         "-16.5%",
+         "13.5%"
+        ],
+        "controls": [
+         {
+          "cat_ask@tensura_tree.ctl": {
+           "grid_position": [
+            2,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "33.3333%",
+            "100%"
+           ],
+           "$ctl_bg": "textures/tensura/sage/cat",
+           "$ctl_bg_hover": "textures/tensura/sage/cat_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/cat_hover",
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "4%",
+            0
+           ],
+           "$ctl_text_size": [
+            "74%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-3%",
+            0
+           ],
+           "$ctl_align": "left",
+           "$ctl_font": 0.78
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_cat_analyses": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         4,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "80%",
+         "9.6%"
+        ],
+        "offset": [
+         "-36.5%",
+         "24%"
+        ],
+        "controls": [
+         {
+          "cat_analyses@tensura_tree.ctl": {
+           "grid_position": [
+            3,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "25%",
+            "100%"
+           ],
+           "$ctl_bg": "textures/tensura/sage/cat",
+           "$ctl_bg_hover": "textures/tensura/sage/cat_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/cat_hover",
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "4%",
+            0
+           ],
+           "$ctl_text_size": [
+            "74%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-3%",
+            0
+           ],
+           "$ctl_align": "left",
+           "$ctl_font": 0.78
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_cat_level": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         5,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "100%",
+         "9.6%"
+        ],
+        "offset": [
+         "-56.5%",
+         "34.5%"
+        ],
+        "controls": [
+         {
+          "cat_level@tensura_tree.ctl": {
+           "grid_position": [
+            4,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "20%",
+            "100%"
+           ],
+           "$ctl_bg": "textures/tensura/sage/cat",
+           "$ctl_bg_hover": "textures/tensura/sage/cat_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/cat_hover",
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "4%",
+            0
+           ],
+           "$ctl_text_size": [
+            "74%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-3%",
+            0
+           ],
+           "$ctl_align": "left",
+           "$ctl_font": 0.78
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_cat_skills": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         6,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "120%",
+         "9.6%"
+        ],
+        "offset": [
+         "-76.5%",
+         "45%"
+        ],
+        "controls": [
+         {
+          "cat_skills@tensura_tree.ctl": {
+           "grid_position": [
+            5,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "16.6667%",
+            "100%"
+           ],
+           "$ctl_bg": "textures/tensura/sage/cat",
+           "$ctl_bg_hover": "textures/tensura/sage/cat_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/cat_hover",
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "4%",
+            0
+           ],
+           "$ctl_text_size": [
+            "74%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-3%",
+            0
+           ],
+           "$ctl_align": "left",
+           "$ctl_font": 0.78
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_cat_intel": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         7,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "140%",
+         "9.6%"
+        ],
+        "offset": [
+         "-96.5%",
+         "55.5%"
+        ],
+        "controls": [
+         {
+          "cat_intel@tensura_tree.ctl": {
+           "grid_position": [
+            6,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "14.2857%",
+            "100%"
+           ],
+           "$ctl_bg": "textures/tensura/sage/cat",
+           "$ctl_bg_hover": "textures/tensura/sage/cat_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/cat_hover",
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "4%",
+            0
+           ],
+           "$ctl_text_size": [
+            "74%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-3%",
+            0
+           ],
+           "$ctl_align": "left",
+           "$ctl_font": 0.78
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_cat_next": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         8,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "160%",
+         "9.6%"
+        ],
+        "offset": [
+         "-116.5%",
+         "66%"
+        ],
+        "controls": [
+         {
+          "cat_next@tensura_tree.ctl": {
+           "grid_position": [
+            7,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "12.5%",
+            "100%"
+           ],
+           "$ctl_bg": "textures/tensura/sage/cat",
+           "$ctl_bg_hover": "textures/tensura/sage/cat_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/cat_hover",
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "4%",
+            0
+           ],
+           "$ctl_text_size": [
+            "74%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-3%",
+            0
+           ],
+           "$ctl_align": "left",
+           "$ctl_font": 0.78
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_cat_history": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         9,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "180%",
+         "9.6%"
+        ],
+        "offset": [
+         "-136.5%",
+         "76.5%"
+        ],
+        "controls": [
+         {
+          "cat_history@tensura_tree.ctl": {
+           "grid_position": [
+            8,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "11.1111%",
+            "100%"
+           ],
+           "$ctl_bg": "textures/tensura/sage/cat",
+           "$ctl_bg_hover": "textures/tensura/sage/cat_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/cat_hover",
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "4%",
+            0
+           ],
+           "$ctl_text_size": [
+            "74%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-3%",
+            0
+           ],
+           "$ctl_align": "left",
+           "$ctl_font": 0.78
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_cat_settings": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         10,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "200%",
+         "9.6%"
+        ],
+        "offset": [
+         "-156.5%",
+         "87%"
+        ],
+        "controls": [
+         {
+          "cat_settings@tensura_tree.ctl": {
+           "grid_position": [
+            9,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "10%",
+            "100%"
+           ],
+           "$ctl_bg": "textures/tensura/sage/cat",
+           "$ctl_bg_hover": "textures/tensura/sage/cat_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/cat_hover",
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "4%",
+            0
+           ],
+           "$ctl_text_size": [
+            "74%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-3%",
+            0
+           ],
+           "$ctl_align": "left",
+           "$ctl_font": 0.78
+          }
+         }
+        ]
+       }
+      },
+      {
+       "content_box": {
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "offset": [
+         "44.5%",
+         "13.5%"
+        ],
+        "size": [
+         "54%",
+         "68%"
+        ],
+        "type": "image",
+        "layer": 1,
+        "texture": "textures/tensura/sage/box",
+        "keep_ratio": false,
+        "bilinear": false
+       }
+      },
+      {
+       "content": {
+        "type": "panel",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "offset": [
+         "45.5%",
+         "14.5%"
+        ],
+        "size": [
+         "52%",
+         "66%"
+        ],
+        "layer": 2,
+        "controls": [
+         {
+          "scroll@common.scrolling_panel": {
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "100%",
+            "100%"
+           ],
+           "$show_background": false,
+           "$scrolling_content": "tensura_tree.details_text",
+           "$scroll_size": [
+            4,
+            "100% - 2px"
+           ],
+           "$scrolling_pane_size": [
+            "100% - 6px",
+            "100%"
+           ],
+           "$scrolling_pane_offset": [
+            0,
+            0
+           ],
+           "$scroll_bar_right_padding_size": [
+            0,
+            0
+           ]
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_action0": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         17,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "299.2%",
+         "7%"
+        ],
+        "offset": [
+         "-237.1%",
+         "83%"
+        ],
+        "controls": [
+         {
+          "action0@tensura_tree.ctl": {
+           "grid_position": [
+            16,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "5.8824%",
+            "100%"
+           ],
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "5%",
+            0
+           ],
+           "$ctl_text_size": [
+            "66%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-4%",
+            0
+           ],
+           "$ctl_font": 0.75,
+           "$ctl_bg": "textures/tensura/sage/button",
+           "$ctl_bg_hover": "textures/tensura/sage/button_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/button_pressed"
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_action1": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         18,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "316.8%",
+         "7%"
+        ],
+        "offset": [
+         "-236.6%",
+         "83%"
+        ],
+        "controls": [
+         {
+          "action1@tensura_tree.ctl": {
+           "grid_position": [
+            17,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "5.5556%",
+            "100%"
+           ],
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "5%",
+            0
+           ],
+           "$ctl_text_size": [
+            "66%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-4%",
+            0
+           ],
+           "$ctl_font": 0.75,
+           "$ctl_bg": "textures/tensura/sage/button",
+           "$ctl_bg_hover": "textures/tensura/sage/button_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/button_pressed"
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_action2": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         19,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "334.4%",
+         "7%"
+        ],
+        "offset": [
+         "-236.1%",
+         "83%"
+        ],
+        "controls": [
+         {
+          "action2@tensura_tree.ctl": {
+           "grid_position": [
+            18,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "5.2632%",
+            "100%"
+           ],
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "5%",
+            0
+           ],
+           "$ctl_text_size": [
+            "66%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-4%",
+            0
+           ],
+           "$ctl_font": 0.75,
+           "$ctl_bg": "textures/tensura/sage/button",
+           "$ctl_bg_hover": "textures/tensura/sage/button_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/button_pressed"
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_action3": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         20,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "352%",
+         "7%"
+        ],
+        "offset": [
+         "-289.9%",
+         "90.6%"
+        ],
+        "controls": [
+         {
+          "action3@tensura_tree.ctl": {
+           "grid_position": [
+            19,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "5%",
+            "100%"
+           ],
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "5%",
+            0
+           ],
+           "$ctl_text_size": [
+            "66%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-4%",
+            0
+           ],
+           "$ctl_font": 0.75,
+           "$ctl_bg": "textures/tensura/sage/button",
+           "$ctl_bg_hover": "textures/tensura/sage/button_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/button_pressed"
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_action4": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         21,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "369.6%",
+         "7%"
+        ],
+        "offset": [
+         "-289.4%",
+         "90.6%"
+        ],
+        "controls": [
+         {
+          "action4@tensura_tree.ctl": {
+           "grid_position": [
+            20,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "4.7619%",
+            "100%"
+           ],
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "5%",
+            0
+           ],
+           "$ctl_text_size": [
+            "66%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-4%",
+            0
+           ],
+           "$ctl_font": 0.75,
+           "$ctl_bg": "textures/tensura/sage/button",
+           "$ctl_bg_hover": "textures/tensura/sage/button_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/button_pressed"
+          }
+         }
+        ]
+       }
+      },
+      {
+       "g_action5": {
+        "type": "grid",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "collection_name": "form_buttons",
+        "grid_dimensions": [
+         22,
+         1
+        ],
+        "layer": 1,
+        "size": [
+         "387.2%",
+         "7%"
+        ],
+        "offset": [
+         "-288.9%",
+         "90.6%"
+        ],
+        "controls": [
+         {
+          "action5@tensura_tree.ctl": {
+           "grid_position": [
+            21,
+            0
+           ],
+           "anchor_from": "top_left",
+           "anchor_to": "top_left",
+           "size": [
+            "4.5455%",
+            "100%"
+           ],
+           "$ctl_icon_size": [
+            "100%y",
+            "70%"
+           ],
+           "$ctl_icon_anchor": "left_middle",
+           "$ctl_icon_offset": [
+            "5%",
+            0
+           ],
+           "$ctl_text_size": [
+            "66%",
+            "default"
+           ],
+           "$ctl_text_anchor": "right_middle",
+           "$ctl_text_offset": [
+            "-4%",
+            0
+           ],
+           "$ctl_font": 0.75,
+           "$ctl_bg": "textures/tensura/sage/button",
+           "$ctl_bg_hover": "textures/tensura/sage/button_hover",
+           "$ctl_bg_pressed": "textures/tensura/sage/button_pressed"
+          }
+         }
+        ]
        }
       }
      ]

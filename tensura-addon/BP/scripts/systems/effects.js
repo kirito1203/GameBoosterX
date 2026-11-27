@@ -16,6 +16,7 @@ import { getData, markDirty, refreshStats, saveNow } from './storage.js';
 import { fxList } from '../core/progression.js';
 import { mimicTraits } from '../core/stats.js';
 import { effectName } from '../core/describe.js';
+import { recordAnalysis } from './sage.js';
 import { mobEp } from './leveling.js';
 
 const NEGATIVE = ['poison', 'wither', 'nausea', 'blindness', 'weakness', 'slowness', 'hunger', 'darkness', 'mining_fatigue', 'fatal_poison', 'levitation', 'bad_omen'];
@@ -498,6 +499,7 @@ const HANDLERS = {
       lines.push(`Morto-vivo: ${isUndead(t) ? 'sim (fraco ao sagrado)' : 'não'}`);
     }
     msg(player, lines.join('\n'));
+    try { recordAnalysis(player, t); } catch (e) { console.warn(`[Tensura] Grande Sábio (análise): ${e}`); }
   },
 
   sense(player, f) {

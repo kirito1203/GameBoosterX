@@ -3,6 +3,7 @@
 import { SKILLS, RACES, TREES } from '../data/registry.js';
 import { CONFIG } from '../config.js';
 import { fxList } from './progression.js';
+import { sageBonuses } from './sage.js';
 
 export const ELEMENTAL_ELEMENTS = new Set(['fire', 'water', 'ice', 'earth', 'wind', 'lightning', 'explosion']);
 
@@ -50,7 +51,7 @@ export function mimicTraits(typeId) {
 }
 
 /**
- * @param {{ race: string, level: number, unlocked: Set<string>, mpBonus?: number, mimic?: string|null }} d
+ * @param {{ race: string, level: number, unlocked: Set<string>, mpBonus?: number, mimic?: string|null, sage?: any }} d
  */
 export function computeStats(d) {
   const race = RACES[d.race];
@@ -88,6 +89,11 @@ export function computeStats(d) {
     for (const f of fxList(sk.fx)) applyPassive(s, f, addEff);
   }
   if (d.mimic) for (const [id, amp] of mimicTraits(d.mimic).eff) addEff(id, amp);
+  // Capacidades do Grande Sábio com efeito em atributos (ver core/sage.js).
+  const sb = d.sage ? sageBonuses(d.sage) : null;
+  s.cdMult = sb?.cooldownMult ?? 1;
+  s.sageMp = sb?.mpMult ?? 1;
+  if (sb) { s.regenMult *= sb.regenMult; s.power['*'] = (s.power['*'] ?? 1) * sb.power; }
   // Raças lentas perdem a lentidão se ganharem velocidade.
   if (s.effects.has('slowness') && s.effects.has('speed')) s.effects.delete('slowness');
   // Resistências limitadas a 90%, exceto imunidades raciais declaradas como 1 (ex.: queda do Slime).
@@ -127,6 +133,7 @@ export function mpCost(skill, stats) {
   m *= stats.affinity[skill.tree] ?? 1;
   const tree = TREES[skill.tree];
   if (tree?.kind === 'racial') m *= stats.affinity.racial ?? 1;
+  else m *= stats.sageMp ?? 1;
   return Math.max(0, Math.round(skill.mp * m));
 }
 

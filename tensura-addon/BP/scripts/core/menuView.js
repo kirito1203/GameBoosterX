@@ -69,6 +69,7 @@ export function buildMenuForm({ tab, d, state }) {
   });
   set(MENU.back, '§fVoltar', `${TEX.menu}back`); hit[MENU.back] = { type: 'close' };
   set(MENU.raceName, `§b${race.name}`);
+  set(MENU.sage, '§bGRANDE SÁBIO', `${TEX.sage}icon_${d.sage?.stage ?? 'sage'}`); hit[MENU.sage] = { type: 'sage' };
 
   let body = '';
   if (tab === 'status') {

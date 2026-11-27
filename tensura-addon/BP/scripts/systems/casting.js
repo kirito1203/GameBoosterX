@@ -33,7 +33,7 @@ export function cast(player, skillId) {
   }
   if (ok === false) return false;
   if (aura) { d.aura -= cost; d.lastCast = now; } else spend(player, cost);
-  if (s.cooldown) d.cooldowns[skillId] = now + Math.round(s.cooldown * 20);
+  if (s.cooldown) d.cooldowns[skillId] = now + Math.round(s.cooldown * 20 * (d.stats.cdMult ?? 1));
   showHud(player);
   return true;
 }

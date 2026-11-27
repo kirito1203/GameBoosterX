@@ -9,9 +9,6 @@ Uso: python3 tools/sage_preview.py <pasta RP> <saida.png>
 import json, sys
 from PIL import Image, ImageDraw
 
-rp, out = sys.argv[1], sys.argv[2]
-geo = json.load(open(f'{rp}/models/entity/great_sage.geo.json'))['minecraft:geometry'][0]
-tex = Image.open(f'{rp}/textures/entity/tensura/great_sage.png').convert('RGBA')
 S = 10  # pixels por unidade
 
 
@@ -20,9 +17,9 @@ def regions(u, v, w, h, d):
             'back': (u + 2 * d + w, v + d, w, h)}
 
 
-def view(face, flip_x):
+def view(geo, tex, face, flip_x=False, rings=True, bg=(14, 20, 40, 255)):
     W, H = 46 * S, 42 * S
-    im = Image.new('RGBA', (W, H), (14, 20, 40, 255))
+    im = Image.new('RGBA', (W, H), bg)
     cubes = []
     for b in geo['bones']:
         for c in b.get('cubes', []):
@@ -55,13 +52,17 @@ def view(face, flip_x):
         sy = int((38 - (o[1] + s[1] + inf)) * S)
         im.alpha_composite(crop, (sx, sy))
     d = ImageDraw.Draw(im)
-    for (y, r, col) in ((34, 6, (150, 235, 255, 200)), (14, 12, (120, 220, 255, 160)), (-2, 14, (120, 230, 255, 200))):
+    for (y, r, col) in (() if not rings else  ((34, 6, (150, 235, 255, 200)), (14, 12, (120, 220, 255, 160)), (-2, 14, (120, 230, 255, 200)))):
         d.line([(23 - r) * S, (38 - y) * S, (23 + r) * S, (38 - y) * S], fill=col, width=3)
     return im
 
 
-sheet = Image.new('RGBA', (46 * S * 3 + 20, 42 * S), (0, 0, 0, 255))
-for i, (f, fl) in enumerate((('front', False), ('side', False), ('back', False))):
-    sheet.alpha_composite(view(f, fl), (i * (46 * S + 10), 0))
-sheet.save(out)
-print(out)
+if __name__ == '__main__':
+    rp, out = sys.argv[1], sys.argv[2]
+    geo = json.load(open(f'{rp}/models/entity/great_sage.geo.json'))['minecraft:geometry'][0]
+    tex = Image.open(f'{rp}/textures/entity/tensura/great_sage.png').convert('RGBA')
+    sheet = Image.new('RGBA', (46 * S * 3 + 20, 42 * S), (0, 0, 0, 255))
+    for i, (f, fl) in enumerate((('front', False), ('side', False), ('back', False))):
+        sheet.alpha_composite(view(geo, tex, f, fl), (i * (46 * S + 10), 0))
+    sheet.save(out)
+    print(out)

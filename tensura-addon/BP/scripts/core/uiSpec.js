@@ -66,8 +66,9 @@ export const MENU = {
   stat0: 17, // 17..21: EP, Aura, Magículas, Nível, Progresso
   progressBar: 22,
   action0: 23, // 23..28 botões de ação das outras abas
+  sage: 29, // botão GRANDE SÁBIO (coluna esquerda, todas as abas)
 };
-export const MENU_COUNT = 29;
+export const MENU_COUNT = 30;
 export const ACTIVE_ROWS = 4;
 export const BAR_SLOTS = 5;
 export const ACTION_COUNT = 6;
@@ -84,6 +85,7 @@ export const TEX = {
   ui: 'textures/tensura/ui/',
   menu: 'textures/tensura/menu/',
   race: 'textures/tensura/race/',
+  sage: 'textures/tensura/sage/',
 };
 
 export function frameCode(state, rarity, major, link, selected) {
@@ -141,3 +143,22 @@ export const RACE_COUNT = RACE.card0 + RACE_PAGE_SIZE;
 // Marcadores dentro do texto do card (removidos na exibição do nome).
 export const CARD_SELECTED = '§t§c§s';
 export const CARD_LOCKED = '§t§c§l';
+
+// ── Painel do Grande Sábio ──
+export const SAGE_MARK = '§t§n§g';
+export const sageMark = (cat) => `${SAGE_MARK}§${cat}`;
+export const SAGE_CATS = ['ask', 'analyses', 'level', 'skills', 'intel', 'next', 'history', 'settings'];
+export const SAGE = {
+  close: 0,
+  back: 1,
+  cat0: 2, // 2..9 = 8 categorias
+  portrait: 10,
+  stage: 11,
+  level: 12,
+  xp: 13,
+  bar: 14,
+  panelTitle: 15,
+  action0: 16, // 16..21
+};
+export const SAGE_ACTIONS = 6;
+export const SAGE_COUNT = SAGE.action0 + SAGE_ACTIONS;

@@ -274,7 +274,70 @@ def build(rp):
     out = os.path.join(rp, 'textures', 'entity', 'tensura', 'great_sage.png')
     os.makedirs(os.path.dirname(out), exist_ok=True)
     im.save(out, optimize=True)
+    # Aparência de cada estágio: mesma geometria, paleta trocada (cabelo, olhos e brilhos).
+    variants = {}
+    for stage, pal in STAGE_PALETTES.items():
+        v = recolor(im, pal)
+        v.save(os.path.join(os.path.dirname(out), f'great_sage_{stage}.png'), optimize=True)
+        variants[stage] = v
+    variants['sage'] = im
+    portraits(rp, geo['minecraft:geometry'][0], variants)
     return geo, im
+
+
+STAGE_PALETTES = {
+    # Raphael: dourado (sabedoria). Ciel: prata e violeta. Cores escolhidas pelo addon.
+    'raphael': {HAIR: (255, 236, 170, 255), HAIR_S: (240, 200, 110, 255), HAIR_D: (205, 160, 70, 255), HAIR_L: (255, 250, 222, 255),
+                EYE: (255, 186, 50, 255), EYE_L: (255, 240, 190, 255), BLUE: (255, 196, 70, 255), CYAN: (255, 232, 150, 255)},
+    'ciel': {HAIR: (236, 226, 255, 255), HAIR_S: (205, 190, 245, 255), HAIR_D: (166, 146, 228, 255), HAIR_L: (255, 250, 255, 255),
+             EYE: (196, 100, 255, 255), EYE_L: (244, 214, 255, 255), BLUE: (190, 120, 255, 255), CYAN: (240, 186, 255, 255),
+             BLACK: (44, 30, 66, 255), BLACK_S: (62, 46, 90, 255)},
+}
+STAGE_GLOW = {'sage': (90, 200, 255), 'raphael': (255, 200, 90), 'ciel': (210, 140, 255)}
+
+
+def recolor(im, pal):
+    out = im.copy()
+    px = out.load()
+    for y in range(out.height):
+        for x in range(out.width):
+            c = px[x, y]
+            if c in pal:
+                px[x, y] = pal[c]
+    return out
+
+
+def portraits(rp, geo, variants):
+    """Retratos do painel (busto de frente) e ícones pequenos, um por estágio."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from sage_preview import view, S
+    from PIL import ImageFilter
+    outdir = os.path.join(rp, 'textures', 'tensura', 'sage')
+    os.makedirs(outdir, exist_ok=True)
+    for stage, tex in variants.items():
+        g = STAGE_GLOW[stage]
+        fig = view(geo, tex, 'front', rings=False, bg=(0, 0, 0, 0))
+        # busto: da cabeça até a cintura
+        bust = fig.crop((11 * S, 0, 35 * S, 21 * S)).resize((120, 105), Image.NEAREST)
+        W, H = 128, 128
+        pic = Image.new('RGBA', (W, H), (8, 14, 34, 255))
+        d = ImageDraw.Draw(pic)
+        for r in range(58, 0, -3):
+            k = 1 - r / 58
+            d.ellipse([W / 2 - r, 50 - r, W / 2 + r, 50 + r], fill=(int(8 + g[0] * .35 * k), int(14 + g[1] * .35 * k), int(34 + g[2] * .35 * k), 255))
+        glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(glow).ellipse([30, 8, 98, 20], outline=g + (220,), width=2)
+        pic.alpha_composite(glow.filter(ImageFilter.GaussianBlur(1)))
+        pic.alpha_composite(bust, (4, 21))
+        d = ImageDraw.Draw(pic)
+        d.rectangle([0, 0, W - 1, H - 1], outline=g + (255,), width=2)
+        d.rectangle([3, 3, W - 4, H - 4], outline=(g[0] // 2, g[1] // 2, g[2] // 2, 255), width=1)
+        pic.save(os.path.join(outdir, f'portrait_{stage}.png'))
+        head = fig.crop((16 * S, 1 * S, 30 * S, 13 * S)).resize((42, 36), Image.NEAREST)
+        ic = Image.new('RGBA', (48, 48), (0, 0, 0, 0))
+        ImageDraw.Draw(ic).ellipse([2, 2, 45, 45], fill=(10, 18, 40, 255), outline=g + (255,), width=2)
+        ic.alpha_composite(head, (3, 8))
+        ic.save(os.path.join(outdir, f'icon_{stage}.png'))
 
 
 if __name__ == '__main__':

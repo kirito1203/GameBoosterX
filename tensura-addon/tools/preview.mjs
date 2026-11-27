@@ -247,6 +247,8 @@ body{margin:0;background:#000;font-family:'DejaVu Sans',sans-serif}
 // ── Cenários de teste ──
 import { buildMenuForm } from '../BP/scripts/core/menuView.js';
 import { buildRaceForm } from '../BP/scripts/core/raceView.js';
+import { buildSageForm } from '../BP/scripts/core/sageView.js';
+import { freshSage, addXp } from '../BP/scripts/core/sage.js';
 import { getMap } from '../BP/scripts/core/map.js';
 import { computeStats } from '../BP/scripts/core/stats.js';
 import { viewAt } from '../BP/scripts/core/view.js';
@@ -257,6 +259,14 @@ function demoPlayer() {
     'uni.predator', 'aspect.magic_sense', 'aspect.barrier', 'ext.magic_aura', 'ext.water_manipulation', 'ext.water_blade']);
   const d = { race: 'slime', level: 22, points: 140, flags: new Set(), unlocked, mpBonus: 20, mimic: null, epTotal: 1250, ep: 300,
     mp: 210, aura: 150, equipped: ['uni.predator', 'ext.water_blade', 'aspect.barrier'], absorbed: ['minecraft:wolf'], kills: { 'minecraft:zombie': 12, 'minecraft:spider': 4 } };
+  d.sage = freshSage();
+  addXp(d.sage, 2600);
+  d.sage.analyses = {
+    'minecraft:zombie': { typeId: 'minecraft:zombie', name: 'zombie', hp: 20, maxHp: 20, hostile: true, boss: false, undead: true, count: 3, first: 2, last: 900, kills: 12 },
+    'minecraft:spider': { typeId: 'minecraft:spider', name: 'spider', hp: 16, maxHp: 16, hostile: true, boss: false, undead: false, count: 1, first: 3, last: 800, kills: 4 },
+  };
+  d.sage.qa = [{ q: 'Quais são minhas fraquezas?', a: 'Sua raça não tem fraquezas registradas no addon.', day: 4 },
+    { q: 'Qual é minha raça atual?', a: 'Sua raça atual: Slime (Slime), estágio 0.', day: 4 }];
   d.stats = computeStats(d);
   return d;
 }
@@ -286,12 +296,18 @@ export function scenario(name) {
     case 'race-slime': return { kind: 'race', p: { page: 0, selected: 'slime', sageText: 'Agora, escolha a raça que definirá sua existência neste mundo.' } };
     case 'race-kijin': return { kind: 'race', p: { page: 0, selected: 'kijin', sageText: 'Kijin não pode ser escolhido agora. Essa forma é alcançada evoluindo a partir de Ogro.' } };
     case 'race-page2': return { kind: 'race', p: { page: 1, selected: 'giant', sageText: 'Gigante... Afinidade: Terra · Força. Dificuldade 2 de 5.' } };
+    case 'sage-ask': return { kind: 'sage', p: { cat: 'ask', d, sage: d.sage } };
+    case 'sage-level': return { kind: 'sage', p: { cat: 'level', d, sage: d.sage } };
+    case 'sage-intel': return { kind: 'sage', p: { cat: 'intel', d, sage: d.sage } };
+    case 'sage-analyses': return { kind: 'sage', p: { cat: 'analyses', d, sage: d.sage } };
     default: throw new Error(`cenário desconhecido ${name}`);
   }
 }
 
+export const ROOTS = { menu: 'menu_root', race: 'race_root', sage: 'sage_root', tree: 'root' };
+
 export function modelFor(sc) {
-  return sc.kind === 'menu' ? buildMenuForm(sc.p) : sc.kind === 'race' ? buildRaceForm(sc.p) : buildTreeForm(sc.p);
+  return sc.kind === 'menu' ? buildMenuForm(sc.p) : sc.kind === 'race' ? buildRaceForm(sc.p) : sc.kind === 'sage' ? buildSageForm(sc.p) : buildTreeForm(sc.p);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
@@ -299,7 +315,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const name = process.argv[3] ?? 'tree-fire-sel';
   const sc = scenario(name);
   const model = modelFor(sc);
-  const { page, stats } = previewHtml(model, { toggles: sc.toggles ?? [], root: sc.kind === 'menu' ? 'menu_root' : sc.kind === 'race' ? 'race_root' : 'root', label: `cenário: ${name} — simulação do JSON UI gerado (não é o jogo)` });
+  const { page, stats } = previewHtml(model, { toggles: sc.toggles ?? [], root: ROOTS[sc.kind] ?? 'root', label: `cenário: ${name} — simulação do JSON UI gerado (não é o jogo)` });
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, page);
   console.log(JSON.stringify({ out, nodes: stats.nodes, lines: stats.pipes, buttons: stats.ctl }));

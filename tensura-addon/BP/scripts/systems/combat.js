@@ -6,6 +6,7 @@ import { getData } from './storage.js';
 import { recentSpellHits, dealDamage, addEffects, heal, knockFrom, particle, V } from './util.js';
 import { onSummonHit } from './summons.js';
 import { powerFor } from '../core/stats.js';
+import { onPlayerHit } from './sage.js';
 
 const extraHits = new Set(); // dano extra de fraqueza já aplicado (evita recursão)
 
@@ -47,6 +48,7 @@ export function startCombat() {
     if (src.cause === EntityDamageCause.projectile && (d.stats.power.projectile ?? 1) > 1) {
       dealDamage(attacker, victim, ev.damage * (d.stats.power.projectile - 1), 'physical');
     }
+    if (victim.typeId !== 'minecraft:player') onPlayerHit(attacker, victim);
     if (src.cause !== EntityDamageCause.entityAttack) return;
     // Golpe corpo a corpo.
     if (d.stats.lifesteal > 0) heal(attacker, ev.damage * d.stats.lifesteal);

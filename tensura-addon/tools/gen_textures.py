@@ -473,6 +473,77 @@ def pack_icon(size=256):
     return img
 
 
+def sage_icon(kind, on=False, size=48):
+    """Ícones do painel do Grande Sábio (glifos pixelados azul-claros)."""
+    img = canvas(size)
+    d = ImageDraw.Draw(img)
+    S = size * SS
+    c = S / 2
+    col = (120, 230, 255, 255) if on else (205, 225, 245, 255)
+    w = int(S * 0.08)
+    if kind == 'ask':
+        d.rounded_rectangle([S * .12, S * .14, S * .88, S * .7], radius=S * .12, outline=col, width=w)
+        d.polygon([(S * .3, S * .66), (S * .46, S * .66), (S * .26, S * .88)], fill=col)
+        f = font(int(S * .42))
+        d.text((c, S * .42), '?', font=f, fill=col, anchor='mm')
+    elif kind in ('analyses', 'target'):
+        d.ellipse([S * .14, S * .14, S * .62, S * .62], outline=col, width=w)
+        d.line([S * .56, S * .56, S * .86, S * .86], fill=col, width=int(w * 1.4))
+        if kind == 'target':
+            d.ellipse([S * .32, S * .32, S * .44, S * .44], fill=col)
+    elif kind == 'level':
+        for i, h in enumerate((.3, .5, .7)):
+            d.rectangle([S * (.14 + i * .26), S * (.9 - h), S * (.32 + i * .26), S * .9], fill=col)
+        d.polygon([(S * .66, S * .08), (S * .9, S * .3), (S * .42, S * .3)], fill=col)
+    elif kind in ('skills', 'skill'):
+        pts = []
+        import math
+        for i in range(10):
+            r = S * (.42 if i % 2 == 0 else .18)
+            a = -math.pi / 2 + i * math.pi / 5
+            pts.append((c + r * math.cos(a), c + r * math.sin(a)))
+        d.polygon(pts, fill=col)
+    elif kind == 'intel':
+        d.polygon([(c, S * .1), (S * .88, c), (c, S * .9), (S * .12, c)], outline=col, width=w)
+        d.ellipse([S * .36, S * .36, S * .64, S * .64], fill=col)
+    elif kind == 'next':
+        for y in (.52, .2):
+            d.line([S * .18, S * (y + .3), c, S * y, S * .82, S * (y + .3)], fill=col, width=w, joint='curve')
+    elif kind == 'history':
+        d.ellipse([S * .12, S * .12, S * .88, S * .88], outline=col, width=w)
+        d.line([c, c, c, S * .26], fill=col, width=w)
+        d.line([c, c, S * .7, S * .6], fill=col, width=w)
+    elif kind == 'settings':
+        import math
+        for i in range(8):
+            a = i * math.pi / 4
+            d.line([c + S * .2 * math.cos(a), c + S * .2 * math.sin(a), c + S * .42 * math.cos(a), c + S * .42 * math.sin(a)], fill=col, width=int(w * 1.6))
+        d.ellipse([S * .24, S * .24, S * .76, S * .76], fill=col)
+        d.ellipse([S * .4, S * .4, S * .6, S * .6], fill=(0, 0, 0, 0))
+    elif kind == 'examples':
+        for i in range(3):
+            y = S * (.24 + i * .24)
+            d.rectangle([S * .14, y - S * .05, S * .24, y + S * .05], fill=col)
+            d.line([S * .32, y, S * .86, y], fill=col, width=w)
+    elif kind == 'item':
+        d.line([S * .2, S * .8, S * .78, S * .22], fill=col, width=int(w * 1.4))
+        d.line([S * .14, S * .6, S * .4, S * .86], fill=col, width=w)
+        d.polygon([(S * .7, S * .14), (S * .88, S * .12), (S * .86, S * .3)], fill=col)
+    return finish(img, size)
+
+
+def item_sage_core(size=32):
+    img = canvas(size)
+    d = ImageDraw.Draw(img)
+    S = size * SS
+    c = S / 2
+    d.ellipse([S * .1, S * .1, S * .9, S * .9], fill=(20, 40, 90, 255), outline=(120, 220, 255, 255), width=SS * 2)
+    d.ellipse([S * .28, S * .28, S * .72, S * .72], fill=(90, 200, 255, 255))
+    d.ellipse([S * .38, S * .34, S * .52, S * .48], fill=(230, 250, 255, 255))
+    d.arc([S * .02, S * .3, S * .98, S * .7], 0, 360, fill=(255, 220, 120, 255), width=SS)
+    return finish(img, size)
+
+
 def nine(path, im, n=3):
     save(im, path + '.png')
     with open(path + '.json', 'w') as fh:
@@ -530,6 +601,24 @@ def main():
     save(ui_icon('back', 48), os.path.join(M, 'back.png'))
     for k in range(21):
         save(progress_bar(k), os.path.join(M, f'bar_{k}.png'))
+    # Painel do Grande Sábio: azul-escuro com bordas luminosas.
+    G = os.path.join(T, 'sage')
+    os.makedirs(G, exist_ok=True)
+    glow = (80, 200, 255, 255)
+    nine(os.path.join(G, 'window'), box(24, (10, 16, 36, 248), glow, (30, 60, 120, 255), 2), 4)
+    nine(os.path.join(G, 'box'), box(16, (8, 14, 32, 255), (50, 120, 200, 255), (16, 28, 56, 255), 1), 3)
+    nine(os.path.join(G, 'button'), box(16, (20, 36, 72, 255), (70, 150, 230, 255), (34, 56, 100, 255), 2), 4)
+    nine(os.path.join(G, 'button_hover'), box(16, (30, 54, 104, 255), (140, 230, 255, 255), (40, 70, 130, 255), 2), 4)
+    nine(os.path.join(G, 'button_pressed'), box(16, (14, 26, 54, 255), (180, 240, 255, 255), (40, 70, 130, 255), 2), 4)
+    nine(os.path.join(G, 'cat'), box(16, (14, 24, 50, 255), (50, 100, 170, 255), (22, 36, 70, 255), 2), 4)
+    nine(os.path.join(G, 'cat_hover'), box(16, (24, 44, 88, 255), (120, 220, 255, 255), (30, 56, 100, 255), 2), 4)
+    nine(os.path.join(G, 'header'), box(16, (16, 30, 66, 255), glow, (40, 80, 150, 255), 2), 4)
+    for k in ('ask', 'analyses', 'level', 'skills', 'intel', 'next', 'history', 'settings'):
+        save(sage_icon(k, False), os.path.join(G, f'cat_{k}.png'))
+        save(sage_icon(k, True), os.path.join(G, f'cat_{k}_on.png'))
+    for k in ('ask', 'examples', 'target', 'item', 'skill'):
+        save(sage_icon(k, True), os.path.join(G, f'btn_{k}.png'))
+    save(item_sage_core(), os.path.join(rp, 'textures', 'items', 'tensura_sage_core.png'))
     save(item_tome(), os.path.join(rp, 'textures', 'items', 'tensura_tome.png'))
     save(item_crystal(), os.path.join(rp, 'textures', 'items', 'tensura_crystal.png'))
     pi = pack_icon()

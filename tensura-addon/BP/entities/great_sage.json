@@ -6,7 +6,8 @@
       "is_spawnable": false,
       "is_summonable": true,
       "properties": {
-        "tensura:state": { "type": "enum", "values": ["idle", "talk", "vanish"], "default": "idle", "client_sync": true }
+        "tensura:state": { "type": "enum", "values": ["idle", "talk", "vanish"], "default": "idle", "client_sync": true },
+        "tensura:stage": { "type": "enum", "values": ["sage", "raphael", "ciel"], "default": "sage", "client_sync": true }
       }
     },
     "component_groups": { "tensura:despawn": { "minecraft:instant_despawn": {} } },

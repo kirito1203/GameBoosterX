@@ -1,5 +1,6 @@
 item.tensura:great_sage_tome=Great Sage Grimoire
 item.tensura:magic_crystal=Magicule Crystal
+item.tensura:sage_core=Great Sage Core
 entity.tensura:hound_dog.name=Summoned Hound Dog
 entity.tensura:basilisk.name=Summoned Basilisk
 entity.tensura:daemon.name=Summoned Daemon

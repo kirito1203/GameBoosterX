@@ -43,6 +43,27 @@ export const CONFIG = {
     maxTempBlocks: 400,       // blocos temporários (paredes/prisões) simultâneos
   },
 
+  // Grande Sábio (assistente): progressão própria, separada do nível do jogador.
+  // Os limites de nível de cada estágio são do balanceamento do addon (não são da obra).
+  sage: {
+    levelCaps: { sage: 30, raphael: 60, ciel: 100 },
+    xpBase: 40,                // XP para o nível 2
+    xpPerLevel: 12,            // XP a mais por nível
+    rewards: {
+      newSpecies: 30,          // primeira análise de uma espécie
+      repeatAnalysis: 2,       // análises repetidas (limitadas por dia)
+      newKillSpecies: 10,      // primeira vez que derrota uma espécie
+      skillUnlocked: 8,        // cada habilidade desbloqueada pelo jogador
+      playerLevelUp: 15,       // cada nível do jogador
+      bossFirstKill: 150,      // primeira vitória contra um chefe
+      itemAnalysis: 6,         // primeira análise de um tipo de item
+      question: 1,             // pergunta respondida (limitada por dia)
+    },
+    dailyCaps: { repeatAnalysis: 20, question: 15 },
+    historyLimit: 30,          // perguntas e respostas guardadas
+    analysisLimit: 200,        // espécies guardadas na memória
+  },
+
   // Interface da árvore.
   ui: {
     // Grade da árvore (colunas x linhas). As linhas a mais rolam arrastando o dedo.

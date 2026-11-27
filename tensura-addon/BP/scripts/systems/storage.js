@@ -4,8 +4,12 @@ import { world, system } from '@minecraft/server';
 import { computeStats } from '../core/stats.js';
 import { CONFIG } from '../config.js';
 import { serialize, deserialize } from '../core/save.js';
+import { serializeSage, deserializeSage } from '../core/sage.js';
 
 const KEY = 'tensura:data';
+// Grande Sábio: propriedade separada (pode crescer com análises e conversas). Mesmo objeto para
+// o menu, o item Núcleo e a entidade: d.sage.
+const SAGE_KEY = 'tensura:sage';
 const cache = new Map(); // player.id -> data em memória
 const dirty = new Set();
 
@@ -15,6 +19,9 @@ export function getData(player) {
   if (!d) {
     d = deserialize(player.getDynamicProperty(KEY));
     if (d.corrupted) console.warn(`[Tensura] Dados de ${player.name} estavam corrompidos e foram reiniciados.`);
+    d.sage = deserializeSage(player.getDynamicProperty(SAGE_KEY));
+    if (d.sage.corrupted) console.warn(`[Tensura] Dados do Grande Sábio de ${player.name} estavam corrompidos e foram reiniciados.`);
+    d.sageDirty = false;
     cache.set(player.id, d);
     refreshStats(d);
   }
@@ -36,6 +43,7 @@ export function saveNow(player) {
   if (!d || !player.isValid) return;
   try {
     player.setDynamicProperty(KEY, serialize(d));
+    if (d.sageDirty) { player.setDynamicProperty(SAGE_KEY, serializeSage(d.sage)); d.sageDirty = false; }
     dirty.delete(player.id);
   } catch (e) {
     console.warn(`[Tensura] Falha ao salvar ${player.name}: ${e}`);

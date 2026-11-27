@@ -209,3 +209,117 @@ Também não dava para arrastar a árvore com o dedo.
 - Depois de desbloquear, a tela reabre (é o script salvando o progresso) e o painel fica fechado. O nó
   desbloqueado aparece aceso.
 - **Não testado no jogo:** os toggles de rádio e a rolagem dentro de um formulário do servidor.
+
+## Versão 0.5.0 — Painel individual do Grande Sábio
+
+**Acesso (sem comandos):**
+- Botão **GRANDE SÁBIO** na coluna esquerda do menu principal, em todas as abas.
+- Item **Núcleo do Grande Sábio** (`tensura:sage_core`). Ele é entregue uma vez a quem já tem raça e também
+  pode ser fabricado: ametista + diamante + lápis-lazúli.
+- As duas entradas chamam a mesma função (`openSage`) e usam os mesmos dados (`d.sage`). A entidade
+  espiritual também usa esses dados: o estágio define a aparência dela.
+
+**Tela própria** (marcador `§t§n§g`), em azul-escuro com bordas luminosas:
+- à esquerda, o retrato do estágio, o nome, o nível e a barra de XP;
+- no meio, as 8 categorias;
+- à direita, o conteúdo com rolagem e até 6 botões de ação.
+
+**As 8 categorias:**
+1. **Perguntar:** campo de texto com botão ENVIAR (`ModalFormData.textField`), lista de exemplos, histórico e
+   "Limpar histórico" com confirmação. As respostas são programadas: palavras-chave levam a uma intenção, e
+   a resposta é montada com os dados reais do jogador (raça, nível, pontos, habilidades e magias
+   disponíveis, fraquezas, resistências, evolução racial, ameaça do alvo, capacidades e nível do Sábio).
+   - Quando não há dados, a resposta é "Dados insuficientes".
+   - Síntese responde que ainda não existe.
+   - O painel avisa que não é IA generativa.
+   - `registerAnswerer()` permite plugar um provedor real no futuro.
+2. **Análises:**
+   - criatura na mira: vida, hostilidade, chefe, morto-vivo, ameaça, EP e efeitos;
+   - item na mão: categoria arma/armadura/ferramenta, durabilidade e encantamentos;
+   - habilidade ou magia pelo nome (dados do catálogo do addon);
+   - lista paginada das análises salvas.
+   As habilidades Análise e Analista também gravam na mesma memória.
+3. **Nível e evolução:**
+   - estágio, nível e limite, XP e XP necessário, próximo nível;
+   - capacidades desbloqueadas e bloqueadas, próxima melhoria e requisitos;
+   - o botão **Evoluir** só aparece quando todos os requisitos são cumpridos;
+   - botão "Manifestar o Sábio".
+4. **Habilidades do Sábio:** capacidades do estágio atual e as herdadas.
+5. **Inteligência e capacidades:** as 11 categorias pedidas. Cada capacidade mostra nome, descrição,
+   estágio, nível, estado, requisitos e próxima melhoria. "Síntese" aparece como não implementada.
+6. **Próximas evoluções:** Grande Sábio → Raphael → Ciel, com requisitos, capacidades novas e melhorias.
+7. **Histórico:** evoluções, descobertas, análises e conversas.
+8. **Configurações:** sons, notificações, frequência (todas / só importantes / desligadas) e salvar conversas.
+
+**Progressão própria** (separada do nível do jogador; configurável em `CONFIG.sage`):
+- **Limites de nível:** Grande Sábio 30, Raphael 60, Ciel 100. São balanceamento do addon, não níveis da
+  obra. No limite, o XP para de contar.
+- **XP ganha com:**
+  - primeira análise de uma espécie (30) e de um item (6);
+  - primeira vitória contra uma espécie (10) e contra um chefe (150);
+  - cada habilidade desbloqueada (8) e cada nível do jogador (15).
+- **Anti-farm:**
+  - análises repetidas valem 2 XP, no máximo 20 por dia do mundo;
+  - perguntas valem 1 XP, no máximo 15 por dia;
+  - repetir a mesma análise não dá XP de "nova espécie".
+- **Requisitos de evolução** (do addon):
+  - **Raphael:** Sábio nível 30, jogador nível 35, 20 espécies analisadas e um chefe derrotado.
+  - **Ciel:** Raphael nível 60, jogador nível 60, 60 espécies, Wither e Ender Dragon derrotados, e a raça
+    no 3º estágio.
+
+**Capacidades com efeito real (19):**
+- Análise, perguntas, relatório de status, análise de itens, memória e consulta de habilidades.
+- Avaliação de ameaça, com alerta de chefe a até 64 blocos.
+- Assistência de combate: vida do alvo ao golpear; no Raphael, também a fraqueza ao Sagrado.
+- Bônus de atributos:
+  - Pensamento Acelerado: +10% regeneração;
+  - Processamento paralelo: −10% recarga;
+  - Otimização de Magicules: −8% custo de magia;
+  - Senhor da Sabedoria: +15% regeneração;
+  - Manas: +10% dano mágico.
+- Recomendações e avaliação de evolução.
+- **Ciel:** aviso de vida abaixo de 30% e cura automática abaixo de 25%, com a melhor cura do jogador e
+  recarga de 60 s.
+
+**Notificações** (no chat, com som; respeitam as configurações):
+- subiu de nível;
+- nova capacidade;
+- limite do estágio;
+- requisito cumprido (uma vez cada);
+- perto de evoluir (≥75%);
+- evolução disponível;
+- nova espécie;
+- vitória contra um chefe.
+
+**Aparência por estágio:**
+- Nova propriedade `tensura:stage` na entidade. O render controller escolhe a textura (Grande Sábio azul,
+  Raphael dourado, Ciel prata/violeta) e a cor do brilho.
+- Retratos e ícones de cada estágio são gerados a partir do próprio modelo 3D (`docs/img/sabio_estagios.png`).
+
+**Salvamento:**
+- Propriedade dinâmica separada `tensura:sage`, por jogador, gravada só quando algo do Sábio muda.
+- Se crescer demais, as conversas mais antigas são descartadas primeiro (limite < 32 767 caracteres).
+- Histórico: últimas 30 conversas e até 200 espécies.
+
+**Testes executados (57 passando; `test/sage.test.mjs` tem 11 novos):**
+- XP, curva e limite do estágio;
+- limite diário;
+- capacidades por nível e estágio;
+- bônus aplicados nos atributos reais;
+- requisitos de Raphael e de Ciel (só evolui com tudo cumprido);
+- perguntas com dados reais e "dados insuficientes";
+- ameaça e cura;
+- salvamento, ida e volta, e separação entre jogadores;
+- tamanho máximo;
+- 8 categorias ligadas aos botões;
+- botão no menu;
+- arquivos do resource pack e simulação da tela.
+
+`tsc` está sem erros. Capturas do simulador: `docs/img/painel_sabio_*.png`.
+
+**Não testado no jogo** (este ambiente não tem Minecraft):
+- abertura pelo menu e pelo item;
+- campo de texto e ENVIAR;
+- sons;
+- troca de textura da entidade;
+- funcionamento no celular.

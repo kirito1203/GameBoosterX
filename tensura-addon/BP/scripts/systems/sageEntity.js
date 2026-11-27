@@ -7,6 +7,12 @@ import { system } from '@minecraft/server';
 import { V, particle } from './util.js';
 
 const STATE = 'tensura:state';
+const STAGE = 'tensura:stage';
+
+/** Aparência do estágio atual (Grande Sábio, Raphael ou Ciel). */
+export function setSageStage(e, stage) {
+  try { if (e?.isValid) e.setProperty(STAGE, stage); } catch { /* */ }
+}
 
 export function spawnSage(player, at, name = '§bGrande Sábio') {
   const dim = player.dimension;

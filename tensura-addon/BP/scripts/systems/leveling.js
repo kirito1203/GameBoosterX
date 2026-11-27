@@ -4,6 +4,7 @@ import { CONFIG, epForLevel } from '../config.js';
 import { getData, saveNow, refreshStats } from './storage.js';
 import { ownerOfSummon, onSummonDied } from './summons.js';
 import { addEffects, msg, sound, heal } from './util.js';
+import { onKill, onPlayerLevel } from './sage.js';
 
 const BOSS_FLAGS = { 'minecraft:wither': 'killed_wither', 'minecraft:ender_dragon': 'killed_ender_dragon', 'minecraft:warden': 'killed_warden' };
 
@@ -35,6 +36,7 @@ export function grantEp(player, amount) {
     d.aura = d.stats.maxAura;
     saveNow(player);
     sound(player.dimension, 'random.levelup', player.location);
+    onPlayerLevel(player, ups);
     msg(player, `§6§lNível ${d.level}!§r §e+${ups * CONFIG.leveling.pointsPerLevel} pontos de habilidade§r (total ${d.points}). Magicules restauradas.`);
   }
 }
@@ -75,6 +77,7 @@ export function startLeveling() {
       d.mp = Math.min(d.stats.maxMp, d.mp + st.mp);
       heal(killer, 2);
     }
+    try { onKill(killer, dead); } catch (e) { console.warn(`[Tensura] Grande Sábio (kill): ${e}`); }
     grantEp(killer, ep);
   });
 }

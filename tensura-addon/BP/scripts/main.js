@@ -21,9 +21,17 @@ import { cast } from './systems/casting.js';
 import { openMenu } from './ui/treeUI.js';
 import { MENUS, mimicMenu, storageMenu } from './ui/menus.js';
 import { runIntro, restoreControls, introRunning } from './systems/intro.js';
+import { openSage } from './ui/sageUI.js';
+import { startSage, onSkillUnlocked } from './systems/sage.js';
+import { setTreeHooks } from './ui/treeUI.js';
 
 const TOME = 'tensura:great_sage_tome';
 const CRYSTAL = 'tensura:magic_crystal';
+const CORE = 'tensura:sage_core';
+
+// Menu principal e item Núcleo abrem o MESMO painel (openSage) com os mesmos dados.
+MENUS.sage = openSage;
+setTreeHooks({ onSkillUnlocked });
 
 setEffectMenus({ mimic: mimicMenu, storage: storageMenu });
 
@@ -33,6 +41,8 @@ world.afterEvents.itemUse.subscribe((ev) => {
   if (introRunning(player)) return;
   if (id === TOME) {
     openMenu(player, MENUS);
+  } else if (id === CORE) {
+    openSage(player, 'ask', false);
   } else if (id === CRYSTAL) {
     const d = getData(player);
     if (!d.race) { openMenu(player, MENUS); return; }
@@ -47,8 +57,22 @@ world.afterEvents.itemUse.subscribe((ev) => {
   }
 });
 
+function giveCore(player) {
+  const d = getData(player);
+  if (!d.race || d.sage.coreGiven) return;
+  const inv = player.getComponent('minecraft:inventory')?.container;
+  if (!inv) return;
+  const left = inv.addItem(new ItemStack(CORE, 1));
+  if (left) player.dimension.spawnItem(left, player.location);
+  d.sage.coreGiven = true;
+  d.sageDirty = true;
+  saveNow(player);
+  player.sendMessage('§b§lGrande Sábio:§r você recebeu o §bNúcleo do Grande Sábio§r. Use-o (ou o botão GRANDE SÁBIO do menu) para abrir o painel do assistente.');
+}
+
 function giveStarterItems(player) {
   const d = getData(player);
+  giveCore(player);
   if (d.gifted) return;
   const inv = player.getComponent('minecraft:inventory')?.container;
   if (!inv) return;
@@ -90,6 +114,7 @@ world.afterEvents.worldLoad.subscribe(() => {
   startSummons();
   startFields();
   startBolts();
+  startSage();
   for (const p of world.getAllPlayers()) system.runTimeout(() => onJoin(p), 60);
   console.log(`[Tensura] Carregado: ${Object.keys(SKILLS).length} habilidades.`);
 });

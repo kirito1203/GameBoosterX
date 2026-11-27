@@ -7,6 +7,9 @@
     },
     "tensura_crystal": {
       "textures": "textures/items/tensura_crystal"
+    },
+    "tensura_sage_core": {
+      "textures": "textures/items/tensura_sage_core"
     }
   }
 }
