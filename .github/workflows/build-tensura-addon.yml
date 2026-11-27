@@ -1,0 +1,58 @@
+name: Build Tensura RPG Addon
+
+# Gera o .mcaddon do addon de Minecraft Bedrock (pasta tensura-addon/).
+# Roda só quando algo dentro de tensura-addon/ muda — não interfere no build do APK.
+on:
+  push:
+    paths:
+      - 'tensura-addon/**'
+      - '.github/workflows/build-tensura-addon.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tensura-addon
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Dependências de desenvolvimento (tipos da API do Minecraft)
+        run: npm ci
+
+      - name: Verificar tipos contra @minecraft/server 2.0.0
+        run: npm run typecheck
+
+      - name: Gerar interface e pacote
+        run: npm run build
+
+      - name: Testes
+        run: npm test
+
+      - name: Guardar .mcaddon
+        uses: actions/upload-artifact@v4
+        with:
+          name: TensuraRPG-mcaddon
+          path: tensura-addon/dist/*.mc*
+
+      - name: Publicar release (link direto para baixar no celular)
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+        continue-on-error: true
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: tensura-addon-${{ github.run_number }}
+          name: Tensura RPG Addon — build ${{ github.run_number }}
+          body: |
+            Addon gerado automaticamente a partir do commit ${{ github.sha }}.
+            Baixe **TensuraRPG_v*.mcaddon** e abra com o Minecraft (Bedrock/PE 1.21.90 ou superior).
+          files: tensura-addon/dist/*.mcaddon

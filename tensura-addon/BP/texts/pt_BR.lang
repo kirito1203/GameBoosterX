@@ -1,0 +1,14 @@
+item.tensura:great_sage_tome=Grimório do Grande Sábio
+item.tensura:magic_crystal=Cristal de Magicules
+entity.tensura:hound_dog.name=Cão Invocado
+entity.tensura:basilisk.name=Basilisco Invocado
+entity.tensura:daemon.name=Demônio Invocado
+entity.tensura:medium_elemental.name=Elemental Médio
+entity.tensura:greater_elemental.name=Elemental Superior
+entity.tensura:spirit.name=Espírito Invocado
+entity.tensura:familiar.name=Familiar
+entity.tensura:undead_warrior.name=Guerreiro Morto-vivo
+entity.tensura:undead_archer.name=Arqueiro Morto-vivo
+entity.tensura:doppelganger.name=Cópia
+pack.name=Tensura RPG
+pack.description=Raças, magias e árvore de habilidades inspiradas em Tensura

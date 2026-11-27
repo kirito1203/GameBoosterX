@@ -85,3 +85,9 @@ Se o cache expirar (7 dias sem builds), desinstale a versão antiga antes de ins
 
 Para uma chave própria, crie os Secrets `GBX_KEYSTORE_B64` (keystore em base64), `GBX_KEYSTORE_PASSWORD`,
 `GBX_KEY_ALIAS` e `GBX_KEY_PASSWORD` em Settings → Secrets and variables → Actions.
+
+## Outro projeto neste repositório: Tensura RPG (addon de Minecraft Bedrock)
+
+A pasta [`tensura-addon/`](tensura-addon/README.md) contém um addon independente para Minecraft
+Bedrock / PE (raças, magias e árvore de habilidades inspiradas em Tensura). Ele tem build próprio
+(workflow *Build Tensura RPG Addon*) e não interfere no app Android.

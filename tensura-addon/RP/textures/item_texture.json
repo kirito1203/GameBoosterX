@@ -1,0 +1,12 @@
+{
+  "resource_pack_name": "tensura",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "tensura_tome": {
+      "textures": "textures/items/tensura_tome"
+    },
+    "tensura_crystal": {
+      "textures": "textures/items/tensura_crystal"
+    }
+  }
+}

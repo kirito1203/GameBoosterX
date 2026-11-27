@@ -1,0 +1,14 @@
+item.tensura:great_sage_tome=Great Sage Grimoire
+item.tensura:magic_crystal=Magicule Crystal
+entity.tensura:hound_dog.name=Summoned Hound Dog
+entity.tensura:basilisk.name=Summoned Basilisk
+entity.tensura:daemon.name=Summoned Daemon
+entity.tensura:medium_elemental.name=Medium Elemental
+entity.tensura:greater_elemental.name=Greater Elemental
+entity.tensura:spirit.name=Summoned Spirit
+entity.tensura:familiar.name=Familiar
+entity.tensura:undead_warrior.name=Undead Warrior
+entity.tensura:undead_archer.name=Undead Archer
+entity.tensura:doppelganger.name=Doppelganger
+pack.name=Tensura RPG
+pack.description=Races, magic and skill trees inspired by Tensura

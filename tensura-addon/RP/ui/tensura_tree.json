@@ -1,0 +1,7703 @@
+// Gerado por tools/build-ui.mjs — não edite à mão.
+{
+ "namespace": "tensura_tree",
+ "pipe": {
+  "type": "image",
+  "layer": 2,
+  "keep_ratio": false,
+  "bilinear": true,
+  "anchor_from": "top_left",
+  "anchor_to": "top_left",
+  "bindings": [
+   {
+    "binding_name": "#form_button_text",
+    "binding_type": "collection",
+    "binding_collection_name": "form_buttons"
+   },
+   {
+    "binding_type": "view",
+    "source_property_name": "('textures/tensura/ui/pipe/p' + #form_button_text)",
+    "target_property_name": "#texture"
+   },
+   {
+    "binding_type": "view",
+    "source_property_name": "(not (#form_button_text = ''))",
+    "target_property_name": "#visible"
+   }
+  ]
+ },
+ "node": {
+  "type": "panel",
+  "anchor_from": "top_left",
+  "anchor_to": "top_left",
+  "bindings": [
+   {
+    "binding_name": "#form_button_text",
+    "binding_type": "collection",
+    "binding_collection_name": "form_buttons"
+   },
+   {
+    "binding_type": "view",
+    "source_property_name": "(not (#form_button_text = ''))",
+    "target_property_name": "#visible"
+   }
+  ],
+  "controls": [
+   {
+    "icon": {
+     "type": "image",
+     "layer": 3,
+     "size": [
+      "100%y",
+      "56%"
+     ],
+     "bilinear": true,
+     "bindings": [
+      {
+       "binding_name": "#form_button_texture",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons",
+       "binding_name_override": "#texture"
+      },
+      {
+       "binding_name": "#form_button_texture_file_system",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons",
+       "binding_name_override": "#texture_file_system"
+      }
+     ]
+    }
+   },
+   {
+    "frame": {
+     "type": "image",
+     "layer": 4,
+     "size": [
+      "100%y",
+      "88%"
+     ],
+     "bilinear": true,
+     "bindings": [
+      {
+       "binding_name": "#form_button_text",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons"
+      },
+      {
+       "binding_type": "view",
+       "source_property_name": "('textures/tensura/ui/node/f_' + #form_button_text)",
+       "target_property_name": "#texture"
+      }
+     ]
+    }
+   },
+   {
+    "hit@common.button": {
+     "layer": 5,
+     "$pressed_button_name": "button.form_button_click",
+     "size": [
+      "100%y",
+      "80%"
+     ],
+     "default_control": "default",
+     "hover_control": "hover",
+     "pressed_control": "pressed",
+     "bindings": [
+      {
+       "binding_type": "collection_details",
+       "binding_collection_name": "form_buttons"
+      }
+     ],
+     "controls": [
+      {
+       "default": {
+        "type": "panel"
+       }
+      },
+      {
+       "hover": {
+        "type": "image",
+        "texture": "textures/tensura/ui/hover",
+        "size": [
+         "100%",
+         "100%"
+        ],
+        "bilinear": true
+       }
+      },
+      {
+       "pressed": {
+        "type": "image",
+        "texture": "textures/tensura/ui/hover",
+        "size": [
+         "100%",
+         "100%"
+        ],
+        "alpha": 0.6,
+        "bilinear": true
+       }
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "label": {
+  "type": "label",
+  "layer": 6,
+  "anchor_from": "bottom_middle",
+  "anchor_to": "bottom_middle",
+  "size": [
+   "140%",
+   "default"
+  ],
+  "max_size": [
+   "140%",
+   "30%"
+  ],
+  "text_alignment": "center",
+  "shadow": true,
+  "font_scale_factor": 0.75,
+  "color": [
+   1,
+   1,
+   1
+  ],
+  "text": "#form_button_text",
+  "bindings": [
+   {
+    "binding_name": "#form_button_text",
+    "binding_type": "collection",
+    "binding_collection_name": "form_buttons"
+   },
+   {
+    "binding_type": "view",
+    "source_property_name": "(not (#form_button_text = ''))",
+    "target_property_name": "#visible"
+   }
+  ]
+ },
+ "ctl": {
+  "type": "panel",
+  "anchor_from": "top_left",
+  "anchor_to": "top_left",
+  "bindings": [
+   {
+    "binding_name": "#form_button_text",
+    "binding_type": "collection",
+    "binding_collection_name": "form_buttons"
+   },
+   {
+    "binding_name": "#form_button_texture",
+    "binding_type": "collection",
+    "binding_collection_name": "form_buttons"
+   },
+   {
+    "binding_type": "view",
+    "source_property_name": "((not (#form_button_text = '')) or (not (#form_button_texture = '')))",
+    "target_property_name": "#visible"
+   }
+  ],
+  "controls": [
+   {
+    "btn@common.button": {
+     "layer": 1,
+     "$pressed_button_name": "button.form_button_click",
+     "size": [
+      "100%",
+      "100%"
+     ],
+     "default_control": "default",
+     "hover_control": "hover",
+     "pressed_control": "pressed",
+     "bindings": [
+      {
+       "binding_type": "collection_details",
+       "binding_collection_name": "form_buttons"
+      }
+     ],
+     "controls": [
+      {
+       "default": {
+        "type": "image",
+        "texture": "textures/tensura/ui/ctl",
+        "size": [
+         "100%",
+         "100%"
+        ],
+        "keep_ratio": false,
+        "bilinear": true
+       }
+      },
+      {
+       "hover": {
+        "type": "image",
+        "texture": "textures/tensura/ui/ctl_hover",
+        "size": [
+         "100%",
+         "100%"
+        ],
+        "keep_ratio": false,
+        "bilinear": true
+       }
+      },
+      {
+       "pressed": {
+        "type": "image",
+        "texture": "textures/tensura/ui/ctl_pressed",
+        "size": [
+         "100%",
+         "100%"
+        ],
+        "keep_ratio": false,
+        "bilinear": true
+       }
+      }
+     ]
+    }
+   },
+   {
+    "icon": {
+     "type": "image",
+     "layer": 2,
+     "size": "$ctl_icon_size",
+     "anchor_from": "$ctl_icon_anchor",
+     "anchor_to": "$ctl_icon_anchor",
+     "offset": "$ctl_icon_offset",
+     "bilinear": true,
+     "bindings": [
+      {
+       "binding_name": "#form_button_texture",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons",
+       "binding_name_override": "#texture"
+      },
+      {
+       "binding_name": "#form_button_texture_file_system",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons",
+       "binding_name_override": "#texture_file_system"
+      },
+      {
+       "binding_type": "view",
+       "source_property_name": "(not (#texture = ''))",
+       "target_property_name": "#visible"
+      }
+     ]
+    }
+   },
+   {
+    "text": {
+     "type": "label",
+     "layer": 3,
+     "text": "#form_button_text",
+     "text_alignment": "center",
+     "shadow": true,
+     "size": "$ctl_text_size",
+     "anchor_from": "$ctl_text_anchor",
+     "anchor_to": "$ctl_text_anchor",
+     "offset": "$ctl_text_offset",
+     "font_scale_factor": "$ctl_font",
+     "color": [
+      1,
+      1,
+      1
+     ],
+     "bindings": [
+      {
+       "binding_name": "#form_button_text",
+       "binding_type": "collection",
+       "binding_collection_name": "form_buttons"
+      }
+     ]
+    }
+   }
+  ],
+  "$ctl_icon_size|default": [
+   "100%y",
+   "70%"
+  ],
+  "$ctl_icon_anchor|default": "center",
+  "$ctl_icon_offset|default": [
+   0,
+   0
+  ],
+  "$ctl_text_size|default": [
+   "100%",
+   "default"
+  ],
+  "$ctl_text_anchor|default": "center",
+  "$ctl_text_offset|default": [
+   0,
+   0
+  ],
+  "$ctl_font|default": 0.8
+ },
+ "root": {
+  "type": "panel",
+  "size": [
+   "100%",
+   "100%"
+  ],
+  "collection_name": "form_buttons",
+  "controls": [
+   {
+    "bg": {
+     "type": "image",
+     "texture": "textures/tensura/ui/bg",
+     "size": [
+      "100%",
+      "100%"
+     ],
+     "keep_ratio": false,
+     "layer": 0
+    }
+   },
+   {
+    "tree_area": {
+     "type": "panel",
+     "size": [
+      "100%",
+      "79%"
+     ],
+     "offset": [
+      0,
+      "9%"
+     ],
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "clips_children": true,
+     "layer": 5,
+     "controls": [
+      {
+       "grid_z1@tensura_tree.grid_z1": {}
+      },
+      {
+       "grid_z2@tensura_tree.grid_z2": {}
+      },
+      {
+       "grid_z3@tensura_tree.grid_z3": {}
+      }
+     ]
+    }
+   },
+   {
+    "top_bar": {
+     "type": "panel",
+     "size": [
+      "100%",
+      "9%"
+     ],
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "layer": 20,
+     "collection_name": "form_buttons",
+     "controls": [
+      {
+       "bg": {
+        "type": "image",
+        "texture": "textures/tensura/ui/bar",
+        "size": [
+         "100%",
+         "100%"
+        ],
+        "keep_ratio": false,
+        "layer": 0
+       }
+      },
+      {
+       "header": {
+        "type": "label",
+        "layer": 2,
+        "anchor_from": "left_middle",
+        "anchor_to": "left_middle",
+        "offset": [
+         "1%",
+         0
+        ],
+        "size": [
+         "68%",
+         "default"
+        ],
+        "max_size": [
+         "68%",
+         "100%"
+        ],
+        "shadow": true,
+        "font_scale_factor": 0.85,
+        "color": [
+         1,
+         1,
+         1
+        ],
+        "text": "#tensura_header",
+        "bindings": [
+         {
+          "binding_name": "#title_text"
+         },
+         {
+          "binding_type": "view",
+          "source_property_name": "((((#title_text - '§t§n§s§1') - '§t§n§s§2') - '§t§n§s§3') - '§t§n§s')",
+          "target_property_name": "#tensura_header"
+         }
+        ]
+       }
+      },
+      {
+       "grimoire@tensura_tree.ctl": {
+        "collection_index": 1,
+        "offset": [
+         "70%",
+         "10%"
+        ],
+        "size": [
+         "11%",
+         "80%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "70%"
+        ],
+        "$ctl_icon_anchor": "left_middle",
+        "$ctl_icon_offset": [
+         "6%",
+         0
+        ],
+        "$ctl_text_size": [
+         "62%",
+         "default"
+        ],
+        "$ctl_text_anchor": "right_middle",
+        "$ctl_text_offset": [
+         "-4%",
+         0
+        ],
+        "$ctl_font": 0.75
+       }
+      },
+      {
+       "status@tensura_tree.ctl": {
+        "collection_index": 2,
+        "offset": [
+         "81.5%",
+         "10%"
+        ],
+        "size": [
+         "10%",
+         "80%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "70%"
+        ],
+        "$ctl_icon_anchor": "left_middle",
+        "$ctl_icon_offset": [
+         "6%",
+         0
+        ],
+        "$ctl_text_size": [
+         "62%",
+         "default"
+        ],
+        "$ctl_text_anchor": "right_middle",
+        "$ctl_text_offset": [
+         "-4%",
+         0
+        ],
+        "$ctl_font": 0.75
+       }
+      },
+      {
+       "close@tensura_tree.ctl": {
+        "collection_index": 0,
+        "offset": [
+         "92.5%",
+         "10%"
+        ],
+        "size": [
+         "6.5%",
+         "80%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "bottom_bar": {
+     "type": "panel",
+     "size": [
+      "100%",
+      "12%"
+     ],
+     "anchor_from": "bottom_left",
+     "anchor_to": "bottom_left",
+     "layer": 20,
+     "collection_name": "form_buttons",
+     "controls": [
+      {
+       "bg": {
+        "type": "image",
+        "texture": "textures/tensura/ui/bar",
+        "size": [
+         "100%",
+         "100%"
+        ],
+        "keep_ratio": false,
+        "layer": 0
+       }
+      },
+      {
+       "tab0@tensura_tree.ctl": {
+        "collection_index": 3,
+        "offset": [
+         "0.5%",
+         "6%"
+        ],
+        "size": [
+         "5.7%",
+         "88%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "62%"
+        ],
+        "$ctl_icon_anchor": "top_middle",
+        "$ctl_icon_offset": [
+         0,
+         "4%"
+        ],
+        "$ctl_text_size": [
+         "100%",
+         "default"
+        ],
+        "$ctl_text_anchor": "bottom_middle",
+        "$ctl_text_offset": [
+         0,
+         "-6%"
+        ],
+        "$ctl_font": 0.6
+       }
+      },
+      {
+       "tab1@tensura_tree.ctl": {
+        "collection_index": 4,
+        "offset": [
+         "6.6%",
+         "6%"
+        ],
+        "size": [
+         "5.7%",
+         "88%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "62%"
+        ],
+        "$ctl_icon_anchor": "top_middle",
+        "$ctl_icon_offset": [
+         0,
+         "4%"
+        ],
+        "$ctl_text_size": [
+         "100%",
+         "default"
+        ],
+        "$ctl_text_anchor": "bottom_middle",
+        "$ctl_text_offset": [
+         0,
+         "-6%"
+        ],
+        "$ctl_font": 0.6
+       }
+      },
+      {
+       "tab2@tensura_tree.ctl": {
+        "collection_index": 5,
+        "offset": [
+         "12.7%",
+         "6%"
+        ],
+        "size": [
+         "5.7%",
+         "88%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "62%"
+        ],
+        "$ctl_icon_anchor": "top_middle",
+        "$ctl_icon_offset": [
+         0,
+         "4%"
+        ],
+        "$ctl_text_size": [
+         "100%",
+         "default"
+        ],
+        "$ctl_text_anchor": "bottom_middle",
+        "$ctl_text_offset": [
+         0,
+         "-6%"
+        ],
+        "$ctl_font": 0.6
+       }
+      },
+      {
+       "tab3@tensura_tree.ctl": {
+        "collection_index": 6,
+        "offset": [
+         "18.8%",
+         "6%"
+        ],
+        "size": [
+         "5.7%",
+         "88%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "62%"
+        ],
+        "$ctl_icon_anchor": "top_middle",
+        "$ctl_icon_offset": [
+         0,
+         "4%"
+        ],
+        "$ctl_text_size": [
+         "100%",
+         "default"
+        ],
+        "$ctl_text_anchor": "bottom_middle",
+        "$ctl_text_offset": [
+         0,
+         "-6%"
+        ],
+        "$ctl_font": 0.6
+       }
+      },
+      {
+       "tab4@tensura_tree.ctl": {
+        "collection_index": 7,
+        "offset": [
+         "24.9%",
+         "6%"
+        ],
+        "size": [
+         "5.7%",
+         "88%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "62%"
+        ],
+        "$ctl_icon_anchor": "top_middle",
+        "$ctl_icon_offset": [
+         0,
+         "4%"
+        ],
+        "$ctl_text_size": [
+         "100%",
+         "default"
+        ],
+        "$ctl_text_anchor": "bottom_middle",
+        "$ctl_text_offset": [
+         0,
+         "-6%"
+        ],
+        "$ctl_font": 0.6
+       }
+      },
+      {
+       "tab5@tensura_tree.ctl": {
+        "collection_index": 8,
+        "offset": [
+         "31%",
+         "6%"
+        ],
+        "size": [
+         "5.7%",
+         "88%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "62%"
+        ],
+        "$ctl_icon_anchor": "top_middle",
+        "$ctl_icon_offset": [
+         0,
+         "4%"
+        ],
+        "$ctl_text_size": [
+         "100%",
+         "default"
+        ],
+        "$ctl_text_anchor": "bottom_middle",
+        "$ctl_text_offset": [
+         0,
+         "-6%"
+        ],
+        "$ctl_font": 0.6
+       }
+      },
+      {
+       "tab6@tensura_tree.ctl": {
+        "collection_index": 9,
+        "offset": [
+         "37.1%",
+         "6%"
+        ],
+        "size": [
+         "5.7%",
+         "88%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "62%"
+        ],
+        "$ctl_icon_anchor": "top_middle",
+        "$ctl_icon_offset": [
+         0,
+         "4%"
+        ],
+        "$ctl_text_size": [
+         "100%",
+         "default"
+        ],
+        "$ctl_text_anchor": "bottom_middle",
+        "$ctl_text_offset": [
+         0,
+         "-6%"
+        ],
+        "$ctl_font": 0.6
+       }
+      },
+      {
+       "tab7@tensura_tree.ctl": {
+        "collection_index": 10,
+        "offset": [
+         "43.2%",
+         "6%"
+        ],
+        "size": [
+         "5.7%",
+         "88%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "62%"
+        ],
+        "$ctl_icon_anchor": "top_middle",
+        "$ctl_icon_offset": [
+         0,
+         "4%"
+        ],
+        "$ctl_text_size": [
+         "100%",
+         "default"
+        ],
+        "$ctl_text_anchor": "bottom_middle",
+        "$ctl_text_offset": [
+         0,
+         "-6%"
+        ],
+        "$ctl_font": 0.6
+       }
+      },
+      {
+       "tab8@tensura_tree.ctl": {
+        "collection_index": 11,
+        "offset": [
+         "49.3%",
+         "6%"
+        ],
+        "size": [
+         "5.7%",
+         "88%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "62%"
+        ],
+        "$ctl_icon_anchor": "top_middle",
+        "$ctl_icon_offset": [
+         0,
+         "4%"
+        ],
+        "$ctl_text_size": [
+         "100%",
+         "default"
+        ],
+        "$ctl_text_anchor": "bottom_middle",
+        "$ctl_text_offset": [
+         0,
+         "-6%"
+        ],
+        "$ctl_font": 0.6
+       }
+      },
+      {
+       "tab9@tensura_tree.ctl": {
+        "collection_index": 12,
+        "offset": [
+         "55.4%",
+         "6%"
+        ],
+        "size": [
+         "5.7%",
+         "88%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "62%"
+        ],
+        "$ctl_icon_anchor": "top_middle",
+        "$ctl_icon_offset": [
+         0,
+         "4%"
+        ],
+        "$ctl_text_size": [
+         "100%",
+         "default"
+        ],
+        "$ctl_text_anchor": "bottom_middle",
+        "$ctl_text_offset": [
+         0,
+         "-6%"
+        ],
+        "$ctl_font": 0.6
+       }
+      },
+      {
+       "pan_l@tensura_tree.ctl": {
+        "collection_index": 13,
+        "offset": [
+         "62.5%",
+         "6%"
+        ],
+        "size": [
+         "4.7857%",
+         "88%"
+        ]
+       }
+      },
+      {
+       "pan_u@tensura_tree.ctl": {
+        "collection_index": 14,
+        "offset": [
+         "67.7857%",
+         "6%"
+        ],
+        "size": [
+         "4.7857%",
+         "88%"
+        ]
+       }
+      },
+      {
+       "pan_d@tensura_tree.ctl": {
+        "collection_index": 15,
+        "offset": [
+         "73.0714%",
+         "6%"
+        ],
+        "size": [
+         "4.7857%",
+         "88%"
+        ]
+       }
+      },
+      {
+       "pan_r@tensura_tree.ctl": {
+        "collection_index": 16,
+        "offset": [
+         "78.3571%",
+         "6%"
+        ],
+        "size": [
+         "4.7857%",
+         "88%"
+        ]
+       }
+      },
+      {
+       "zoom_out@tensura_tree.ctl": {
+        "collection_index": 17,
+        "offset": [
+         "83.6429%",
+         "6%"
+        ],
+        "size": [
+         "4.7857%",
+         "88%"
+        ]
+       }
+      },
+      {
+       "zoom_in@tensura_tree.ctl": {
+        "collection_index": 18,
+        "offset": [
+         "88.9286%",
+         "6%"
+        ],
+        "size": [
+         "4.7857%",
+         "88%"
+        ]
+       }
+      },
+      {
+       "center@tensura_tree.ctl": {
+        "collection_index": 19,
+        "offset": [
+         "94.2143%",
+         "6%"
+        ],
+        "size": [
+         "4.7857%",
+         "88%"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "details": {
+     "type": "panel",
+     "size": [
+      "36%",
+      "79%"
+     ],
+     "offset": [
+      0,
+      "9%"
+     ],
+     "anchor_from": "top_right",
+     "anchor_to": "top_right",
+     "layer": 30,
+     "collection_name": "form_buttons",
+     "bindings": [
+      {
+       "binding_name": "#form_text"
+      },
+      {
+       "binding_type": "view",
+       "source_property_name": "(not (#form_text = ''))",
+       "target_property_name": "#visible"
+      }
+     ],
+     "controls": [
+      {
+       "bg": {
+        "type": "image",
+        "texture": "textures/tensura/ui/panel",
+        "size": [
+         "100%",
+         "100%"
+        ],
+        "keep_ratio": false,
+        "layer": 0
+       }
+      },
+      {
+       "icon_slot": {
+        "type": "panel",
+        "size": [
+         "100%y",
+         "24%"
+        ],
+        "offset": [
+         "4%",
+         "2%"
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "layer": 2,
+        "collection_name": "form_buttons",
+        "controls": [
+         {
+          "icon_bg": {
+           "type": "image",
+           "texture": "textures/tensura/ui/icon_slot",
+           "size": [
+            "100%",
+            "100%"
+           ],
+           "layer": 0
+          }
+         },
+         {
+          "detail_icon@tensura_tree.ctl": {
+           "collection_index": 23,
+           "size": [
+            "100%",
+            "100%"
+           ],
+           "$ctl_icon_size": [
+            "100%y",
+            "86%"
+           ]
+          }
+         }
+        ]
+       }
+      },
+      {
+       "close_details@tensura_tree.ctl": {
+        "collection_index": 22,
+        "offset": [
+         "86%",
+         "1.5%"
+        ],
+        "size": [
+         "12%",
+         "9%"
+        ]
+       }
+      },
+      {
+       "text_area": {
+        "type": "panel",
+        "size": [
+         "94%",
+         "45%"
+        ],
+        "offset": [
+         "3%",
+         "27%"
+        ],
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "layer": 2,
+        "controls": [
+         {
+          "scroll@common.scrolling_panel": {
+           "anchor_to": "top_left",
+           "anchor_from": "top_left",
+           "size": [
+            "100%",
+            "100%"
+           ],
+           "$show_background": false,
+           "$scrolling_content": "tensura_tree.details_text",
+           "$scroll_size": [
+            4,
+            "100% - 2px"
+           ],
+           "$scrolling_pane_size": [
+            "100% - 6px",
+            "100%"
+           ],
+           "$scrolling_pane_offset": [
+            0,
+            0
+           ],
+           "$scroll_bar_right_padding_size": [
+            0,
+            0
+           ]
+          }
+         }
+        ]
+       }
+      },
+      {
+       "goto_link@tensura_tree.ctl": {
+        "collection_index": 24,
+        "offset": [
+         "4%",
+         "73.5%"
+        ],
+        "size": [
+         "92%",
+         "7.5%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "70%"
+        ],
+        "$ctl_icon_anchor": "left_middle",
+        "$ctl_icon_offset": [
+         "6%",
+         0
+        ],
+        "$ctl_text_size": [
+         "62%",
+         "default"
+        ],
+        "$ctl_text_anchor": "right_middle",
+        "$ctl_text_offset": [
+         "-4%",
+         0
+        ],
+        "$ctl_font": 0.75
+       }
+      },
+      {
+       "equip@tensura_tree.ctl": {
+        "collection_index": 21,
+        "offset": [
+         "4%",
+         "81.5%"
+        ],
+        "size": [
+         "92%",
+         "7.5%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "70%"
+        ],
+        "$ctl_icon_anchor": "left_middle",
+        "$ctl_icon_offset": [
+         "6%",
+         0
+        ],
+        "$ctl_text_size": [
+         "62%",
+         "default"
+        ],
+        "$ctl_text_anchor": "right_middle",
+        "$ctl_text_offset": [
+         "-4%",
+         0
+        ],
+        "$ctl_font": 0.75
+       }
+      },
+      {
+       "unlock@tensura_tree.ctl": {
+        "collection_index": 20,
+        "offset": [
+         "4%",
+         "89.5%"
+        ],
+        "size": [
+         "92%",
+         "9%"
+        ],
+        "$ctl_icon_size": [
+         "100%y",
+         "70%"
+        ],
+        "$ctl_icon_anchor": "left_middle",
+        "$ctl_icon_offset": [
+         "6%",
+         0
+        ],
+        "$ctl_text_size": [
+         "62%",
+         "default"
+        ],
+        "$ctl_text_anchor": "right_middle",
+        "$ctl_text_offset": [
+         "-4%",
+         0
+        ],
+        "$ctl_font": 0.75
+       }
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "details_text": {
+  "type": "stack_panel",
+  "size": [
+   "100% - 4px",
+   "100%c"
+  ],
+  "orientation": "vertical",
+  "anchor_from": "top_left",
+  "anchor_to": "top_left",
+  "controls": [
+   {
+    "body": {
+     "type": "label",
+     "size": [
+      "100%",
+      "default"
+     ],
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "text": "#form_text",
+     "color": [
+      1,
+      1,
+      1
+     ],
+     "font_scale_factor": 0.8,
+     "shadow": false
+    }
+   }
+  ]
+ },
+ "grid_z1": {
+  "type": "panel",
+  "size": [
+   "100%",
+   "100%"
+  ],
+  "collection_name": "form_buttons",
+  "bindings": [
+   {
+    "binding_name": "#title_text"
+   },
+   {
+    "binding_type": "view",
+    "source_property_name": "(not ((#title_text - '§t§n§s§1') = #title_text))",
+    "target_property_name": "#visible"
+   }
+  ],
+  "controls": [
+   {
+    "p0@tensura_tree.pipe": {
+     "collection_index": 115,
+     "offset": [
+      "0%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n0@tensura_tree.node": {
+     "collection_index": 25,
+     "offset": [
+      "0%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p1@tensura_tree.pipe": {
+     "collection_index": 116,
+     "offset": [
+      "6.6667%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n1@tensura_tree.node": {
+     "collection_index": 26,
+     "offset": [
+      "6.6667%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p2@tensura_tree.pipe": {
+     "collection_index": 117,
+     "offset": [
+      "13.3333%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n2@tensura_tree.node": {
+     "collection_index": 27,
+     "offset": [
+      "13.3333%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p3@tensura_tree.pipe": {
+     "collection_index": 118,
+     "offset": [
+      "20%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n3@tensura_tree.node": {
+     "collection_index": 28,
+     "offset": [
+      "20%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p4@tensura_tree.pipe": {
+     "collection_index": 119,
+     "offset": [
+      "26.6667%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n4@tensura_tree.node": {
+     "collection_index": 29,
+     "offset": [
+      "26.6667%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p5@tensura_tree.pipe": {
+     "collection_index": 120,
+     "offset": [
+      "33.3333%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n5@tensura_tree.node": {
+     "collection_index": 30,
+     "offset": [
+      "33.3333%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p6@tensura_tree.pipe": {
+     "collection_index": 121,
+     "offset": [
+      "40%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n6@tensura_tree.node": {
+     "collection_index": 31,
+     "offset": [
+      "40%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p7@tensura_tree.pipe": {
+     "collection_index": 122,
+     "offset": [
+      "46.6667%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n7@tensura_tree.node": {
+     "collection_index": 32,
+     "offset": [
+      "46.6667%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p8@tensura_tree.pipe": {
+     "collection_index": 123,
+     "offset": [
+      "53.3333%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n8@tensura_tree.node": {
+     "collection_index": 33,
+     "offset": [
+      "53.3333%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p9@tensura_tree.pipe": {
+     "collection_index": 124,
+     "offset": [
+      "60%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n9@tensura_tree.node": {
+     "collection_index": 34,
+     "offset": [
+      "60%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p10@tensura_tree.pipe": {
+     "collection_index": 125,
+     "offset": [
+      "66.6667%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n10@tensura_tree.node": {
+     "collection_index": 35,
+     "offset": [
+      "66.6667%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p11@tensura_tree.pipe": {
+     "collection_index": 126,
+     "offset": [
+      "73.3333%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n11@tensura_tree.node": {
+     "collection_index": 36,
+     "offset": [
+      "73.3333%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p12@tensura_tree.pipe": {
+     "collection_index": 127,
+     "offset": [
+      "80%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n12@tensura_tree.node": {
+     "collection_index": 37,
+     "offset": [
+      "80%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p13@tensura_tree.pipe": {
+     "collection_index": 128,
+     "offset": [
+      "86.6667%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n13@tensura_tree.node": {
+     "collection_index": 38,
+     "offset": [
+      "86.6667%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p14@tensura_tree.pipe": {
+     "collection_index": 129,
+     "offset": [
+      "93.3333%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n14@tensura_tree.node": {
+     "collection_index": 39,
+     "offset": [
+      "93.3333%",
+      "0%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p15@tensura_tree.pipe": {
+     "collection_index": 130,
+     "offset": [
+      "0%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n15@tensura_tree.node": {
+     "collection_index": 40,
+     "offset": [
+      "0%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p16@tensura_tree.pipe": {
+     "collection_index": 131,
+     "offset": [
+      "6.6667%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n16@tensura_tree.node": {
+     "collection_index": 41,
+     "offset": [
+      "6.6667%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p17@tensura_tree.pipe": {
+     "collection_index": 132,
+     "offset": [
+      "13.3333%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n17@tensura_tree.node": {
+     "collection_index": 42,
+     "offset": [
+      "13.3333%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p18@tensura_tree.pipe": {
+     "collection_index": 133,
+     "offset": [
+      "20%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n18@tensura_tree.node": {
+     "collection_index": 43,
+     "offset": [
+      "20%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p19@tensura_tree.pipe": {
+     "collection_index": 134,
+     "offset": [
+      "26.6667%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n19@tensura_tree.node": {
+     "collection_index": 44,
+     "offset": [
+      "26.6667%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p20@tensura_tree.pipe": {
+     "collection_index": 135,
+     "offset": [
+      "33.3333%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n20@tensura_tree.node": {
+     "collection_index": 45,
+     "offset": [
+      "33.3333%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p21@tensura_tree.pipe": {
+     "collection_index": 136,
+     "offset": [
+      "40%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n21@tensura_tree.node": {
+     "collection_index": 46,
+     "offset": [
+      "40%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p22@tensura_tree.pipe": {
+     "collection_index": 137,
+     "offset": [
+      "46.6667%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n22@tensura_tree.node": {
+     "collection_index": 47,
+     "offset": [
+      "46.6667%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p23@tensura_tree.pipe": {
+     "collection_index": 138,
+     "offset": [
+      "53.3333%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n23@tensura_tree.node": {
+     "collection_index": 48,
+     "offset": [
+      "53.3333%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p24@tensura_tree.pipe": {
+     "collection_index": 139,
+     "offset": [
+      "60%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n24@tensura_tree.node": {
+     "collection_index": 49,
+     "offset": [
+      "60%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p25@tensura_tree.pipe": {
+     "collection_index": 140,
+     "offset": [
+      "66.6667%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n25@tensura_tree.node": {
+     "collection_index": 50,
+     "offset": [
+      "66.6667%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p26@tensura_tree.pipe": {
+     "collection_index": 141,
+     "offset": [
+      "73.3333%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n26@tensura_tree.node": {
+     "collection_index": 51,
+     "offset": [
+      "73.3333%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p27@tensura_tree.pipe": {
+     "collection_index": 142,
+     "offset": [
+      "80%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n27@tensura_tree.node": {
+     "collection_index": 52,
+     "offset": [
+      "80%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p28@tensura_tree.pipe": {
+     "collection_index": 143,
+     "offset": [
+      "86.6667%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n28@tensura_tree.node": {
+     "collection_index": 53,
+     "offset": [
+      "86.6667%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p29@tensura_tree.pipe": {
+     "collection_index": 144,
+     "offset": [
+      "93.3333%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n29@tensura_tree.node": {
+     "collection_index": 54,
+     "offset": [
+      "93.3333%",
+      "16.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p30@tensura_tree.pipe": {
+     "collection_index": 145,
+     "offset": [
+      "0%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n30@tensura_tree.node": {
+     "collection_index": 55,
+     "offset": [
+      "0%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p31@tensura_tree.pipe": {
+     "collection_index": 146,
+     "offset": [
+      "6.6667%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n31@tensura_tree.node": {
+     "collection_index": 56,
+     "offset": [
+      "6.6667%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p32@tensura_tree.pipe": {
+     "collection_index": 147,
+     "offset": [
+      "13.3333%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n32@tensura_tree.node": {
+     "collection_index": 57,
+     "offset": [
+      "13.3333%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p33@tensura_tree.pipe": {
+     "collection_index": 148,
+     "offset": [
+      "20%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n33@tensura_tree.node": {
+     "collection_index": 58,
+     "offset": [
+      "20%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p34@tensura_tree.pipe": {
+     "collection_index": 149,
+     "offset": [
+      "26.6667%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n34@tensura_tree.node": {
+     "collection_index": 59,
+     "offset": [
+      "26.6667%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p35@tensura_tree.pipe": {
+     "collection_index": 150,
+     "offset": [
+      "33.3333%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n35@tensura_tree.node": {
+     "collection_index": 60,
+     "offset": [
+      "33.3333%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p36@tensura_tree.pipe": {
+     "collection_index": 151,
+     "offset": [
+      "40%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n36@tensura_tree.node": {
+     "collection_index": 61,
+     "offset": [
+      "40%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p37@tensura_tree.pipe": {
+     "collection_index": 152,
+     "offset": [
+      "46.6667%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n37@tensura_tree.node": {
+     "collection_index": 62,
+     "offset": [
+      "46.6667%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p38@tensura_tree.pipe": {
+     "collection_index": 153,
+     "offset": [
+      "53.3333%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n38@tensura_tree.node": {
+     "collection_index": 63,
+     "offset": [
+      "53.3333%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p39@tensura_tree.pipe": {
+     "collection_index": 154,
+     "offset": [
+      "60%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n39@tensura_tree.node": {
+     "collection_index": 64,
+     "offset": [
+      "60%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p40@tensura_tree.pipe": {
+     "collection_index": 155,
+     "offset": [
+      "66.6667%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n40@tensura_tree.node": {
+     "collection_index": 65,
+     "offset": [
+      "66.6667%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p41@tensura_tree.pipe": {
+     "collection_index": 156,
+     "offset": [
+      "73.3333%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n41@tensura_tree.node": {
+     "collection_index": 66,
+     "offset": [
+      "73.3333%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p42@tensura_tree.pipe": {
+     "collection_index": 157,
+     "offset": [
+      "80%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n42@tensura_tree.node": {
+     "collection_index": 67,
+     "offset": [
+      "80%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p43@tensura_tree.pipe": {
+     "collection_index": 158,
+     "offset": [
+      "86.6667%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n43@tensura_tree.node": {
+     "collection_index": 68,
+     "offset": [
+      "86.6667%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p44@tensura_tree.pipe": {
+     "collection_index": 159,
+     "offset": [
+      "93.3333%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n44@tensura_tree.node": {
+     "collection_index": 69,
+     "offset": [
+      "93.3333%",
+      "33.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p45@tensura_tree.pipe": {
+     "collection_index": 160,
+     "offset": [
+      "0%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n45@tensura_tree.node": {
+     "collection_index": 70,
+     "offset": [
+      "0%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p46@tensura_tree.pipe": {
+     "collection_index": 161,
+     "offset": [
+      "6.6667%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n46@tensura_tree.node": {
+     "collection_index": 71,
+     "offset": [
+      "6.6667%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p47@tensura_tree.pipe": {
+     "collection_index": 162,
+     "offset": [
+      "13.3333%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n47@tensura_tree.node": {
+     "collection_index": 72,
+     "offset": [
+      "13.3333%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p48@tensura_tree.pipe": {
+     "collection_index": 163,
+     "offset": [
+      "20%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n48@tensura_tree.node": {
+     "collection_index": 73,
+     "offset": [
+      "20%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p49@tensura_tree.pipe": {
+     "collection_index": 164,
+     "offset": [
+      "26.6667%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n49@tensura_tree.node": {
+     "collection_index": 74,
+     "offset": [
+      "26.6667%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p50@tensura_tree.pipe": {
+     "collection_index": 165,
+     "offset": [
+      "33.3333%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n50@tensura_tree.node": {
+     "collection_index": 75,
+     "offset": [
+      "33.3333%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p51@tensura_tree.pipe": {
+     "collection_index": 166,
+     "offset": [
+      "40%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n51@tensura_tree.node": {
+     "collection_index": 76,
+     "offset": [
+      "40%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p52@tensura_tree.pipe": {
+     "collection_index": 167,
+     "offset": [
+      "46.6667%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n52@tensura_tree.node": {
+     "collection_index": 77,
+     "offset": [
+      "46.6667%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p53@tensura_tree.pipe": {
+     "collection_index": 168,
+     "offset": [
+      "53.3333%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n53@tensura_tree.node": {
+     "collection_index": 78,
+     "offset": [
+      "53.3333%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p54@tensura_tree.pipe": {
+     "collection_index": 169,
+     "offset": [
+      "60%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n54@tensura_tree.node": {
+     "collection_index": 79,
+     "offset": [
+      "60%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p55@tensura_tree.pipe": {
+     "collection_index": 170,
+     "offset": [
+      "66.6667%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n55@tensura_tree.node": {
+     "collection_index": 80,
+     "offset": [
+      "66.6667%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p56@tensura_tree.pipe": {
+     "collection_index": 171,
+     "offset": [
+      "73.3333%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n56@tensura_tree.node": {
+     "collection_index": 81,
+     "offset": [
+      "73.3333%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p57@tensura_tree.pipe": {
+     "collection_index": 172,
+     "offset": [
+      "80%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n57@tensura_tree.node": {
+     "collection_index": 82,
+     "offset": [
+      "80%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p58@tensura_tree.pipe": {
+     "collection_index": 173,
+     "offset": [
+      "86.6667%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n58@tensura_tree.node": {
+     "collection_index": 83,
+     "offset": [
+      "86.6667%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p59@tensura_tree.pipe": {
+     "collection_index": 174,
+     "offset": [
+      "93.3333%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n59@tensura_tree.node": {
+     "collection_index": 84,
+     "offset": [
+      "93.3333%",
+      "50%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p60@tensura_tree.pipe": {
+     "collection_index": 175,
+     "offset": [
+      "0%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n60@tensura_tree.node": {
+     "collection_index": 85,
+     "offset": [
+      "0%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p61@tensura_tree.pipe": {
+     "collection_index": 176,
+     "offset": [
+      "6.6667%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n61@tensura_tree.node": {
+     "collection_index": 86,
+     "offset": [
+      "6.6667%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p62@tensura_tree.pipe": {
+     "collection_index": 177,
+     "offset": [
+      "13.3333%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n62@tensura_tree.node": {
+     "collection_index": 87,
+     "offset": [
+      "13.3333%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p63@tensura_tree.pipe": {
+     "collection_index": 178,
+     "offset": [
+      "20%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n63@tensura_tree.node": {
+     "collection_index": 88,
+     "offset": [
+      "20%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p64@tensura_tree.pipe": {
+     "collection_index": 179,
+     "offset": [
+      "26.6667%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n64@tensura_tree.node": {
+     "collection_index": 89,
+     "offset": [
+      "26.6667%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p65@tensura_tree.pipe": {
+     "collection_index": 180,
+     "offset": [
+      "33.3333%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n65@tensura_tree.node": {
+     "collection_index": 90,
+     "offset": [
+      "33.3333%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p66@tensura_tree.pipe": {
+     "collection_index": 181,
+     "offset": [
+      "40%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n66@tensura_tree.node": {
+     "collection_index": 91,
+     "offset": [
+      "40%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p67@tensura_tree.pipe": {
+     "collection_index": 182,
+     "offset": [
+      "46.6667%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n67@tensura_tree.node": {
+     "collection_index": 92,
+     "offset": [
+      "46.6667%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p68@tensura_tree.pipe": {
+     "collection_index": 183,
+     "offset": [
+      "53.3333%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n68@tensura_tree.node": {
+     "collection_index": 93,
+     "offset": [
+      "53.3333%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p69@tensura_tree.pipe": {
+     "collection_index": 184,
+     "offset": [
+      "60%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n69@tensura_tree.node": {
+     "collection_index": 94,
+     "offset": [
+      "60%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p70@tensura_tree.pipe": {
+     "collection_index": 185,
+     "offset": [
+      "66.6667%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n70@tensura_tree.node": {
+     "collection_index": 95,
+     "offset": [
+      "66.6667%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p71@tensura_tree.pipe": {
+     "collection_index": 186,
+     "offset": [
+      "73.3333%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n71@tensura_tree.node": {
+     "collection_index": 96,
+     "offset": [
+      "73.3333%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p72@tensura_tree.pipe": {
+     "collection_index": 187,
+     "offset": [
+      "80%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n72@tensura_tree.node": {
+     "collection_index": 97,
+     "offset": [
+      "80%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p73@tensura_tree.pipe": {
+     "collection_index": 188,
+     "offset": [
+      "86.6667%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n73@tensura_tree.node": {
+     "collection_index": 98,
+     "offset": [
+      "86.6667%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p74@tensura_tree.pipe": {
+     "collection_index": 189,
+     "offset": [
+      "93.3333%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n74@tensura_tree.node": {
+     "collection_index": 99,
+     "offset": [
+      "93.3333%",
+      "66.6667%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p75@tensura_tree.pipe": {
+     "collection_index": 190,
+     "offset": [
+      "0%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n75@tensura_tree.node": {
+     "collection_index": 100,
+     "offset": [
+      "0%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p76@tensura_tree.pipe": {
+     "collection_index": 191,
+     "offset": [
+      "6.6667%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n76@tensura_tree.node": {
+     "collection_index": 101,
+     "offset": [
+      "6.6667%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p77@tensura_tree.pipe": {
+     "collection_index": 192,
+     "offset": [
+      "13.3333%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n77@tensura_tree.node": {
+     "collection_index": 102,
+     "offset": [
+      "13.3333%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p78@tensura_tree.pipe": {
+     "collection_index": 193,
+     "offset": [
+      "20%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n78@tensura_tree.node": {
+     "collection_index": 103,
+     "offset": [
+      "20%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p79@tensura_tree.pipe": {
+     "collection_index": 194,
+     "offset": [
+      "26.6667%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n79@tensura_tree.node": {
+     "collection_index": 104,
+     "offset": [
+      "26.6667%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p80@tensura_tree.pipe": {
+     "collection_index": 195,
+     "offset": [
+      "33.3333%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n80@tensura_tree.node": {
+     "collection_index": 105,
+     "offset": [
+      "33.3333%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p81@tensura_tree.pipe": {
+     "collection_index": 196,
+     "offset": [
+      "40%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n81@tensura_tree.node": {
+     "collection_index": 106,
+     "offset": [
+      "40%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p82@tensura_tree.pipe": {
+     "collection_index": 197,
+     "offset": [
+      "46.6667%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n82@tensura_tree.node": {
+     "collection_index": 107,
+     "offset": [
+      "46.6667%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p83@tensura_tree.pipe": {
+     "collection_index": 198,
+     "offset": [
+      "53.3333%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n83@tensura_tree.node": {
+     "collection_index": 108,
+     "offset": [
+      "53.3333%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p84@tensura_tree.pipe": {
+     "collection_index": 199,
+     "offset": [
+      "60%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n84@tensura_tree.node": {
+     "collection_index": 109,
+     "offset": [
+      "60%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p85@tensura_tree.pipe": {
+     "collection_index": 200,
+     "offset": [
+      "66.6667%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n85@tensura_tree.node": {
+     "collection_index": 110,
+     "offset": [
+      "66.6667%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p86@tensura_tree.pipe": {
+     "collection_index": 201,
+     "offset": [
+      "73.3333%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n86@tensura_tree.node": {
+     "collection_index": 111,
+     "offset": [
+      "73.3333%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p87@tensura_tree.pipe": {
+     "collection_index": 202,
+     "offset": [
+      "80%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n87@tensura_tree.node": {
+     "collection_index": 112,
+     "offset": [
+      "80%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p88@tensura_tree.pipe": {
+     "collection_index": 203,
+     "offset": [
+      "86.6667%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n88@tensura_tree.node": {
+     "collection_index": 113,
+     "offset": [
+      "86.6667%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "p89@tensura_tree.pipe": {
+     "collection_index": 204,
+     "offset": [
+      "93.3333%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   },
+   {
+    "n89@tensura_tree.node": {
+     "collection_index": 114,
+     "offset": [
+      "93.3333%",
+      "83.3333%"
+     ],
+     "size": [
+      "6.6667%",
+      "16.6667%"
+     ]
+    }
+   }
+  ]
+ },
+ "grid_z2": {
+  "type": "panel",
+  "size": [
+   "100%",
+   "100%"
+  ],
+  "collection_name": "form_buttons",
+  "bindings": [
+   {
+    "binding_name": "#title_text"
+   },
+   {
+    "binding_type": "view",
+    "source_property_name": "(not ((#title_text - '§t§n§s§2') = #title_text))",
+    "target_property_name": "#visible"
+   }
+  ],
+  "controls": [
+   {
+    "p0@tensura_tree.pipe": {
+     "collection_index": 80,
+     "offset": [
+      "0%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n0@tensura_tree.node": {
+     "collection_index": 25,
+     "offset": [
+      "0%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c0": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "0%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l0@tensura_tree.label": {
+        "collection_index": 135
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p1@tensura_tree.pipe": {
+     "collection_index": 81,
+     "offset": [
+      "9.0909%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n1@tensura_tree.node": {
+     "collection_index": 26,
+     "offset": [
+      "9.0909%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c1": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "9.0909%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l1@tensura_tree.label": {
+        "collection_index": 136
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p2@tensura_tree.pipe": {
+     "collection_index": 82,
+     "offset": [
+      "18.1818%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n2@tensura_tree.node": {
+     "collection_index": 27,
+     "offset": [
+      "18.1818%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c2": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "18.1818%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l2@tensura_tree.label": {
+        "collection_index": 137
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p3@tensura_tree.pipe": {
+     "collection_index": 83,
+     "offset": [
+      "27.2727%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n3@tensura_tree.node": {
+     "collection_index": 28,
+     "offset": [
+      "27.2727%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c3": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "27.2727%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l3@tensura_tree.label": {
+        "collection_index": 138
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p4@tensura_tree.pipe": {
+     "collection_index": 84,
+     "offset": [
+      "36.3636%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n4@tensura_tree.node": {
+     "collection_index": 29,
+     "offset": [
+      "36.3636%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c4": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "36.3636%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l4@tensura_tree.label": {
+        "collection_index": 139
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p5@tensura_tree.pipe": {
+     "collection_index": 85,
+     "offset": [
+      "45.4545%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n5@tensura_tree.node": {
+     "collection_index": 30,
+     "offset": [
+      "45.4545%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c5": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "45.4545%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l5@tensura_tree.label": {
+        "collection_index": 140
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p6@tensura_tree.pipe": {
+     "collection_index": 86,
+     "offset": [
+      "54.5455%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n6@tensura_tree.node": {
+     "collection_index": 31,
+     "offset": [
+      "54.5455%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c6": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "54.5455%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l6@tensura_tree.label": {
+        "collection_index": 141
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p7@tensura_tree.pipe": {
+     "collection_index": 87,
+     "offset": [
+      "63.6364%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n7@tensura_tree.node": {
+     "collection_index": 32,
+     "offset": [
+      "63.6364%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c7": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "63.6364%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l7@tensura_tree.label": {
+        "collection_index": 142
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p8@tensura_tree.pipe": {
+     "collection_index": 88,
+     "offset": [
+      "72.7273%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n8@tensura_tree.node": {
+     "collection_index": 33,
+     "offset": [
+      "72.7273%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c8": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "72.7273%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l8@tensura_tree.label": {
+        "collection_index": 143
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p9@tensura_tree.pipe": {
+     "collection_index": 89,
+     "offset": [
+      "81.8182%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n9@tensura_tree.node": {
+     "collection_index": 34,
+     "offset": [
+      "81.8182%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c9": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "81.8182%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l9@tensura_tree.label": {
+        "collection_index": 144
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p10@tensura_tree.pipe": {
+     "collection_index": 90,
+     "offset": [
+      "90.9091%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n10@tensura_tree.node": {
+     "collection_index": 35,
+     "offset": [
+      "90.9091%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c10": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "90.9091%",
+      "0%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l10@tensura_tree.label": {
+        "collection_index": 145
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p11@tensura_tree.pipe": {
+     "collection_index": 91,
+     "offset": [
+      "0%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n11@tensura_tree.node": {
+     "collection_index": 36,
+     "offset": [
+      "0%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c11": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "0%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l11@tensura_tree.label": {
+        "collection_index": 146
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p12@tensura_tree.pipe": {
+     "collection_index": 92,
+     "offset": [
+      "9.0909%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n12@tensura_tree.node": {
+     "collection_index": 37,
+     "offset": [
+      "9.0909%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c12": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "9.0909%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l12@tensura_tree.label": {
+        "collection_index": 147
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p13@tensura_tree.pipe": {
+     "collection_index": 93,
+     "offset": [
+      "18.1818%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n13@tensura_tree.node": {
+     "collection_index": 38,
+     "offset": [
+      "18.1818%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c13": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "18.1818%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l13@tensura_tree.label": {
+        "collection_index": 148
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p14@tensura_tree.pipe": {
+     "collection_index": 94,
+     "offset": [
+      "27.2727%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n14@tensura_tree.node": {
+     "collection_index": 39,
+     "offset": [
+      "27.2727%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c14": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "27.2727%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l14@tensura_tree.label": {
+        "collection_index": 149
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p15@tensura_tree.pipe": {
+     "collection_index": 95,
+     "offset": [
+      "36.3636%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n15@tensura_tree.node": {
+     "collection_index": 40,
+     "offset": [
+      "36.3636%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c15": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "36.3636%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l15@tensura_tree.label": {
+        "collection_index": 150
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p16@tensura_tree.pipe": {
+     "collection_index": 96,
+     "offset": [
+      "45.4545%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n16@tensura_tree.node": {
+     "collection_index": 41,
+     "offset": [
+      "45.4545%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c16": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "45.4545%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l16@tensura_tree.label": {
+        "collection_index": 151
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p17@tensura_tree.pipe": {
+     "collection_index": 97,
+     "offset": [
+      "54.5455%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n17@tensura_tree.node": {
+     "collection_index": 42,
+     "offset": [
+      "54.5455%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c17": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "54.5455%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l17@tensura_tree.label": {
+        "collection_index": 152
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p18@tensura_tree.pipe": {
+     "collection_index": 98,
+     "offset": [
+      "63.6364%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n18@tensura_tree.node": {
+     "collection_index": 43,
+     "offset": [
+      "63.6364%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c18": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "63.6364%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l18@tensura_tree.label": {
+        "collection_index": 153
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p19@tensura_tree.pipe": {
+     "collection_index": 99,
+     "offset": [
+      "72.7273%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n19@tensura_tree.node": {
+     "collection_index": 44,
+     "offset": [
+      "72.7273%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c19": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "72.7273%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l19@tensura_tree.label": {
+        "collection_index": 154
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p20@tensura_tree.pipe": {
+     "collection_index": 100,
+     "offset": [
+      "81.8182%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n20@tensura_tree.node": {
+     "collection_index": 45,
+     "offset": [
+      "81.8182%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c20": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "81.8182%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l20@tensura_tree.label": {
+        "collection_index": 155
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p21@tensura_tree.pipe": {
+     "collection_index": 101,
+     "offset": [
+      "90.9091%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n21@tensura_tree.node": {
+     "collection_index": 46,
+     "offset": [
+      "90.9091%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c21": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "90.9091%",
+      "20%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l21@tensura_tree.label": {
+        "collection_index": 156
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p22@tensura_tree.pipe": {
+     "collection_index": 102,
+     "offset": [
+      "0%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n22@tensura_tree.node": {
+     "collection_index": 47,
+     "offset": [
+      "0%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c22": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "0%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l22@tensura_tree.label": {
+        "collection_index": 157
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p23@tensura_tree.pipe": {
+     "collection_index": 103,
+     "offset": [
+      "9.0909%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n23@tensura_tree.node": {
+     "collection_index": 48,
+     "offset": [
+      "9.0909%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c23": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "9.0909%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l23@tensura_tree.label": {
+        "collection_index": 158
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p24@tensura_tree.pipe": {
+     "collection_index": 104,
+     "offset": [
+      "18.1818%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n24@tensura_tree.node": {
+     "collection_index": 49,
+     "offset": [
+      "18.1818%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c24": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "18.1818%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l24@tensura_tree.label": {
+        "collection_index": 159
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p25@tensura_tree.pipe": {
+     "collection_index": 105,
+     "offset": [
+      "27.2727%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n25@tensura_tree.node": {
+     "collection_index": 50,
+     "offset": [
+      "27.2727%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c25": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "27.2727%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l25@tensura_tree.label": {
+        "collection_index": 160
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p26@tensura_tree.pipe": {
+     "collection_index": 106,
+     "offset": [
+      "36.3636%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n26@tensura_tree.node": {
+     "collection_index": 51,
+     "offset": [
+      "36.3636%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c26": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "36.3636%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l26@tensura_tree.label": {
+        "collection_index": 161
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p27@tensura_tree.pipe": {
+     "collection_index": 107,
+     "offset": [
+      "45.4545%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n27@tensura_tree.node": {
+     "collection_index": 52,
+     "offset": [
+      "45.4545%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c27": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "45.4545%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l27@tensura_tree.label": {
+        "collection_index": 162
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p28@tensura_tree.pipe": {
+     "collection_index": 108,
+     "offset": [
+      "54.5455%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n28@tensura_tree.node": {
+     "collection_index": 53,
+     "offset": [
+      "54.5455%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c28": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "54.5455%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l28@tensura_tree.label": {
+        "collection_index": 163
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p29@tensura_tree.pipe": {
+     "collection_index": 109,
+     "offset": [
+      "63.6364%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n29@tensura_tree.node": {
+     "collection_index": 54,
+     "offset": [
+      "63.6364%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c29": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "63.6364%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l29@tensura_tree.label": {
+        "collection_index": 164
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p30@tensura_tree.pipe": {
+     "collection_index": 110,
+     "offset": [
+      "72.7273%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n30@tensura_tree.node": {
+     "collection_index": 55,
+     "offset": [
+      "72.7273%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c30": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "72.7273%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l30@tensura_tree.label": {
+        "collection_index": 165
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p31@tensura_tree.pipe": {
+     "collection_index": 111,
+     "offset": [
+      "81.8182%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n31@tensura_tree.node": {
+     "collection_index": 56,
+     "offset": [
+      "81.8182%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c31": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "81.8182%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l31@tensura_tree.label": {
+        "collection_index": 166
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p32@tensura_tree.pipe": {
+     "collection_index": 112,
+     "offset": [
+      "90.9091%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n32@tensura_tree.node": {
+     "collection_index": 57,
+     "offset": [
+      "90.9091%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c32": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "90.9091%",
+      "40%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l32@tensura_tree.label": {
+        "collection_index": 167
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p33@tensura_tree.pipe": {
+     "collection_index": 113,
+     "offset": [
+      "0%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n33@tensura_tree.node": {
+     "collection_index": 58,
+     "offset": [
+      "0%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c33": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "0%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l33@tensura_tree.label": {
+        "collection_index": 168
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p34@tensura_tree.pipe": {
+     "collection_index": 114,
+     "offset": [
+      "9.0909%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n34@tensura_tree.node": {
+     "collection_index": 59,
+     "offset": [
+      "9.0909%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c34": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "9.0909%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l34@tensura_tree.label": {
+        "collection_index": 169
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p35@tensura_tree.pipe": {
+     "collection_index": 115,
+     "offset": [
+      "18.1818%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n35@tensura_tree.node": {
+     "collection_index": 60,
+     "offset": [
+      "18.1818%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c35": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "18.1818%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l35@tensura_tree.label": {
+        "collection_index": 170
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p36@tensura_tree.pipe": {
+     "collection_index": 116,
+     "offset": [
+      "27.2727%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n36@tensura_tree.node": {
+     "collection_index": 61,
+     "offset": [
+      "27.2727%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c36": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "27.2727%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l36@tensura_tree.label": {
+        "collection_index": 171
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p37@tensura_tree.pipe": {
+     "collection_index": 117,
+     "offset": [
+      "36.3636%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n37@tensura_tree.node": {
+     "collection_index": 62,
+     "offset": [
+      "36.3636%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c37": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "36.3636%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l37@tensura_tree.label": {
+        "collection_index": 172
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p38@tensura_tree.pipe": {
+     "collection_index": 118,
+     "offset": [
+      "45.4545%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n38@tensura_tree.node": {
+     "collection_index": 63,
+     "offset": [
+      "45.4545%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c38": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "45.4545%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l38@tensura_tree.label": {
+        "collection_index": 173
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p39@tensura_tree.pipe": {
+     "collection_index": 119,
+     "offset": [
+      "54.5455%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n39@tensura_tree.node": {
+     "collection_index": 64,
+     "offset": [
+      "54.5455%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c39": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "54.5455%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l39@tensura_tree.label": {
+        "collection_index": 174
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p40@tensura_tree.pipe": {
+     "collection_index": 120,
+     "offset": [
+      "63.6364%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n40@tensura_tree.node": {
+     "collection_index": 65,
+     "offset": [
+      "63.6364%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c40": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "63.6364%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l40@tensura_tree.label": {
+        "collection_index": 175
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p41@tensura_tree.pipe": {
+     "collection_index": 121,
+     "offset": [
+      "72.7273%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n41@tensura_tree.node": {
+     "collection_index": 66,
+     "offset": [
+      "72.7273%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c41": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "72.7273%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l41@tensura_tree.label": {
+        "collection_index": 176
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p42@tensura_tree.pipe": {
+     "collection_index": 122,
+     "offset": [
+      "81.8182%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n42@tensura_tree.node": {
+     "collection_index": 67,
+     "offset": [
+      "81.8182%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c42": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "81.8182%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l42@tensura_tree.label": {
+        "collection_index": 177
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p43@tensura_tree.pipe": {
+     "collection_index": 123,
+     "offset": [
+      "90.9091%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n43@tensura_tree.node": {
+     "collection_index": 68,
+     "offset": [
+      "90.9091%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c43": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "90.9091%",
+      "60%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l43@tensura_tree.label": {
+        "collection_index": 178
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p44@tensura_tree.pipe": {
+     "collection_index": 124,
+     "offset": [
+      "0%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n44@tensura_tree.node": {
+     "collection_index": 69,
+     "offset": [
+      "0%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c44": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "0%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l44@tensura_tree.label": {
+        "collection_index": 179
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p45@tensura_tree.pipe": {
+     "collection_index": 125,
+     "offset": [
+      "9.0909%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n45@tensura_tree.node": {
+     "collection_index": 70,
+     "offset": [
+      "9.0909%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c45": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "9.0909%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l45@tensura_tree.label": {
+        "collection_index": 180
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p46@tensura_tree.pipe": {
+     "collection_index": 126,
+     "offset": [
+      "18.1818%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n46@tensura_tree.node": {
+     "collection_index": 71,
+     "offset": [
+      "18.1818%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c46": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "18.1818%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l46@tensura_tree.label": {
+        "collection_index": 181
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p47@tensura_tree.pipe": {
+     "collection_index": 127,
+     "offset": [
+      "27.2727%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n47@tensura_tree.node": {
+     "collection_index": 72,
+     "offset": [
+      "27.2727%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c47": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "27.2727%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l47@tensura_tree.label": {
+        "collection_index": 182
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p48@tensura_tree.pipe": {
+     "collection_index": 128,
+     "offset": [
+      "36.3636%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n48@tensura_tree.node": {
+     "collection_index": 73,
+     "offset": [
+      "36.3636%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c48": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "36.3636%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l48@tensura_tree.label": {
+        "collection_index": 183
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p49@tensura_tree.pipe": {
+     "collection_index": 129,
+     "offset": [
+      "45.4545%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n49@tensura_tree.node": {
+     "collection_index": 74,
+     "offset": [
+      "45.4545%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c49": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "45.4545%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l49@tensura_tree.label": {
+        "collection_index": 184
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p50@tensura_tree.pipe": {
+     "collection_index": 130,
+     "offset": [
+      "54.5455%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n50@tensura_tree.node": {
+     "collection_index": 75,
+     "offset": [
+      "54.5455%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c50": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "54.5455%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l50@tensura_tree.label": {
+        "collection_index": 185
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p51@tensura_tree.pipe": {
+     "collection_index": 131,
+     "offset": [
+      "63.6364%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n51@tensura_tree.node": {
+     "collection_index": 76,
+     "offset": [
+      "63.6364%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c51": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "63.6364%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l51@tensura_tree.label": {
+        "collection_index": 186
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p52@tensura_tree.pipe": {
+     "collection_index": 132,
+     "offset": [
+      "72.7273%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n52@tensura_tree.node": {
+     "collection_index": 77,
+     "offset": [
+      "72.7273%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c52": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "72.7273%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l52@tensura_tree.label": {
+        "collection_index": 187
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p53@tensura_tree.pipe": {
+     "collection_index": 133,
+     "offset": [
+      "81.8182%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n53@tensura_tree.node": {
+     "collection_index": 78,
+     "offset": [
+      "81.8182%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c53": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "81.8182%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l53@tensura_tree.label": {
+        "collection_index": 188
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p54@tensura_tree.pipe": {
+     "collection_index": 134,
+     "offset": [
+      "90.9091%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "n54@tensura_tree.node": {
+     "collection_index": 79,
+     "offset": [
+      "90.9091%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ]
+    }
+   },
+   {
+    "c54": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "90.9091%",
+      "80%"
+     ],
+     "size": [
+      "9.0909%",
+      "20%"
+     ],
+     "controls": [
+      {
+       "l54@tensura_tree.label": {
+        "collection_index": 189
+       }
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "grid_z3": {
+  "type": "panel",
+  "size": [
+   "100%",
+   "100%"
+  ],
+  "collection_name": "form_buttons",
+  "bindings": [
+   {
+    "binding_name": "#title_text"
+   },
+   {
+    "binding_type": "view",
+    "source_property_name": "(not ((#title_text - '§t§n§s§3') = #title_text))",
+    "target_property_name": "#visible"
+   }
+  ],
+  "controls": [
+   {
+    "p0@tensura_tree.pipe": {
+     "collection_index": 53,
+     "offset": [
+      "0%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n0@tensura_tree.node": {
+     "collection_index": 25,
+     "offset": [
+      "0%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c0": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "0%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l0@tensura_tree.label": {
+        "collection_index": 81
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p1@tensura_tree.pipe": {
+     "collection_index": 54,
+     "offset": [
+      "14.2857%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n1@tensura_tree.node": {
+     "collection_index": 26,
+     "offset": [
+      "14.2857%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c1": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "14.2857%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l1@tensura_tree.label": {
+        "collection_index": 82
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p2@tensura_tree.pipe": {
+     "collection_index": 55,
+     "offset": [
+      "28.5714%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n2@tensura_tree.node": {
+     "collection_index": 27,
+     "offset": [
+      "28.5714%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c2": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "28.5714%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l2@tensura_tree.label": {
+        "collection_index": 83
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p3@tensura_tree.pipe": {
+     "collection_index": 56,
+     "offset": [
+      "42.8571%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n3@tensura_tree.node": {
+     "collection_index": 28,
+     "offset": [
+      "42.8571%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c3": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "42.8571%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l3@tensura_tree.label": {
+        "collection_index": 84
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p4@tensura_tree.pipe": {
+     "collection_index": 57,
+     "offset": [
+      "57.1429%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n4@tensura_tree.node": {
+     "collection_index": 29,
+     "offset": [
+      "57.1429%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c4": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "57.1429%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l4@tensura_tree.label": {
+        "collection_index": 85
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p5@tensura_tree.pipe": {
+     "collection_index": 58,
+     "offset": [
+      "71.4286%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n5@tensura_tree.node": {
+     "collection_index": 30,
+     "offset": [
+      "71.4286%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c5": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "71.4286%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l5@tensura_tree.label": {
+        "collection_index": 86
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p6@tensura_tree.pipe": {
+     "collection_index": 59,
+     "offset": [
+      "85.7143%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n6@tensura_tree.node": {
+     "collection_index": 31,
+     "offset": [
+      "85.7143%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c6": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "85.7143%",
+      "0%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l6@tensura_tree.label": {
+        "collection_index": 87
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p7@tensura_tree.pipe": {
+     "collection_index": 60,
+     "offset": [
+      "0%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n7@tensura_tree.node": {
+     "collection_index": 32,
+     "offset": [
+      "0%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c7": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "0%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l7@tensura_tree.label": {
+        "collection_index": 88
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p8@tensura_tree.pipe": {
+     "collection_index": 61,
+     "offset": [
+      "14.2857%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n8@tensura_tree.node": {
+     "collection_index": 33,
+     "offset": [
+      "14.2857%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c8": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "14.2857%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l8@tensura_tree.label": {
+        "collection_index": 89
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p9@tensura_tree.pipe": {
+     "collection_index": 62,
+     "offset": [
+      "28.5714%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n9@tensura_tree.node": {
+     "collection_index": 34,
+     "offset": [
+      "28.5714%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c9": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "28.5714%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l9@tensura_tree.label": {
+        "collection_index": 90
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p10@tensura_tree.pipe": {
+     "collection_index": 63,
+     "offset": [
+      "42.8571%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n10@tensura_tree.node": {
+     "collection_index": 35,
+     "offset": [
+      "42.8571%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c10": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "42.8571%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l10@tensura_tree.label": {
+        "collection_index": 91
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p11@tensura_tree.pipe": {
+     "collection_index": 64,
+     "offset": [
+      "57.1429%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n11@tensura_tree.node": {
+     "collection_index": 36,
+     "offset": [
+      "57.1429%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c11": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "57.1429%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l11@tensura_tree.label": {
+        "collection_index": 92
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p12@tensura_tree.pipe": {
+     "collection_index": 65,
+     "offset": [
+      "71.4286%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n12@tensura_tree.node": {
+     "collection_index": 37,
+     "offset": [
+      "71.4286%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c12": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "71.4286%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l12@tensura_tree.label": {
+        "collection_index": 93
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p13@tensura_tree.pipe": {
+     "collection_index": 66,
+     "offset": [
+      "85.7143%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n13@tensura_tree.node": {
+     "collection_index": 38,
+     "offset": [
+      "85.7143%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c13": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "85.7143%",
+      "25%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l13@tensura_tree.label": {
+        "collection_index": 94
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p14@tensura_tree.pipe": {
+     "collection_index": 67,
+     "offset": [
+      "0%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n14@tensura_tree.node": {
+     "collection_index": 39,
+     "offset": [
+      "0%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c14": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "0%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l14@tensura_tree.label": {
+        "collection_index": 95
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p15@tensura_tree.pipe": {
+     "collection_index": 68,
+     "offset": [
+      "14.2857%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n15@tensura_tree.node": {
+     "collection_index": 40,
+     "offset": [
+      "14.2857%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c15": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "14.2857%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l15@tensura_tree.label": {
+        "collection_index": 96
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p16@tensura_tree.pipe": {
+     "collection_index": 69,
+     "offset": [
+      "28.5714%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n16@tensura_tree.node": {
+     "collection_index": 41,
+     "offset": [
+      "28.5714%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c16": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "28.5714%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l16@tensura_tree.label": {
+        "collection_index": 97
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p17@tensura_tree.pipe": {
+     "collection_index": 70,
+     "offset": [
+      "42.8571%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n17@tensura_tree.node": {
+     "collection_index": 42,
+     "offset": [
+      "42.8571%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c17": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "42.8571%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l17@tensura_tree.label": {
+        "collection_index": 98
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p18@tensura_tree.pipe": {
+     "collection_index": 71,
+     "offset": [
+      "57.1429%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n18@tensura_tree.node": {
+     "collection_index": 43,
+     "offset": [
+      "57.1429%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c18": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "57.1429%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l18@tensura_tree.label": {
+        "collection_index": 99
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p19@tensura_tree.pipe": {
+     "collection_index": 72,
+     "offset": [
+      "71.4286%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n19@tensura_tree.node": {
+     "collection_index": 44,
+     "offset": [
+      "71.4286%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c19": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "71.4286%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l19@tensura_tree.label": {
+        "collection_index": 100
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p20@tensura_tree.pipe": {
+     "collection_index": 73,
+     "offset": [
+      "85.7143%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n20@tensura_tree.node": {
+     "collection_index": 45,
+     "offset": [
+      "85.7143%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c20": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "85.7143%",
+      "50%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l20@tensura_tree.label": {
+        "collection_index": 101
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p21@tensura_tree.pipe": {
+     "collection_index": 74,
+     "offset": [
+      "0%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n21@tensura_tree.node": {
+     "collection_index": 46,
+     "offset": [
+      "0%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c21": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "0%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l21@tensura_tree.label": {
+        "collection_index": 102
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p22@tensura_tree.pipe": {
+     "collection_index": 75,
+     "offset": [
+      "14.2857%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n22@tensura_tree.node": {
+     "collection_index": 47,
+     "offset": [
+      "14.2857%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c22": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "14.2857%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l22@tensura_tree.label": {
+        "collection_index": 103
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p23@tensura_tree.pipe": {
+     "collection_index": 76,
+     "offset": [
+      "28.5714%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n23@tensura_tree.node": {
+     "collection_index": 48,
+     "offset": [
+      "28.5714%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c23": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "28.5714%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l23@tensura_tree.label": {
+        "collection_index": 104
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p24@tensura_tree.pipe": {
+     "collection_index": 77,
+     "offset": [
+      "42.8571%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n24@tensura_tree.node": {
+     "collection_index": 49,
+     "offset": [
+      "42.8571%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c24": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "42.8571%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l24@tensura_tree.label": {
+        "collection_index": 105
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p25@tensura_tree.pipe": {
+     "collection_index": 78,
+     "offset": [
+      "57.1429%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n25@tensura_tree.node": {
+     "collection_index": 50,
+     "offset": [
+      "57.1429%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c25": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "57.1429%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l25@tensura_tree.label": {
+        "collection_index": 106
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p26@tensura_tree.pipe": {
+     "collection_index": 79,
+     "offset": [
+      "71.4286%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n26@tensura_tree.node": {
+     "collection_index": 51,
+     "offset": [
+      "71.4286%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c26": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "71.4286%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l26@tensura_tree.label": {
+        "collection_index": 107
+       }
+      }
+     ]
+    }
+   },
+   {
+    "p27@tensura_tree.pipe": {
+     "collection_index": 80,
+     "offset": [
+      "85.7143%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "n27@tensura_tree.node": {
+     "collection_index": 52,
+     "offset": [
+      "85.7143%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ]
+    }
+   },
+   {
+    "c27": {
+     "type": "panel",
+     "anchor_from": "top_left",
+     "anchor_to": "top_left",
+     "collection_name": "form_buttons",
+     "offset": [
+      "85.7143%",
+      "75%"
+     ],
+     "size": [
+      "14.2857%",
+      "25%"
+     ],
+     "controls": [
+      {
+       "l27@tensura_tree.label": {
+        "collection_index": 108
+       }
+      }
+     ]
+    }
+   }
+  ]
+ }
+}
