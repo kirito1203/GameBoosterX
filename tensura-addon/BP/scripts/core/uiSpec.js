@@ -59,20 +59,20 @@ export function detailPlacement(c, r) {
 
 // ── Menu principal ──
 // Barra lateral com 8 categorias + Grande Sábio; conteúdo à direita.
-export const MENU_TABS = ['char', 'race', 'tree', 'inventory', 'missions', 'status', 'evolution', 'settings'];
+export const MENU_TABS = ['char', 'race', 'tree', 'catalog', 'inventory', 'missions', 'status', 'evolution', 'settings'];
 export const MENU = {
   close: 0,
-  tab0: 1, // 1..8 categorias
-  sage: 9, // botão GRANDE SÁBIO (barra lateral)
-  active0: 10, // 10..13 habilidades em destaque (4 linhas)
-  slot0: 14, // 14..18 barra de habilidades (5 espaços)
-  raceName: 19,
-  stat0: 20, // 20..24: EP, Aura, Magículas, Nível, Progresso
-  progressBar: 25,
-  action0: 26, // 26..31 botões de ação das páginas de texto
-  pageTitle: 32,
+  tab0: 1, // 1..9 categorias
+  sage: 10, // botão GRANDE SÁBIO (barra lateral)
+  active0: 11, // 11..14 habilidades em destaque (4 linhas)
+  slot0: 15, // 15..19 barra de habilidades (5 espaços)
+  raceName: 20,
+  stat0: 21, // 21..25: EP, Aura, Magículas, Nível, Progresso
+  progressBar: 26,
+  action0: 27, // 27..32 botões de ação das páginas de texto
+  pageTitle: 33,
 };
-export const MENU_COUNT = 33;
+export const MENU_COUNT = 34;
 export const ACTIVE_ROWS = 4;
 export const BAR_SLOTS = 5;
 export const ACTION_COUNT = 6;
@@ -172,3 +172,23 @@ export const SAGE = {
 };
 export const SAGE_ACTIONS = 6;
 export const SAGE_COUNT = 25;
+
+// ── Catálogo de Habilidades (grade de emblemas com nome e descrição) ──
+export const CATALOG_MARK = '§t§n§c';
+export const CATALOG_CATS = ['race', 'unique', 'ultimate', 'magic', 'combat', 'extra', 'resist'];
+export const CATALOG = {
+  close: 0,
+  back: 1,
+  cat0: 2, // 2..8
+  prev: 9,
+  next: 10,
+  page: 11,
+  title: 12,
+  tile0: 13, // 13..30 (6 x 3)
+};
+export const CATALOG_COLS = 6;
+export const CATALOG_ROWS = 3;
+export const CATALOG_PAGE = CATALOG_COLS * CATALOG_ROWS;
+export const CATALOG_COUNT = CATALOG.tile0 + CATALOG_PAGE;
+// Estado do item (marcador invisível no texto; a tela escolhe a moldura e o remove ao exibir).
+export const TILE_STATE = { unlocked: '§t§k§u', available: '§t§k§a', locked: '§t§k§l' };

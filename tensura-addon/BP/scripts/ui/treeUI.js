@@ -12,6 +12,7 @@ import { unlock } from '../core/progression.js';
 import { buildTreeForm, viewAt, raceViewAt, centeredView, pan, ensureVisible, toOverview, fromOverview } from '../core/view.js';
 import { evaluate } from '../core/progression.js';
 import { buildMenuForm } from '../core/menuView.js';
+import { buildCatalogForm } from '../core/catalogView.js';
 import { getMap, getSupremeMap, getRaceMap } from '../core/map.js';
 import { getData, progressionState, saveNow, refreshStats, markDirty } from '../systems/storage.js';
 import { particle, sound, msg, V } from '../systems/util.js';
@@ -123,6 +124,7 @@ export async function openMenu(player, menus, startTab = 'char') {
       }
       if (act.type === 'unlock') { doUnlock(player, d, act.id); d = getData(player); continue; }
       if (act.type === 'sage') { if ((await menus.sage(player, 'home', true)) === 'close') break; d = getData(player); continue; }
+      if (act.type === 'catalog') { if ((await catalogLoop(player, menus)) === 'close') break; d = getData(player); continue; }
       if (act.type === 'mimic') { await menus.mimic(player); continue; }
       if (act.type === 'settings') { await settingsForm(player, d); continue; }
       if (act.type === 'storage') { await menus.storage(player); continue; }
@@ -206,6 +208,27 @@ async function treeLoop(player, menus, focus = {}) {
     if (!supreme && !race) d.ui.view = zoom > 1 ? fromOverview(view) : view;
     markDirty(player);
     return result;
+  }
+}
+
+/** Catálogo de Habilidades: emblemas por categoria; tocar abre a habilidade na árvore. */
+async function catalogLoop(player, menus) {
+  const d = getData(player);
+  let cat = 'race';
+  let page = 0;
+  for (;;) {
+    const model = buildCatalogForm({ cat, page, state: progressionState(d) });
+    const res = await showForm(player, formOf(model));
+    if (!player.isValid || !res || res.canceled || res.selection === undefined) return 'close';
+    const act = model.hit[res.selection];
+    if (!act) continue;
+    if (act.type === 'close') return 'close';
+    if (act.type === 'back') return 'back';
+    if (act.type === 'cat') { cat = act.cat; page = 0; continue; }
+    if (act.type === 'page') { page = act.page; continue; }
+    if (act.type === 'skill') {
+      if ((await treeLoop(player, menus, { key: act.id })) === 'close') return 'close';
+    }
   }
 }
 

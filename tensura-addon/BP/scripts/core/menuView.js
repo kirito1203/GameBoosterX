@@ -14,7 +14,7 @@ import {
 } from './uiSpec.js';
 
 export const TAB_LABEL = {
-  char: 'Personagem', race: 'Raça', tree: 'Árvore de Habilidades', inventory: 'Inventário Especial', missions: 'Missões',
+  char: 'Personagem', race: 'Raça', tree: 'Árvore de Habilidades', catalog: 'Catálogo', inventory: 'Inventário Especial', missions: 'Missões',
   status: 'Status', evolution: 'Evolução', settings: 'Configurações',
 };
 const HUD = { auto: 'Ao usar habilidades', always: 'Sempre', never: 'Nunca' };
@@ -76,7 +76,7 @@ export function buildMenuForm({ tab, d, state }) {
   MENU_TABS.forEach((t, i) => {
     const on = t === tab;
     set(MENU.tab0 + i, `${on ? '§b' : '§f'}${TAB_LABEL[t]}`, `${TEX.menu}cat_${t}${on ? '_on' : ''}`);
-    hit[MENU.tab0 + i] = t === 'tree' ? { type: 'tab', tab: 'skills' } : { type: 'tab', tab: t };
+    hit[MENU.tab0 + i] = t === 'tree' ? { type: 'tab', tab: 'skills' } : t === 'catalog' ? { type: 'catalog' } : { type: 'tab', tab: t };
   });
   set(MENU.sage, '§bGrande Sábio', `${TEX.sage}icon_${d.sage?.stage ?? 'sage'}`); hit[MENU.sage] = { type: 'sage' };
   set(MENU.pageTitle, `§l${TAB_LABEL[tab]}`);

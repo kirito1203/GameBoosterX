@@ -324,6 +324,101 @@ def art(skill, n=64):
     return im.resize((n, n), Image.LANCZOS)
 
 
+def sigil(skill, n=64):
+    """Emblema neon (estilo catálogo): símbolo brilhante em linha luminosa sobre quadro escuro, cor da categoria."""
+    import math
+    base = hexc(skill.get('elc') or skill['color'])
+    col = mix(base, (255, 255, 255, 255), 0.25)
+    S = n * 4
+    c = S / 2
+    bg = Image.new('RGBA', (S, S), (6, 8, 20, 255))
+    bd = ImageDraw.Draw(bg)
+    for r in range(int(S * .62), 0, -8):                         # halo de fundo
+        k = 1 - r / (S * .62)
+        bd.ellipse([c - r, c - r, c + r, c + r], fill=mix((6, 8, 20, 255), shade(base, 0.4), k * 0.85))
+    lay = Image.new('RGBA', (S, S), (0, 0, 0, 0))
+    d = ImageDraw.Draw(lay)
+    w = int(S * .05)
+    k = skill.get('kind', 'passive')
+    P = lambda a, r: (c + math.cos(math.radians(a)) * S * r, c + math.sin(math.radians(a)) * S * r)
+
+    def star(points, r1, r2, rot=-90):
+        pts = [P(rot + i * 180 / points, r1 if i % 2 == 0 else r2) for i in range(points * 2)]
+        d.polygon(pts, outline=col, width=w)
+
+    # anel rúnico externo (todos)
+    d.ellipse([c - S * .42, c - S * .42, c + S * .42, c + S * .42], outline=col, width=max(2, w // 2))
+    for a in range(0, 360, 30):
+        x, y = P(a, .42)
+        d.rectangle([x - 4, y - 4, x + 4, y + 4], fill=col)
+    if skill.get('core'):
+        star(8, .36, .14); d.ellipse([c - S * .1, c - S * .1, c + S * .1, c + S * .1], outline=col, width=w)
+    elif k in ('analyze', 'sense', 'ore_sense', 'comm'):
+        d.arc([c - S * .3, c - S * .2, c + S * .3, c + S * .4], 200, 340, fill=col, width=w)
+        d.arc([c - S * .3, c - S * .4, c + S * .3, c + S * .2], 20, 160, fill=col, width=w)
+        d.ellipse([c - S * .09, c - S * .09, c + S * .09, c + S * .09], outline=col, width=w)
+    elif k in ('absorb', 'drain', 'dissolve'):
+        d.arc([c - S * .28, c - S * .28, c + S * .28, c + S * .28], 20, 340, fill=col, width=w)
+        for i in range(5):
+            x = c - S * .18 + i * S * .09
+            d.polygon([(x, c - S * .12), (x + S * .04, c), (x + S * .08, c - S * .12)], outline=col, width=max(2, w // 2))
+    elif k in ('bolt', 'beam', 'strike', 'streak'):
+        d.line([P(225, .3), P(45, .3)], fill=col, width=w)
+        d.polygon([P(45, .34), P(25, .2), P(65, .2)], outline=col, width=w)
+        d.line([P(315, .12), P(135, .12)], fill=col, width=w)
+    elif k == 'cone':
+        d.polygon([(c, c - S * .3), (c + S * .16, c), (c + S * .1, c + S * .22), (c - S * .1, c + S * .22), (c - S * .16, c)], outline=col, width=w)
+        d.polygon([(c, c - S * .1), (c + S * .07, c + S * .06), (c - S * .07, c + S * .06)], outline=col, width=w)
+    elif k in ('rain', 'chain'):
+        d.line([(c + S * .06, c - S * .3), (c - S * .1, c + S * .02), (c + S * .08, c + S * .02), (c - S * .06, c + S * .3)], fill=col, width=w, joint='curve')
+    elif k in ('nova', 'gravity'):
+        star(8, .3, .12)
+    elif k in ('field', 'debuff', 'dominate', 'possess', 'marionette', 'swap', 'timeflip'):
+        d.polygon([P(-90 + i * 120, .28) for i in range(3)], outline=col, width=w)
+        d.polygon([P(90 + i * 120, .28) for i in range(3)], outline=col, width=w)
+    elif k == 'heal':
+        d.rectangle([c - S * .06, c - S * .24, c + S * .06, c + S * .24], outline=col, width=w)
+        d.rectangle([c - S * .24, c - S * .06, c + S * .24, c + S * .06], outline=col, width=w)
+    elif k in ('buff', 'imbue', 'mana', 'convert', 'cleanse'):
+        for dy in (.12, -.04, -.2):
+            d.line([(c - S * .16, c + S * (dy + .1)), (c, c + S * dy), (c + S * .16, c + S * (dy + .1))], fill=col, width=w, joint='curve')
+    elif k == 'summon':
+        d.polygon([P(-90 + i * 144, .28) for i in range(6)], outline=col, width=w)
+    elif k == 'bind':
+        for i in range(3):
+            x = c - S * .22 + i * S * .15
+            d.ellipse([x, c - S * .06, x + S * .14, c + S * .06], outline=col, width=w)
+    elif k in ('blink', 'dash', 'warp', 'flight'):
+        for dx in (-.14, 0, .14):
+            d.line([(c + S * (dx - .06), c - S * .18), (c + S * (dx + .06), c), (c + S * (dx - .06), c + S * .18)], fill=col, width=w, joint='curve')
+    elif k in ('p_resist', 'p_cleanse', 'wall'):
+        d.polygon([(c, c - S * .28), (c + S * .2, c - S * .18), (c + S * .16, c + S * .12), (c, c + S * .28), (c - S * .16, c + S * .12), (c - S * .2, c - S * .18)], outline=col, width=w)
+    elif k in ('evolve', 'p_race'):
+        d.arc([c - S * .24, c - S * .24, c + S * .24, c + S * .24], 120, 420, fill=col, width=w)
+        d.polygon([P(-60, .3), P(-40, .16), P(-85, .16)], fill=col)
+    elif k in ('storage', 'create', 'enchant', 'repair'):
+        d.polygon([(c, c - S * .24), (c + S * .2, c - S * .12), (c + S * .2, c + S * .14), (c, c + S * .26), (c - S * .2, c + S * .14), (c - S * .2, c - S * .12)], outline=col, width=w)
+        d.line([(c - S * .2, c - S * .12), (c, c), (c + S * .2, c - S * .12)], fill=col, width=w); d.line([(c, c), (c, c + S * .26)], fill=col, width=w)
+    else:  # passivas: estrela de 4 pontas com losango
+        star(4, .3, .1)
+        d.polygon([P(-90, .12), P(0, .12), P(90, .12), P(180, .12)], outline=col, width=max(2, w // 2))
+    wide = lay.filter(ImageFilter.GaussianBlur(S * .06))
+    near = lay.filter(ImageFilter.GaussianBlur(S * .02))
+    for g in (wide, wide, near, near):
+        bg.alpha_composite(g)
+    bg.alpha_composite(lay)
+    core = Image.new('RGBA', (S, S), (0, 0, 0, 0))                 # núcleo branco das linhas (neon)
+    core.paste((255, 255, 255, 255), (0, 0), lay.getchannel('A').point(lambda v: 255 if v > 200 else 0).filter(ImageFilter.MinFilter(7)))
+    bg.alpha_composite(Image.blend(Image.new('RGBA', (S, S), (0, 0, 0, 0)), core, 0.9))
+    rnd = random.Random(skill['icon'])
+    bd = ImageDraw.Draw(bg)
+    for _ in range(10):                                            # faíscas
+        x, y = rnd.random() * S, rnd.random() * S
+        bd.rectangle([x, y, x + 3, y + 3], fill=mix(col, (255, 255, 255, 255), 0.6)[:3] + (200,))
+    bd.rectangle([0, 0, S - 1, S - 1], outline=shade(col, 0.6), width=4)
+    return bg.resize((n, n), Image.LANCZOS)
+
+
 def art_frame(n=72):
     im = Image.new('RGBA', (n, n), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
@@ -906,8 +1001,12 @@ def main():
         shutil.rmtree(os.path.join(T, old), ignore_errors=True)
     for s in spec['skills']:
         save(icon(s), os.path.join(T, 'icons', s['icon'] + '.png'))
-        save(art(s), os.path.join(T, 'art', s['icon'] + '.png'))
+        save(sigil(s), os.path.join(T, 'art', s['icon'] + '.png'))
     save(art_frame(), os.path.join(T, 'ui', 'art_frame.png'))
+    # Catálogo: molduras dos itens por estado (desbloqueado / disponível / bloqueado)
+    for st, (face, border) in {'u': ((14, 30, 22, 255), (90, 230, 140, 255)), 'a': ((12, 22, 44, 255), (90, 190, 255, 255)),
+                               'l': ((14, 14, 22, 255), (70, 74, 90, 255))}.items():
+        nine(os.path.join(T, 'ui', f'tile_{st}'), raised(face, border, depth=3))
     for code in spec['frames']:
         save(frame(code), os.path.join(T, 'ui', 'node', 'f_' + code + '.png'))
     for code in spec['lines']:
@@ -952,7 +1051,7 @@ def main():
         save(menu_tab_icon(k, True), os.path.join(M, f'tab_{k}_on.png'))
     # Categorias do menu (barra lateral)
     for k, (fn, kind) in {'char': (menu_tab_icon, 'char'), 'race': (menu_tab_icon, 'race'), 'tree': (menu_tab_icon, 'skills'),
-                          'inventory': (menu_tab_icon, 'chest'), 'missions': (sage_icon, 'missions'), 'status': (menu_tab_icon, 'status'),
+                          'catalog': (sage_icon, 'skills'), 'inventory': (menu_tab_icon, 'chest'), 'missions': (sage_icon, 'missions'), 'status': (menu_tab_icon, 'status'),
                           'evolution': (menu_tab_icon, 'evolution'), 'settings': (sage_icon, 'settings')}.items():
         save(fn(kind, False), os.path.join(M, f'cat_{k}.png'))
         save(fn(kind, True), os.path.join(M, f'cat_{k}_on.png'))

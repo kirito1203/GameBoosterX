@@ -707,3 +707,40 @@ para reduzir o lag).
 - rolagem com 16 linhas no celular;
 - ganho real de desempenho;
 - tamanho do pacote (cresce por causa das 515 ilustrações).
+
+## Versão 0.9.2 — Catálogo de Habilidades e emblemas neon
+
+Pedido: imagens de exemplo de um catálogo de habilidades (ícones neon com nome e descrição).
+
+**Sobre as imagens de exemplo:** usei só o **estilo visual** (emblema brilhante, grade de cartões, nome e descrição
+curta). Os nomes e habilidades das imagens não foram copiados, porque várias **não são canônicas** de Tensura.
+O catálogo mostra apenas as habilidades que já existem no addon, com a origem que já tinham.
+
+**Ilustrações (IMPLEMENTADO):**
+- As 515 ilustrações em cena da v0.9.1 foram **trocadas por emblemas neon** (64×64):
+  - círculo de runas com brilho e símbolo pelo tipo de efeito, na cor do elemento;
+  - as Supremas e Manas têm núcleo radiante na cor própria.
+- O número de arquivos é o mesmo; o painel de detalhes da árvore usa os mesmos emblemas.
+
+**Catálogo de Habilidades (IMPLEMENTADO):** nova aba "Catálogo" no menu.
+- 7 categorias na lateral:
+  - Sua Raça, Habilidades Únicas, Supremas e Manas, Magias e Elementos, Combate e Técnicas, Habilidades Extras, Resistências.
+- Grade de 6×3 cartões por página com emblema, nome e descrição curta (até 24 caracteres).
+- Cor do cartão por estado:
+  - verde: desbloqueada;
+  - azul: disponível;
+  - escuro: bloqueada.
+- Título com a contagem de desbloqueadas; setas de página que dão a volta.
+- Mostra só o que a raça do jogador pode aprender (mesma regra da árvore).
+- Tocar num cartão abre a habilidade na árvore, com o painel de detalhes. "Voltar" retorna ao menu.
+
+**Testes (TESTADO, fora do jogo):**
+- 90 testes passando (5 novos do catálogo: botões e ações, marcador de estado, paginação, filtro por raça,
+  tamanho da descrição);
+- typecheck sem erros;
+- telas conferidas no simulador.
+
+**PENDENTE / não testado no jogo:**
+- abrir o catálogo no celular;
+- conferir se a descrição cabe no cartão com a fonte real do jogo;
+- tocar num cartão e ir para a árvore.

@@ -251,6 +251,7 @@ body{margin:0;background:#000;font-family:'DejaVu Sans',sans-serif}
 import { buildMenuForm } from '../BP/scripts/core/menuView.js';
 import { buildRaceForm } from '../BP/scripts/core/raceView.js';
 import { buildSageForm } from '../BP/scripts/core/sageView.js';
+import { buildCatalogForm } from '../BP/scripts/core/catalogView.js';
 import { freshSage, addXp } from '../BP/scripts/core/sage.js';
 import { getMap, getSupremeMap, getRaceMap } from '../BP/scripts/core/map.js';
 import { computeStats } from '../BP/scripts/core/stats.js';
@@ -327,6 +328,8 @@ export function scenario(name) {
       const dd = { ...d, unlocked: new Set([...d.unlocked, 'r.slime.ciel', 'r.slime.shub']), library: new Set(['elem.fireball']), skillCopies: [], loadouts: [], cielOps: new Set(), opDays: {}, missions: new Set(), absorbLog: {}, absorbTotal: 0, discovered: new Set(), mastery: {} };
       return { kind: 'sage', p: { cat: 'manas', d: dd, sage: d.sage } };
     }
+    case 'catalog-race': return { kind: 'catalog', p: { cat: 'race', state: { ...state, discovered: new Set(), missions: new Set(), mastery: {}, maxMp: 900, absorbed: new Set() } } };
+    case 'catalog-ult': return { kind: 'catalog', p: { cat: 'ultimate', state: { ...state, discovered: new Set(), missions: new Set(), mastery: {}, maxMp: 900, absorbed: new Set() } } };
     case 'sage-ask': return { kind: 'sage', p: { cat: 'ask', d, sage: d.sage } };
     case 'sage-level': return { kind: 'sage', p: { cat: 'level', d, sage: d.sage } };
     case 'sage-intel': return { kind: 'sage', p: { cat: 'intel', d, sage: d.sage } };
@@ -335,10 +338,10 @@ export function scenario(name) {
   }
 }
 
-export const ROOTS = { menu: 'menu_root', race: 'race_root', sage: 'sage_root', tree: 'root' };
+export const ROOTS = { menu: 'menu_root', race: 'race_root', sage: 'sage_root', catalog: 'catalog_root', tree: 'root' };
 
 export function modelFor(sc) {
-  return sc.kind === 'menu' ? buildMenuForm(sc.p) : sc.kind === 'race' ? buildRaceForm(sc.p) : sc.kind === 'sage' ? buildSageForm(sc.p) : buildTreeForm(sc.p);
+  return sc.kind === 'menu' ? buildMenuForm(sc.p) : sc.kind === 'race' ? buildRaceForm(sc.p) : sc.kind === 'sage' ? buildSageForm(sc.p) : sc.kind === 'catalog' ? buildCatalogForm(sc.p) : buildTreeForm(sc.p);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {

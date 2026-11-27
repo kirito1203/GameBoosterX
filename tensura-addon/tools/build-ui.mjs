@@ -17,6 +17,7 @@ import {
   MENU, MENU_TABS, ACTIVE_ROWS, BAR_SLOTS, ACTION_COUNT,
   RACE_MARK, RACE, RACE_CARD_COLS, RACE_CARD_ROWS, CARD_SELECTED, CARD_LOCKED,
   SAGE_MARK, SAGE, SAGE_TILES, SAGE_ACTIONS,
+  CATALOG_MARK, CATALOG, CATALOG_CATS, CATALOG_COLS, CATALOG_ROWS, TILE_STATE,
 } from '../BP/scripts/core/uiSpec.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -131,6 +132,26 @@ function templates() {
       text_alignment: '$st_align', '$st_font|default': 1.0, '$st_align|default': 'left',
     },
     box: { type: 'image', ...TL, layer: 1, texture: `${TEX.menu}box`, keep_ratio: false, bilinear: false },
+    // Item do Catálogo: moldura pelo estado, emblema neon em cima, nome e descrição curta embaixo.
+    cat_tile: {
+      type: 'panel', ...TL,
+      bindings: [colText, view("(not (#form_button_text = ''))", '#visible')],
+      controls: [
+        { bg_u: img(`${TEX.ui}tile_u`, { layer: 1, bindings: [colText, view(`(not ((#form_button_text - '${TILE_STATE.unlocked}') = #form_button_text))`, '#visible')] }) },
+        { bg_a: img(`${TEX.ui}tile_a`, { layer: 1, bindings: [colText, view(`(not ((#form_button_text - '${TILE_STATE.available}') = #form_button_text))`, '#visible')] }) },
+        { bg_l: img(`${TEX.ui}tile_l`, { layer: 1, bindings: [colText, view(`(not ((#form_button_text - '${TILE_STATE.locked}') = #form_button_text))`, '#visible')] }) },
+        { art: { type: 'image', layer: 2, anchor_from: 'top_middle', anchor_to: 'top_middle', offset: [0, '5%'], size: ['100%y', '42%'], bilinear: false,
+          bindings: [{ ...colTex, binding_name_override: '#texture' }, { ...colTexFs, binding_name_override: '#texture_file_system' }] } },
+        { name: { type: 'label', layer: 3, anchor_from: 'top_middle', anchor_to: 'top_middle', offset: [0, '50%'], size: ['94%', 'default'], max_size: ['94%', '46%'],
+          text: '#tile_text', text_alignment: 'center', font_scale_factor: 0.52, shadow: true, color: [1, 1, 1],
+          bindings: [colText, view(`(((#form_button_text - '${TILE_STATE.unlocked}') - '${TILE_STATE.available}') - '${TILE_STATE.locked}')`, '#tile_text')] } },
+        { 'hit@common.button': { layer: 5, ...buttonBody(), controls: [
+          { default: { type: 'panel' } },
+          { hover: img(`${TEX.ui}hover`) },
+          { pressed: img(`${TEX.ui}hover`, { alpha: 0.6 }) },
+        ] } },
+      ],
+    },
   };
 }
 
@@ -421,6 +442,40 @@ function menuRoot() {
   };
 }
 
+// ── Catálogo de Habilidades ──
+function catalogRoot() {
+  const sideH = (86 - (CATALOG_CATS.length - 1) * 0.8) / CATALOG_CATS.length;
+  const tw = (76 - (CATALOG_COLS - 1) * 1) / CATALOG_COLS;
+  const th = (74 - (CATALOG_ROWS - 1) * 1.2) / CATALOG_ROWS;
+  const tiles = [];
+  for (let r = 0; r < CATALOG_ROWS; r++) for (let c = 0; c < CATALOG_COLS; c++) {
+    const i = r * CATALOG_COLS + c;
+    tiles.push(slot(`tile${i}`, CATALOG.tile0 + i, 23 + c * (tw + 1), 12 + r * (th + 1.2), tw, th, 'cat_tile'));
+  }
+  const ctrls = [
+    { bg: img(`${TEX.menu}window`, { layer: 0 }) },
+    { header: { ...at(1, 1.5, 98, 9), type: 'image', layer: 1, texture: `${TEX.menu}tab_bg`, keep_ratio: false } },
+    { brand: { type: 'label', ...TL, offset: ['2.5%', '4%'], size: ['20%', 'default'], layer: 3, text: '§l§bCATÁLOGO', shadow: true, font_scale_factor: 1.15 } },
+    slot('title', CATALOG.title, 23, 3.8, 62, 6, 'value', { $v_align: 'left', $v_font: 1.05 }),
+    ctl('close', CATALOG.close, 89, 2.3, 9.5, 7.5, { ...ICON_ONLY, $ctl_bg: `${TEX.menu}button`, $ctl_bg_hover: `${TEX.menu}button_hover`, $ctl_bg_pressed: `${TEX.menu}button_pressed` }),
+    ...CATALOG_CATS.map((c, i) => ctl(`cat_${c}`, CATALOG.cat0 + i, 1, 12 + i * (sideH + 0.8), 21, sideH, MENU_SIDE)),
+    ...tiles,
+    ctl('prev', CATALOG.prev, 23, 88, 10, 9.5, { ...ICON_ONLY, $ctl_bg: `${TEX.menu}button`, $ctl_bg_hover: `${TEX.menu}button_hover`, $ctl_bg_pressed: `${TEX.menu}button_pressed` }),
+    slot('page', CATALOG.page, 34, 90.5, 20, 6, 'value', { $v_align: 'center' }),
+    ctl('next', CATALOG.next, 55, 88, 10, 9.5, { ...ICON_ONLY, $ctl_bg: `${TEX.menu}button`, $ctl_bg_hover: `${TEX.menu}button_hover`, $ctl_bg_pressed: `${TEX.menu}button_pressed` }),
+    ctl('back', CATALOG.back, 77, 88, 21, 9.5, MENU_BTN),
+  ];
+  return {
+    type: 'panel', size: ['100%', '100%'], collection_name: COL,
+    controls: [
+      { shade: img(`${TEX.menu}shade`, { layer: 0 }) },
+      ...sparkles('catalog', 8),
+      { window: { type: 'panel', size: ['94%', '94%'], layer: 2, collection_name: COL, controls: ctrls,
+        anims: [`@${NS}.anim_rise_in`, `@${NS}.anim_open_fade`] } },
+    ],
+  };
+}
+
 // ── Painel do Grande Sábio ──
 // Tela inicial (§0): grade 3x3 de blocos, barra Configurações e caixa de diálogo do Sábio.
 // Páginas (§1..§9): conteúdo com rolagem e botões de ação; "Voltar" leva à tela inicial.
@@ -623,7 +678,7 @@ function raceRoot() {
 export function buildUi(outDir = join(ROOT, 'RP', 'ui')) {
   mkdirSync(outDir, { recursive: true });
   const tree = {
-    namespace: NS, ...templates(), ...raceTemplates(), ...animations(), root: treeRoot(), menu_root: menuRoot(), race_root: raceRoot(), sage_root: sageRoot(),
+    namespace: NS, ...templates(), ...raceTemplates(), ...animations(), root: treeRoot(), menu_root: menuRoot(), race_root: raceRoot(), sage_root: sageRoot(), catalog_root: catalogRoot(),
     details_text: {
       type: 'stack_panel', size: ['100% - 4px', '100%c'], orientation: 'vertical', ...TL,
       controls: [{ body: { type: 'label', size: ['100%', 'default'], ...TL,
@@ -637,7 +692,7 @@ export function buildUi(outDir = join(ROOT, 'RP', 'ui')) {
   tree.close_details_off = { type: 'panel', controls: [{ bg: img(`${TEX.ui}ctl`) }, { t: { type: 'label', text: '§fFechar detalhes', font_scale_factor: 0.75, shadow: true, layer: 2 } }] };
   tree.close_details_hover = { type: 'panel', controls: [{ bg: img(`${TEX.ui}ctl_hover`) }, { t: { type: 'label', text: '§fFechar detalhes', font_scale_factor: 0.75, shadow: true, layer: 2 } }] };
 
-  const notMarked = `(((((#title_text - '${MARK}') = #title_text) and ((#title_text - '${MENU_MARK}') = #title_text)) and ((#title_text - '${RACE_MARK}') = #title_text)) and ((#title_text - '${SAGE_MARK}') = #title_text))`;
+  const notMarked = `((((((#title_text - '${MARK}') = #title_text) and ((#title_text - '${MENU_MARK}') = #title_text)) and ((#title_text - '${RACE_MARK}') = #title_text)) and ((#title_text - '${SAGE_MARK}') = #title_text)) and ((#title_text - '${CATALOG_MARK}') = #title_text))`;
   const serverForm = {
     namespace: 'server_form',
     main_screen_content: {
@@ -671,6 +726,9 @@ export function buildUi(outDir = join(ROOT, 'RP', 'ui')) {
         { tensura_sage_wrap: { type: 'panel', size: ['100%', '100%'],
           bindings: [{ binding_name: '#title_text' }, view(has(SAGE_MARK), '#visible')],
           controls: [{ [`sage@${NS}.sage_root`]: {} }] } },
+        { tensura_catalog_wrap: { type: 'panel', size: ['100%', '100%'],
+          bindings: [{ binding_name: '#title_text' }, view(has(CATALOG_MARK), '#visible')],
+          controls: [{ [`catalog@${NS}.catalog_root`]: {} }] } },
       ],
     },
   };
