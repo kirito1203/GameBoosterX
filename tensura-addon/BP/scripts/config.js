@@ -27,6 +27,7 @@ export const CONFIG = {
     S:  { name: 'S',  desc: 'Especial / Única',    cost: 180, lvl: 38, rarity: 'legendary', mastery: 5 },
     SS: { name: 'SS', desc: 'Suprema',             cost: 280, lvl: 50, rarity: 'supreme',   mastery: 4 },
     EX: { name: 'EX', desc: 'Final / Extraordinária', cost: 380, lvl: 65, rarity: 'supreme', mastery: 3 },
+    'EX+': { name: 'EX+', desc: 'Além do final (classificação do mod)', cost: 480, lvl: 80, rarity: 'supreme', mastery: 3 },
   },
 
   // Domínio: cada habilidade ATIVA sobe de nível com o uso real (cada conjuração bem-sucedida).

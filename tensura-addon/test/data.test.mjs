@@ -9,7 +9,7 @@ import { isPassiveFx } from '../BP/scripts/data/dsl.js';
 import { describeFx } from '../BP/scripts/core/describe.js';
 
 const PASSIVES = new Set(['p_effect', 'p_mp', 'p_resist', 'p_lifesteal', 'p_onhit', 'p_affinity', 'p_power', 'p_starved', 'p_xp', 'p_points', 'p_regen_env', 'p_race', 'p_aura',
-  'p_cleanse', 'p_cd', 'p_slots', 'p_absorb', 'p_mimic']);
+  'p_cleanse', 'p_cd', 'p_slots', 'p_absorb', 'p_mimic', 'p_op']);
 // Tipos ativos implementados em systems/effects.js (lidos do código-fonte).
 const effectsSrc = readFileSync(new URL('../BP/scripts/systems/effects.js', import.meta.url), 'utf8');
 const handlersBlock = effectsSrc.slice(effectsSrc.indexOf('const HANDLERS = {'), effectsSrc.indexOf('function compass('));

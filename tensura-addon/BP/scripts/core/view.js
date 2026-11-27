@@ -3,10 +3,11 @@
 import { SKILLS, TREES, RACES, SECTORS, ABSORPTION, MISSIONS } from '../data/registry.js';
 import { masteryLevel, masteryMax, usesForNext } from './mastery.js';
 import { evaluate } from './progression.js';
-import { getMap, DIRS8 } from './map.js';
+import { getMap, getSupremeMap, DIRS8 } from './map.js';
+import { fxOf } from './progression.js';
 import { describeFx } from './describe.js';
 import { rarityInfo, CONFIG } from '../config.js';
-import { ORIGINS, SOURCES } from '../data/dsl.js';
+import { ORIGINS, SOURCES, TIERS } from '../data/dsl.js';
 import {
   CTRL, CATEGORY_ORDER, MARK, gridOf, layerBase, frameCode, iconName, TEX, EDGE, TREE_COLS, TREE_ROWS, ZOOM_OUT,
 } from './uiSpec.js';
@@ -80,12 +81,14 @@ export function categoryName(cat, lineage) {
  * @param {{cur:number,max:number}} p.mp
  * @param {string[]} [p.equipped]
  * @param {number} [p.zoom]  1 = normal; ZOOM_OUT = visão geral
+ * @param {boolean} [p.supreme] Árvore Suprema (mapa próprio)
  */
 export function buildTreeForm(p) {
   if (p.zoom && p.zoom > 1) return buildOverviewForm(p);
   const { state, view, focus = null, mp, equipped = [] } = p;
   const lineage = RACES[state.race].lineage;
-  const map = getMap(lineage);
+  const supreme = !!p.supreme && !!getSupremeMap(lineage);
+  const map = supreme ? getSupremeMap(lineage) : getMap(lineage);
   const { cols, rows, n } = gridOf();
   const base = layerBase();
   const buttons = new Array(base.total);
@@ -94,22 +97,32 @@ export function buildTreeForm(p) {
   const total = Object.keys(map.pos).filter((k) => !map.isLink.has(k)).length;
   const owned = Object.keys(map.pos).filter((k) => !map.isLink.has(k) && state.unlocked.has(k)).length;
   const race = RACES[state.race];
-  const title = `${MARK}§l§bÁrvore de Habilidades§r  §7${race.name}  §ePontos ${state.points}  §fNv ${state.level}  §a${owned}/${total}  §dMagículas ${Math.floor(mp.cur)}/${mp.max}`;
+  const bar = (k) => `§a${'▮'.repeat(Math.round(k * 10))}§8${'▮'.repeat(10 - Math.round(k * 10))}`;
+  const title = supreme
+    ? `${MARK}§l§6Árvore Suprema§r  §7${race.name}  §ePontos ${state.points}  ${bar(owned / Math.max(1, total))} §a${owned}/${total}  §dMagículas ${Math.floor(mp.cur)}/${mp.max}`
+    : `${MARK}§l§bÁrvore de Habilidades§r  §7${race.name}  §ePontos ${state.points}  §fNv ${state.level}  §a${owned}/${total}  §dMagículas ${Math.floor(mp.cur)}/${mp.max}`;
 
   const set = (i, text, icon = '') => { buttons[i] = { text, icon }; };
   for (let i = 0; i < base.node; i++) set(i, ''); // controles + preenchimento
   set(CTRL.back, 'Voltar', `${TEX.ui}btn_back`); hit[CTRL.back] = { type: 'back' };
   set(CTRL.close, '', `${TEX.ui}btn_close`); hit[CTRL.close] = { type: 'close' };
-  CATEGORY_ORDER.forEach((cat, i) => {
-    set(CTRL.cat0 + i, '', `${TEX.ui}tab_${cat}`);
-    hit[CTRL.cat0 + i] = { type: 'jump', pos: map.roots[cat], cat };
-  });
+  if (supreme) {
+    Object.keys(map.roots).forEach((sid, i) => {
+      set(CTRL.cat0 + i, '', `${TEX.icon}${iconName(sid)}`);
+      hit[CTRL.cat0 + i] = { type: 'jump', pos: map.roots[sid], cat: sid };
+    });
+  } else {
+    CATEGORY_ORDER.forEach((cat, i) => {
+      set(CTRL.cat0 + i, '', `${TEX.ui}tab_${cat}`);
+      hit[CTRL.cat0 + i] = { type: 'jump', pos: map.roots[cat], cat };
+    });
+  }
   set(CTRL.panLeft, '', `${TEX.ui}arrow_l`); hit[CTRL.panLeft] = { type: 'pan', dx: -1, dy: 0 };
   set(CTRL.panRight, '', `${TEX.ui}arrow_r`); hit[CTRL.panRight] = { type: 'pan', dx: 1, dy: 0 };
   set(CTRL.pageUp, '', `${TEX.ui}arrow_u`); hit[CTRL.pageUp] = { type: 'pan', dx: 0, dy: -1 };
   set(CTRL.pageDown, '', `${TEX.ui}arrow_d`); hit[CTRL.pageDown] = { type: 'pan', dx: 0, dy: 1 };
   set(CTRL.center, '', `${TEX.ui}center`); hit[CTRL.center] = { type: 'center' };
-  set(CTRL.zoom, '', `${TEX.ui}zoom_out`); hit[CTRL.zoom] = { type: 'zoom', zoom: ZOOM_OUT };
+  if (!supreme) { set(CTRL.zoom, '', `${TEX.ui}zoom_out`); hit[CTRL.zoom] = { type: 'zoom', zoom: ZOOM_OUT }; }
 
   const evalCache = new Map();
   const evalOf = (id) => {
@@ -146,10 +159,10 @@ export function buildTreeForm(p) {
       const isLink = map.isLink.has(nodeKey);
       const major = s.major || nodeKey === map.centerId;
       buttons[base.node + i] = { text: frameCode(ev.state, s.rarity, major, isLink, nodeKey === focus), icon: `${TEX.icon}${iconName(sid)}` };
-      buttons[base.detail + i] = { text: detailsText(s, ev, state, isLink, equipped), icon: '' };
+      buttons[base.detail + i] = { text: detailsText(s, ev, state, isLink, equipped, supreme), icon: '' };
       // Ação do painel: a única parte que volta ao script.
       if (isLink) {
-        set(base.action + i, `§9Ir para o original (${TREES[s.tree].short})`, `${TEX.ui}btn_link`);
+        set(base.action + i, supreme ? '§9Ir para o nó principal' : `§9Ir para o original (${TREES[s.tree].short})`, `${TEX.ui}btn_link`);
         hit[base.action + i] = { type: 'goto', key: sid };
       } else if (ev.ok) {
         set(base.action + i, s.type === 'evolution' ? `§l§6Evoluir (${ev.cost} pts)` : `§l§aDesbloquear (${ev.cost} pts)`, `${TEX.ui}btn_unlock`);
@@ -161,7 +174,7 @@ export function buildTreeForm(p) {
       }
     }
   }
-  return { title, body: '', buttons, hit, map, visibleNodes, cells: n };
+  return { title, body: '', buttons, hit, map, visibleNodes, cells: n, supreme };
 }
 
 function cut(text, max) {
@@ -169,19 +182,19 @@ function cut(text, max) {
 }
 
 /** Texto compacto do painel de detalhes (cabe no painel sem rolagem). */
-function detailsText(s, ev, state, isLink, equipped) {
+function detailsText(s, ev, state, isLink, equipped, full = false) {
   const ri = rarityInfo(s.rarity);
   const tree = TREES[s.tree];
   const res = tree.kind === 'racial' ? 'Aura' : 'Magículas';
   const status = { unlocked: '§aDesbloqueada', available: '§9Disponível', reachable: '§7Falta nível/pontos', special: '§cRequisito especial pendente', locked: '§8Bloqueada' }[ev.state];
   const lines = [
-    `§l${ri.color}${s.name}§r §8${s.original}`,
+    `§l${ri.color}${s.name}§r §8${s.original}${s.tier ? ` · ${s.tier === 'manas' ? '§d' : s.tier === 'ultimate' ? '§6' : '§5'}${TIERS[s.tier]}§r` : ''}`,
     `${status}§r · ${TYPE_NAMES[s.type]} · ${s.rank ? `§eRank ${s.rank}§r` : `${ri.color}${ri.name}§r`}`,
     `§e${ev.cost} pts§r${s.mp ? ` · ${res} §d${s.mp}§r` : ''}${s.cooldown ? ` · ${s.cooldown}s` : ''} · Nv ${s.minLevel}`,
   ];
-  if (s.src) lines.push(`§7${SOURCES[s.src]}${s.sector ? ` · ${SECTORS[RACES[state.race].lineage]?.names[s.sector] ?? ''}` : ''}§r`);
+  if (s.src) lines.push(`§7Origem: ${SOURCES[s.src]}${s.verified ? '' : ' §c(não verificada)§7'}${s.first ? ` · 1ª aparição: ${s.first}` : ''}${s.sector ? ` · ${SECTORS[RACES[state.race].lineage]?.names[s.sector] ?? ''}` : ''}§r`);
   const acq = acquisition(s);
-  if (acq) lines.push(`§7Aquisição: ${acq}§r`);
+  if (acq) lines.push(`§7Aquisição: ${full ? cut(acq, 70) : acq}§r`);
   const mmax = masteryMax(s);
   if (mmax && state.unlocked.has(s.id)) {
     const uses = state.mastery?.[s.id] ?? 0;
@@ -190,12 +203,17 @@ function detailsText(s, ev, state, isLink, equipped) {
     lines.push(`§bDomínio ${lvl}/${mmax}§r${nx ? ` §7(${uses}/${nx} usos)` : ' §7(máximo)'}${s.masteryDesc?.[lvl - 1] ? ` · ${s.masteryDesc[lvl - 1]}` : ''}§r`);
   }
   if (s.requires.length) lines.push(`Requer: ${s.requires.map((r) => `${state.unlocked.has(r) ? '§a✔' : '§c✘'} ${SKILLS[r]?.name ?? r}§r`).join(', ')}`);
-  if (s.children.length) lines.push(`§7Evoluções/leva a: ${s.children.map((c) => SKILLS[c].name).join(', ')}§r`);
+  if (s.subs.length) lines.push(`§6Sub-habilidades: ${s.subs.map((c) => `${state.unlocked.has(c) ? '§a' : '§7'}${SKILLS[c].name}`).join('§7, ')}§r`);
+  if (s.children.length && !full) lines.push(`§7Evoluções/leva a: ${s.children.map((c) => SKILLS[c].name).join(', ')}§r`);
+  if (s.evolvedBy) lines.push(`${state.unlocked.has(s.evolvedBy) ? '§a✔ Evoluída' : '§7Evolui'} com ${SKILLS[s.evolvedBy].name}: ${s.evolvedDesc}§r`);
   if (isLink) lines.push(`§9Nó compartilhado de ${tree.name}.§r`);
   if (s.type === 'race_root') lines.push(cut(raceSummary(state.race).split('\n').slice(1, 4).join(' · '), 160));
   else {
-    if (s.desc) lines.push(cut(s.desc, 150));
-    if (s.fx) lines.push(`§7${cut(describeFx(s.fx), 130)}§r`);
+    if (s.desc && !(full && s.subs.length)) lines.push(cut(s.desc, 150));
+    const fx = fxOf(s, state.unlocked);
+    if (fx) lines.push(`§7Efeito: ${cut(describeFx(fx), full ? 110 : 130)}§r`);
+    if (full && s.limits) lines.push(`§eLimitações: ${cut(s.limits, 110)}§r`);
+    if (full && s.lore) lines.push(`§dRelações: ${cut(s.lore, 110)}§r`);
   }
   if (equipped.includes(s.id)) lines.push(`§bNa barra (espaço ${equipped.indexOf(s.id) + 1})§r`);
   if (ev.missing.length && ev.state !== 'unlocked') lines.push(`§cFalta: ${ev.missing.join('; ')}§r`);

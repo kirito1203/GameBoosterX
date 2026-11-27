@@ -12,7 +12,7 @@ import { unlock } from '../core/progression.js';
 import { buildTreeForm, viewAt, centeredView, pan, ensureVisible, toOverview, fromOverview } from '../core/view.js';
 import { evaluate } from '../core/progression.js';
 import { buildMenuForm } from '../core/menuView.js';
-import { getMap } from '../core/map.js';
+import { getMap, getSupremeMap } from '../core/map.js';
 import { getData, progressionState, saveNow, refreshStats, markDirty } from '../systems/storage.js';
 import { particle, sound, msg, V } from '../systems/util.js';
 
@@ -136,17 +136,23 @@ export async function openMenu(player, menus, startTab = 'status') {
 // Retorna 'back' (voltar ao menu) ou 'close' (fechar tudo).
 // Tocar num nó e rolar para cima/baixo acontecem só no celular (sem reabrir a tela).
 // O script só recebe: ações do painel (desbloquear, barra, ir ao original), setas e categorias.
+/** Árvore Suprema (tela própria). Retorna 'back' ou 'close'. */
+export async function openSupremeTree(player, menus) {
+  return treeLoop(player, menus, { supreme: true });
+}
+
 async function treeLoop(player, menus, focus = {}) {
   const d = getData(player);
-  const map = getMap(RACES[d.race].lineage);
-  let view = d.ui.view && Number.isFinite(d.ui.view.x) && Number.isFinite(d.ui.view.y) ? { x: d.ui.view.x, y: d.ui.view.y } : centeredView();
+  const supreme = !!focus.supreme && !!getSupremeMap(RACES[d.race].lineage);
+  const map = supreme ? getSupremeMap(RACES[d.race].lineage) : getMap(RACES[d.race].lineage);
+  let view = supreme ? viewAt(map.roots[map.centerId]) : d.ui.view && Number.isFinite(d.ui.view.x) && Number.isFinite(d.ui.view.y) ? { x: d.ui.view.x, y: d.ui.view.y } : centeredView();
   let highlight = null;
   if (focus.key && map.pos[focus.key]) { highlight = focus.key; view = viewAt(map.pos[focus.key]); }
   if (focus.pos) view = viewAt(focus.pos);
   let result = 'back';
   let zoom = 1;
   for (;;) {
-    const model = buildTreeForm({ state: progressionState(d), view, focus: highlight, mp: { cur: d.mp, max: d.stats.maxMp }, equipped: d.equipped, zoom });
+    const model = buildTreeForm({ state: progressionState(d), view, focus: highlight, mp: { cur: d.mp, max: d.stats.maxMp }, equipped: d.equipped, zoom, supreme });
     const res = await showForm(player, formOf(model));
     if (!player.isValid) return 'close';
     if (!res || res.canceled || res.selection === undefined) { result = 'close'; break; }
@@ -159,9 +165,13 @@ async function treeLoop(player, menus, focus = {}) {
         highlight = null;
         let pos = act.pos;
         // Árvore racial com setores: escolher o setor (ou a visão geral).
-        if (act.cat === 'racial' && SECTORS[map.lineage ?? RACES[d.race].lineage]) {
+        if (!supreme && act.cat === 'racial' && SECTORS[map.lineage ?? RACES[d.race].lineage]) {
           const r = await pickSector(player, d, map);
           if (r === 'overview') { zoom = 3; view = toOverview(viewAt([0, 0])); break; }
+          if (r === 'supreme') {
+            if ((await treeLoop(player, menus, { supreme: true })) === 'close') { result = 'close'; return finish(); }
+            break;
+          }
           if (r) pos = r;
         }
         if (zoom > 1) { zoom = 1; }
@@ -169,18 +179,21 @@ async function treeLoop(player, menus, focus = {}) {
         break;
       }
       case 'pan': view = pan(view, act.dx, act.dy, map, zoom); break;
-      case 'center': highlight = null; view = zoom > 1 ? toOverview(viewAt([0, 0])) : viewAt([0, 0]); break;
+      case 'center': highlight = null; view = supreme ? viewAt(map.roots[map.centerId]) : zoom > 1 ? toOverview(viewAt([0, 0])) : viewAt([0, 0]); break;
       case 'zoom': view = act.zoom > 1 ? toOverview(view) : fromOverview(view); zoom = act.zoom; break;
       case 'zoomin': zoom = 1; view = viewAt(act.pos); break;
       case 'unlock': doUnlock(player, d, act.id); highlight = act.id; break;
       case 'equip': toggleEquip(player, d, act.id); highlight = act.id; break;
-      case 'goto': highlight = act.key; view = viewAt(map.pos[act.key]); break;
+      case 'goto': highlight = act.key; view = viewAt(map.pos[act.key] ?? [0, 0]); break;
       default: break;
     }
   }
-  d.ui.view = zoom > 1 ? fromOverview(view) : view;
-  markDirty(player);
-  return result;
+  return finish();
+  function finish() {
+    if (!supreme) d.ui.view = zoom > 1 ? fromOverview(view) : view;
+    markDirty(player);
+    return result;
+  }
 }
 
 /** Lista dos setores da árvore racial (com progresso) + visão geral. Retorna posição, 'overview' ou null. */
@@ -202,7 +215,11 @@ async function pickSector(player, d, map) {
     form.button(`§l${sec.names[id]}§r\n§a${own}/${skills.length}${avail ? `  §9${avail} disponível(is)` : ''}`);
   }
   form.button('§l§bVisão geral (zoom afastado)');
+  const hasSup = !!getSupremeMap(lin);
+  if (hasSup) form.button('§l§6Árvore Suprema§r\n§7Raphael, Beelzebuth, Uriel, Veldora, Velgrynd, Azathoth, Shub-Niggurath e Ciel');
   const res = await showForm(player, form);
   if (!res || res.canceled || res.selection === undefined) return null;
-  return res.selection === targets.length ? 'overview' : targets[res.selection];
+  if (res.selection === targets.length) return 'overview';
+  if (hasSup && res.selection === targets.length + 1) return 'supreme';
+  return targets[res.selection];
 }

@@ -8,6 +8,7 @@ const d = { discover: true };
 
 export default [
   k('shapeshift', 'Imitação (Mimetismo)', 'Mimicry', 'C', 'anime', {
+    limits: 'Sub-habilidade de Beelzebuth na obra.',
     req: [P('predator')], lp: P('root'), lvl: 10, mp: 10, cd: 3, major: true,
     desc: 'Assume a forma de uma espécie absorvida e ganha suas características (ex.: lobo = velocidade, blaze = imunidade ao fogo). Base de todas as habilidades absorvidas. Consome 1 Magicule/s.',
     fx: { k: 'mimic', drain: 1 } }),
@@ -35,17 +36,17 @@ export default [
     fx: { k: 'debuff', el: 'wind', r: 7, self: true, dmg: 3, eff: [['nausea', 6, 0], ['slowness', 3, 1]] } }),
   k('vampirism', 'Vampirismo', 'Vampirism', 'C', 'anime', {
     req: [P('ultrasonic')], ...d, desc: '8% do dano corpo a corpo vira vida.', fx: { k: 'p_lifesteal', pct: 0.08 } }),
-  k('flame_manip', 'Manipulação das Chamas', 'Flame Manipulation', 'C', 'pendente', {
+  k('flame_manip', 'Manipulação das Chamas', 'Flame Manipulation', 'C', 'anime', { unverified: true,
     req: [P('shapeshift')], ...d, mp: 18, cd: 4, desc: 'Três rajadas de fogo herdadas de Ifrit.',
     fx: { k: 'bolt', el: 'fire', dmg: 9, ignite: 4, count: 3, spread: 12 } }),
-  k('flame_body', 'Corpo de Chamas', 'Body of Flame', 'B', 'pendente', {
+  k('flame_body', 'Corpo de Chamas', 'Body of Flame', 'B', 'anime', { unverified: true,
     req: [P('flame_manip')], ...d, mp: 30, cd: 60, desc: 'Por 30 s seus golpes queimam (+4 de dano) e você fica resistente ao fogo.',
     fx: [{ k: 'imbue', el: 'fire', dur: 30, dmg: 4, ignite: 4 }, { k: 'buff', eff: [['fire_resistance', 30, 0]] }] }),
-  k('clone', 'Clonagem', 'Multiplicity', 'A', 'pendente', {
+  k('clone', 'Clonagem', 'Multiplicity', 'A', 'anime', { unverified: true,
     req: [P('flame_body'), P('gluttony')], lp: P('flame_body'), ...d, mp: 60, cd: 90, desc: 'Cria 2 cópias suas que lutam por 30 s.',
     fx: { k: 'summon', entity: 'tensura:doppelganger', count: 2, dur: 30 } }),
   k('shadow_motion', 'Movimento das Sombras', 'Shadow Motion', 'C', 'anime', {
-    req: [P('shapeshift')], ...d, mp: 12, cd: 5, desc: 'Mergulha nas sombras e reaparece até 14 blocos à frente.', fx: { k: 'blink', range: 14 } }),
+    req: [P('shapeshift')], ...d, mp: 12, cd: 5, tags: ['space'], desc: 'Mergulha nas sombras e reaparece até 14 blocos à frente.', fx: { k: 'blink', range: 14 } }),
   k('thought_comm', 'Comunicação Mental', 'Thought Communication', 'E', 'anime', {
     req: [P('shadow_motion')], ...d, mp: 5, cd: 10, desc: 'Contato telepático: mostra onde estão os jogadores e envia um aviso mental.', fx: { k: 'comm' } }),
   k('ultra_smell', 'Superolfato', 'Super Sense of Smell', 'E', 'anime', {

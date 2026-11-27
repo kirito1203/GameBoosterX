@@ -2,7 +2,7 @@
 // Puro: testável em Node.
 import { SKILLS, RACES, TREES } from '../data/registry.js';
 import { CONFIG } from '../config.js';
-import { fxList } from './progression.js';
+import { fxList, fxOf } from './progression.js';
 import { sageBonuses } from './sage.js';
 
 export const ELEMENTAL_ELEMENTS = new Set(['fire', 'water', 'ice', 'earth', 'wind', 'lightning', 'explosion']);
@@ -92,7 +92,7 @@ export function computeStats(d) {
   for (const id of d.unlocked) {
     const sk = SKILLS[id];
     if (!sk || (sk.type !== 'passive' && sk.type !== 'race_root')) continue;
-    for (const f of fxList(sk.fx)) applyPassive(s, f, addEff);
+    for (const f of fxList(fxOf(sk, d.unlocked))) applyPassive(s, f, addEff);
   }
   if (d.mimic) for (const [id, amp] of mimicTraits(d.mimic).eff) addEff(id, amp + (id === "health_boost" || id === "slowness" ? 0 : s.mimicAmp));
   // Capacidades do Grande Sábio com efeito em atributos (ver core/sage.js).
@@ -129,6 +129,7 @@ function applyPassive(s, f, addEff) {
     case 'p_cd': s.cdMultSkills *= f.mult; break;
     case 'p_slots': s.extraSlots += f.n; break;
     case 'p_absorb': s.absorbMult *= f.mult; break;
+    case 'p_op': break; // libera uma operação na tela de Ciel (ui/cielUI.js)
     case 'p_mimic': s.mimicAmp += f.amp ?? 0; if (f.noDrain) s.mimicNoDrain = true; break;
     case 'p_lifesteal': s.lifesteal += f.pct; break;
     case 'p_onhit': s.onHit.push(f); break;

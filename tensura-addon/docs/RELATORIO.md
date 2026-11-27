@@ -447,3 +447,83 @@ Supremas e finais exigem cadeias longas, missões, domínio, Magicules e evoluç
 - notificações de descoberta;
 - conclusão de missões em partida real;
 - desempenho com o pacote maior (6,9 MB, por causa das peças de linha do mapa maior).
+
+## Versão 0.7.0 — Árvore de Habilidades Supremas do Slime + Ciel (MANAS)
+
+Decisões aprovadas ("pode começar" com as propostas do diagnóstico):
+- Origens no padrão ANIME / MANGA / LIGHT_NOVEL / MOD_EXPANSION, com o campo **verificada** separado
+  (aviso "não verificada" na tela).
+- Nenhuma "primeira aparição" foi preenchida: nada pôde ser confirmado, porque a wiki está bloqueada na rede
+  desta sessão.
+- "Grande Sábio" foi mantido na interface.
+
+**Supremas** (tier "Habilidade Suprema", ranks SS / EX / EX+; EX e EX+ são classificações do mod):
+
+| Suprema | Requisitos principais | Sub-habilidades |
+|---|---|---|
+| **Raphael** — Lorde da Sabedoria | Grande Sábio + Decompositor + Toda a Criação + Demon Slime + missão Festival da Colheita | Thought Acceleration, Analytical Appraisal, Parallel Processing, Chant Annulment, All of Creation, Alteration (nova), Synthesis, Separation |
+| **Beelzebuth** — Lorde da Gula | Glutonaria + Demon Slime + domínio 5 de Predação + 900 Magicules + missão "O Lorde da Gula" (nova) | Predation, Imaginary Space (movida de Azathoth), Mimicry, Corrosion, Soul Consumption, Food Chain |
+| **Uriel** — Lorde dos Votos | Prisão Infinita + Beelzebuth + domínio 3 em habilidade **defensiva** e em **espacial** + missão "O Voto de Proteção" (nova) | Infinity Prison, Law Manipulation, Spatial Domination, Universal Barrier (nova), Absolute Defense |
+| **Veldora** — Lorde da Tempestade | Vínculo com Veldora + Raphael + missão com **análise da essência** do Ender Dragon | Storm Dragon Release, Storm Dragon Restoration (nova), manifestação do Dragão da Tempestade, Corredor de Almas |
+| **Velgrynd** — Lorde da Chama (nova, separada de Veldora) | Raphael + Anulação de Fogo + missão "A Chama Abrasadora" (análise de Blaze e Ghast + Wither) | Scorch Dragon Release, Scorch Dragon Restoration, Calor Abrasador, manifestação do Dragão Abrasador |
+| **Azathoth** — Deus do Vazio (EX+) | Raphael, Beelzebuth, Ciel, Veldora, Velgrynd + missão "Síntese de Azathoth" | Soul Gluttony (nova), Nihility Collapse, Imaginary Space, Multiple Parallel Existence, True Dragon Release, True Dragon Nucleation, Space-Time Domination, Multi-Dimensional Barrier |
+| **Shub-Niggurath** — Lorde da Colheita (EX+) | Cadeia Alimentar + Análise e Avaliação + 4 Supremas + missão | Skill Creation, Skill Duplication, Skill Gifting, Skill Storage |
+
+Observações:
+- **Uriel:** a relação com Raguel e Shub-Niggurath ficou registrada como "a verificar". Não existe evolução direta
+  Uriel → Shub-Niggurath.
+- **Azathoth:** a síntese só pode ser executada **por Ciel**. Não sai comprando pontos.
+- **Sub-habilidades compartilhadas:** um único nó, sem ID duplicada. Ao ganhar a Suprema, o efeito real
+  **evolui** (ex.: Parallel Processing passa de -10% para -20% de recarga; Predation ganha alcance 12).
+- **Absorção:** agora recusa aliados (invocações, animais domados, jogadores). Os limites anteriores continuam
+  (sem chefes, alvo enfraquecido, teto de Magicules).
+
+**Ciel (categoria MANAS, não é Suprema):** página "Ciel — Manas" no painel do Grande Sábio, no lugar do bloco
+Habilidades quando você tem Ciel. Operações reais, programadas (não é IA):
+- requisitos mais próximos e recomendações;
+- sínteses: combinações reais da árvore e a Síntese de Azathoth;
+- Biblioteca;
+- compatibilidade;
+- operações de Shub-Niggurath;
+- abrir a Árvore Suprema.
+
+**Shub-Niggurath:**
+- **Biblioteca:** suas habilidades + as registradas por análise de habilidade ou de jogadores.
+- **Criar:** só habilidades universais até Épica, compatíveis e com nível suficiente; 1,5x os pontos + 300
+  Magicules, uma vez por dia.
+- **Duplicar:** só universais; até 3 cópias; 200 Magicules, uma vez por dia.
+- **Conceder:** a jogador a até 8 blocos, que precisa aceitar; raça compatível, nível suficiente, sem repetir.
+- **Armazenar:** +3 espaços e 3 conjuntos de barra.
+
+**Árvore Suprema (tela própria):**
+- Mapa só com as 7 Supremas + Ciel, em colunas, com as sub-habilidades abaixo de cada uma (nós vinculados
+  quando a sub-habilidade é compartilhada).
+- Botões de salto por Suprema e barra de progresso no topo.
+- Detalhes: nomes, tier, rank, origem (verificada ou não), aquisição, requisitos, sub-habilidades, evolução,
+  efeito atual e limitações.
+- Acesso: botão da árvore racial → "Árvore Suprema", ou a página de Ciel.
+
+**Dragões:** 2 entidades novas (Tempestade e Abrasador), com modelo voxel leve próprio e asas animadas.
+- Usam as regras seguras das invocações: dono, só atacam monstros, somem por timer.
+- Duração de 60 s.
+
+**Estado:**
+- **IMPLEMENTADO:** tudo acima.
+- **TESTADO** (79 testes automáticos, 10 novos em `test/supreme.test.mjs`, checagem de tipos sem erros e simulador
+  de tela):
+  - dados e sub-habilidades;
+  - requisitos de Uriel e de Azathoth;
+  - evolução de efeitos;
+  - Ciel e Shub (regras);
+  - mapa supremo;
+  - salvamento;
+  - arquivos dos dragões.
+- **PENDENTE (não testado no jogo):**
+  - abertura e navegação no celular;
+  - operações de Ciel numa partida (formulários);
+  - concessão entre dois jogadores;
+  - comportamento real dos dragões;
+  - desempenho com o pacote maior (8,2 MB, por causa das peças de linha dos dois mapas).
+- **PENDENTE (dados):** primeira aparição e confirmação das origens marcadas como não verificadas.
+- **NÃO SUPORTADO:** arrastar para os lados (Bedrock só rola na vertical); criar habilidades novas fora do
+  catálogo; IA real.

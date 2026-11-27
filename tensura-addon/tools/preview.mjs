@@ -249,7 +249,7 @@ import { buildMenuForm } from '../BP/scripts/core/menuView.js';
 import { buildRaceForm } from '../BP/scripts/core/raceView.js';
 import { buildSageForm } from '../BP/scripts/core/sageView.js';
 import { freshSage, addXp } from '../BP/scripts/core/sage.js';
-import { getMap } from '../BP/scripts/core/map.js';
+import { getMap, getSupremeMap } from '../BP/scripts/core/map.js';
 import { computeStats } from '../BP/scripts/core/stats.js';
 import { viewAt } from '../BP/scripts/core/view.js';
 
@@ -286,6 +286,15 @@ export function scenario(name) {
       const i = (pos[1] - view.y) * 13 + (pos[0] - view.x);
       return { kind: 'tree', p: { state: st, view, mp }, toggles: [`tg_${i}`], cell: i };
     }
+    case 'tree-supreme': {
+      const sm = getSupremeMap('slime');
+      const st = { ...state, race: 'demon_slime', unlocked: new Set([...state.unlocked, 'r.slime.raphael', 'r.slime.thought_accel', 'r.slime.parallel', 'r.slime.beelzebuth']), discovered: new Set(), missions: new Set(), mastery: {}, maxMp: 900, absorbed: new Set() };
+      const view = viewAt(sm.pos['r.slime.beelzebuth']);
+      view.x -= 2;
+      const pos = sm.pos['r.slime.beelzebuth'];
+      const i = (pos[1] - view.y) * 13 + (pos[0] - view.x);
+      return { kind: 'tree', p: { state: st, view, mp, supreme: true }, toggles: [`tg_${i}`], cell: i };
+    }
     case 'tree-overview': return { kind: 'tree', p: { state, view: { x: -19, y: -16 }, mp, zoom: 3 } };
     case 'tree-elemental': return { kind: 'tree', p: { state, view: viewAt(map.roots.elemental), mp } };
     case 'tree-unique-sel': {
@@ -308,6 +317,10 @@ export function scenario(name) {
     case 'sage-home': return { kind: 'sage', p: { cat: 'home', d, sage: d.sage } };
     case 'sage-magic': return { kind: 'sage', p: { cat: 'magic', d, sage: d.sage } };
     case 'sage-missions': return { kind: 'sage', p: { cat: 'missions', d: { ...d, missions: new Set(['m.slime.first_meals']), discovered: new Set(['r.slime.sticky_thread']), absorbTotal: 12, absorbLog: {} }, sage: d.sage } };
+    case 'sage-manas': {
+      const dd = { ...d, unlocked: new Set([...d.unlocked, 'r.slime.ciel', 'r.slime.shub']), library: new Set(['elem.fireball']), skillCopies: [], loadouts: [], cielOps: new Set(), opDays: {}, missions: new Set(), absorbLog: {}, absorbTotal: 0, discovered: new Set(), mastery: {} };
+      return { kind: 'sage', p: { cat: 'manas', d: dd, sage: d.sage } };
+    }
     case 'sage-ask': return { kind: 'sage', p: { cat: 'ask', d, sage: d.sage } };
     case 'sage-level': return { kind: 'sage', p: { cat: 'level', d, sage: d.sage } };
     case 'sage-intel': return { kind: 'sage', p: { cat: 'intel', d, sage: d.sage } };

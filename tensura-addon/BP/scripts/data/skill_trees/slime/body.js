@@ -38,7 +38,7 @@ export default [
     req: [P('human_form'), P('shapeshift')], lp: P('human_form'), needStage: 1,
     desc: 'Domínio total da forma: as formas da Imitação ficam um nível mais fortes e não consomem Magicules.',
     fx: { k: 'p_mimic', amp: 1, noDrain: true } }),
-  k('universal_thread', 'Fios Universais', 'Universal Thread', 'B', 'pendente', {
+  k('universal_thread', 'Fios Universais', 'Universal Thread', 'B', 'ln', { unverified: true,
     req: [P('sticky_thread'), P('steel_thread')], lp: P('universal_shapeshift'), mp: 30, cd: 12,
     desc: 'Combinação dos fios absorvidos: prende o alvo a até 24 blocos por 8 s e o corta continuamente.',
     fx: { k: 'bind', el: 'physical', range: 24, dur: 8, dps: 2, eff: [['slowness', 8, 3]] } }),

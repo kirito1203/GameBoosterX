@@ -13,7 +13,7 @@ import { addField } from './fields.js';
 import { placeTemp } from './tempBlocks.js';
 import { summon } from './summons.js';
 import { getData, markDirty, refreshStats, saveNow } from './storage.js';
-import { fxList } from '../core/progression.js';
+import { fxList, fxOf } from '../core/progression.js';
 import { mimicTraits } from '../core/stats.js';
 import { effectName } from '../core/describe.js';
 import { recordAnalysis } from './sage.js';
@@ -29,7 +29,7 @@ const UNBREAKABLE = /(bedrock|barrier|command_block|structure_block|jigsaw|end_p
  */
 export function runFx(player, skill) {
   let ok = true;
-  for (const f of fxList(skill.fx)) {
+  for (const f of fxList(fxOf(skill, getData(player).unlocked))) {
     const fn = HANDLERS[f.k];
     if (!fn) continue;
     const r = fn(player, f, skill);
@@ -430,6 +430,8 @@ const HANDLERS = {
   absorb(player, f) {
     const t = lookTarget(player, f.range);
     if (!t || t.typeId === 'minecraft:player' || isBoss(t)) return noTarget(player);
+    // Compatibilidade: não absorve aliados (invocações, animais domados, outros jogadores).
+    if (isAlly(player, t)) { msg(player, '§7Alvo incompatível: aliados não podem ser absorvidos.'); return false; }
     const h = t.getComponent('minecraft:health');
     if (!h || h.currentValue > h.effectiveMax * f.hpPct) {
       msg(player, `§7O alvo precisa estar com até ${Math.round(f.hpPct * 100)}% da vida para ser absorvido.`);
@@ -573,7 +575,25 @@ const HANDLERS = {
     world.sendMessage(`§5${player.name} inverteu o dia e a noite.`);
   },
 
-  create(player) {
+  convert(player, f) {
+    const d = getData(player);
+    const amount = Math.floor(d.aura * f.pct);
+    if (amount <= 0) { msg(player, '§7Aura insuficiente para converter.'); return false; }
+    d.aura -= amount;
+    d.mp = Math.min(d.stats.maxMp, d.mp + amount);
+    markDirty(player);
+    msg(player, `§bAlteração: ${amount} de Aura convertidos em Magicules.`);
+    sound(player.dimension, 'beacon.power', player.location);
+  },
+
+  mana(player, f) {
+    const d = getData(player);
+    d.mp = Math.min(d.stats.maxMp, d.mp + d.stats.maxMp * f.pct);
+    markDirty(player);
+  },
+
+  create(player, f) {
+    for (let i = 1; i < (f?.count ?? 1); i++) HANDLERS.create(player, {});
     const inv = player.getComponent('minecraft:inventory')?.container;
     if (!inv) return false;
     const roll = Math.random();

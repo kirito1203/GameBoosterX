@@ -2,7 +2,8 @@
 // Puro (testável em Node); o desenho é do resource pack (RP/ui/tensura_tree.json → sage_root).
 import { SKILLS, TREES } from '../data/registry.js';
 import { mpCost } from './stats.js';
-import { missionProgress, missionsFor } from './missions.js';
+import { missionProgress, missionsFor, libraryOf } from './missions.js';
+import { hasCiel, opAllowed, azathothSynthesis, LIMITS } from './manas.js';
 import { RACES, ABSORPTION } from '../data/registry.js';
 import { evaluate } from './progression.js';
 import { describeFx } from './describe.js';
@@ -15,12 +16,12 @@ import { SAGE, SAGE_CATS, SAGE_TILES, SAGE_COUNT, SAGE_ACTIONS, sageMark, TEX, i
 
 export const CAT_LABEL = {
   ask: 'Conversar', analyses: 'Analisar', level: 'Status', skills: 'Habilidades', magic: 'Magias',
-  intel: 'Capacidades', next: 'Evolução', history: 'Memória', manifest: 'Manifestar', missions: 'Missões', settings: 'Configurações',
+  intel: 'Capacidades', next: 'Evolução', history: 'Memória', manifest: 'Manifestar', missions: 'Missões', manas: 'Ciel (Manas)', settings: 'Configurações',
 };
 const CAT_TITLE = {
   home: 'Menu do Grande Sábio', ask: 'Perguntar ao Grande Sábio', analyses: 'Análises', level: 'Nível e evolução',
   skills: 'Habilidades do Grande Sábio', magic: 'Magias', intel: 'Inteligência e capacidades', next: 'Próximas evoluções',
-  history: 'Histórico e memória', settings: 'Configurações', missions: 'Missões especiais',
+  history: 'Histórico e memória', settings: 'Configurações', missions: 'Missões especiais', manas: 'Ciel — Manas',
 };
 const GREETING = {
   sage: ['Olá, viajante...', 'Eu sou o §bGrande Sábio§r.', '', 'Estou aqui para guiá-lo em sua jornada neste novo mundo.'],
@@ -99,7 +100,8 @@ export function buildSageForm({ cat, d, sage, page = 0, note = '' }) {
   set(SAGE.close, '', `${TEX.menu}close`); hit[SAGE.close] = { type: 'close' };
   if (cat === 'home') {
     set(SAGE.back, '§fVoltar ao menu', `${TEX.menu}back`); hit[SAGE.back] = { type: 'back' };
-    SAGE_TILES.forEach((c, i) => {
+    const tiles = SAGE_TILES.map((c) => (c === 'skills' && hasCiel(d) ? 'manas' : c));
+    tiles.forEach((c, i) => {
       set(SAGE.tile0 + i, `§l${CAT_LABEL[c]}`, `${TEX.sage}cat_${c}_on`);
       hit[SAGE.tile0 + i] = c === 'manifest' ? { type: 'manifest' } : { type: 'cat', cat: c };
     });
@@ -126,6 +128,26 @@ export function buildSageForm({ cat, d, sage, page = 0, note = '' }) {
     const caps = CAPABILITIES.filter((c) => hasCapability(sage, c.id)).length;
     lines.push('', `§7${caps} capacidades ativas · ${Object.keys(sage.analyses).length} espécies analisadas · ${sage.qa.length} conversas.§r`);
     if (ev?.ready) lines.push(`§6§lUma evolução está disponível: ${stageName(ev.next)}.§r Toque em Status.`);
+  } else if (cat === 'manas') {
+    if (!hasCiel(d)) {
+      lines.push('§7Ciel ainda não despertou. Desbloqueie o nó "Ciel" (categoria MANAS) na árvore do Slime.§r');
+    } else {
+      lines.push('§d§lCiel — sistema MANAS§r', '§7Operações programadas com os dados do addon (não é IA). Ciel administra Raphael, Beelzebuth, Azathoth e Shub-Niggurath.§r', '');
+      const az = azathothSynthesis(d);
+      lines.push(`§lSíntese de Azathoth:§r ${az.done ? '§aconcluída' : az.ready ? '§epronta para executar' : '§cainda não'}§r`);
+      if (!az.done && !az.ready) lines.push(...az.missing.slice(0, 6).map((m) => `  §c✘ ${m}§r`));
+      lines.push('', `§lBiblioteca:§r ${opAllowed(d, 'library') ? `${libraryOf(d).size} habilidades registradas` : '§8requer Shub-Niggurath§r'}`);
+      lines.push(`§lCópias guardadas:§r ${d.skillCopies.length}/${LIMITS.copies}${d.skillCopies.length ? ` — ${d.skillCopies.map((id) => SKILLS[id].name).join(', ')}` : ''}`);
+      lines.push(`§lConjuntos de barra:§r ${d.loadouts.length}/${LIMITS.loadouts}`);
+    }
+    if (hasCiel(d)) {
+      actions.push(['Requisitos e recomendações', `${TEX.sage}cat_intel_on`, { type: 'ciel', op: 'requirements' }]);
+      actions.push(['§dSínteses', `${TEX.sage}cat_magic_on`, { type: 'ciel', op: 'synthesis' }]);
+      actions.push(['Biblioteca', `${TEX.sage}cat_history_on`, { type: 'ciel', op: 'library' }]);
+      actions.push(['Shub: operações', `${TEX.sage}cat_skills_on`, { type: 'ciel', op: 'shub' }]);
+      actions.push(['Compatibilidade', `${TEX.sage}cat_analyses_on`, { type: 'ciel', op: 'compat' }]);
+    }
+    if (RACES[d.race]?.lineage === 'slime') actions.splice(Math.min(actions.length, 5), 0, ['§6Árvore Suprema', `${TEX.sage}cat_level_on`, { type: 'supreme_tree' }]);
   } else if (cat === 'missions') {
     const lin = RACES[d.race]?.lineage;
     const list = missionsFor(lin);

@@ -33,7 +33,7 @@ function slime(extra = {}) {
 const stateOf = (d) => ({ race: d.race, level: d.level, points: d.points, unlocked: d.unlocked, flags: d.flags,
   maxMp: d.stats?.maxMp ?? 0, absorbed: new Set(d.absorbed), discovered: d.discovered, missions: d.missions, mastery: d.mastery });
 
-test('catálogo: 9 setores, ranks F..EX, origens separadas, IDs únicas e todas as habilidades pedidas', () => {
+test('catálogo: 9 setores, ranks F..EX+, origens separadas, IDs únicas e todas as habilidades pedidas', () => {
   assert.ok(ids.length >= 110, `nós: ${ids.length}`);
   const sectors = new Set(TREE.skills.filter((s) => s.sector).map((s) => s.sector));
   assert.deepEqual([...sectors].sort(), [...SECTORS.slime.order].sort());
@@ -44,19 +44,19 @@ test('catálogo: 9 setores, ranks F..EX, origens separadas, IDs únicas e todas 
     assert.ok(s.sector, `${s.id} setor`);
   }
   assert.equal(new Set(ids).size, ids.length);
-  const names = new Set(TREE.skills.map((s) => s.name.split(' (')[0]));
+  const names = new Set(TREE.skills.map((s) => s.name.split(' (')[0].split(' — ')[0]));
   for (const n of ['Dissolver', 'Absorver', 'Regeneração Acelerada', 'Regeneração Infinita', 'Transformação Universal', 'Fios Universais',
     'Percepção Universal', 'Anulação da Dor', 'Resistência Elétrica', 'Resistência à Paralisia', 'Resistência Térmica', 'Anulação de Ataques de Fogo',
     'Anulação de Ataques Físicos', 'Anulação de Efeitos Naturais', 'Anulação de Condições Anormais', 'Anulação de Ataques Mentais',
     'Resistência a Ataques Espirituais', 'Resistência a Ataques Sagrados e Demoníacos', 'Predador', 'Predação', 'Estômago', 'Análise', 'Isolamento',
-    'Imitação', 'Glutonaria', 'Beelzebuth', 'Corrosão', 'Receber', 'Fornecer', 'Devorador', 'Consumo de Almas', 'Grande Sábio',
+    'Imitação', 'Glutonaria', 'Beelzebuth', 'Corrosão', 'Receber', 'Fornecer', 'Cadeia Alimentar', 'Consumo de Almas', 'Grande Sábio',
     'Aceleração do Pensamento', 'Análise e Avaliação', 'Processamento Paralelo', 'Anulação de Encantamento', 'Toda a Criação', 'Decompositor',
     'Síntese', 'Separação', 'Raphael', 'Ciel', 'Fios Pegajosos', 'Fios de Aço', 'Armadura Corporal', 'Sopro Venenoso', 'Ondas Ultrassônicas',
     'Manipulação das Chamas', 'Corpo de Chamas', 'Clonagem', 'Relâmpago Negro', 'Movimento das Sombras', 'Comunicação Mental', 'Superolfato',
     'Intimidação', 'Manipulação da Água', 'Lâmina de Água', 'Chama Negra', 'Trovão Negro', 'Manipulação Molecular', 'Megiddo', 'Controle Óptico',
     'Controle de Barreiras', 'Barreira Múltipla', 'Movimento Espacial', 'Síntese de Poções', 'Síntese de Poções Completas',
-    'Transferência Espiritual', 'Controle de Magia', 'Controle de Aura', 'Alteração Elemental', 'Uriel', 'Prisão Ilimitada', 'Dominação Espacial',
-    'Defesa Absoluta', 'Manipulação de Leis', 'Veldora', 'Corredor de Almas', 'Invocação do Dragão da Tempestade', 'Liberação do Dragão Verdadeiro',
+    'Transferência Espiritual', 'Controle de Magia', 'Controle de Aura', 'Alteração Elemental', 'Uriel', 'Prisão Infinita', 'Dominação Espacial',
+    'Defesa Absoluta', 'Manipulação de Leis', 'Veldora', 'Corredor de Almas', 'Manifestação do Dragão da Tempestade', 'Liberação do Dragão da Tempestade',
     'Azathoth', 'Colapso da Nihilidade', 'Espaço Imaginário', 'Existência Paralela Múltipla', 'Domínio Espaçotemporal', 'Barreira Multidimensional',
     'Liberação de Dragões Verdadeiros', 'Nucleação de Dragões Verdadeiros', 'Shub-Niggurath', 'Criação de Habilidades', 'Duplicação de Habilidades',
     'Concessão de Habilidades', 'Armazenamento de Habilidades', 'Forma Ultimate Slime', 'Predador Absoluto', 'Análise Dimensional',
@@ -64,10 +64,11 @@ test('catálogo: 9 setores, ranks F..EX, origens separadas, IDs únicas e todas 
     'Barreira de Nihilidade']) assert.ok(names.has(n), `ausente: ${n}`);
   // Expansões só no setor do mod e só com origem 'mod'.
   for (const s of TREE.skills.filter((x) => x.sector === 'mod')) assert.equal(s.src, 'mod', s.id);
-  // Habilidades sem certeza de origem ficam como pendentes (não afirmamos anime).
-  assert.equal(SKILLS[P('shub')].src, 'pendente');
-  assert.equal(SKILLS[P('ultimate_slime')].src, 'pendente');
+  // Habilidades sem certeza ficam marcadas como NÃO verificadas (aviso na tela), sem afirmar anime.
+  assert.equal(SKILLS[P('shub')].verified, false);
+  assert.equal(SKILLS[P('ultimate_slime')].verified, false);
   assert.equal(SKILLS[P('azathoth')].src, 'ln');
+  assert.ok(!TREE.skills.some((s) => s.src === 'pendente'));
 });
 
 test('exclusividade: outra raça não aprende a árvore do Slime; Slime não aprende as universais duplicadas', () => {
@@ -156,7 +157,7 @@ test('missões: progresso com dados reais e conclusão única', () => {
   assert.equal(missionProgress(m, d).done, false);
   d.kills['minecraft:piglin_brute'] = 1;
   assert.equal(missionProgress(m, d).done, true);
-  assert.equal(missionsFor('slime').length, 8);
+  assert.equal(missionsFor('slime').length, 11);
   assert.equal(missionsFor('human').length, 0);
   const ab = MISSIONS['m.slime.abundance'];
   assert.match(missionProgress(ab, d).parts[0].label, /Habilidades desbloqueadas/);

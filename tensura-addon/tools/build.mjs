@@ -51,6 +51,8 @@ function writeTexts() {
     'entity.tensura:daemon.name': ['Demônio Invocado', 'Summoned Daemon'],
     'entity.tensura:medium_elemental.name': ['Elemental Médio', 'Medium Elemental'],
     'entity.tensura:greater_elemental.name': ['Elemental Superior', 'Greater Elemental'],
+    'entity.tensura:storm_dragon.name': ['Dragão da Tempestade', 'Storm Dragon'],
+    'entity.tensura:scorch_dragon.name': ['Dragão Abrasador', 'Scorch Dragon'],
     'entity.tensura:spirit.name': ['Espírito Invocado', 'Summoned Spirit'],
     'entity.tensura:familiar.name': ['Familiar', 'Familiar'],
     'entity.tensura:undead_warrior.name': ['Guerreiro Morto-vivo', 'Undead Warrior'],
@@ -109,11 +111,13 @@ function walk(dir, base = dir, out = []) {
 }
 
 async function lineCodes() {
-  const { getMap } = await import('../BP/scripts/core/map.js?' + Date.now());
+  const { getMap, getSupremeMap } = await import('../BP/scripts/core/map.js?' + Date.now());
   const { LINEAGES } = await import('../BP/scripts/data/registry.js');
   const set = new Set();
-  for (const lin in LINEAGES) {
-    for (const st of getMap(lin).stubs.values()) {
+  const maps = [];
+  for (const lin in LINEAGES) { maps.push(getMap(lin)); const s = getSupremeMap(lin); if (s) maps.push(s); }
+  for (const m of maps) {
+    for (const st of m.stubs.values()) {
       const dirs = [];
       for (let d = 0; d < 8; d++) if (st[d].length) dirs.push(d);
       for (const c of lineCodesForCell(dirs)) set.add(c);
@@ -141,6 +145,7 @@ async function main() {
     writeFileSync(cardsPath, JSON.stringify(RACE_CARDS.map(([id, , , portrait]) => ({ id, portrait }))));
     execFileSync('python3', [join(ROOT, 'tools', 'gen_race_textures.py'), cardsPath, RP], { stdio: 'inherit' });
     execFileSync('python3', [join(ROOT, 'tools', 'gen_sage_model.py'), RP], { stdio: 'inherit' });
+    execFileSync('python3', [join(ROOT, 'tools', 'gen_dragons.py'), RP, join(BP, 'entities')], { stdio: 'inherit' });
   }
   // Verifica se todas as texturas exigidas existem.
   const missing = [];

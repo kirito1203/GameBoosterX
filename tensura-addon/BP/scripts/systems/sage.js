@@ -3,7 +3,7 @@
 // mesmos para o menu principal, o item Núcleo do Grande Sábio e a entidade espiritual.
 import { world, system } from '@minecraft/server';
 import { CONFIG } from '../config.js';
-import { SKILLS, RACES } from '../data/registry.js';
+import { SKILLS, RACES, TREES } from '../data/registry.js';
 import {
   STAGES, addXp, takeDaily, newlyUnlocked, evolutionRequirements, evolve, hasCapability, bestHealSkill, threatLevel,
 } from '../core/sage.js';
@@ -112,6 +112,7 @@ export function readEntity(e) {
   if (e.typeId === 'minecraft:player') {
     const td = getData(/** @type {any} */ (e));
     if (td.race) { a.race = RACES[td.race].name; a.level = td.level; }
+    a.skills = [...td.unlocked].filter((id) => TREES[SKILLS[id]?.tree]?.kind === 'universal');
   } else {
     try { a.ep = mobEp(e); } catch { /* */ }
   }
@@ -138,6 +139,8 @@ export function recordAnalysis(player, e) {
   const old = s.analyses[key];
   const now = system.currentTick;
   const rec = { ...a, count: (old?.count ?? 0) + 1, first: old?.first ?? day(), last: now, kills: d.kills[key] ?? 0 };
+  // Analisar um jogador registra as habilidades universais dele na sua Biblioteca.
+  if (a.skills) { for (const id of a.skills) d.library.add(id); delete (/** @type {any} */ (rec)).skills; }
   // Guarda só o que cabe: efeitos não são persistidos (mudam a cada momento).
   s.analyses[key] = { ...rec, effects: undefined };
   const keys = Object.keys(s.analyses);

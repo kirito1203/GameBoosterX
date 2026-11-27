@@ -1,5 +1,6 @@
 // MISSÕES ESPECIAIS (Slime). Condições verificadas com dados reais do jogador.
-// Tipos de condição: absorbTotal, absorbType, absorbSpecies, kill, killTotal, level, flags, sage, treeCount.
+// Tipos de condição: absorbTotal, absorbType, absorbSpecies, kill, killTotal, level, flags, sage, treeCount,
+// analyzed (espécies analisadas = "análise da essência"), library (habilidades na Biblioteca), cielOp (operação feita por Ciel).
 // Recompensa: pontos concedidos UMA vez (d.missions guarda as concluídas).
 export const MISSIONS = [
   { id: 'm.slime.first_meals', name: 'Primeiras Refeições', lineage: 'slime', src: 'mod',
@@ -10,12 +11,23 @@ export const MISSIONS = [
     desc: 'Derrote um Piglin Bruto (o "Desastre Orc" do addon) e chegue ao nível 20.', cond: [{ kill: 'minecraft:piglin_brute', n: 1 }, { level: 20 }], reward: 40 },
   { id: 'm.slime.harvest', name: 'Festival da Colheita', lineage: 'slime', src: 'mod',
     desc: 'Derrote 300 criaturas no total e alcance o nível 30 (o despertar como Lorde Demônio).', cond: [{ killTotal: 300 }, { level: 30 }], reward: 60 },
+  { id: 'm.slime.gluttony_lord', name: 'O Lorde da Gula', lineage: 'slime', src: 'mod',
+    desc: 'Absorva 150 criaturas no total e 25 espécies diferentes.', cond: [{ absorbTotal: 150 }, { absorbSpecies: 25 }], reward: 60 },
   { id: 'm.slime.veldora', name: 'Despertar da Tempestade', lineage: 'slime', src: 'mod',
-    desc: 'Derrote o Ender Dragon para libertar o poder de Veldora.', cond: [{ flags: ['killed_ender_dragon'] }], reward: 60 },
+    desc: 'Analise a essência do Ender Dragon (Análise/painel) e derrote-o para libertar o poder de Veldora.',
+    cond: [{ analyzed: ['minecraft:ender_dragon'] }, { flags: ['killed_ender_dragon'] }], reward: 60 },
+  { id: 'm.slime.velgrynd', name: 'A Chama Abrasadora', lineage: 'slime', src: 'mod',
+    desc: 'Analise a essência do fogo (Blaze e Ghast) e derrote o Wither no domínio das chamas.',
+    cond: [{ analyzed: ['minecraft:blaze', 'minecraft:ghast'] }, { flags: ['killed_wither'] }], reward: 60 },
+  { id: 'm.slime.uriel_vow', name: 'O Voto de Proteção', lineage: 'slime', src: 'mod',
+    desc: 'Derrote um Guardião Ancião e analise 30 espécies (defesa e espaço dominados).',
+    cond: [{ kill: 'minecraft:elder_guardian', n: 1 }, { analyzedCount: 30 }], reward: 60 },
   { id: 'm.slime.ciel', name: 'Manas', lineage: 'slime', src: 'mod',
     desc: 'Leve o Grande Sábio ao estágio Raphael, nível 60 (painel do Grande Sábio).', cond: [{ sage: { stage: 'raphael', level: 60 } }], reward: 80 },
-  { id: 'm.slime.void', name: 'O Deus do Vazio', lineage: 'slime', src: 'mod',
-    desc: 'Derrote o Wither e o Warden e absorva 40 espécies diferentes.', cond: [{ flags: ['killed_wither', 'killed_warden'] }, { absorbSpecies: 40 }], reward: 100 },
+  { id: 'm.slime.void', name: 'Síntese de Azathoth', lineage: 'slime', src: 'mod',
+    desc: 'Derrote o Wither e o Warden, absorva 40 espécies e peça a Ciel a síntese de Azathoth (tela Ciel — Manas).',
+    cond: [{ flags: ['killed_wither', 'killed_warden'] }, { absorbSpecies: 40 }, { cielOp: 'azathoth' }], reward: 100 },
   { id: 'm.slime.abundance', name: 'Senhor da Abundância', lineage: 'slime', src: 'mod',
-    desc: 'Desbloqueie 80 habilidades na árvore racial do Slime.', cond: [{ treeCount: { tree: 'race.slime', n: 80 } }], reward: 100 },
+    desc: 'Desbloqueie 60 habilidades na árvore do Slime e registre 40 habilidades na Biblioteca (análise).',
+    cond: [{ treeCount: { tree: 'race.slime', n: 60 } }, { library: 40 }], reward: 100 },
 ];

@@ -153,7 +153,7 @@ export const CARD_LOCKED = '§t§c§l';
 export const SAGE_MARK = '§t§n§g';
 export const sageMark = (cat) => `${SAGE_MARK}§${cat}`;
 export const SAGE_TILES = ['ask', 'analyses', 'level', 'skills', 'magic', 'intel', 'next', 'history', 'missions'];
-export const SAGE_CATS = ['ask', 'analyses', 'level', 'skills', 'magic', 'intel', 'next', 'history', 'settings', 'missions'];
+export const SAGE_CATS = ['ask', 'analyses', 'level', 'skills', 'magic', 'intel', 'next', 'history', 'settings', 'missions', 'manas'];
 export const SAGE = {
   close: 0,
   back: 1,

@@ -9,7 +9,7 @@
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { TREES, SKILLS, UNIVERSAL_TREES, LINEAGES } from '../BP/scripts/data/registry.js';
+import { TREES, SKILLS, UNIVERSAL_TREES, LINEAGES, SUPREME_ORDER } from '../BP/scripts/data/registry.js';
 import { computeLayout } from '../BP/scripts/core/layout.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -180,7 +180,45 @@ for (const lin in racial) {
   racialOut[lin] = { pos, edges };
 }
 
-const data = { version: 1, bounds: B, roots, universal: { pos: uniPos, links: uniLink, edges: uniEdges }, racial: racialOut };
+// ── Árvores Supremas (tela própria por linhagem): uma coluna por Suprema, sub-habilidades abaixo
+// alternando os lados. Sub-habilidade compartilhada aparece como nó vinculado ("id@suprema").
+const supremeOut = {};
+for (const lin in SUPREME_ORDER) {
+  const order = SUPREME_ORDER[lin];
+  const pos = {};
+  const links = {};
+  const roots = {};
+  const wanted = [];
+  order.forEach((sid, i) => {
+    const x0 = i * 6;
+    pos[sid] = [x0, 0];
+    roots[sid] = [x0, 0];
+    SKILLS[sid].subs.forEach((sub, j) => {
+      const k = pos[sub] ? `${sub}@${sid}` : sub;
+      const p = [x0 + (j % 2 ? 1 : -1), 3 + j * 2];
+      if (k !== sub) links[k] = sub;
+      pos[k] = p;
+      wanted.push([sid, k]);
+    });
+  });
+  // Requisitos entre Supremas (ex.: Azathoth exige Raphael, Beelzebuth, Ciel, Veldora, Velgrynd).
+  for (const sid of order) for (const r of SKILLS[sid].requires) if (order.includes(r)) wanted.push([r, sid]);
+  const sb = bboxOf(pos);
+  const SB = { minX: sb.minX - 3, maxX: sb.maxX + 3, minY: sb.minY - 4, maxY: sb.maxY + 2 };
+  const nodes = new Set(Object.values(pos).map(([x, y]) => key(x, y)));
+  const u = new Map();
+  const route = makeRouter(nodes, () => false, u, SB);
+  const edges = [];
+  for (const [a, b] of wanted) {
+    const path = route(pos[a], pos[b]);
+    if (!path) throw new Error(`sem rota suprema ${lin}: ${a} → ${b}`);
+    addUsage(u, path);
+    edges.push([a, b, flat(path)]);
+  }
+  supremeOut[lin] = { pos, links, edges, roots, bounds: SB };
+}
+
+const data = { version: 1, bounds: B, roots, universal: { pos: uniPos, links: uniLink, edges: uniEdges }, racial: racialOut, supreme: supremeOut };
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(OUT, `// Gerado por tools/gen-map.mjs — não edite à mão.\nexport const MAP = ${JSON.stringify(data)};\n`);
 console.log(`mapa: ${Object.keys(uniPos).length} nós universais, ${uniEdges.length} linhas, área ${B.maxX - B.minX + 1}x${B.maxY - B.minY + 1}`);

@@ -27,6 +27,11 @@ export function pointCost(skill, state) {
   return Math.max(0, Math.round(skill.cost * mult));
 }
 
+/** Efeito atual da habilidade: a versão evoluída quando o jogador tem o nó que a evolui. */
+export function fxOf(skill, unlocked) {
+  return skill.evolvedBy && skill.evolvedFx && unlocked?.has(skill.evolvedBy) ? skill.evolvedFx : skill.fx;
+}
+
 export function fxList(fx) {
   if (!fx) return [];
   return Array.isArray(fx) ? fx : [fx];
@@ -133,6 +138,18 @@ export function evaluate(skillId, state) {
     if (s.needAbsorb.count && abs.size < s.needAbsorb.count) special.push(`${s.needAbsorb.count} espécies absorvidas (atual: ${abs.size})`);
   }
   if (s.needMission && !state.missions?.has(s.needMission)) special.push(`Missão: ${MISSIONS[s.needMission]?.name ?? s.needMission}`);
+  if (s.needMasteryTag) {
+    for (const [tag, lvl] of Object.entries(s.needMasteryTag)) {
+      let best = 0;
+      for (const id of state.unlocked) if (SKILLS[id]?.tags.includes(tag)) best = Math.max(best, masteryLevel(id, state.mastery?.[id] ?? 0));
+      if (best < lvl) special.push(`Domínio ${lvl} numa habilidade ${tag === 'defense' ? 'defensiva' : tag === 'space' ? 'espacial' : tag} (atual: ${best})`);
+    }
+  }
+  if (s.needUltimate) {
+    let n = 0;
+    for (const id of state.unlocked) if (SKILLS[id]?.tier === 'ultimate') n++;
+    if (n < s.needUltimate) special.push(`${s.needUltimate} Habilidades Supremas (atual: ${n})`);
+  }
   if (s.needMastery) {
     for (const [id, lvl] of Object.entries(s.needMastery)) {
       const cur = masteryLevel(id, state.mastery?.[id] ?? 0);

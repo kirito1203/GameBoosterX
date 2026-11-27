@@ -17,6 +17,11 @@ export { MISSIONS } from './missions.js';
 export const SLIME_SKILLS = [...body, ...resist, ...predator, ...sage, ...absorbed, ...techniques, ...supreme, ...final, ...expansions];
 export const SLIME_LINKS = [];
 
+// Árvore Suprema (tela própria): colunas na ordem abaixo; cada coluna mostra a Suprema e suas sub-habilidades.
+// Ciel fica na última coluna, como categoria MANAS (não é Suprema).
+export const SLIME_SUPREME_ORDER = ['r.slime.raphael', 'r.slime.beelzebuth', 'r.slime.uriel', 'r.slime.veldora', 'r.slime.velgrynd',
+  'r.slime.azathoth', 'r.slime.shub', 'r.slime.ciel'];
+
 // Habilidades universais iguais às do Rimuru: proibidas para o Slime (ele tem as próprias) e
 // convertidas nos dados de quem já as tinha (sem perder progresso e sem efeito em dobro).
 export const SLIME_REPLACES = {

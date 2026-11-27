@@ -85,7 +85,7 @@ export function describeFx(fx) {
       case 'p_effect': parts.push(`Passiva: ${passiveEff(f.eff)}`); break;
       case 'p_mp': { const a = []; if (f.max) a.push(`+${f.max} Magicules máx.`); if (f.regen) a.push(`+${f.regen}/s regeneração`);
         if (f.regenMult) a.push(`regeneração x${f.regenMult}`); parts.push(`Passiva: ${a.join(', ')}`); break; }
-      case 'p_resist': parts.push(`Passiva: resistência ${Object.entries(f.groups).map(([g, v]) => `${GROUP_NAMES[g] ?? g} ${pct(v)}`).join(', ')}`); break;
+      case 'p_resist': parts.push(`Passiva: ${f.null ? 'anulação' : 'resistência'} ${Object.entries(f.groups).map(([g, v]) => `${GROUP_NAMES[g] ?? g} ${pct(v)}`).join(', ')}`); break;
       case 'p_lifesteal': parts.push(`Passiva: roubo de vida ${pct(f.pct)} nos golpes`); break;
       case 'p_onhit': parts.push(`Passiva: ${pct(f.chance)} de chance por golpe`); if (f.knock) parts.push('arremesso'); break;
       case 'p_affinity': parts.push(`Passiva: custo de Magicules x${f.mult} em ${treeName(f.tree)}`); break;
@@ -97,6 +97,14 @@ export function describeFx(fx) {
         : f.cleanse ? `Passiva: imunidade a ${f.cleanse.map(effectName).join(', ')}` : 'Atributos da raça'); break;
       case 'p_xp': parts.push(`Passiva: EP ganho x${f.mult}`); break;
       case 'p_aura': parts.push(`Passiva: +${f.max ?? 0} Aura máxima${f.regen ? `, +${f.regen}/s` : ''}`); break;
+      case 'p_cleanse': parts.push(`Passiva: imunidade a ${f.eff.map(effectName).join(', ')}`); break;
+      case 'p_cd': parts.push(`Passiva: recarga x${f.mult}`); break;
+      case 'p_slots': parts.push(`Passiva: +${f.n} espaços na barra`); break;
+      case 'p_absorb': parts.push(`Passiva: Magicules por absorção x${f.mult}`); break;
+      case 'p_mimic': parts.push(`Passiva: formas da Imitação +${f.amp ?? 0} nível${f.noDrain ? ', sem gasto' : ''}`); break;
+      case 'p_op': parts.push(`Libera a operação "${({ library: 'Biblioteca', create: 'Criar', duplicate: 'Duplicar', grant: 'Conceder', storage: 'Armazenar barra' })[f.op] ?? f.op}" na tela de Ciel`); break;
+      case 'convert': parts.push(`Converte ${pct(f.pct)} da Aura em Magicules`); break;
+      case 'mana': parts.push(`Restaura ${pct(f.pct)} das Magicules`); break;
       default: parts.push(f.k);
     }
     const effs = f.eff && !f.k.startsWith('p_') ? effList(f.eff) : '';

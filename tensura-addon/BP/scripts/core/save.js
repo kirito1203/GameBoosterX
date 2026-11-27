@@ -32,6 +32,11 @@ export function fresh() {
     mastery: {},           // usos por habilidade (níveis de domínio)
     absorbLog: {},         // absorções por espécie
     absorbTotal: 0,        // absorções no total
+    library: new Set(),    // Biblioteca (Shub-Niggurath): habilidades registradas por análise
+    skillCopies: [],       // cópias feitas pela Duplicação (ids)
+    loadouts: [],          // conjuntos de barra guardados (Armazenamento)
+    cielOps: new Set(),    // operações concluídas por Ciel (ex.: 'azathoth')
+    opDays: {},            // último dia do mundo em que cada operação diária foi usada
     ui: { tab: 'racial', views: {}, selected: null },
     // memória de execução (não salva)
     cooldowns: {},
@@ -67,7 +72,8 @@ export function serialize(d) {
     unlocked: [...d.unlocked], flags: [...d.flags], mp: Math.floor(d.mp), aura: Math.floor(d.aura), epTotal: d.epTotal, kills: d.kills, mpBonus: d.mpBonus,
     equipped: d.equipped, slot: d.slot, absorbed: d.absorbed, mimic: d.mimic, flying: d.flying, flightDrain: d.flightDrain,
     warp: d.warp, gifted: d.gifted, introDone: d.introDone,
-    discovered: [...d.discovered], missions: [...d.missions], mastery: d.mastery, absorbLog: d.absorbLog, absorbTotal: d.absorbTotal, ui: { tab: d.ui.tab, views: d.ui.views, view: d.ui.view ?? null },
+    discovered: [...d.discovered], missions: [...d.missions], mastery: d.mastery, absorbLog: d.absorbLog, absorbTotal: d.absorbTotal,
+    library: [...d.library], skillCopies: d.skillCopies, loadouts: d.loadouts, cielOps: [...d.cielOps], opDays: d.opDays, ui: { tab: d.ui.tab, views: d.ui.views, view: d.ui.view ?? null },
   });
 }
 
@@ -104,6 +110,11 @@ export function deserialize(raw) {
       mastery: o.mastery && typeof o.mastery === 'object' ? o.mastery : {},
       absorbLog: o.absorbLog && typeof o.absorbLog === 'object' ? o.absorbLog : {},
       absorbTotal: Number.isFinite(o.absorbTotal) ? o.absorbTotal : 0,
+      library: new Set((o.library ?? []).filter((id) => SKILLS[id])),
+      skillCopies: (o.skillCopies ?? []).filter((id) => SKILLS[id]).slice(0, 3),
+      loadouts: (o.loadouts ?? []).slice(0, 3).map((l) => ({ name: String(l.name ?? ''), ids: (l.ids ?? []).filter((id) => SKILLS[id]) })),
+      cielOps: new Set(o.cielOps ?? []),
+      opDays: o.opDays && typeof o.opDays === 'object' ? o.opDays : {},
     });
     migrateLineage(d);
     d.ui.tab = o.ui?.tab ?? 'racial';

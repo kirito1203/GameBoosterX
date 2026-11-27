@@ -20,7 +20,7 @@ export const ABSORPTION = [
     skills: [P('ultrasonic'), P('vampirism')], method: 'Absorção', needs: {}, evolutions: [], compat: 'Slime', src: 'anime' },
   { id: 'abs.ifrit', work: 'Ifrit (espírito de fogo de Shizu)', mc: ['minecraft:blaze'],
     skills: [P('flame_manip'), P('flame_body'), P('clone')], method: 'Absorção com Predador', needs: { [P('clone')]: [P('gluttony')], '*': [P('predator')] },
-    evolutions: [P('black_flame'), P('fire_null')], compat: 'Slime', src: 'pendente',
+    evolutions: [P('black_flame'), P('fire_null')], compat: 'Slime', src: 'anime', unverified: true,
     note: 'A obtenção de Anulação de Ataques de Fogo por Ifrit é da obra; os nomes das demais precisam de verificação.' },
   { id: 'abs.ranga', work: 'Linhagem de Ranga (Lobos da Tempestade)', mc: ['minecraft:wolf'],
     skills: [P('shadow_motion'), P('thought_comm'), P('ultra_smell'), P('coercion'), P('black_lightning')], method: 'Absorção',

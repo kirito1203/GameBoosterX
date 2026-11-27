@@ -19,13 +19,14 @@ export const ORIGINS = {
  * Na dúvida: 'pendente'.
  */
 export const SOURCES = {
-  anime: 'CANÔNICO — ANIME',
-  manga: 'CANÔNICO — MANGÁ',
-  ln: 'CANÔNICO — LIGHT NOVEL',
-  mod: 'EXPANSÃO — MOD',
-  pendente: 'PENDENTE DE VERIFICAÇÃO',
+  anime: 'ANIME',
+  manga: 'MANGA',
+  ln: 'LIGHT_NOVEL',
+  mod: 'MOD_EXPANSION',
 };
-const SRC_TO_ORIGIN = { anime: 'obra', manga: 'obra', ln: 'obra', mod: 'original', pendente: 'adaptado' };
+const SRC_TO_ORIGIN = { anime: 'obra', manga: 'obra', ln: 'obra', mod: 'original' };
+// Classe da habilidade (como na obra): única, suprema, Manas…
+export const TIERS = { unique: 'Habilidade Única', ultimate: 'Habilidade Suprema', manas: 'MANAS' };
 
 /**
  * Cria a definição de uma habilidade.
@@ -78,6 +79,18 @@ export function S(id, name, original, rarity, o = {}) {
     masteryDesc: o.masteryDesc ?? null, // texto por nível de domínio
     acquire: o.acquire ?? null,       // texto do método de aquisição (gerado se ausente)
     evolvesTo: o.evolvesTo ?? [],     // evoluções possíveis (texto informativo)
+    verified: o.unverified ? false : true, // origem/nomes confirmados? (false = aviso na tela)
+    first: o.first ?? null,           // primeira aparição conhecida (só quando confirmada)
+    limits: o.limits ?? '',           // limitações / diferenças da versão do addon
+    lore: o.lore ?? '',               // relações com outras habilidades (texto)
+    tier: o.tier ?? null,             // TIERS
+    subs: o.subs ?? [],               // sub-habilidades (ids de outros nós)
+    tags: o.tags ?? [],               // ex.: 'defense', 'space' (requisitos de domínio por categoria)
+    evolvedBy: o.evolvedBy ?? null,   // quando o jogador tem este nó, o efeito evolui
+    evolvedFx: o.evolvedFx ?? null,
+    evolvedDesc: o.evolvedDesc ?? '',
+    needMasteryTag: o.needMasteryTag ?? null, // { tag: nível } — algum nó com a tag nesse domínio
+    needUltimate: o.needUltimate ?? 0,        // nº de Habilidades Supremas desbloqueadas
   };
 }
 
@@ -97,7 +110,7 @@ export function SR(id, name, original, rank, src, ranks, o = {}) {
 
 const PASSIVE_KINDS = new Set(['p_effect', 'p_mp', 'p_resist', 'p_lifesteal', 'p_onhit', 'p_affinity',
   'p_power', 'p_starved', 'p_xp', 'p_points', 'p_regen_env', 'p_race', 'p_aura',
-  'p_cleanse', 'p_cd', 'p_slots', 'p_absorb', 'p_mimic']);
+  'p_cleanse', 'p_cd', 'p_slots', 'p_absorb', 'p_mimic', 'p_op']);
 
 export function isPassiveFx(fx) {
   const list = Array.isArray(fx) ? fx : [fx];

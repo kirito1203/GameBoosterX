@@ -11,7 +11,8 @@ import { getData, progressionState, saveNow } from '../systems/storage.js';
 import {
   award, recordAnalysis, analyzeHeld, targetOf, readEntity, evolveSage, manifest, sageSound,
 } from '../systems/sage.js';
-import { showForm, formOf } from './treeUI.js';
+import { showForm, formOf, openSupremeTree } from './treeUI.js';
+import { cielOp } from './cielUI.js';
 
 const EXAMPLES = [
   'Qual é minha raça atual?', 'Quais habilidades posso aprender?', 'Qual é meu nível atual?', 'Quais são minhas fraquezas?',
@@ -81,6 +82,8 @@ async function skillForm(player) {
   if (!hit) return `§cNão encontrei "${q}" entre as ${all.length} habilidades do addon. Dados insuficientes.`;
   sageSound(player, 'beacon.power', 1.8);
   const d = getData(player);
+  d.library.add(hit.id); // registrada na Biblioteca de Habilidades (Shub-Niggurath)
+  saveNow(player);
   return `${formatSkill(hit)}\n${d.unlocked.has(hit.id) ? '§aVocê já possui esta habilidade.' : '§7Você ainda não possui esta habilidade.'}`;
 }
 
@@ -157,6 +160,14 @@ export async function openSage(player, startCat = 'home', fromMenu = false) {
         case 'analyze_skill': { const r = await skillForm(player); if (r) note = r; break; }
         case 'items': note = itemsText(d); break;
         case 'settings': { const r = await settingsForm(player); if (r) note = r; break; }
+        case 'ciel': { const r = await cielOp(player, act.op); if (r) note = r; break; }
+        case 'supreme_tree': {
+          openFor.delete(player.id);
+          const r = await openSupremeTree(player, {});
+          openFor.add(player.id);
+          if (r === 'close') return 'close';
+          break;
+        }
         case 'evolve': {
           openFor.delete(player.id);
           await evolveSage(player);
