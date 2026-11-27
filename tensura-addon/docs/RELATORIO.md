@@ -183,3 +183,29 @@ RP/sounds/ + RP/sounds/sound_definitions.json    etapa 6 — sons próprios
   textura; visões ortográficas geradas por `tools/sage_preview.py` (`docs/img/grande_sabio_modelo.png`).
 - **Não testado no jogo.** Este ambiente não tem o Minecraft. Falta confirmar o modelo, a transparência
   dos anéis, o brilho e a troca de animação pela propriedade.
+
+## Versão 0.4.0 — árvore sem recarregar ao tocar e rolagem com o dedo
+
+**Problema relatado no jogo:** tocar num nó fechava a tela, reabria e só então mostrava a habilidade (lento).
+Também não dava para arrastar a árvore com o dedo.
+
+**O que mudou:**
+- **Seleção instantânea:** cada nó virou um *toggle* de um grupo de rádio, o mesmo mecanismo das abas das
+  configurações do jogo. O painel de detalhes de cada nó já vai no formulário e aparece ao observar o estado do
+  toggle (`source_control_name` + `#toggle_state`). Tocar num nó acontece só no celular, sem ir ao script e sem
+  reabrir a tela. "Fechar detalhes" (barra superior) é outro toggle do mesmo grupo.
+- **Rolagem vertical com o dedo:** a área da árvore virou um painel rolável (`common.scrolling_panel`) com
+  13×12 células.
+- **Só voltam ao script** as ações que mudam o progresso (Desbloquear, Colocar/remover da barra, Ir para o
+  original), as setas laterais, as páginas ▲▼ e os saltos de categoria.
+- **Menos carga a cada abertura:** a lista oculta do formulário padrão foi limitada a 64 botões
+  (`max_children_size`, como o chat do jogo faz). Antes, o jogo criava centenas de botões invisíveis a cada
+  abertura. Os 3 níveis de zoom simultâneos também foram retirados.
+
+**Limitações:**
+- Arrastar para os lados não existe no Bedrock: o `scroll_view` do jogo só rola na vertical. Os lados
+  continuam nas setas ◀ ▶.
+- O zoom foi retirado: com rolagem, cada nível de zoom triplicaria os elementos da tela.
+- Depois de desbloquear, a tela reabre (é o script salvando o progresso) e o painel fica fechado. O nó
+  desbloqueado aparece aceso.
+- **Não testado no jogo:** os toggles de rádio e a rolagem dentro de um formulário do servidor.

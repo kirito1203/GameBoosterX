@@ -377,6 +377,12 @@ def ui_icon(name, size=64):
         d.ellipse([S * .43, S * .43, S * .57, S * .57], fill=W)
     elif name == 'hover':
         d.rectangle([S * .02, S * .02, S * .98, S * .98], outline=(255, 255, 255, 220), width=SS * 4)
+    elif name == 'selected':
+        L = S * 0.3
+        for (x, y, sx, sy) in ((S * .03, S * .03, 1, 1), (S * .97, S * .03, -1, 1), (S * .03, S * .97, 1, -1), (S * .97, S * .97, -1, -1)):
+            d.line([x, y, x + L * sx, y], fill=(120, 240, 255, 255), width=SS * 4)
+            d.line([x, y, x, y + L * sy], fill=(120, 240, 255, 255), width=SS * 4)
+        d.rectangle([S * .08, S * .08, S * .92, S * .92], outline=(120, 240, 255, 120), width=SS * 2)
     elif name == 'icon_slot':
         d.rectangle([S * .02, S * .02, S * .98, S * .98], fill=(10, 12, 22, 230), outline=(80, 200, 255, 255), width=SS * 3)
     return finish(img, size)
@@ -495,7 +501,7 @@ def main():
     nine(os.path.join(U, 'ctl_hover'), box(16, (40, 52, 82, 240), (100, 210, 255, 255)))
     nine(os.path.join(U, 'ctl_pressed'), box(16, (18, 22, 36, 255), (160, 230, 255, 255)))
     for n in ('btn_close', 'btn_back', 'btn_grimoire', 'btn_status', 'btn_unlock', 'btn_equip', 'btn_link', 'arrow_l', 'arrow_u', 'arrow_d',
-              'arrow_r', 'zoom_in', 'zoom_out', 'zoom_in_off', 'zoom_out_off', 'center', 'hover', 'icon_slot'):
+              'arrow_r', 'zoom_in', 'zoom_out', 'zoom_in_off', 'zoom_out_off', 'center', 'hover', 'icon_slot', 'selected'):
         save(ui_icon(n), os.path.join(U, n + '.png'))
     for tid in TAB_GLYPH:
         save(tab_icon(tid), os.path.join(U, 'tab_' + tid + '.png'))

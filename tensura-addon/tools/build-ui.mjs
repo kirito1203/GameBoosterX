@@ -13,7 +13,7 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  MARK, MENU_MARK, ZOOMS, CTRL, CAT_COUNT, gridOf, layerBase, hasLabels, SCREEN, TEX,
+  MARK, MENU_MARK, CTRL, CAT_COUNT, layerBase, TEX, TREE_COLS, TREE_ROWS, DETAIL_ROWS, NODE_TOGGLE_GROUP, detailPlacement,
   MENU, MENU_TABS, ACTIVE_ROWS, BAR_SLOTS, ACTION_COUNT,
   RACE_MARK, RACE, RACE_CARD_COLS, RACE_CARD_ROWS, CARD_SELECTED, CARD_LOCKED,
 } from '../BP/scripts/core/uiSpec.js';
@@ -33,9 +33,7 @@ const at = (x, y, w, h) => ({ ...TL, offset: [pct(x), pct(y)], size: [pct(w), pc
 const img = (texture, extra = {}) => ({ type: 'image', texture, size: ['100%', '100%'], keep_ratio: false, bilinear: false, ...extra });
 
 function stripTitle() {
-  let e = '#title_text';
-  for (const z of ZOOMS) e = `(${e} - '${MARK}§${z}')`;
-  return `(${e} - '${MARK}')`;
+  return `(#title_text - '${MARK}')`;
 }
 
 function buttonBody(extra = {}) {
@@ -171,99 +169,148 @@ function ctl(name, index, x, y, w, h, style = ICON_ONLY, childSize = null) {
 }
 
 // ── Árvore ──
-function layerGrid(name, template, zoom, firstRow) {
-  const { cols, rows } = gridOf(zoom);
-  const totalRows = firstRow + rows;
+// ── Árvore (grade rolável) ──
+const TOP = 8;      // barra superior (%)
+const BOTTOM = 11;  // barra inferior (%)
+
+/**
+ * Uma camada da grade: cada célula fica na grid_position cujo índice é o do seu botão.
+ * `firstRow` linhas "fantasmas" acima (índices anteriores) ficam fora da área (deslocadas para cima).
+ * `cell(i, c, r, totalRows)` devolve [nome, definição] do filho.
+ */
+function layer(name, firstRow, cell, extra = {}) {
+  const totalRows = firstRow + TREE_ROWS;
   const controls = [];
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      controls.push({ [`${name}${r * cols + c}@${NS}.${template}`]: {
-        grid_position: [c, firstRow + r], ...TL, size: [pct(100 / cols), pct(100 / totalRows)] } });
+  for (let r = 0; r < TREE_ROWS; r++) {
+    for (let c = 0; c < TREE_COLS; c++) {
+      const i = r * TREE_COLS + c;
+      const [key, def] = cell(i, c, r, totalRows);
+      controls.push({ [key]: { grid_position: [c, firstRow + r], ...TL, size: [pct(100 / TREE_COLS), pct(100 / totalRows)], ...def } });
     }
   }
-  // Linhas "fantasmas" acima (índices anteriores): a grade sobe e a área da árvore recorta.
   return { [`grid_${name}`]: {
-    type: 'grid', ...TL, collection_name: COL, grid_dimensions: [cols, totalRows],
-    size: ['100%', pct((totalRows / rows) * 100)], offset: [0, pct((-firstRow / rows) * 100)], controls,
+    type: 'grid', ...TL, collection_name: COL, grid_dimensions: [TREE_COLS, totalRows], layer: extra.layer ?? 1,
+    size: ['100%', pct((totalRows / TREE_ROWS) * 100)], offset: [0, pct((-firstRow / TREE_ROWS) * 100)], controls,
   } };
 }
 
-function gridPanel(zoom) {
-  const { rows } = gridOf(zoom);
-  const base = layerBase(zoom);
-  const controls = [
-    layerGrid('p', 'line', zoom, base.startRow + rows),
-    layerGrid('n', 'node', zoom, base.startRow),
-  ];
-  if (hasLabels(zoom)) controls.push(layerGrid('l', 'label_cell', zoom, base.startRow + 2 * rows));
+const toggleWatch = (i) => ({ binding_type: 'view', source_control_name: `tg_${i}`, source_property_name: '#toggle_state', target_property_name: '#visible' });
+
+function treeContent() {
+  const base = layerBase();
+  const s0 = base.startRow;
+  const R = TREE_ROWS;
+  const lines = layer('lines', s0 + R, (i) => [`p${i}@${NS}.line`, {}], { layer: 1 });
+  // Nós: ícone + moldura + toggle do grupo de rádio (seleção instantânea, só no cliente).
+  const nodes = layer('nodes', s0, (i) => [`n${i}`, {
+    type: 'panel', layer: 2,
+    bindings: [colText, view("(not (#form_button_text = ''))", '#visible')],
+    controls: [
+      { icon: { type: 'image', layer: 3, size: ['100%y', '54%'], bilinear: false, bindings: [
+        { ...colTex, binding_name_override: '#texture' }, { ...colTexFs, binding_name_override: '#texture_file_system' }] } },
+      { frame: { type: 'image', layer: 4, size: ['100%y', '78%'], bilinear: false, bindings: [
+        colText, view(`('${TEX.node}' + #form_button_text)`, '#texture')] } },
+      { [`tg_${i}@common.toggle`]: {
+        layer: 5, size: ['100%y', '82%'],
+        $toggle_name: NODE_TOGGLE_GROUP, $radio_toggle_group: true, $toggle_group_forced_index: i, $toggle_default_state: false,
+        $toggle_binding_type: 'none', $toggle_enabled_binding_type: 'none', $toggle_property_bag: {},
+        $unchecked_control: `${NS}.tg_off`, $checked_control: `${NS}.tg_on`,
+        $unchecked_hover_control: `${NS}.tg_hover`, $checked_hover_control: `${NS}.tg_on`,
+        $unchecked_locked_control: `${NS}.tg_off`, $checked_locked_control: `${NS}.tg_on`,
+        $unchecked_locked_hover_control: `${NS}.tg_off`, $checked_locked_hover_control: `${NS}.tg_on`,
+      } },
+    ],
+  }], { layer: 2 });
+  // Painel de detalhes de cada célula: aparece quando o toggle dela está marcado.
+  // O elemento da grade ocupa só a célula; o painel é um FILHO dele, deslocado em relação à
+  // célula (offset em % da célula), o que funciona como em qualquer painel comum.
+  const relX = (x, c) => pct((x / 100 * TREE_COLS - c) * 100);  // posição x (% do conteúdo) → % da célula
+  const relW = (w) => pct(w / 100 * TREE_COLS * 100);
+  const details = layer('details', s0 + 2 * R, (i, c, r) => {
+    const pl = detailPlacement(c, r);
+    return [`d${i}`, {
+      type: 'panel', layer: 10,
+      controls: [{ panel: {
+        type: 'panel', ...TL, layer: 10,
+        size: [relW(pl.w), pct(DETAIL_ROWS * 100)], offset: [relX(pl.x, c), pct((pl.row - r) * 100)],
+        bindings: [toggleWatch(i)],
+        controls: [
+          { bg: img(`${TEX.ui}panel`, { layer: 0 }) },
+          { txt: { type: 'label', ...TL, offset: ['3%', '4%'], size: ['94%', 'default'], max_size: ['94%', '72%'], layer: 2,
+            text: '#form_button_text', color: [1, 1, 1], font_scale_factor: 0.62, shadow: true, bindings: [colText] } },
+        ],
+      } }],
+    }];
+  }, { layer: 10 });
+  // Botão de ação do painel (desbloquear / barra / ir ao original): a única parte que vai ao script.
+  const actions = layer('actions', s0 + 3 * R, (i, c, r) => {
+    const pl = detailPlacement(c, r);
+    return [`a${i}`, {
+      type: 'panel', layer: 12,
+      controls: [{ panel: {
+        type: 'panel', ...TL, layer: 12,
+        size: [relW(pl.w - 4), pct(78)], offset: [relX(pl.x + 2, c), pct((pl.row + DETAIL_ROWS - 0.95 - r) * 100)],
+        bindings: [toggleWatch(i)],
+        controls: [{ [`b@${NS}.ctl`]: { size: ['100%', '100%'], ...ICON_LEFT_TEXT } }],
+      } }],
+    }];
+  }, { layer: 12 });
   return {
-    type: 'panel', size: ['100%', '100%'],
-    bindings: [{ binding_name: '#title_text' }, view(has(`${MARK}§${zoom}`), '#visible')],
-    controls,
+    type: 'panel', ...TL, size: ['100%', `${+((TREE_ROWS / TREE_COLS) * 100).toFixed(4)}%x`],
+    controls: [lines, nodes, details, actions],
   };
 }
 
 function treeRoot() {
-  const top = SCREEN.topBar;
-  const bottom = SCREEN.bottomBar;
-  const area = 100 - top - bottom;
+  const area = 100 - TOP - BOTTOM;
   const topBar = {
-    type: 'panel', size: ['100%', pct(top)], ...TL, layer: 20, collection_name: COL,
+    type: 'panel', size: ['100%', pct(TOP)], ...TL, layer: 20,
     controls: [
       { bg: img(`${TEX.ui}bar`, { layer: 0 }) },
       { header: { type: 'label', layer: 2, anchor_from: 'left_middle', anchor_to: 'left_middle', offset: ['1%', 0],
-        size: ['76%', 'default'], max_size: ['76%', '100%'], shadow: true, font_scale_factor: 0.85, color: [1, 1, 1],
+        size: ['62%', 'default'], max_size: ['62%', '100%'], shadow: true, font_scale_factor: 0.85, color: [1, 1, 1],
         text: '#tensura_header', bindings: [{ binding_name: '#title_text' }, view(stripTitle(), '#tensura_header')] } },
-      ctl('back', CTRL.back, 78, 8, 13, 84, ICON_LEFT_TEXT),
-      ctl('close', CTRL.close, 92, 8, 7, 84),
+      // "Fechar detalhes": um toggle do mesmo grupo de rádio (desmarca o nó selecionado, sem ir ao script).
+      { tg_none_panel: { type: 'panel', ...at(63.5, 8, 14, 84), controls: [
+        { 'tg_none@common.toggle': {
+          size: ['100%', '100%'], $toggle_name: NODE_TOGGLE_GROUP, $radio_toggle_group: true,
+          $toggle_group_forced_index: TREE_COLS * TREE_ROWS, $toggle_default_state: false,
+          $toggle_binding_type: 'none', $toggle_enabled_binding_type: 'none', $toggle_property_bag: {},
+          $unchecked_control: `${NS}.close_details_off`, $checked_control: `${NS}.close_details_off`,
+          $unchecked_hover_control: `${NS}.close_details_hover`, $checked_hover_control: `${NS}.close_details_hover`,
+          $unchecked_locked_control: `${NS}.close_details_off`, $checked_locked_control: `${NS}.close_details_off`,
+          $unchecked_locked_hover_control: `${NS}.close_details_off`, $checked_locked_hover_control: `${NS}.close_details_off`,
+        } }] } },
+      ctl('back', CTRL.back, 78.5, 8, 13, 84, ICON_LEFT_TEXT),
+      ctl('close', CTRL.close, 92.3, 8, 7, 84),
     ],
   };
-  // Barra inferior: saltos de categoria + navegação.
   const catW = 64 / CAT_COUNT;
   const nav = [];
   for (let i = 0; i < CAT_COUNT; i++) nav.push(ctl(`cat${i}`, CTRL.cat0 + i, 0.5 + i * catW, 8, catW - 0.3, 84, { $ctl_icon_size: ['100%y', '78%'] }));
-  const navBtns = [['pan_l', CTRL.panLeft], ['pan_u', CTRL.panUp], ['pan_d', CTRL.panDown], ['pan_r', CTRL.panRight],
-    ['zoom_out', CTRL.zoomOut], ['zoom_in', CTRL.zoomIn], ['center', CTRL.center]];
+  const navBtns = [['pan_l', CTRL.panLeft], ['page_up', CTRL.pageUp], ['page_down', CTRL.pageDown], ['pan_r', CTRL.panRight], ['center', CTRL.center]];
   const navW = (100 - 65 - 0.5) / navBtns.length;
   navBtns.forEach(([n, idx], k) => nav.push(ctl(n, idx, 65 + k * navW, 8, navW - 0.4, 84)));
   const bottomBar = {
-    type: 'panel', size: ['100%', pct(bottom)], anchor_from: 'bottom_left', anchor_to: 'bottom_left', layer: 20, collection_name: COL,
+    type: 'panel', size: ['100%', pct(BOTTOM)], anchor_from: 'bottom_left', anchor_to: 'bottom_left', layer: 20,
     controls: [{ bg: img(`${TEX.ui}bar`, { layer: 0 }) }, ...nav],
   };
-  const details = {
-    type: 'panel', size: [pct(SCREEN.detailsWidth), pct(area)], offset: [0, pct(top)],
-    anchor_from: 'top_right', anchor_to: 'top_right', layer: 30, collection_name: COL,
-    bindings: [{ binding_name: '#form_text' }, view("(not (#form_text = ''))", '#visible')],
-    controls: [
-      { bg: img(`${TEX.ui}panel`, { layer: 0 }) },
-      { icon_slot: { type: 'panel', size: ['100%y', '22%'], offset: ['4%', '2%'], ...TL, layer: 2, collection_name: COL, controls: [
-        { icon_bg: img(`${TEX.ui}icon_slot`, { layer: 0 }) },
-        ctl('detail_icon', CTRL.detailIcon, 0, 0, 100, 100, { ...PLAIN, $ctl_icon_size: ['100%y', '84%'] }),
-      ] } },
-      ctl('close_details', CTRL.closeDetails, 87, 1.5, 11, 9),
-      { text_area: { type: 'panel', size: ['94%', '44%'], offset: ['3%', '26%'], ...TL, layer: 2,
-        controls: [{ 'scroll@common.scrolling_panel': {
-          ...TL, size: ['100%', '100%'], $show_background: false,
-          $scrolling_content: `${NS}.details_text`, $scroll_size: [4, '100% - 2px'], $scrolling_pane_size: ['100% - 6px', '100%'],
-          $scrolling_pane_offset: [0, 0], $scroll_bar_right_padding_size: [0, 0],
-        } }] } },
-      ctl('goto_link', CTRL.gotoLink, 4, 72, 92, 8, ICON_LEFT_TEXT),
-      ctl('equip', CTRL.equip, 4, 81, 92, 8, ICON_LEFT_TEXT),
-      ctl('unlock', CTRL.unlock, 4, 90, 92, 9, ICON_LEFT_TEXT),
-    ],
-  };
   return {
-    type: 'panel', size: ['100%', '100%'], collection_name: COL,
+    type: 'panel', size: ['100%', '100%'],
     controls: [
       { bg: img(`${TEX.ui}bg`, { layer: 0, bilinear: true }) },
-      { tree_area: { type: 'panel', size: ['100%', pct(area)], offset: [0, pct(top)], ...TL, clips_children: true, layer: 5,
-        controls: ZOOMS.map((z) => ({ [`grid_z${z}@${NS}.grid_z${z}`]: {} })) } },
-      { top_bar: topBar }, { bottom_bar: bottomBar }, { details },
+      // Área da árvore: rolagem vertical nativa (arrastar o dedo).
+      { tree_area: { type: 'panel', size: ['100%', pct(area)], offset: [0, pct(TOP)], ...TL, layer: 5, controls: [
+        { 'scroll@common.scrolling_panel': {
+          ...TL, size: ['100%', '100%'], $show_background: false, $allow_scrolling_even_when_content_fits: false,
+          $scrolling_content: `${NS}.tree_content`, $scroll_size: [5, '100% - 4px'], $scrolling_pane_size: ['100% - 7px', '100%'],
+          $scrolling_pane_offset: [0, 0], $scroll_bar_right_padding_size: [0, 0],
+        } }] } },
+      { top_bar: topBar }, { bottom_bar: bottomBar },
     ],
   };
 }
 
-// ── Menu principal ──
 function menuRoot() {
   const st = (text, x, y, w, extra = {}) => ({ [`t_${Math.round(x * 10)}_${Math.round(y * 10)}@${NS}.static_text`]: {
     $st_text: text, ...TL, offset: [pct(x), pct(y)], size: [pct(w), 'default'], ...extra } });
@@ -461,7 +508,12 @@ export function buildUi(outDir = join(ROOT, 'RP', 'ui')) {
         text: '#form_text', color: [1, 1, 1], font_scale_factor: 0.8, shadow: false } }],
     },
   };
-  for (const z of ZOOMS) tree[`grid_z${z}`] = gridPanel(z);
+  tree.tree_content = treeContent();
+  tree.tg_off = { type: 'panel' };
+  tree.tg_on = img(`${TEX.ui}selected`);
+  tree.tg_hover = img(`${TEX.ui}hover`);
+  tree.close_details_off = { type: 'panel', controls: [{ bg: img(`${TEX.ui}ctl`) }, { t: { type: 'label', text: '§fFechar detalhes', font_scale_factor: 0.75, shadow: true, layer: 2 } }] };
+  tree.close_details_hover = { type: 'panel', controls: [{ bg: img(`${TEX.ui}ctl_hover`) }, { t: { type: 'label', text: '§fFechar detalhes', font_scale_factor: 0.75, shadow: true, layer: 2 } }] };
 
   const notMarked = `((((#title_text - '${MARK}') = #title_text) and ((#title_text - '${MENU_MARK}') = #title_text)) and ((#title_text - '${RACE_MARK}') = #title_text))`;
   const serverForm = {
@@ -470,6 +522,14 @@ export function buildUi(outDir = join(ROOT, 'RP', 'ui')) {
       type: 'panel', size: ['100%', '100%'],
       controls: [{ server_form_factory: { type: 'factory', control_ids: {
         long_form: '@server_form.tensura_long_form_router', custom_form: '@server_form.custom_form' } } }],
+    },
+    // O formulário padrão fica oculto atrás das telas do addon e o jogo cria TODOS os botões dele.
+    // Limitamos essa lista (como o chat do jogo faz com max_children_size) para não criar centenas
+    // de botões invisíveis a cada abertura. Formulários comuns têm bem menos de 64 botões.
+    long_form_dynamic_buttons_panel: {
+      factory: { name: 'buttons', max_children_size: 64, control_ids: {
+        button: 'server_form.dynamic_button', label: '@server_form.dynamic_label', header: '@server_form.dynamic_header',
+        divider: '@settings_common.option_group_section_divider' } },
     },
     tensura_long_form_router: {
       type: 'panel', size: ['100%', '100%'],
@@ -495,7 +555,7 @@ export function buildUi(outDir = join(ROOT, 'RP', 'ui')) {
   writeFileSync(join(outDir, 'server_form.json'), header + JSON.stringify(serverForm, null, 1));
   writeFileSync(join(outDir, '_ui_defs.json'), JSON.stringify({ ui_defs: ['ui/tensura_tree.json'] }, null, 2));
   let controls = 0;
-  for (const z of ZOOMS) controls += tree[`grid_z${z}`].controls.length;
+  for (const g of tree.tree_content.controls) controls += Object.values(g)[0].controls.length;
   return { controls };
 }
 

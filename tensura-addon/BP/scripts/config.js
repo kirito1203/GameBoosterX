@@ -45,11 +45,9 @@ export const CONFIG = {
 
   // Interface da árvore.
   ui: {
-    defaultZoom: 2,
-    // Grade visível (colunas x linhas) por nível de zoom. Deve coincidir com a
-    // interface gerada em RP/ui (ver tools/build-ui.mjs, que lê este mesmo arquivo).
-    zoomGrids: { 1: [17, 8], 2: [13, 6], 3: [9, 4] },
-    labelsFromZoom: 3,        // nomes dos nós aparecem a partir deste zoom
+    // Grade da árvore (colunas x linhas). As linhas a mais rolam arrastando o dedo.
+    // Deve coincidir com a interface gerada em RP/ui (tools/build-ui.mjs lê este arquivo).
+    treeGrid: [13, 12],
     barSlots: 5,              // espaços da Barra de Habilidades (Cristal)
   },
 

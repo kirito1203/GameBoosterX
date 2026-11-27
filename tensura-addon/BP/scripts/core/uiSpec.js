@@ -5,65 +5,54 @@ import { CONFIG } from '../config.js';
 // Marcadores no título que fazem o resource pack trocar o formulário padrão.
 export const MARK = '§t§n§s';          // árvore de habilidades
 export const MENU_MARK = '§t§n§m';     // menu principal (abas)
-export const zoomMark = (z) => `${MARK}§${z}`;
 export const menuMark = (tab) => `${MENU_MARK}§${tab}`;
-export const ZOOMS = Object.keys(CONFIG.ui.zoomGrids).map(Number).sort();
 
-// ── Árvore: botões fixos ──
+// ── Árvore ──
+// A área da árvore é uma grade de TREE_COLS x TREE_ROWS células dentro de um painel com
+// rolagem vertical (arrastar o dedo para cima/baixo, sem recarregar). Tocar num nó abre os
+// detalhes na hora: cada nó é um "toggle" de um grupo de rádio que existe só no cliente.
+// Só ações que mudam o progresso (desbloquear, barra) e a troca de região voltam ao script.
 export const CATEGORY_ORDER = ['racial', 'elemental', 'aspect', 'holy', 'summon', 'illusion', 'spirit', 'necromancy', 'dark',
   'advanced', 'unique', 'ultimate', 'extra', 'resist'];
 export const CTRL = {
   back: 0,
   close: 1,
-  cat0: 2, // 2..15 = 14 categorias (centraliza a câmera nelas)
+  cat0: 2, // 2..15 = 14 categorias (leva a câmera até elas)
   panLeft: 16,
-  panUp: 17,
-  panDown: 18,
-  panRight: 19,
-  zoomOut: 20,
-  zoomIn: 21,
-  center: 22,
-  unlock: 23,
-  equip: 24,
-  closeDetails: 25,
-  detailIcon: 26,
-  gotoLink: 27,
+  panRight: 17,
+  pageUp: 18,
+  pageDown: 19,
+  center: 20,
 };
 export const CAT_COUNT = CATEGORY_ORDER.length;
-export const CTRL_COUNT = 28;
+export const CTRL_COUNT = 21;
+export const TREE_COLS = CONFIG.ui.treeGrid[0];
+export const TREE_ROWS = CONFIG.ui.treeGrid[1];
+export const TREE_CELLS = TREE_COLS * TREE_ROWS;
+export const DETAIL_ROWS = 3;           // altura do painel de detalhes (em linhas da grade)
+export const NODE_TOGGLE_GROUP = 'tensura_node';
 
-export function gridOf(zoom) {
-  const [cols, rows] = CONFIG.ui.zoomGrids[zoom];
-  return { cols, rows, n: cols * rows };
-}
-
-export function hasLabels(zoom) {
-  return zoom >= CONFIG.ui.labelsFromZoom;
+export function gridOf() {
+  return { cols: TREE_COLS, rows: TREE_ROWS, n: TREE_CELLS };
 }
 
 /**
- * Índices das camadas da grade: nó, linhas e rótulo.
- * As camadas começam num múltiplo do nº de colunas (botões vazios de preenchimento depois dos
- * controles), porque no JSON UI o índice de cada célula vem da posição dela numa grade
- * (grid_position): índice = linha * colunas + coluna.
+ * Índices das camadas: nó, linhas, detalhes e ação. Cada camada começa no início de uma
+ * linha da grade (botões vazios de preenchimento), porque no JSON UI o índice de cada célula
+ * vem da posição dela numa grade (grid_position): índice = linha * colunas + coluna.
  */
-export function layerBase(zoom) {
-  const { cols, n } = gridOf(zoom);
-  const start = Math.ceil(CTRL_COUNT / cols) * cols;
-  return {
-    startRow: start / cols,
-    node: start,
-    pipe: start + n,
-    label: hasLabels(zoom) ? start + 2 * n : -1,
-    total: start + n * (hasLabels(zoom) ? 3 : 2),
-  };
+export function layerBase() {
+  const start = Math.ceil(CTRL_COUNT / TREE_COLS) * TREE_COLS;
+  const n = TREE_CELLS;
+  return { startRow: start / TREE_COLS, node: start, pipe: start + n, detail: start + 2 * n, action: start + 3 * n, total: start + 4 * n };
 }
 
-export const SCREEN = {
-  topBar: 8,
-  bottomBar: 11,
-  detailsWidth: 36,
-};
+/** Painel de detalhes da célula (c, r): lado oposto ao nó e preso dentro da grade. */
+export function detailPlacement(c, r) {
+  const right = c < TREE_COLS / 2;
+  const row = Math.max(0, Math.min(r - 1, TREE_ROWS - DETAIL_ROWS));
+  return { x: right ? 51 : 2, w: 47, row };
+}
 
 // ── Menu principal ──
 export const MENU_TABS = ['status', 'race', 'skills', 'evolution', 'records'];

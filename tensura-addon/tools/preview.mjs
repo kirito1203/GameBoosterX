@@ -130,7 +130,7 @@ function mc(text) {
 function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
 
 // ── Renderização ──
-function render(model, W, H, scale, rootName = 'root') {
+function render(model, W, H, scale, rootName = 'root', toggles = new Set()) {
   const els = [];
   const stats = { nodes: 0, pipes: 0, ctl: 0, rects: { node: new Map(), pipe: new Map() } };
   const globals = { '#title_text': model.title, '#form_text': model.body };
@@ -148,7 +148,12 @@ function render(model, W, H, scale, rootName = 'root') {
     let texture = def.texture;
     let text = def.text;
     for (const b of def.bindings ?? []) {
-      if (b.binding_type === 'view') {
+      if (b.binding_type === 'view' && b.source_control_name) {
+        // Painel que observa um toggle (ex.: detalhes do nó): estado vem do cenário.
+        const val = toggles.has(b.source_control_name);
+        props[b.target_property_name] = val;
+        if (b.target_property_name === '#visible') visible = val;
+      } else if (b.binding_type === 'view') {
         const val = evaluate(b.source_property_name, props);
         props[b.target_property_name] = val;
         if (b.target_property_name === '#visible') visible = !!val;
@@ -199,6 +204,12 @@ function render(model, W, H, scale, rootName = 'root') {
       stats.ctl++;
       children = children.filter((c) => Object.keys(c)[0] === 'default');
     }
+    if (kind === 'common.toggle') {
+      stats.toggles = (stats.toggles ?? 0) + 1;
+      const on = toggles.has(name.split('@')[0]);
+      const ref = on ? v.$checked_control : v.$unchecked_control;
+      children = ref ? [{ [`state@${ref}`]: {} }] : [];
+    }
     if (kind === 'common.scrolling_panel') {
       children = [{ [`content@${def.$scrolling_content ?? v.$scrolling_content}`]: {} }];
       els.push(`<div class="scroll" style="${st}"></div>`);
@@ -219,8 +230,8 @@ function render(model, W, H, scale, rootName = 'root') {
   return { html: els.join('\n'), stats };
 }
 
-export function previewHtml(model, { W = 427, H = 192, scale = 3, label = '', root = 'root' } = {}) {
-  const { html, stats } = render(model, W, H, scale, root);
+export function previewHtml(model, { W = 427, H = 192, scale = 3, label = '', root = 'root', toggles = [] } = {}) {
+  const { html, stats } = render(model, W, H, scale, root, new Set(toggles));
   const page = `<!doctype html><meta charset="utf-8"><style>
 body{margin:0;background:#000;font-family:'DejaVu Sans',sans-serif}
 #s{position:relative;width:${W * scale}px;height:${H * scale}px;overflow:hidden}
@@ -256,10 +267,20 @@ export function scenario(name) {
   const mp = { cur: d.mp, max: d.stats.maxMp };
   const map = getMap('slime');
   switch (name) {
-    case 'tree-z1': return { kind: 'tree', p: { state, view: centeredView(1), selected: null, mp } };
-    case 'tree-z2-sel': return { kind: 'tree', p: { state, view: ensureVisible(viewAt(map.roots.elemental, 2), map.pos['elem.firestorm']), selected: 'elem.firestorm', mp } };
-    case 'tree-z3': return { kind: 'tree', p: { state, view: viewAt(map.roots.unique, 3), selected: null, mp } };
-    case 'tree-z1-pan': return { kind: 'tree', p: { state, view: pan(viewAt(map.roots.extra, 1), 0, -1, map), selected: null, mp } };
+    case 'tree-center': return { kind: 'tree', p: { state, view: centeredView(), mp } };
+    case 'tree-elemental': return { kind: 'tree', p: { state, view: viewAt(map.roots.elemental), mp } };
+    case 'tree-unique-sel': {
+      const view = viewAt(map.roots.unique);
+      const pos = map.pos['uni.predator'];
+      const i = (pos[1] - view.y) * 13 + (pos[0] - view.x);
+      return { kind: 'tree', p: { state, view, mp }, toggles: [`tg_${i}`], cell: i };
+    }
+    case 'tree-fire-sel': {
+      const view = viewAt(map.roots.elemental);
+      const pos = map.pos['elem.fireball'];
+      const i = (pos[1] - view.y) * 13 + (pos[0] - view.x);
+      return { kind: 'tree', p: { state, view, mp }, toggles: [`tg_${i}`], cell: i };
+    }
     case 'menu-status': return { kind: 'menu', p: { tab: 'status', d, state } };
     case 'menu-evolution': return { kind: 'menu', p: { tab: 'evolution', d, state } };
     case 'race-slime': return { kind: 'race', p: { page: 0, selected: 'slime', sageText: 'Agora, escolha a raça que definirá sua existência neste mundo.' } };
@@ -275,10 +296,10 @@ export function modelFor(sc) {
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const out = process.argv[2] ?? join(ROOT, 'dist', 'preview.html');
-  const name = process.argv[3] ?? 'tree-z2-sel';
+  const name = process.argv[3] ?? 'tree-fire-sel';
   const sc = scenario(name);
   const model = modelFor(sc);
-  const { page, stats } = previewHtml(model, { root: sc.kind === 'menu' ? 'menu_root' : sc.kind === 'race' ? 'race_root' : 'root', label: `cenário: ${name} — simulação do JSON UI gerado (não é o jogo)` });
+  const { page, stats } = previewHtml(model, { toggles: sc.toggles ?? [], root: sc.kind === 'menu' ? 'menu_root' : sc.kind === 'race' ? 'race_root' : 'root', label: `cenário: ${name} — simulação do JSON UI gerado (não é o jogo)` });
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, page);
   console.log(JSON.stringify({ out, nodes: stats.nodes, lines: stats.pipes, buttons: stats.ctl }));

@@ -8,7 +8,7 @@ import { ActionFormData, FormCancelationReason } from '@minecraft/server-ui';
 import { CONFIG } from '../config.js';
 import { SKILLS, RACES, initialSkillsFor } from '../data/registry.js';
 import { unlock } from '../core/progression.js';
-import { buildTreeForm, viewAt, centeredView, pan, rezoom, ensureVisible } from '../core/view.js';
+import { buildTreeForm, viewAt, centeredView, pan, ensureVisible } from '../core/view.js';
 import { buildMenuForm } from '../core/menuView.js';
 import { getMap } from '../core/map.js';
 import { getData, progressionState, saveNow, refreshStats, markDirty } from '../systems/storage.js';
@@ -126,16 +126,18 @@ export async function openMenu(player, menus, startTab = 'status') {
 
 // ── Árvore (mapa único) ──
 // Retorna 'back' (voltar ao menu) ou 'close' (fechar tudo).
+// Tocar num nó e rolar para cima/baixo acontecem só no celular (sem reabrir a tela).
+// O script só recebe: ações do painel (desbloquear, barra, ir ao original), setas e categorias.
 async function treeLoop(player, menus, focus = {}) {
   const d = getData(player);
   const map = getMap(RACES[d.race].lineage);
-  let selected = null;
-  let view = d.ui.view && CONFIG.ui.zoomGrids[d.ui.view.zoom] ? d.ui.view : centeredView(CONFIG.ui.defaultZoom);
-  if (focus.key && map.pos[focus.key]) { selected = focus.key; view = ensureVisible(view, map.pos[focus.key]); }
-  if (focus.pos) view = viewAt(focus.pos, view.zoom);
+  let view = d.ui.view && Number.isFinite(d.ui.view.x) && Number.isFinite(d.ui.view.y) ? { x: d.ui.view.x, y: d.ui.view.y } : centeredView();
+  let highlight = null;
+  if (focus.key && map.pos[focus.key]) { highlight = focus.key; view = viewAt(map.pos[focus.key]); }
+  if (focus.pos) view = viewAt(focus.pos);
   let result = 'back';
   for (;;) {
-    const model = buildTreeForm({ state: progressionState(d), view, selected, mp: { cur: d.mp, max: d.stats.maxMp }, equipped: d.equipped });
+    const model = buildTreeForm({ state: progressionState(d), view, focus: highlight, mp: { cur: d.mp, max: d.stats.maxMp }, equipped: d.equipped });
     const res = await showForm(player, formOf(model));
     if (!player.isValid) return 'close';
     if (!res || res.canceled || res.selection === undefined) { result = 'close'; break; }
@@ -144,18 +146,12 @@ async function treeLoop(player, menus, focus = {}) {
     if (act.type === 'back') break;
     if (act.type === 'close') { result = 'close'; break; }
     switch (act.type) {
-      case 'jump': selected = null; view = viewAt(act.pos, view.zoom); break;
+      case 'jump': highlight = null; view = viewAt(act.pos); break;
       case 'pan': view = pan(view, act.dx, act.dy, map); break;
-      case 'zoom': view = rezoom(view, view.zoom + act.dz); break;
-      case 'center': view = centeredView(view.zoom); break;
-      case 'node':
-        selected = selected === act.key ? null : act.key;
-        if (selected) view = ensureVisible(view, map.pos[act.key]);
-        break;
-      case 'deselect': selected = null; break;
-      case 'unlock': doUnlock(player, d, act.id); break;
-      case 'equip': toggleEquip(player, d, act.id); break;
-      case 'goto': selected = act.key; view = ensureVisible(view, map.pos[act.key]); break;
+      case 'center': highlight = null; view = viewAt([0, 0]); break;
+      case 'unlock': doUnlock(player, d, act.id); highlight = act.id; break;
+      case 'equip': toggleEquip(player, d, act.id); highlight = act.id; break;
+      case 'goto': highlight = act.key; view = viewAt(map.pos[act.key]); break;
       default: break;
     }
   }
@@ -163,4 +159,3 @@ async function treeLoop(player, menus, focus = {}) {
   markDirty(player);
   return result;
 }
-
