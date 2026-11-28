@@ -16,3 +16,4 @@ build/
 *.pem
 .env
 signing.properties
+.kotlin/
