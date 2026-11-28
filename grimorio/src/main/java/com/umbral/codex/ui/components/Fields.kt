@@ -41,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
@@ -92,12 +93,14 @@ fun CodexTextField(
     textAlign: TextAlign = TextAlign.Start,
 ) {
     var tfv by remember { mutableStateOf(TextFieldValue(value, TextRange(value.length))) }
-    LaunchedEffect(value) { if (value != tfv.text) tfv = TextFieldValue(value, TextRange(value.length)) }
+    var focused by remember { mutableStateOf(false) }
+    // Enquanto o campo está em foco, o texto digitado manda; valores externos atrasados são ignorados.
+    LaunchedEffect(value, focused) { if (!focused && value != tfv.text) tfv = TextFieldValue(value, TextRange(value.length)) }
     OutlinedTextField(
         value = tfv,
-        onValueChange = { nv -> tfv = nv; if (nv.text != value) onValueChange(nv.text) },
+        onValueChange = { nv -> val changed = nv.text != tfv.text; tfv = nv; if (changed) onValueChange(nv.text) },
         label = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().onFocusChanged { focused = it.isFocused },
         singleLine = singleLine,
         minLines = minLines,
         maxLines = maxLines,
@@ -126,7 +129,8 @@ fun IntField(
     max: Int = Int.MAX_VALUE,
 ) {
     var text by remember { mutableStateOf(value.toString()) }
-    LaunchedEffect(value) { if (text.toIntOrNull() != value) text = value.toString() }
+    var focused by remember { mutableStateOf(false) }
+    LaunchedEffect(value, focused) { if (!focused && text.toIntOrNull() != value) text = value.toString() }
     OutlinedTextField(
         value = text,
         onValueChange = { raw ->
@@ -135,7 +139,7 @@ fun IntField(
             filtered.toIntOrNull()?.let { onValueChange(it.coerceIn(min, max)) }
         },
         label = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-        modifier = modifier,
+        modifier = modifier.onFocusChanged { focused = it.isFocused },
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
         colors = codexFieldColors(),
@@ -147,7 +151,8 @@ fun IntField(
 @Composable
 fun LongField(value: Long, onValueChange: (Long) -> Unit, label: String, modifier: Modifier = Modifier) {
     var text by remember { mutableStateOf(value.toString()) }
-    LaunchedEffect(value) { if (text.toLongOrNull() != value) text = value.toString() }
+    var focused by remember { mutableStateOf(false) }
+    LaunchedEffect(value, focused) { if (!focused && text.toLongOrNull() != value) text = value.toString() }
     OutlinedTextField(
         value = text,
         onValueChange = { raw ->
@@ -156,7 +161,7 @@ fun LongField(value: Long, onValueChange: (Long) -> Unit, label: String, modifie
             f.toLongOrNull()?.let(onValueChange)
         },
         label = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-        modifier = modifier,
+        modifier = modifier.onFocusChanged { focused = it.isFocused },
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
         colors = codexFieldColors(),
@@ -170,7 +175,8 @@ fun LongField(value: Long, onValueChange: (Long) -> Unit, label: String, modifie
 fun DecimalField(value: Double, onValueChange: (Double) -> Unit, label: String, modifier: Modifier = Modifier) {
     fun fmt(d: Double) = if (d == Math.floor(d)) d.toLong().toString() else d.toString().replace('.', ',')
     var text by remember { mutableStateOf(fmt(value)) }
-    LaunchedEffect(value) { if (text.replace(',', '.').toDoubleOrNull() != value) text = fmt(value) }
+    var focused by remember { mutableStateOf(false) }
+    LaunchedEffect(value, focused) { if (!focused && text.replace(',', '.').toDoubleOrNull() != value) text = fmt(value) }
     OutlinedTextField(
         value = text,
         onValueChange = { raw ->
@@ -180,7 +186,7 @@ fun DecimalField(value: Double, onValueChange: (Double) -> Unit, label: String, 
             if (f.isEmpty()) onValueChange(0.0)
         },
         label = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-        modifier = modifier,
+        modifier = modifier.onFocusChanged { focused = it.isFocused },
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Next),
         colors = codexFieldColors(),
