@@ -10,6 +10,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTextReplacement
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -128,5 +129,20 @@ class ScreensTest {
         tab("Criar"); shot("30_criar")
         click("Usar modelo"); shot("31_criar_modelo")
         tab("Ajustes"); shot("40_ajustes")
+
+        // Cor livre: abre o seletor, digita um código, aplica e confere tema + salvamento
+        rule.onAllNodes(androidx.compose.ui.test.hasContentDescription("Cor personalizada")).onFirst().performClick(); settle()
+        shot("41_seletor_de_cor")
+        rule.onAllNodes(hasText("Código da cor (ex.: #FF5500)") and androidx.compose.ui.test.hasSetTextAction()).onFirst()
+            .performTextReplacement("#FF5500")
+        settle()
+        click("Aplicar")
+        assertEquals(0xFFFF5500L, repo.settings.value.customAccent)
+        assertEquals(androidx.compose.ui.graphics.Color(0xFFFF5500), com.umbral.codex.ui.theme.paletteFor(repo.settings.value).accent)
+        shot("42_ajustes_cor_laranja")
+        tab("Início"); shot("43_inicio_cor_laranja")
+        kotlinx.coroutines.runBlocking { repo.flush() }
+        val saved = java.io.File(rule.activity.filesDir, "codex/settings.json").readText()
+        assertTrue("cor salva em disco", saved.contains("customAccent"))
     }
 }

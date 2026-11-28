@@ -231,7 +231,7 @@ fun ArcaneButton(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        val fg = if (enabled) Color(0xFF0E0918) else c.faint
+        val fg = if (enabled) ColorMath.onColor(color) else c.faint
         if (icon != null) { Icon(icon, null, tint = fg, modifier = Modifier.size(20.dp)); Spacer(Modifier.width(8.dp)) }
         Text(text, color = fg, style = MaterialTheme.typography.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }

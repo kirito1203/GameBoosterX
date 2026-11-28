@@ -50,7 +50,10 @@ import com.umbral.codex.ui.LocalRepository
 import com.umbral.codex.ui.components.ArcaneButton
 import com.umbral.codex.ui.components.ChoiceChips
 import com.umbral.codex.ui.components.CodexTextField
+import com.umbral.codex.ui.components.ColorChooserDialog
 import com.umbral.codex.ui.components.ColorDot
+import com.umbral.codex.ui.components.ColorMath
+import com.umbral.codex.ui.components.CustomColorDot
 import com.umbral.codex.ui.components.ConfirmDialog
 import com.umbral.codex.ui.components.DropdownField
 import com.umbral.codex.ui.components.EditorDialog
@@ -172,6 +175,7 @@ fun SettingsScreen() {
     val c = Codex.colors
     var confirm by remember { mutableStateOf<String?>(null) }
     var wipeText by remember { mutableStateOf<String?>(null) }
+    var choosingColor by remember { mutableStateOf(false) }
 
     val backupLauncher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
@@ -197,11 +201,18 @@ fun SettingsScreen() {
                 FlowRow(verticalArrangement = Arrangement.Center) {
                     AccentTheme.entries.forEach { a ->
                         Column(Modifier.padding(end = 6.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                            ColorDot(Color(a.primary), settings.accent == a) { repo.updateSettings { it.copy(accent = a) } }
+                            ColorDot(Color(a.primary), settings.customAccent == null && settings.accent == a) {
+                                repo.updateSettings { it.copy(accent = a, customAccent = null) }
+                            }
                         }
                     }
+                    CustomColorDot(settings.customAccent, settings.customAccent != null) { choosingColor = true }
                 }
-                Text(settings.accent.label, style = MaterialTheme.typography.labelLarge, color = c.accent)
+                Text(
+                    settings.customAccent?.let { "Cor personalizada ${ColorMath.toHex(it)}" } ?: settings.accent.label,
+                    style = MaterialTheme.typography.labelLarge, color = c.accent,
+                )
+                Text("Toque no círculo colorido com + para escolher qualquer cor.", style = MaterialTheme.typography.bodySmall, color = c.faint)
                 Spacer(Modifier.height(8.dp))
                 SwitchRow("Brilhos mágicos", settings.glowEffects, { v -> repo.updateSettings { it.copy(glowEffects = v) } }, description = "Halo luminoso suave em painéis e botões e selos animados.")
                 SwitchRow("Ornamentos dourados", settings.ornaments, { v -> repo.updateSettings { it.copy(ornaments = v) } }, description = "Cantoneiras decorativas nos painéis.")
@@ -261,7 +272,7 @@ fun SettingsScreen() {
 
             OrnatePanel(Modifier.fillMaxWidth()) {
                 SectionTitle("Geral")
-                Text("Códice Umbral 1.0.0", style = MaterialTheme.typography.titleMedium, color = c.text)
+                Text("Códice Umbral 1.1.0", style = MaterialTheme.typography.titleMedium, color = c.text)
                 Text(
                     "Grimório digital de fichas de RPG para fantasia, dark fantasy, sobrenatural, paranormal, horror e ocultismo. " +
                         "Funciona sem internet e sem conta: os dados ficam no armazenamento privado deste aparelho, com salvamento automático.",
@@ -279,6 +290,13 @@ fun SettingsScreen() {
             { vm.removeDemo(); confirm = null }, { confirm = null }, destructive = true)
         "catalogs" -> ConfirmDialog("Restaurar catálogos?", "Os 8 catálogos originais voltam ao conteúdo padrão (edições neles serão perdidas). Categorias criadas por você são mantidas.", "Restaurar",
             { repo.restoreBuiltInCatalogs(); vm.toast("Catálogos originais restaurados"); confirm = null }, { confirm = null })
+    }
+    if (choosingColor) {
+        ColorChooserDialog(
+            "Cor do aplicativo", settings.customAccent ?: settings.accent.primary,
+            onDismiss = { choosingColor = false },
+            onPick = { argb -> repo.updateSettings { it.copy(customAccent = argb) }; choosingColor = false; vm.toast("Cor aplicada: ${ColorMath.toHex(argb)}") },
+        )
     }
     wipeText?.let { typed ->
         EditorDialog(

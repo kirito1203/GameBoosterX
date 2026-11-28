@@ -9,6 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -29,6 +30,8 @@ data class CodexPalette(
     val line: Color = Color(0xFF2E2442),
     val accent: Color = Color(0xFF9D6BFF),
     val accentDeep: Color = Color(0xFF4C1D95),
+    /** Texto sobre a cor de destaque (escuro em cores claras, branco em cores escuras). */
+    val onAccent: Color = Color(0xFF0E0918),
     val gold: Color = Color(0xFFC9A55C),
     val goldDim: Color = Color(0xFF7D6638),
     val text: Color = Color(0xFFECE6F6),
@@ -71,7 +74,7 @@ private fun typography(p: CodexPalette) = Typography(
 
 private fun scheme(p: CodexPalette): ColorScheme = darkColorScheme(
     primary = p.accent,
-    onPrimary = Color(0xFF0B0712),
+    onPrimary = p.onAccent,
     primaryContainer = p.accentDeep,
     onPrimaryContainer = p.text,
     secondary = p.gold,
@@ -96,9 +99,19 @@ private fun scheme(p: CodexPalette): ColorScheme = darkColorScheme(
 
 fun paletteFor(accent: AccentTheme) = CodexPalette(accent = Color(accent.primary), accentDeep = Color(accent.deep))
 
+/** Paleta de uma cor livre: o tom profundo é a mesma matiz escurecida. */
+fun paletteForCustom(argb: Long): CodexPalette {
+    val hsv = FloatArray(3).also { android.graphics.Color.colorToHSV(argb.toInt(), it) }
+    val deep = android.graphics.Color.HSVToColor(floatArrayOf(hsv[0], (hsv[1] * 0.9f).coerceAtMost(1f), (hsv[2] * 0.42f).coerceAtLeast(0.12f)))
+    val accent = Color(argb)
+    return CodexPalette(accent = accent, accentDeep = Color(deep), onAccent = if (accent.luminance() > 0.38f) Color(0xFF0E0918) else Color.White)
+}
+
+fun paletteFor(settings: AppSettings) = settings.customAccent?.let(::paletteForCustom) ?: paletteFor(settings.accent)
+
 @Composable
 fun CodexTheme(settings: AppSettings, content: @Composable () -> Unit) {
-    val palette = paletteFor(settings.accent)
+    val palette = paletteFor(settings)
     val density = LocalDensity.current
     CompositionLocalProvider(
         LocalPalette provides palette,

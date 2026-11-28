@@ -31,7 +31,7 @@ Funciona offline, sem conta e sem serviços externos. Nenhuma permissão é pedi
 | Dados | D4, D6, D8, D10, D12, D20, D100 desenhados, quantidade, modificador, vantagem/desvantagem, animação, expressões livres (`1d20+5`, `3d6+2`, `4d6kh3`, `1d100`), críticos e histórico persistente por ficha. |
 | História | Origem, infância, família, personalidade, aparência, objetivos, motivações, medos, segredos, relações, eventos e texto livre. |
 | Outras informações | Notas, idiomas, campos personalizados, abas visíveis, regras (dado de teste, rolar abaixo, proficiência, bônus de treino, curva de XP, nível máximo), renomear campos, salvar como modelo, duplicar, exportar. |
-| Ajustes | Cor arcana (5 temas), brilhos, ornamentos, tamanho do texto, animação, vibração, biblioteca compacta, categoria padrão; backup/restauração; exemplos fictícios; restaurar catálogos; limpar imagens; apagar tudo (com confirmação digitada). |
+| Ajustes | Cor arcana (5 temas ou qualquer cor: matiz, saturação, brilho e código #RRGGBB), brilhos, ornamentos, tamanho do texto, animação, vibração, biblioteca compacta, categoria padrão; backup/restauração; exemplos fictícios; restaurar catálogos; limpar imagens; apagar tudo (com confirmação digitada). |
 
 ## Dados e backup
 

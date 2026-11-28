@@ -5,6 +5,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AppSettings(
     val accent: AccentTheme = AccentTheme.AMETHYST,
+    /** Cor de destaque escolhida livremente (ARGB). Quando definida, substitui o tema de [accent]. */
+    val customAccent: Long? = null,
     /** Brilhos mágicos (sombras luminosas) nos painéis e botões. */
     val glowEffects: Boolean = true,
     /** Ornamentos dourados nas bordas dos painéis. */

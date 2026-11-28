@@ -167,12 +167,16 @@ fun IconPicker(selected: String, onSelect: (String) -> Unit, modifier: Modifier 
 @Composable
 fun ColorPicker(colors: List<Long>, selected: Long, onSelect: (Long) -> Unit, label: String = "Cor") {
     val c = Codex.colors
+    var choosing by remember { mutableStateOf(false) }
+    val isCustom = selected !in colors
     Column {
         Text(label, style = MaterialTheme.typography.bodySmall, color = c.muted)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
             colors.forEach { col -> ColorDot(Color(col), col == selected) { onSelect(col) } }
+            CustomColorDot(if (isCustom) selected else null, isCustom) { choosing = true }
         }
     }
+    if (choosing) ColorChooserDialog("Escolher cor", selected, { choosing = false }, { onSelect(it); choosing = false })
 }
 
 /** Duas colunas que viram uma em telas estreitas demais. */
