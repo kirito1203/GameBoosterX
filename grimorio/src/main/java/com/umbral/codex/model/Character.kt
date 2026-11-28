@@ -51,6 +51,8 @@ data class Character(
     val languages: String = "",
     val customFields: List<CustomField> = emptyList(),
     val rollHistory: List<RollRecord> = emptyList(),
+    /** Rolagens favoritas da mesa de dados (ex.: "Ataque com espada" = 1d20+5). */
+    val savedRolls: List<SavedRoll> = emptyList(),
 
     val rules: RuleSet = RuleSet(),
     /** Abas ocultas pelo usuário (chaves de [SheetSection]). */
@@ -284,6 +286,9 @@ data class Story(
 
 @Serializable
 data class CustomField(val id: String, val name: String, val value: String = "")
+
+@Serializable
+data class SavedRoll(val id: String, val name: String, val expression: String)
 
 @Serializable
 data class RollRecord(

@@ -101,6 +101,12 @@ class SheetController(
         }
     }
 
+    /** Registra no histórico um resultado já rolado (a mesa 3D anima antes de mostrar). */
+    fun recordOutcome(label: String, o: RollOutcome): RollRecord? {
+        record(label, o, null, showPopup = false)
+        return repo.character(id)?.rollHistory?.firstOrNull()
+    }
+
     private fun record(label: String, o: RollOutcome, verdict: String?, showPopup: Boolean) {
         val modeTxt = if (o.mode != RollMode.NORMAL) " · ${o.mode.label}" else ""
         val rec = RollRecord(

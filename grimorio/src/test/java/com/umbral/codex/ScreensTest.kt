@@ -106,12 +106,35 @@ class ScreensTest {
         }
         // Rolagem real na aba Dados
         tab("Dados")
-        click("Rolar 1d20", substring = true)
+        shot("16b_mesa_antes")
+        click("Rolar")
         settle(1500)
         val rolls = repo.characters.value.first { it.name == "Aldric Venn" }.rollHistory
         assertTrue("a rolagem deve ir para o histórico", rolls.isNotEmpty())
         assertTrue(rolls.first().total in 1..20)
         shot("19_dados_rolados")
+
+        // Vários dados na mesa: 1d20 + 2d6 + 1d8, com vantagem
+        fun addDie(s: Int) { rule.onAllNodes(androidx.compose.ui.test.hasContentDescription("Adicionar d$s")).onFirst().performClick(); settle() }
+        addDie(6); addDie(6); addDie(8)
+        rule.onAllNodes(androidx.compose.ui.test.hasContentDescription("Vantagem")).onFirst().performClick(); settle()
+        shot("19b_mesa_varios_dados")
+        click("Rolar"); settle(1500)
+        val multi = repo.characters.value.first { it.name == "Aldric Venn" }.rollHistory.first()
+        assertEquals("vantagem dobra só o d20", "2d20kh1+1d8+2d6", multi.expression)
+        assertTrue(multi.label.contains("Vantagem"))
+        assertTrue(multi.total in 4..42)
+        shot("19c_mesa_varios_rolados")
+        // Meio da animação (dados no ar)
+        rule.mainClock.autoAdvance = false
+        click("Rolar"); rule.mainClock.advanceTimeBy(450)
+        shot("19d_mesa_rolando")
+        rule.mainClock.autoAdvance = true; settle(2000)
+        // Percentual e moeda
+        rule.onAllNodes(androidx.compose.ui.test.hasContentDescription("Dado percentual d100")).onFirst().performClick(); settle()
+        addDie(2); addDie(4); addDie(10); addDie(12)
+        click("Rolar"); settle(1500)
+        shot("19e_mesa_d100_d2_d4_d10_d12")
 
         // Magia: expandir e conjurar desconta mana
         tab("Magia")

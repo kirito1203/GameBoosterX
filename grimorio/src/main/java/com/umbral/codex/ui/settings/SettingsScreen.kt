@@ -272,7 +272,7 @@ fun SettingsScreen() {
 
             OrnatePanel(Modifier.fillMaxWidth()) {
                 SectionTitle("Geral")
-                Text("Códice Umbral 1.1.0", style = MaterialTheme.typography.titleMedium, color = c.text)
+                Text("Códice Umbral 1.2.0", style = MaterialTheme.typography.titleMedium, color = c.text)
                 Text(
                     "Grimório digital de fichas de RPG para fantasia, dark fantasy, sobrenatural, paranormal, horror e ocultismo. " +
                         "Funciona sem internet e sem conta: os dados ficam no armazenamento privado deste aparelho, com salvamento automático.",

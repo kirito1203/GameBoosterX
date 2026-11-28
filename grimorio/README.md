@@ -28,7 +28,7 @@ Funciona offline, sem conta e sem serviços externos. Nenhuma permissão é pedi
 | Magia | Grimório com ícone/imagem, nível, escola, tipo, custos de mana/energia, tempo, alcance, duração, dano rolável, efeito, requisitos; filtros (favoritas, nível, tipo, escola, disponíveis/indisponíveis) e pesquisa; “Conjurar” desconta o custo dos recursos. |
 | Poderes | Habilidades ativas/passivas, técnicas, poderes raciais, transformações, sobrenaturais, demoníacos, divinos, de combate e talentos — agrupados por categoria (crie as suas), favoritos, dados roláveis. Características naturais e sobrenaturais com tipo, efeito, requisitos, limitações. |
 | Inventário | Itens com imagem, quantidade, peso, valor, raridade, categoria, efeitos, bônus e dados; equipar/desequipar; moedas (ganhar, gastar, definir saldo, motivo, histórico); carga atual × capacidade (manual ou por Força) com aviso de sobrecarga. |
-| Dados | D4, D6, D8, D10, D12, D20, D100 desenhados, quantidade, modificador, vantagem/desvantagem, animação, expressões livres (`1d20+5`, `3d6+2`, `4d6kh3`, `1d100`), críticos e histórico persistente por ficha. |
+| Dados | Mesa 3D: d2, d4, d6, d8, d10, d12, d20 e d100 como poliedros reais (faces iluminadas, números em perspectiva, opostos somando N+1) que são arremessados, quicam e param com o resultado de frente. Toque num dado para pô-lo na mesa, segure para tirar; Limpar, MOD −/+, Rolar; ADV/DIS (dobra os d20 e mantém o maior/menor), % (d100), luz da mesa, rolagens salvas, expressões livres (`1d20+5`, `4d6kh3`) e histórico por ficha. Os dados seguem a cor do app. |
 | História | Origem, infância, família, personalidade, aparência, objetivos, motivações, medos, segredos, relações, eventos e texto livre. |
 | Outras informações | Notas, idiomas, campos personalizados, abas visíveis, regras (dado de teste, rolar abaixo, proficiência, bônus de treino, curva de XP, nível máximo), renomear campos, salvar como modelo, duplicar, exportar. |
 | Ajustes | Cor arcana (5 temas ou qualquer cor: matiz, saturação, brilho e código #RRGGBB), brilhos, ornamentos, tamanho do texto, animação, vibração, biblioteca compacta, categoria padrão; backup/restauração; exemplos fictícios; restaurar catálogos; limpar imagens; apagar tudo (com confirmação digitada). |
@@ -77,6 +77,7 @@ grimorio/src/test/  Testes JVM: dados, cálculos, persistência, backup e catál
 | `RepositoryTest` | Salvamento em disco, releitura, exclusão, backup completo com imagens, importação sem sobrescrever, catálogos completos. |
 | `FlowsTest` | Pela interface: cria ficha, edita raça/classe/idade, altera Vida, ganha XP e sobe de nível, cria atributo, rola testes, cria e conjura magia (desconta mana), cria poder e característica, ganha ouro, recusa gasto acima do saldo, cria e equipa item, escreve história, relê tudo do disco e exclui com confirmação. |
 | `ScreensTest` | Percorre todas as telas e abas e salva capturas em `grimorio/build/screenshots/`. |
+| `Dice3DTest` | Geometria dos dados: número de faces, faces planas, rótulos completos, opostos somando N+1 e, para todo valor de todo dado, a face do resultado termina de frente. |
 | `ResponsiveTest` | Celular de 320 dp e tablet de 840 dp: nenhum elemento ultrapassa a largura em nenhuma tela ou aba. |
 
 `./gradlew :grimorio:testDebugUnitTest` roda tudo (no GitHub Actions também). Em ambientes onde o
