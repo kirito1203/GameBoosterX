@@ -48,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.umbral.codex.data.SaveStatus
@@ -161,7 +162,7 @@ private fun CodexBottomBar(vm: AppViewModel) {
                 selected = tab == active,
                 onClick = { vm.openTab(tab) },
                 icon = { Icon(icon, tab.label, modifier = Modifier.size(if (tab == RootTab.CREATE) 30.dp else 24.dp)) },
-                label = { Text(tab.label, maxLines = 1) },
+                label = { Text(tab.label, maxLines = 1, softWrap = false, style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 0.sp, fontSize = 11.sp)) },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = c.text,
                     selectedTextColor = c.accent,

@@ -70,6 +70,9 @@ fun CreateScreen(initialCatalogId: String?, initialTemplateId: String?) {
     val templates: List<Pair<Catalog, com.umbral.codex.model.CharacterTemplate>> =
         (if (catalog != null) listOf(catalog) else sorted).flatMap { cat -> cat.templates.map { cat to it } }
     val template = templates.firstOrNull { it.second.id == templateId }
+    androidx.compose.runtime.LaunchedEffect(useTemplate, catalogId) {
+        if (useTemplate && template == null) templateId = templates.firstOrNull()?.second?.id
+    }
 
     Column(Modifier.fillMaxSize()) {
         ScreenHeader("Criar ficha", "Do zero ou a partir de um modelo", onBack = if (vm.stack.size > 1) ({ vm.back() }) else null)

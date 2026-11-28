@@ -85,13 +85,20 @@ fun CharacterCard(
             Column(Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(character.displayName(), Modifier.weight(1f, fill = false), style = MaterialTheme.typography.titleMedium, color = c.text, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    if (character.isDemo) { Spacer(Modifier.width(6.dp)); Tag("Exemplo", c.warning) }
                 }
-                Text(character.subtitleLine(), style = MaterialTheme.typography.bodySmall, color = c.muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(
+                    androidx.compose.ui.text.buildAnnotatedString {
+                        if (character.isDemo) {
+                            pushStyle(androidx.compose.ui.text.SpanStyle(color = c.warning)); append("Exemplo fictício · "); pop()
+                        }
+                        append(character.subtitleLine())
+                    },
+                    style = MaterialTheme.typography.bodySmall, color = c.muted, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                )
                 Spacer(Modifier.height(4.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
                     Tag("Nível ${character.level}", c.gold)
-                    if (catalog != null && !compact) Tag(catalog.name, accent)
+                    if (catalog != null && !compact) Tag(catalog.name, accent, Modifier.weight(1f, fill = false))
                 }
             }
             RoundIconButton(

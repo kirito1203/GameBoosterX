@@ -51,6 +51,8 @@ import com.umbral.codex.ui.components.Tag
 import com.umbral.codex.ui.components.rememberImagePicker
 import com.umbral.codex.ui.theme.Codex
 
+fun plural(n: Int, one: String, many: String) = "$n ${if (n == 1) one else many}"
+
 val CatalogAccents = listOf(
     0xFF8E2B4AL, 0xFF7A1F3DL, 0xFF2F7A8CL, 0xFF4F7BD1L, 0xFF9C7A3CL, 0xFF6B2020L, 0xFF5E3A9CL, 0xFF6D4AB8L,
     0xFF3E8A5CL, 0xFFB0603AL, 0xFF8A8F9EL, 0xFFB04E9AL,
@@ -92,8 +94,8 @@ fun CatalogsScreen() {
                         Text(cat.tagline.ifBlank { cat.description }, style = MaterialTheme.typography.bodySmall, color = c.muted, maxLines = 3, overflow = TextOverflow.Ellipsis)
                         Spacer(Modifier.height(8.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                            Tag("${cat.templates.size} modelos", c.gold)
-                            Tag("$count fichas", Color(cat.accent))
+                            Tag(plural(cat.templates.size, "modelo", "modelos"), c.gold)
+                            Tag(plural(count, "ficha", "fichas"), Color(cat.accent))
                         }
                     }
                 }

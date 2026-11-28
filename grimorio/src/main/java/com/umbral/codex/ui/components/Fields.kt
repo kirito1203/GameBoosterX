@@ -92,10 +92,10 @@ fun CodexTextField(
     supportingText: String? = null,
     textAlign: TextAlign = TextAlign.Start,
 ) {
-    var tfv by remember { mutableStateOf(TextFieldValue(value, TextRange(value.length))) }
+    var tfv by remember { mutableStateOf(TextFieldValue(value, TextRange.Zero)) }
     var focused by remember { mutableStateOf(false) }
     // Enquanto o campo está em foco, o texto digitado manda; valores externos atrasados são ignorados.
-    LaunchedEffect(value, focused) { if (!focused && value != tfv.text) tfv = TextFieldValue(value, TextRange(value.length)) }
+    LaunchedEffect(value, focused) { if (!focused && value != tfv.text) tfv = TextFieldValue(value, TextRange.Zero) }
     OutlinedTextField(
         value = tfv,
         onValueChange = { nv -> val changed = nv.text != tfv.text; tfv = nv; if (changed) onValueChange(nv.text) },
@@ -139,7 +139,7 @@ fun IntField(
             filtered.toIntOrNull()?.let { onValueChange(it.coerceIn(min, max)) }
         },
         label = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-        modifier = modifier.onFocusChanged { focused = it.isFocused },
+        modifier = modifier.onFocusChanged { focused = it.isFocused; if (it.isFocused && text.trimStart('0', ',', '.').isEmpty()) text = "" },
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
         colors = codexFieldColors(),
@@ -161,7 +161,7 @@ fun LongField(value: Long, onValueChange: (Long) -> Unit, label: String, modifie
             f.toLongOrNull()?.let(onValueChange)
         },
         label = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-        modifier = modifier.onFocusChanged { focused = it.isFocused },
+        modifier = modifier.onFocusChanged { focused = it.isFocused; if (it.isFocused && text.trimStart('0', ',', '.').isEmpty()) text = "" },
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
         colors = codexFieldColors(),
@@ -186,7 +186,7 @@ fun DecimalField(value: Double, onValueChange: (Double) -> Unit, label: String, 
             if (f.isEmpty()) onValueChange(0.0)
         },
         label = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-        modifier = modifier.onFocusChanged { focused = it.isFocused },
+        modifier = modifier.onFocusChanged { focused = it.isFocused; if (it.isFocused && text.trimStart('0', ',', '.').isEmpty()) text = "" },
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Next),
         colors = codexFieldColors(),

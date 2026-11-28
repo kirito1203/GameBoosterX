@@ -66,7 +66,23 @@ grimorio/src/main/java/com/umbral/codex/
 ├── CodexApplication.kt
 └── MainActivity.kt
 grimorio/src/test/  Testes JVM: dados, cálculos, persistência, backup e catálogos
+                    + testes de interface com Robolectric (telas reais renderizadas)
 ```
+
+## Testes
+
+| Teste | O que verifica |
+|---|---|
+| `DiceTest`, `SheetMathTest` | Expressões de dados, vantagem/desvantagem, críticos, modificadores, perícias, XP/nível, carga, moedas. |
+| `RepositoryTest` | Salvamento em disco, releitura, exclusão, backup completo com imagens, importação sem sobrescrever, catálogos completos. |
+| `FlowsTest` | Pela interface: cria ficha, edita raça/classe/idade, altera Vida, ganha XP e sobe de nível, cria atributo, rola testes, cria e conjura magia (desconta mana), cria poder e característica, ganha ouro, recusa gasto acima do saldo, cria e equipa item, escreve história, relê tudo do disco e exclui com confirmação. |
+| `ScreensTest` | Percorre todas as telas e abas e salva capturas em `grimorio/build/screenshots/`. |
+| `ResponsiveTest` | Celular de 320 dp e tablet de 840 dp: nenhum elemento ultrapassa a largura em nenhuma tela ou aba. |
+
+`./gradlew :grimorio:testDebugUnitTest` roda tudo (no GitHub Actions também). Em ambientes onde o
+Maven Central limita downloads grandes, há duas opções de linha de comando que apontam para cópias
+locais (conferidas por checksum) dos arquivos do Robolectric: `-PcodexLocalRepo=<pasta maven>` e
+`-ProbolectricJars=<pasta com android-all-instrumented>`. Sem elas, tudo é baixado normalmente.
 
 Dependências além das já usadas pelo projeto: `kotlinx-serialization-json` (JSON) e
 `material-icons-extended` (ícones; o R8 remove os não usados no APK de release).

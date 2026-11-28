@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -35,6 +36,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -120,7 +122,7 @@ fun HomeScreen() {
                             Spacer(Modifier.height(8.dp))
                             last.resources.take(2).forEach { r ->
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(r.name, Modifier.width(70.dp), style = MaterialTheme.typography.labelMedium, color = c.muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    Text(r.name, Modifier.width(104.dp), style = MaterialTheme.typography.labelMedium, color = c.muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                     GlowBar(if (r.max == r.min) 0f else (r.current - r.min).toFloat() / (r.max - r.min), Color(r.color), Modifier.weight(1f), height = 7.dp)
                                 }
                                 Spacer(Modifier.height(4.dp))
@@ -189,7 +191,7 @@ private fun Hero(onCreate: () -> Unit, onExplore: () -> Unit) {
             .background(Brush.verticalGradient(listOf(c.accentDeep.copy(alpha = 0.45f), c.abyss, Color.Transparent)))
             .windowInsetsPadding(WindowInsets.statusBars)
     ) {
-        ArcaneSigil(Modifier.align(Alignment.TopEnd).padding(top = 4.dp).size(220.dp).padding(end = 0.dp), color = c.accent.copy(alpha = 0.55f))
+        ArcaneSigil(Modifier.align(Alignment.TopEnd).offset(x = 70.dp, y = (-10).dp).size(230.dp).alpha(0.45f), color = c.accent.copy(alpha = 0.6f))
         Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 36.dp, bottom = 16.dp)) {
             Text("GRIMÓRIO DE PERSONAGENS", style = MaterialTheme.typography.labelSmall, color = c.gold)
             Spacer(Modifier.height(6.dp))
@@ -197,7 +199,7 @@ private fun Hero(onCreate: () -> Unit, onExplore: () -> Unit) {
             Spacer(Modifier.height(8.dp))
             Text(
                 "Fichas, universos e segredos de seus personagens — vampiros, magos, cavaleiros malditos e tudo o que habita a escuridão.",
-                style = MaterialTheme.typography.bodyMedium, color = c.muted, modifier = Modifier.fillMaxWidth(0.88f),
+                style = MaterialTheme.typography.bodyMedium, color = c.text.copy(alpha = 0.78f), modifier = Modifier.fillMaxWidth(0.9f),
             )
             Spacer(Modifier.height(18.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -219,7 +221,7 @@ private fun CategoryTile(cat: Catalog, count: Int, onClick: () -> Unit) {
         Column(Modifier.padding(10.dp)) {
             Text(cat.name, style = MaterialTheme.typography.titleSmall, color = c.text, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(if (count == 1) "1 personagem" else "$count personagens", Modifier.weight(1f), style = MaterialTheme.typography.bodySmall, color = c.muted)
+                Text(com.umbral.codex.ui.catalog.plural(count, "personagem", "personagens"), Modifier.weight(1f), style = MaterialTheme.typography.bodySmall, color = c.muted)
                 Icon(Icons.AutoMirrored.Filled.ArrowForward, null, tint = c.faint, modifier = Modifier.size(14.dp))
             }
         }

@@ -189,6 +189,8 @@ private fun SaveIndicator(status: SaveStatus) {
     }
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(horizontal = 4.dp)) {
         Icon(icon, text, tint = tint, modifier = Modifier.size(20.dp))
-        Text(text, style = MaterialTheme.typography.labelSmall, color = tint, maxLines = 1)
+        // Em telas estreitas só o ícone (a cor indica o estado), para o nome do personagem caber.
+        if (androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp >= 380)
+            Text(text, style = MaterialTheme.typography.labelSmall, color = tint, maxLines = 1)
     }
 }

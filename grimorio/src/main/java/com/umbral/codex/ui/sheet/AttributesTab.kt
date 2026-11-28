@@ -76,6 +76,16 @@ fun AttributesTab(c: Character, ctl: SheetController) {
     var editing by remember { mutableStateOf<Attribute?>(null) }
     var creating by remember { mutableStateOf(false) }
     TabColumn {
+        SectionTitle("Atributos (${c.attributes.size})") {
+            RoundIconButton(Icons.Filled.Add, "Novo atributo", { creating = true }, tint = col.accent, size = 36.dp)
+        }
+        AutoGrid(c.attributes, minItemWidth = 150.dp, maxColumns = 4) { a ->
+            AttributeCircle(a, c, onEdit = { editing = a }, onRoll = {
+                ctl.rollCheck(c, a.name, if (c.rules.rollUnder) a.value else SheetMath.modifier(a, c.rules))
+            })
+        }
+        GhostButton("Criar atributo personalizado", { creating = true }, Modifier.fillMaxWidth(), icon = Icons.Filled.Add)
+        Hint("Toque no círculo para rolar um teste (${c.rules.checkDie}${if (c.rules.rollUnder) ", rolar abaixo do valor" else " + modificador"}). Use o lápis para editar.")
         OrnatePanel(Modifier.fillMaxWidth()) {
             SectionTitle("Regra de modificador")
             DropdownField("Como o modificador é calculado", ModifierRule.entries, c.rules.modifierRule, { it.label }, { r -> ctl.update { it.copy(rules = it.rules.copy(modifierRule = r)) } })
@@ -88,16 +98,6 @@ fun AttributesTab(c: Character, ctl: SheetController) {
             }
         }
 
-        SectionTitle("Atributos (${c.attributes.size})") {
-            RoundIconButton(Icons.Filled.Add, "Novo atributo", { creating = true }, tint = col.accent, size = 36.dp)
-        }
-        AutoGrid(c.attributes, minItemWidth = 150.dp, maxColumns = 4) { a ->
-            AttributeCircle(a, c, onEdit = { editing = a }, onRoll = {
-                ctl.rollCheck(c, a.name, if (c.rules.rollUnder) a.value else SheetMath.modifier(a, c.rules))
-            })
-        }
-        GhostButton("Criar atributo personalizado", { creating = true }, Modifier.fillMaxWidth(), icon = Icons.Filled.Add)
-        Hint("Toque no círculo para rolar um teste (${c.rules.checkDie}${if (c.rules.rollUnder) ", rolar abaixo do valor" else " + modificador"}). Use o lápis para editar.")
     }
     if (creating) AttributeDialog(null, c, ctl) { creating = false }
     editing?.let { a -> AttributeDialog(c.attributes.firstOrNull { it.id == a.id } ?: a, c, ctl) { editing = null } }

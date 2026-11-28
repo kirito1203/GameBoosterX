@@ -299,7 +299,8 @@ fun Tag(text: String, color: Color = Codex.colors.accent, modifier: Modifier = M
             .background(color.copy(alpha = 0.14f))
             .border(1.dp, color.copy(alpha = 0.35f), RoundedCornerShape(6.dp))
             .padding(horizontal = 8.dp, vertical = 3.dp),
-        color = color,
+        // Texto clareado: cores de catálogo escuras continuam legíveis no fundo preto.
+        color = lerpColor(color, Color.White, 0.35f),
         style = MaterialTheme.typography.labelMedium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,

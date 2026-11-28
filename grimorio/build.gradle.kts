@@ -64,6 +64,18 @@ android {
     }
     testOptions {
         unitTests.isReturnDefaultValues = true
+        // Robolectric: renderiza as telas reais na JVM (testes de interface e capturas de tela).
+        unitTests.isIncludeAndroidResources = true
+        unitTests.all {
+            it.systemProperty("robolectric.graphicsMode", "NATIVE")
+            it.systemProperty("codex.screenshots", layout.buildDirectory.dir("screenshots").get().asFile.absolutePath)
+            it.maxHeapSize = "3g"
+            // Opcional: imagens do Android já baixadas (modo offline do Robolectric).
+            providers.gradleProperty("robolectricJars").orNull?.let { dir ->
+                it.systemProperty("robolectric.offline", "true")
+                it.systemProperty("robolectric.dependency.dir", dir)
+            }
+        }
     }
 }
 
@@ -86,4 +98,9 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.ext.junit)
+    testImplementation(platform(libs.androidx.compose.bom))
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

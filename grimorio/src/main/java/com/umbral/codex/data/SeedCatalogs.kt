@@ -73,7 +73,7 @@ object SeedCatalogs {
         tagline = "Reinos em ruína, deuses silenciosos e lâminas que cobram em sangue.",
         description = "Fantasia sombria onde a magia corrompe, a fé falhou e cada vitória deixa cicatrizes. " +
             "Heróis são sobreviventes moralmente ambíguos em um mundo que apodrece lentamente.",
-        glyph = "dangerous",
+        glyph = "whatshot",
         accent = 0xFF8E2B4AL,
         setting = "Há três séculos o Sol Partido rachou o céu, e desde então a luz chega fraca e cinzenta. " +
             "Os antigos impérios caíram sob a Praga Cinérea, e os reinos que restaram sobrevivem atrás de muralhas, " +
