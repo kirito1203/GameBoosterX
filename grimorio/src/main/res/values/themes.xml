@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="codex_void">#FF07060B</color>
+
+    <style name="Theme.Codex" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/codex_void</item>
+        <item name="android:statusBarColor">@color/codex_void</item>
+        <item name="android:navigationBarColor">@color/codex_void</item>
+    </style>
+</resources>

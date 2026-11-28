@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Selo do Códice Umbral: círculo arcano dourado, lua crescente e estrela violeta. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:strokeColor="#FFC9A55C"
+        android:strokeWidth="1.6"
+        android:fillColor="#00000000"
+        android:pathData="M54,24 A30,30 0 1,1 53.99,24 Z" />
+    <path
+        android:strokeColor="#FF6D4AB8"
+        android:strokeWidth="1"
+        android:fillColor="#00000000"
+        android:pathData="M54,29 A25,25 0 1,1 53.99,29 Z" />
+    <path
+        android:fillColor="#FF9D6BFF"
+        android:pathData="M54,33 L57.5,49 L73,54 L57.5,59 L54,75 L50.5,59 L35,54 L50.5,49 Z" />
+    <path
+        android:fillColor="#FFC9A55C"
+        android:pathData="M66,34 A10,10 0 1,0 74,46 A8,8 0 1,1 66,34 Z" />
+</vector>

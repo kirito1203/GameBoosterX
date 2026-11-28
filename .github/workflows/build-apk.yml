@@ -48,26 +48,28 @@ jobs:
       - name: Permissão do gradlew
         run: chmod +x gradlew
 
-      - name: Testes unitários
-        run: ./gradlew --no-daemon testDebugUnitTest
+      - name: Testes unitários (Game Booster X e Códice Umbral)
+        run: ./gradlew --no-daemon :app:testDebugUnitTest :grimorio:testDebugUnitTest
 
       - name: Compilar APKs e rodar lint
         env:
           GBX_KEYSTORE_PASSWORD: ${{ secrets.GBX_KEYSTORE_PASSWORD }}
           GBX_KEY_ALIAS: ${{ secrets.GBX_KEY_ALIAS }}
           GBX_KEY_PASSWORD: ${{ secrets.GBX_KEY_PASSWORD }}
-        run: ./gradlew --no-daemon assembleDebug assembleRelease lintDebug
+        run: ./gradlew --no-daemon :app:assembleDebug :app:assembleRelease :app:lintDebug :grimorio:assembleDebug :grimorio:assembleRelease :grimorio:lintDebug
 
       - name: Preparar arquivos
         run: |
           mkdir -p out
           cp app/build/outputs/apk/release/app-release.apk "out/GameBoosterX-v${{ github.run_number }}.apk"
           cp app/build/outputs/apk/debug/app-debug.apk "out/GameBoosterX-v${{ github.run_number }}-debug.apk"
+          cp grimorio/build/outputs/apk/release/grimorio-release.apk "out/CodiceUmbral-v${{ github.run_number }}.apk"
+          cp grimorio/build/outputs/apk/debug/grimorio-debug.apk "out/CodiceUmbral-v${{ github.run_number }}-debug.apk"
 
       - name: Guardar APKs
         uses: actions/upload-artifact@v4
         with:
-          name: GameBoosterX-apk
+          name: apks
           path: out/*.apk
 
       - name: Guardar relatórios de teste e lint
@@ -78,6 +80,8 @@ jobs:
           path: |
             app/build/reports/
             app/build/test-results/
+            grimorio/build/reports/
+            grimorio/build/test-results/
 
       - name: Publicar release (link direto para baixar no celular)
         continue-on-error: true
@@ -88,5 +92,6 @@ jobs:
           body: |
             APK gerado automaticamente a partir do commit ${{ github.sha }}.
             Instale **GameBoosterX-v${{ github.run_number }}.apk** (versão otimizada).
+            **CodiceUmbral-v${{ github.run_number }}.apk** é o app de fichas de RPG (Códice Umbral).
             A versão `-debug` serve apenas para diagnóstico.
           files: out/*.apk

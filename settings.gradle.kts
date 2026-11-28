@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "GameBoosterX"
 include(":app")
+include(":grimorio")
